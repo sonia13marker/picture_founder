@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>founder</title>
+  </head>
+  <body>
+    <header></header>
+    <section id="content">
+      <h1>main</h1>
+    </section>
+    <script>
+      let content = document.getElementById("content");
+
+      async function getPictures() {
+        let req = await fetch("/api/pictures", {
+          method: "GET",
+        });
+        let data = await req.json();
+        for await (i of data) {
+          getPicture(i);
+        }
+      }
+
+      async function getPicture(pic) {
+        let req = await fetch("/api/pictures/" + pic, {
+          method: "GET",
+        });
+        
+        const buffers = []; // буфер для получаемых данных
+        for await (const chunk of req) {
+          buffers.push(chunk); // добавляем в буфер все полученные данные
+        }
+        console.log(req);
+        // content.appendChild(document.createElement("img").setAttribute("src", req))
+      }
+
+      getPictures();
+    </script>
+  </body>
+</html>
