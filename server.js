@@ -10,6 +10,10 @@ const port = 3000;
 const picFolder = path.join(__dirname, "/src/pic/");
 // route.use("/picture",express.static(__dirname+"/src/pic"))
 
+//статика для картинок
+route.use(express.static(picFolder))
+
+//путь до каждой отдельной картинки
 route.get("/pictures/:picName", function (request, response) {
   if (request.url.endsWith(".jpg")) {
     response.setHeader("Content-Type", "image/jpg");
@@ -29,6 +33,7 @@ route.get("/pictures/:picName", function (request, response) {
   });
 });
 
+//получение массива всех картинок
 route.get("/pictures", function (request, response) {
   console.log("get pictures");
   fs.readdir(picFolder, (err, files) => {
@@ -36,6 +41,7 @@ route.get("/pictures", function (request, response) {
       response.sendStatus(404);
       console.log(err);
     } else {
+        response.statusCode = 200
       console.log("pic send");
       response.json(files);
     }
