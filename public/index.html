@@ -4,43 +4,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./src/style/index.css" rel="stylesheet" />
     <title>founder</title>
   </head>
   <body>
-    <header></header>
-    <section id="content">
-      <h1>main</h1>
-    </section>
+    <header>
+      <div id="logo"><h1>main</h1></div>
+      <div id="Buttons">
+        <button id="addImageBtn">добавить</button>
+      </div>
+      <div></div>
+    </header>
+    <section id="content"></section>
+    <script src="./src/scripts/get.js"></script>
     <script>
-      let content = document.getElementById("content");
-
-      async function getPictures() {
-        let req = await fetch("/api/pictures", {
-          method: "GET",
-        });
-        let data = await req.json();
-        console.log(data);
-        for await (i of data) {
-            let image = document.createElement("img");
-            image.setAttribute("src", `/api/pictures/${i}`);
-            content.appendChild(image);
-        }
-      }
-
-      //получение одной картинки (ДОДЕЛАТЬ)
-      async function getPicture(pic) {
-        let req = await fetch("/api/pictures/" + pic, {
-          method: "GET",
-        });
-        
-        // const buffers = []; // буфер для получаемых данных
-        // for await (const chunk of req) {
-        //   buffers.push(chunk); // добавляем в буфер все полученные данные
-        // }
-        console.log(req);
-      }
-
-      getPictures();
+      getPictures(document.getElementById("content"));
     </script>
   </body>
 </html>

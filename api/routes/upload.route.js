@@ -1,33 +1,29 @@
-const express = require("express");
-const fs = require("fs");
-const path = require("path");
+const { Router, static } = require("express");
+const fs = require('fs');
+const path = require("path")
 
-const route = express.Router();
+const route = Router();
+let picFolder = path.join(path.resolve("./public/pic/"), "/")
+route.use(static(picFolder))
 
-const app = express();
-
-const port = 3000;
-const picFolder = path.join(__dirname, "/src/pic/");
-// route.use("/picture",express.static(__dirname+"/src/pic"))
-
-//статика для картинок
-route.use(express.static(picFolder))
 
 //путь до каждой отдельной картинки
 route.get("/pictures/:picName", function (request, response) {
   if (request.url.endsWith(".jpg")) {
     response.setHeader("Content-Type", "image/jpg");
-    console.log("jpg");
-  } else if (request.url.endsWith(".png")) {
+    console.log("load jpg",request.params.picName);
+  } 
+  else if (request.url.endsWith(".png")) {
     response.setHeader("Content-Type", "image/png");
-    console.log("png");
+    console.log("load png",request.params.picName);
   }
   fs.readFile(picFolder + request.params.picName, (err, image) => {
     if (err) {
       response.statusCode = 502;
       response.statusMessage = "cannot read file";
+      console.log("image load error \n",err);
     } else {
-      console.log("end");
+      console.log("send image end");
       response.end(image);
     }
   });
@@ -41,17 +37,11 @@ route.get("/pictures", function (request, response) {
       response.sendStatus(404);
       console.log(err);
     } else {
-        response.statusCode = 200
-      console.log("pic send");
+      response.statusCode = 200;
+      console.log("pics send");
       response.json(files);
     }
   });
 });
 
-app.use("/api", route);
-
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + "/public/index.html");
-});
-
-app.listen(port);
+module.exports = route
