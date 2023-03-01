@@ -3,10 +3,10 @@ async function getPictures(element) {
       method: "GET",
     });
     let data = await req.json();
-    console.log(data);
-    for await (i of data) {
+    for ( i of data ) {
+      console.log(i);
         let image = document.createElement("img");
-        image.setAttribute("src", `/api/pictures/${i}`);
+        image.setAttribute("src", `/api/pictures/${i.name}`);
         image.setAttribute("alt", "картиночка");
         element.appendChild(image);
     }
