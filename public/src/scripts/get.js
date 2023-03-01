@@ -1,26 +1,42 @@
-async function getPictures(element) {
-    let req = await fetch("/api/pictures", {
-      method: "GET",
-    });
-    let data = await req.json();
-    for ( i of data ) {
-      console.log(i);
-        let image = document.createElement("img");
-        image.setAttribute("src", `/api/pictures/${i.name}`);
-        image.setAttribute("alt", "картиночка");
-        element.appendChild(image);
-    }
-  }
+async function getPictures() {
+  let req = await fetch("/api/pictures", {
+    method: "GET",
+  });
+  let data = await req.json();
 
-  //получение одной картинки (ДОДЕЛАТЬ)
-  // async function getPicture(pic) {
-  //   let req = await fetch("/api/pictures/" + pic, {
-  //     method: "GET",
-  //   });
-    
-  //   // const buffers = []; // буфер для получаемых данных
-  //   // for await (const chunk of req) {
-  //   //   buffers.push(chunk); // добавляем в буфер все полученные данные
-  //   // }
-  //   console.log(req);
+  return data;
+}
+
+async function createNodeImage(element) {
+  let data = await getPictures();
+
+  for (let i of data) {
+    let image = document.createElement("img");
+    image.setAttribute("src", `/api/pictures/${i.name}`);
+    image.setAttribute("alt", "картиночка");
+    image.setAttribute("class", "memeImg");
+    image.setAttribute("id", i.id);
+    image.addEventListener("click", (e) => {
+      createImageInfo(i);
+    });
+    element.appendChild(image);
+  }
+}
+
+//получение одной картинки (ДОДЕЛАТЬ)
+// function getPicture(pic) {
+//   let request = new XMLHttpRequest();
+//   request.open(`/api/pictures/${pic}`, "GET")
+//   request.onload = () => {
+//     return request.response
+//   }
+//   request.send()
+  // let req = fetch("/api/pictures/" + pic, {
+  //   method: "GET",
+  // });
+
+  // const buffers = []; // буфер для получаемых данных
+  // for await (const chunk of req) {
+  //   buffers.push(chunk); // добавляем в буфер все полученные данные
   // }
+// }

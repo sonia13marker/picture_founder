@@ -1,9 +1,9 @@
-*{
+* {
     margin: 0px;
     box-sizing: border-box;
 }
 
-header{
+header {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -13,16 +13,16 @@ header{
     padding: 0px 20px;
 }
 
-#Buttons{
+#Buttons {
     margin-left: 30%;
 }
 
-#addImageBtn{
+#optionBtn {
     width: 100px;
     height: 50px;
 }
 
-img{
+img {
     width: 250px;
     height: 150px;
     border-radius: 20px;
@@ -30,8 +30,30 @@ img{
     background-color: grey;
 }
 
-#content{
+
+#content {
     display: flex;
     flex-direction: row;
     margin-top: 50px;
+}
+
+#imageInfo {
+    width: 80vw;
+    height: 80vh;
+
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 5vh;
+    text-align: center;
+    padding: 20px 0px;
+
+    /* z-index: 5; */
+    position: absolute;
+    background-color: aqua;
 }

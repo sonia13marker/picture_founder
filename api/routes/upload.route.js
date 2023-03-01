@@ -1,7 +1,7 @@
 const { Router, static } = require("express");
 const fs = require('fs');
 const path = require("path")
-const getData = require("../middleware/dataTest")
+const getData = require("../middleware/data")
 
 const route = Router();
 let picFolder = path.join(path.resolve("./public/pic/"), "/")

@@ -11,14 +11,28 @@
     <header>
       <div id="logo"><h1>main</h1></div>
       <div id="Buttons">
-        <button id="addImageBtn">добавить</button>
+        <button id="optionBtn">добавить</button>
       </div>
       <div></div>
     </header>
-    <section id="content"></section>
+    <section id="content">
+      <div id="imageInfo">
+        <button class="closeBtn">close</button>
+        <div class="ImgConteiner">
+          <img class="selectImg" alt="картинка не загрузилась (">
+        </div>
+        <div class="options">
+          <button id="optionBtn">изменить</button>
+          <button id="optionBtn">удалить</button>
+        </div>
+        <div class="tags"></div>
+      </div>
+    </section>
     <script src="./src/scripts/get.js"></script>
+    <script src="./src/scripts/imgInfoWindow.js"></script>
     <script>
-      getPictures(document.getElementById("content"));
+      createNodeImage(document.getElementById("content"));
+      // document.querySelector
     </script>
   </body>
 </html>
