@@ -29,7 +29,7 @@
       </div>
       <div id="addForm">
         <button class="closeBtn">close</button>
-        <form name="addImageForm" action="/api/post/piture" method="post">
+        <form name="addImageForm" method="post" id="form">
           <div class="ImgConteiner">
             <input type="file" class="ImageInput" name="imageInput" />
           </div>
@@ -37,15 +37,18 @@
             <input type="text" name="altNameInput" class="altNameInput"/>
             <input type="text" name="tagsInput" class="tagsInput"/>
           </div>
-          <button type="submit">отправить</button>
+          <button type="submit" >отправить</button>
         </form>
       </div>
     </section>
     <script src="./src/scripts/get.js"></script>
     <script src="./src/scripts/imgInfoWindow.js"></script>
+    <script src="./src/scripts/sendFile.js"></script>
     <script>
 
       let inputImageForm = document.querySelector("#addForm");
+      let inputForm = document.querySelector("#form")
+      inputForm.addEventListener("submit", imageSend)
       
       function closeInputBtn() {
         let imgInput = (document.querySelector(".ImageInput").value = "" );
