@@ -10,7 +10,7 @@ function getData() {
     // setTimeout(()=>{ потом подумаю надо ли
     //     fs.writeFile(dataPath + "data.json", data, "utf-8" ,(err)=>{console.log("write file error",err)})
     // },1000)
-
+    
     return data;
 }
 
@@ -27,21 +27,24 @@ function getPicData() {
             tags: i.tags
         })
     }
-    // console.log(objData);
+    console.log(objData);
     return JSON.stringify(objData);
 }
 
 //доделать
-//пока схематично
-function updateData(newData, image){
-    // let newData = JSON.parse(newData);
-    let oldData = JSON.parse(fs.readFileSync(dataPath + "data.json"));
-    // let files = fs.readdirSync(picFolder, (err) => {console.log("read dir error",err)});
-    
-    oldData.push([...newData])
 
-    // console.log(objData);
-    writeData(image, picFolder)
+function updateData(imageName, tags){
+    // let newData = JSON.parse(newData);
+    let newData = {}
+    let oldData = JSON.parse(fs.readFileSync(dataPath + "data.json"));
+    let lastId = oldData.length
+    // let files = fs.readdirSync(picFolder, (err) => {console.log("read dir error",err)});
+    newData["id"] = lastId
+    newData["name"] = imageName
+    newData["tags"] = [...tags]
+    oldData.push(newData)
+
+    // writeData(image, picFolder)
     writeData(oldData, dataPath + "data.json");
 
 }
@@ -50,9 +53,9 @@ function writeData(data, path){
     // let files = fs.readdirSync(picFolder, (err) => {console.log("read dir error",err)});
 
     console.log("writed data", data);
-    fs.writeFile(path, JSON.stringify(data), "utf-8" ,(err)=>{console.log("write file error",err)})
+    fs.writeFile(path, JSON.stringify(data), "utf-8" ,(err)=>{if (err) console.log("write file error",err)})
 
 }
 
-// getPicData()
-module.exports = getData
+// updateData("dsd",[],"sls.png")
+module.exports = {getData, updateData}

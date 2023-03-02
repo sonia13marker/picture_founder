@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 app.use("/api/get", routeApiGet);
-app.use("/api/post/", routeApiPost);
+app.use("/api/post", routeApiPost);
 app.use("/src", routeRes);
 
 app.get("/", function (request, response) {
