@@ -1,5 +1,5 @@
 async function getPictures() {
-  let req = await fetch("/api/pictures", {
+  let req = await fetch("/api/get/pictures", {
     method: "GET",
   });
   let data = await req.json();
@@ -12,7 +12,7 @@ async function createNodeImage(element) {
 
   for (let i of data) {
     let image = document.createElement("img");
-    image.setAttribute("src", `/api/pictures/${i.name}`);
+    image.setAttribute("src", `/api/get/pictures/${i.name}`);
     image.setAttribute("alt", "картиночка");
     image.setAttribute("class", "memeImg");
     image.setAttribute("id", i.id);

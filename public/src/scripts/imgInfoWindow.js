@@ -5,7 +5,7 @@ async function createImageInfo(data){
     let tags = elem.querySelector(".tags")
     let closeBtn = elem.querySelector(".closeBtn")
 
-    image.src = `/api/pictures/${data.name}`
+    image.src = `/api/get/pictures/${data.name}`
     for ( let i of data.tags){
         let pElem = document.createElement("p");
         pElem.innerHTML = i

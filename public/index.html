@@ -11,7 +11,7 @@
     <header>
       <div id="logo"><h1>main</h1></div>
       <div id="Buttons">
-        <button id="optionBtn">добавить</button>
+        <button id="optionBtn" class="addButton">добавить</button>
       </div>
       <div></div>
     </header>
@@ -19,7 +19,7 @@
       <div id="imageInfo">
         <button class="closeBtn">close</button>
         <div class="ImgConteiner">
-          <img class="selectImg" alt="картинка не загрузилась (">
+          <img class="selectImg" alt="картинка не загрузилась (" />
         </div>
         <div class="options">
           <button id="optionBtn">изменить</button>
@@ -27,10 +27,38 @@
         </div>
         <div class="tags"></div>
       </div>
+      <div id="addForm">
+        <button class="closeBtn">close</button>
+        <form name="addImageForm" action="/api/post/piture" method="post">
+          <div class="ImgConteiner">
+            <input type="file" class="ImageInput" name="imageInput" />
+          </div>
+          <div class="options">
+            <input type="text" name="altNameInput" class="altNameInput"/>
+            <input type="text" name="tagsInput" class="tagsInput"/>
+          </div>
+          <button type="submit">отправить</button>
+        </form>
+      </div>
     </section>
     <script src="./src/scripts/get.js"></script>
     <script src="./src/scripts/imgInfoWindow.js"></script>
     <script>
+
+      let inputImageForm = document.querySelector("#addForm");
+      
+      function closeInputBtn() {
+        let imgInput = (document.querySelector(".ImageInput").value = "" );
+        let tagsInput = (document.querySelector(".tagsInput").value = "");
+        let NameInput = (document.querySelector(".altNameInput").value = "");
+
+        inputImageForm.style.display = "none"
+      }
+
+      document.querySelector(".addButton").addEventListener("click", function (e) {
+          inputImageForm.style.display = "flex";
+          inputImageForm.querySelector(".closeBtn").addEventListener('click', closeInputBtn)
+        });
       createNodeImage(document.getElementById("content"));
       // document.querySelector
     </script>
