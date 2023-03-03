@@ -31,16 +31,28 @@ function getPicData() {
     return JSON.stringify(objData);
 }
 
-//доделать
+function removeData(id){
+    let Data = JSON.parse(fs.readFileSync(dataPath + "data.json", (err)=>{if(err)console.log(err);}))
+    let imageName = Data.splice(id, 1)[0]["name"];
 
-function updateData(imageName, tags) {
+    Data.map( (i, index) => {
+        i.id = index;
+    })
+
+    writeData(Data, dataPath + "data.json");
+    console.log("remove " + imageName);
+    fs.unlink(picFolder + "/" + imageName, (err)=>{if(err)console.log(err);})
+    console.log("all complete");
+}
+
+function updateData(imageName, tags = []) {
     // let newData = JSON.parse(newData);
     let newData = {}
     let oldData = JSON.parse(fs.readFileSync(dataPath + "data.json"));
     let lastId = oldData.length
     // let files = fs.readdirSync(picFolder, (err) => {console.log("read dir error",err)});
 
-    allImg = oldData.map((i) => {allImg.push(i.name)})
+    let allImg = oldData.map((i) => {return i.name})
 
     if (allImg.includes(imageName)) {
         
@@ -58,17 +70,18 @@ function updateData(imageName, tags) {
     // writeData(image, picFolder)
 
 
-    console.log(oldData);
+    // console.log(oldData);
+    return true;
 
 }
 
 function writeData(data, path) {
     // let files = fs.readdirSync(picFolder, (err) => {console.log("read dir error",err)});
 
-    console.log("writed data", data);
+    // console.log("writed data", data);
     fs.writeFile(path, JSON.stringify(data), "utf-8", (err) => { if (err) console.log("write file error", err) })
 
 }
 
-// updateData("galaxy.png", [])
-module.exports = {getData, updateData}
+// removeData(10)
+module.exports = {getData, updateData, removeData}

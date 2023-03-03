@@ -10,8 +10,7 @@ let picFolder = path.join(path.resolve("./public/pic/"), "/")
 route.post("/picture/:name/:tags", async function(request, response){
 
     let picName = request.params.name;
-    let tags = request.params.tags.split("&");
-    console.log(request.params.tags);
+    let tags = request.params.tags === "none" ? " " : request.params.tags.split("&")
 
     const buffers = []; // буфер для получаемых данных
  
@@ -24,8 +23,15 @@ route.post("/picture/:name/:tags", async function(request, response){
         // console.log(data)
         fs.writeFileSync(picFolder + "/" + picName, data)
 
-        updateData(picName, tags)
-    response.end()
+        if (updateData(picName, tags)){
+            response.end();
+        }
+        else {
+            response.statusCode = 400
+            response.statusMessage = "picture exist"
+            response.end()
+            console.log("try download exist picture");
+        }
 })
 
 

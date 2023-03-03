@@ -22,8 +22,8 @@
           <img class="selectImg" alt="картинка не загрузилась (" />
         </div>
         <div class="options">
-          <button id="optionBtn">изменить</button>
-          <button id="optionBtn">удалить</button>
+          <button id="optionBtn" class="EditOption">изменить</button>
+          <button id="optionBtn" class="DeleteOption">удалить</button>
         </div>
         <div class="tags"></div>
       </div>
@@ -31,7 +31,7 @@
         <button class="closeBtn">close</button>
         <form name="addImageForm" method="post" id="form">
           <div class="ImgConteiner">
-            <input type="file" class="ImageInput" name="imageInput" />
+            <input type="file" class="ImageInput" name="imageInput" value=""/>
           </div>
           <div class="options">
             <input type="text" name="altNameInput" class="altNameInput"/>
@@ -44,20 +44,26 @@
     <script src="./src/scripts/get.js"></script>
     <script src="./src/scripts/imgInfoWindow.js"></script>
     <script src="./src/scripts/sendFile.js"></script>
+    <script src="./src/scripts/deleteBtn.js"></script>
     <script>
 
-      let inputImageForm = document.querySelector("#addForm");
-      let inputForm = document.querySelector("#form")
-      inputForm.addEventListener("submit", imageSend)
-      
+      let inputImageForm = document.querySelector("#addForm"); // блок формы добавления
+      let inputForm = document.querySelector("#form") // форма добавления
+
+      // слушатель для формы добавления
+      inputForm.addEventListener("submit", imageSend)      
+
+      // функция для закрытия кнопки из поля для инфы о картинке
       function closeInputBtn() {
         let imgInput = (document.querySelector(".ImageInput").value = "" );
         let tagsInput = (document.querySelector(".tagsInput").value = "");
         let NameInput = (document.querySelector(".altNameInput").value = "");
+        console.log(imgInput,tagsInput,NameInput);
 
         inputImageForm.style.display = "none"
       }
 
+      // слушатель для кнопки добавления
       document.querySelector(".addButton").addEventListener("click", function (e) {
           inputImageForm.style.display = "flex";
           inputImageForm.querySelector(".closeBtn").addEventListener('click', closeInputBtn)
