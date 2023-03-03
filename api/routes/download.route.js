@@ -12,6 +12,7 @@ route.post("/picture/:name/:tags", async function(request, response){
     let picName = request.params.name;
     let tags = request.params.tags.split("&");
     console.log(request.params.tags);
+
     const buffers = []; // буфер для получаемых данных
  
         for await (const chunk of request) {
