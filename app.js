@@ -1,16 +1,14 @@
 const express = require("express");
-const routeApiGet = require("./api/routes/upload.route");
-const routeApiPost = require("./api/routes/download.route");
-const routeApiDelete = require("./api/routes/delete.route");
-const routeRes = require("./api/routes/resource.route")
+const {routes} = require("./api/routes")
 
 const app = express();
-const port = 3000;
+const port = 4500;
 
-app.use("/api/get", routeApiGet);
-app.use("/api/post", routeApiPost);
-app.use("/api/delete", routeApiDelete);
-app.use("/src", routeRes);
+app.use("/api/get", routes.get);
+app.use("/api/post", routes.post);
+app.use("/api/delete", routes.del);
+app.use("/api/edit", routes.put);
+app.use("/src", routes.res);
 
 app.get("/", function (request, response) {
 
