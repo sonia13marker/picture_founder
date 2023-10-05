@@ -1,0 +1,21 @@
+@import '../../style.scss';
+
+.add_btn {
+    @include h4BoldStyle;
+    background-color: $main-purple;
+    color: $main-black;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: none;
+
+    &:hover {
+        background-color: $hover-purple;
+        cursor: pointer;
+        transition: $transition;
+    }
+    &:active {
+        outline: 2px solid $hover-purple;
+        background-color: $main-purple;
+        cursor: pointer;
+    }
+}

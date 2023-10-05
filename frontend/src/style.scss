@@ -1,7 +1,7 @@
 //---------colors-------
 
 $main-white: #FAFAFA;
-$maid-black: #1D1D1D;
+$main-black: #1D1D1D;
 $black-for-bg: #060606;
 $black-for-windows: #141414;
 $main-purple: #9E76E9;
@@ -12,6 +12,7 @@ $dark-gray-text: #B0AFAF;
 //-------effects--------
 
 $boxShadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+$transition: all 0.3s;
 
 //---------text----------
 @mixin h1Style {
@@ -62,6 +63,9 @@ $boxShadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
     padding: 0;
     box-sizing: border-box;
     font-family: 'Ubuntu', sans-serif;
-    background-color: $black-for-bg;
+    // background-color: $black-for-bg;
     color: $main-white;
+}
+body {
+    background-color: $black-for-bg;
 }
