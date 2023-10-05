@@ -1,0 +1,67 @@
+//---------colors-------
+
+$main-white: #FAFAFA;
+$maid-black: #1D1D1D;
+$black-for-bg: #060606;
+$black-for-windows: #141414;
+$main-purple: #9E76E9;
+$hover-purple: #8767C5;
+$light-gray-text: #C5C5C5;
+$dark-gray-text: #B0AFAF;
+
+//-------effects--------
+
+$boxShadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+
+//---------text----------
+@mixin h1Style {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 55px;
+    font-weight: 500;
+}
+
+@mixin h2Style {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+@mixin h3Style {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+@mixin h3BoldStyle {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+@mixin h4Style {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+@mixin h4BoldStyle {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+@mixin h5Style {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+//---------reset-----------
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: $black-for-bg;
+    color: $main-white;
+}

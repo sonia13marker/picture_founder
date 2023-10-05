@@ -1,0 +1,5 @@
+@import "../../style.scss";
+
+h1 {
+    @include h1Style
+}
