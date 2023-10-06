@@ -1,5 +1,41 @@
 @import "../../style.scss";
 
-h1 {
-    @include h1Style
+.main__section {
+
+    &__label {
+        position: relative;
+
+        &__img {
+            position: absolute;
+            top: 55%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: url("../../images/search.svg") no-repeat center center;
+            background-size: contain;
+            cursor: pointer;
+
+            &:hover {
+                background: url("../../images/search_hover.svg");
+            }
+        }
+    }
+
+    &__input {
+        @include h4Style;
+        color: $main-white;
+        width: 320px;
+        padding: 15px 44px 15px 20px;
+        background-color: $main-black;
+        color: $main-white;
+        border: none;
+        border-radius: 20px;
+
+        &:hover {
+            outline: 2px solid $main-purple;
+            box-shadow: $boxShadow;
+        }
+        
+    }
 }

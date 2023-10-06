@@ -2,7 +2,6 @@ import { useState } from 'react';
 import './style.scss';
 import { Link } from 'react-router-dom';
 import AddBtn from '../AddBtn/AddBtn';
-import login_icon from '../../images/login_icon.svg';
 
 export default function Header () {
 

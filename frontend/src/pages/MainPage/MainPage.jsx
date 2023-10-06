@@ -1,12 +1,21 @@
 import Header from '../../components/Header/Header';
 import './style.scss';
 
+
 export default function MainPage () {
     return (
         <>
-        {/* <h1>hello its ubuntu</h1>
-        <h2>hello its NO ubuntu</h2> */}
         <Header/>
+        <div className='main__section'>
+
+            <label htmlFor='searchInput' className='main__section__label'>
+                <input type='search' name="searchInput" id="searchInput" className='main__section__input' placeholder='Поиск'>
+                </input>
+
+                <span className='main__section__label__img'>
+                </span>
+            </label>
+        </div>
         </>
     )
 }
