@@ -1,0 +1,84 @@
+@import "../../style.scss";
+
+/*этот стиль для внутреннего выпадающего списка*/
+.dropdown {
+   
+    &__ul {
+        margin-top: 5px;
+        list-style: none;
+        height: max-content;
+        border-radius: 20px;
+        background-color: $main-black;
+        z-index: 2;
+
+        &__li {
+            @include h4Style;
+            padding: 15px 20px;
+    
+            &:hover {
+                color: $hover-purple;
+                cursor: pointer;
+                transition: $transition;
+            }
+
+            &_active {
+                @include h4Style;
+                padding: 15px 20px;
+                color: $hover-purple;
+                transition: $transition;
+            }
+        }
+    }
+    
+    /*а это стиль для внешней обертки с кнопкой*/
+    &__wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    &__btn {
+        @include h4Style;
+        width: 200px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: $main-black;
+        border: none;
+        border-radius: 20px;
+        color: $main-white;
+
+        &:hover {
+            color: $dark-gray-text;
+            transition: $transition;
+            cursor: pointer;
+        }
+
+        &_active {
+            @include h4Style;
+        width: 200px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: $main-black;
+        border: none;
+        border-radius: 20px;
+            color: $hover-purple;
+        }
+
+        &__img {
+            width: 24px;
+            height: 24px;
+            background: url("../../images/sort_icon.svg") center center no-repeat;
+
+            &:hover {
+                background: url("../../images/sort_hover_icon.svg") center center no-repeat;
+                cursor: pointer;
+                transition: $transition;
+            }
+        }
+    }
+}

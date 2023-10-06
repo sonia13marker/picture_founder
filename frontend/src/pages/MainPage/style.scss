@@ -2,6 +2,11 @@
 
 .main__section {
 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+
     &__label {
         position: relative;
 
@@ -23,9 +28,11 @@
     }
 
     &__input {
-        @include h4Style;
+        // @include h4Style;
+        font-size: 15px;
         color: $main-white;
         width: 320px;
+        height: 54px;
         padding: 15px 44px 15px 20px;
         background-color: $main-black;
         color: $main-white;

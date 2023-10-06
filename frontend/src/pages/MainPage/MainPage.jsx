@@ -1,4 +1,5 @@
 import Header from '../../components/Header/Header';
+import SortDropdown from '../../components/SortDropdown/SortDropdown';
 import './style.scss';
 
 
@@ -15,6 +16,8 @@ export default function MainPage () {
                 <span className='main__section__label__img'>
                 </span>
             </label>
+
+            <SortDropdown />
         </div>
         </>
     )
