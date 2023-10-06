@@ -90,11 +90,17 @@
             background-color: $main-black;
             border-radius: 50%;
             border: 2px solid $main-purple;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: url("../../images/login_icon.svg") center center no-repeat;
 
             &:hover {
                 border: 2px solid $hover-purple;
                 cursor: pointer;
                 transition: $transition;
+                background: url("../../images/login_icon_hover.svg") center center no-repeat;
                 /*сменить цвет картинке при наведении!*/
             }
 

@@ -51,9 +51,7 @@ export default function Header () {
             <span className='header__btns'>
                     <AddBtn ></AddBtn>
 
-                    <button className='header__btns__login'>
-                        <img src={login_icon} alt=''/>
-                    </button>
+                    <button className='header__btns__login'></button>
                 </span>
         </div>
     )
