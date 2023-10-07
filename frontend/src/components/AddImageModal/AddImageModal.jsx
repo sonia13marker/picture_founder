@@ -19,6 +19,11 @@ export default function AddImageModal ({active,setActive}) {
       fileReader.readAsDataURL(file);
     }
   };
+
+  const cancelBtnClick = () => {
+    setActive(false);
+    setSelectedImage(null);
+  }
     return (
         <div className={active ? "modal active" : "modal"}>
             <div className='modal__content' onClick={(e) => e.stopPropagation()}>
@@ -66,17 +71,22 @@ export default function AddImageModal ({active,setActive}) {
                     плюс кнопки действия */}
                     <div className='modal__content__body__infoBlock'>
                         <label className='modal__content__body__infoBlock__label' htmlFor='nameImg'>
-                            <input type='text' name='nameImg' id='nameImg' className='modal__content__body__infoBlock__input'/>
+                        Название картинки
+                            <input type='text' name='nameImg' id='nameImg' className='modal__content__body__infoBlock__input'
+                            placeholder='Введите название картинки'/>
 
                         </label>
 
                         <label className='modal__content__body__infoBlock__label' htmlFor='tagsImg'>
-                            <textarea name='tagsImg' id='tagsImg' className='modal__content__body__infoBlock__textarea'> </textarea>
+                        Теги картинки
+                            <textarea name='tagsImg' id='tagsImg' className='modal__content__body__infoBlock__textarea' placeholder='Введите теги для картинки'> 
+                            </textarea>
 
                         </label>
 
                         <span className='modal__content__body__infoBlock__wrapper'>
-                        <button className='modal__content__body__infoBlock__wrapper__outlineBtn'>
+                        <button className='modal__content__body__infoBlock__wrapper__outlineBtn'
+                        onClick={cancelBtnClick}>
                         Отмена
                         </button>
 

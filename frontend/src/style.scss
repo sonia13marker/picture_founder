@@ -103,3 +103,25 @@ body {
 }
 
 //---------------styles for fill btn-------------
+
+@mixin FillBodyBtn {
+    @include h4BoldStyle;
+    background-color: $main-purple;
+    color: $main-black;
+    border: 2px solid $main-purple;
+    border-radius: 30px;
+    padding: 12px 20px;
+}
+
+@mixin FillBodyBtnHover {
+    border-color: $main-purple;
+    background-color: $hover-purple;
+    cursor: pointer;
+    transition: $transition;
+}
+
+@mixin FillBodyBtnActive {
+    border-color: $hover-purple;
+    cursor: pointer;
+    transition: $transition;
+}
