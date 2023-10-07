@@ -9,16 +9,11 @@
     padding: 30px 40px;
     border: none;
     border-radius: 30px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    @include flexRow;
 
     &__logo {
-        display: flex;
-        flex-direction: row;
+        @include flexRow;
         justify-content: center;
-        align-items: center;
         font-size: 30px;
         font-weight: 500;
 
@@ -28,14 +23,8 @@
     }
 
     &__nav {
-        // display: flex;
-        // flex-direction: row;
-        // justify-content: space-between;
-        // align-items: center;
 
         &__ul {
-            // display: flex;
-            // flex-direction: row;
             list-style-type: none;
             gap: 20px;
 
@@ -90,10 +79,7 @@
             background-color: $main-black;
             border-radius: 50%;
             border: 2px solid $main-purple;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            @include flexColumn;
             background: url("../../images/login_icon.svg") center center no-repeat;
 
             &:hover {

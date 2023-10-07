@@ -9,9 +9,7 @@
     border-radius: 20px;
 
     &__first {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        @include flexRow;
         align-items: flex-start;
 
 

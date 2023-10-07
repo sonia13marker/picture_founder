@@ -42,10 +42,7 @@
     &__btn {
         @include h4Style;
         width: 200px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        @include flexRow;
         padding: 15px 20px;
         background-color: $main-black;
         border: none;
@@ -61,10 +58,7 @@
         &_active {
             @include h4Style;
             width: 200px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
+            @include flexRow;
             padding: 15px 20px;
             background-color: $main-black;
             border: none;
