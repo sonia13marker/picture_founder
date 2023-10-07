@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './style.scss';
+import './Header.scss';
 import { Link } from 'react-router-dom';
 import AddBtn from '../AddBtn/AddBtn';
 

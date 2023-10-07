@@ -1,11 +1,16 @@
-@import "../../style.scss";
+@import "./style.scss";
 
 .main__section {
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
+    margin: 0 55px;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 35px;
+    }
 
     &__label {
         position: relative;
@@ -17,18 +22,17 @@
             transform: translateY(-50%);
             width: 24px;
             height: 24px;
-            background: url("../../images/search.svg") no-repeat center center;
+            background: url("./images/search.svg") no-repeat center center;
             background-size: contain;
             cursor: pointer;
 
             &:hover {
-                background: url("../../images/search_hover.svg");
+                background: url("./images/search_hover.svg");
             }
         }
     }
 
     &__input {
-        // @include h4Style;
         font-size: 15px;
         color: $main-white;
         width: 320px;

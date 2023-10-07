@@ -1,4 +1,4 @@
-import './style.scss';
+import './SortDropdown.scss';
 import { useState, useRef, useEffect } from 'react';
 
 export default function SortDropdown () {

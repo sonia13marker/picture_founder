@@ -1,0 +1,15 @@
+@import '../../style.scss';
+
+.main_empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 70px;
+    gap: 20px;
+
+    &__text {
+        @include h4Style;
+        color: $dark-gray-text;
+    }
+}

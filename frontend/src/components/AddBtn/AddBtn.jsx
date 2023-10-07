@@ -1,4 +1,4 @@
-import './style.scss';
+import './AddBtn.scss';
 
 export default function AddBtn () {
     return (
