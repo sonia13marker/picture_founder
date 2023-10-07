@@ -5,6 +5,8 @@ import Header from './components/Header/Header';
 import SortDropdown from './components/SortDropdown/SortDropdown';
 import FavoritePage from './pages/FavoritePage/FavoritePage';
 import DevelopersPage from './pages/DevelopersPage/DevelopersPage';
+import data from '../package.json';
+
 
 function App() {
   return (
@@ -33,7 +35,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage/>}/>
           <Route path='/favorite' element={<FavoritePage />}/>
-          <Route path='/developers' element={<DevelopersPage />}/>
+          <Route path='/developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
         </Routes>
         </div>
       </BrowserRouter>

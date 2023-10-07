@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './Header.scss';
 import { Link } from 'react-router-dom';
 import AddImgBtn from '../AddImgBtn/AddImgBtn';
-import AddImageModal from '../AddImageModal/AddImageModal';
+
 
 export default function Header () {
 
@@ -39,7 +39,7 @@ export default function Header () {
                 <ul className='header__nav__ul'>
                     <li className='header__nav__ul__li'>
                     {links.map((item,index) => (
-                        <Link to={item.path} key={item.index}
+                        <Link to={item.path} key={index}
                         onClick={() => setLinkStyle(index)}
                         className={selectedLink === index ? "header__nav__ul__li__linkSelect" : "header__nav__ul__li__link"}>
                             {item.name}

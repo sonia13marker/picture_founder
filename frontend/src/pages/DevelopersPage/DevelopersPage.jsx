@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import DevCardComp from "../../components/DevCardComp/DevCardComp";
 import "./DevelopersPage.scss";
 
-export default function DevelopersPage () {
+export default function DevelopersPage ({ numberVersion }) {
     return <div className="dev__wrapper">
 
         <span className="dev__wrapper__cards">
@@ -23,7 +23,7 @@ export default function DevelopersPage () {
             </Link>
 
             <p className="dev__wrapper__info__version">
-            Версия 1.0.0
+{`Версия ${numberVersion}`}
             </p>
         </span>
     </div>
