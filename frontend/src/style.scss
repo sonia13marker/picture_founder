@@ -5,7 +5,7 @@ $main-black: #1D1D1D;
 $black-for-bg: #060606;
 $black-for-windows: #141414;
 $main-purple: #9E76E9;
-$hover-purple: #8767C5;
+$hover-purple: #765bab;
 $light-gray-text: #C5C5C5;
 $dark-gray-text: #B0AFAF;
 
@@ -68,4 +68,36 @@ $transition: all 0.3s;
 }
 body {
     background-color: $black-for-bg;
+}
+
+//-----------position------------
+@mixin flexColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin flexRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+//---------------styles for outline btn-------------
+@mixin bodyBtn {
+    @include h4BoldStyle;
+    background-color: $main-black;
+    color: $main-purple;
+    border: 2px solid $main-purple;
+    border-radius: 30px;
+    padding: 12px 20px;
+}
+
+@mixin bodyBtnHover {
+    border: 2px solid $hover-purple;
+    color: $hover-purple;
+    cursor: pointer;
+    transition: $transition;
 }

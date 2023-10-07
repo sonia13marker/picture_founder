@@ -15,11 +15,11 @@ export default function Header () {
         },
         {
             name: "Избранное",
-            path: "/"
+            path: "/favorite"
         },
         {
             name: "Разработчики",
-            path: "/"
+            path: "/developers"
         },
     ]
     const setLinkStyle = (indexLink) => setSelectedLink(indexLink);

@@ -1,0 +1,36 @@
+@import '../../style.scss';
+
+.dev__wrapper {
+    @include flexColumn;
+    gap: 100px;
+    margin: 100px auto;
+
+    &__cards {
+        @include flexColumn;
+        width: 100%;
+        gap: 45px;
+    }
+
+    &__info {
+        @include flexColumn;
+        gap: 25px;
+        
+        &__btn {
+            @include bodyBtn;
+            display: block;
+            text-decoration: none;
+
+            &:hover {
+                @include bodyBtnHover;
+            }
+
+            &:active {
+                color: $main-purple;
+            }
+        }
+
+        &__version {
+            @include h4Style;
+        }
+    }
+}

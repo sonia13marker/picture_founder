@@ -3,6 +3,8 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import MainPage from './pages/MainPage/MainPage';
 import Header from './components/Header/Header';
 import SortDropdown from './components/SortDropdown/SortDropdown';
+import FavoritePage from './pages/FavoritePage/FavoritePage';
+import DevelopersPage from './pages/DevelopersPage/DevelopersPage';
 
 function App() {
   return (
@@ -29,7 +31,9 @@ function App() {
           </div>
         {/* ссылки на страницы */}
         <Routes>
-          <Route path="/" element={<MainPage/>}></Route>
+          <Route path="/" element={<MainPage/>}/>
+          <Route path='/favorite' element={<FavoritePage />}/>
+          <Route path='/developers' element={<DevelopersPage />}/>
         </Routes>
         </div>
       </BrowserRouter>
