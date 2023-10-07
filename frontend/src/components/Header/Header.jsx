@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import './Header.scss';
 import { Link } from 'react-router-dom';
-import AddBtn from '../AddBtn/AddBtn';
+import AddImgBtn from '../AddImgBtn/AddImgBtn';
+import AddImageModal from '../AddImageModal/AddImageModal';
 
 export default function Header () {
 
@@ -23,6 +24,8 @@ export default function Header () {
         },
     ]
     const setLinkStyle = (indexLink) => setSelectedLink(indexLink);
+
+
     return (
         <div className='header'>
             <span className='header__logo'>
@@ -48,10 +51,11 @@ export default function Header () {
             </nav>
 
             <span className='header__btns'>
-                    <AddBtn ></AddBtn>
+                    <AddImgBtn></AddImgBtn>
 
                     <button className='header__btns__login'></button>
                 </span>
+
         </div>
     )
 }
