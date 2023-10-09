@@ -125,3 +125,19 @@ body {
     cursor: pointer;
     transition: $transition;
 }
+
+//------------scrollbar--------
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: $black-for-windows;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $hover-purple;
+    border-radius: 10px;
+    box-shadow: $boxShadow;
+}
