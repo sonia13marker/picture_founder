@@ -11,14 +11,20 @@
     border-radius: 30px;
     @include flexRow;
 
+    &__link {
+        text-decoration: none;
+    }
+
     &__logo {
         @include flexRow;
         justify-content: center;
         font-size: 30px;
         font-weight: 500;
+        
 
         &__p {
             color: $main-purple;
+            
         }
     }
 

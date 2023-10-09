@@ -28,12 +28,14 @@ export default function Header () {
 
     return (
         <div className='header'>
+            <Link to={"/"} className='header__link'>
             <span className='header__logo'>
                 Pic
                 <p className='header__logo__p'>
                     2
                 </p>
             </span>
+            </Link>
 
             <nav className='header__nav'>
                 <ul className='header__nav__ul'>

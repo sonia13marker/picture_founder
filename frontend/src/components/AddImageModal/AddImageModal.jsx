@@ -1,29 +1,40 @@
 import './AddImageModal.scss';
 import add_img from '../../images/add_img.svg';
-import { useState } from 'react';
+import React, { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
 
 export default function AddImageModal ({active,setActive}) {
+  const [file, setFile] = useState(null);
 
-    /*for button "add image" */
-    const [selectedImage, setSelectedImage] = useState(null);
+  const onDrop = useCallback((acceptedFiles) => {
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0];
+        setFile(
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
+        );
+      }
+    }, []);
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    const fileReader = new FileReader();
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+      onDrop,
+      accept: "image/*",
+      maxSize: 1024 * 1024 * 5,
+      maxFiles: 1
+    });
 
-    fileReader.onload = () => {
-      setSelectedImage(fileReader.result);
-    };
+    const fileList = file && (
+      <img className='addBlock__wrapper__image' src={file.preview} alt={file.name} />
+    );
 
-    if (file) {
-      fileReader.readAsDataURL(file);
-    }
-  };
 
   const cancelBtnClick = () => {
+    setFile(null);
     setActive(false);
-    setSelectedImage(null);
-  }
+  };
+
+  
     return (
         <div className={active ? "modal active" : "modal"}>
             <div className='modal__content' onClick={(e) => e.stopPropagation()}>
@@ -36,36 +47,24 @@ export default function AddImageModal ({active,setActive}) {
                 </span>
 
                 <span className='modal__content__body'>
-                    {/*блок с добавлением картинки drag&drop */}
-                    <div className='modal__content__body__addBlock'>
-                        <span className="modal__content__body__addBlock__wrapper">
-                            {selectedImage ? (
-                                    <img 
-                                      src={selectedImage} 
-                                      alt="Uploaded"
-                                      className="modal__content__body__addBlock__wrapper__image"
-                                    />
-                                  ) : 
-                                  ( <>
-<img src={add_img} alt=""/>
-                            <p className="modal__content__body__addBlock__wrapper__p">
-                            Перетащите файл сюда или
-                            </p>
+{/*блок с добавлением картинки drag&drop */}
+                  <div className={isDragActive ? "addBlock active" : "addBlock" } {...getRootProps()} >
+                  {fileList}
+                  {!file &&  (<>
+                  <span className="addBlock__wrapper">
+                      <img src={add_img} alt=""/>
+                      <p className="addBlock__wrapper__p">
+                      Перетащите файл сюда или
+                      </p>
 
 
-                            <input type='file'
-                            name="uploadImg"
-                            id='uploadImg'
-                            accept="image/png, image/jpeg"
-                            onChange={handleFileUpload}
-                            className='modal__content__body__addBlock__wrapper__outlineBtn' 
-                            placeholder="Выберите файл">
-                            </input>
-                            </> )
-                            }
-                            
-                        </span>
-                    </div>
+                      <button name="uploadImg" id='uploadImg'
+                      className='addBlock__wrapper__outlineBtn' 
+                    > Выберите файл</button> 
+                  </span>
+                  </>)}
+        
+                </div>
 
                     {/*блок с инфой о картинке - название и теги,
                     плюс кнопки действия */}
