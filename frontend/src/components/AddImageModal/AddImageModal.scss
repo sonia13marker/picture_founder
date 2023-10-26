@@ -55,8 +55,14 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr;
-            column-gap: 50px;
+            column-gap: 10px;
 
+            &__wrapper {
+                display: flex;
+                @include flexColumn;
+                align-items: flex-start;
+                height: 56vh;
+            }
             
             &__infoBlock {
                 @include flexColumn;
@@ -95,7 +101,7 @@
                     @include h4Style;
                     margin-top: 10px;
                     width: 35vw;
-                    height: 18vh;
+                    height: 21vh;
                     padding: 15px 20px;
                     border-radius: 20px;
                     background-color: $main-black;

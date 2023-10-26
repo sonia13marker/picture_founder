@@ -33,6 +33,12 @@ export default function AddImageModal({ active, setActive }) {
     />
   );
 
+  /* for delete btn on hovered image */
+  const deleteBtnClick = () => {
+    setFile(null);
+    setSelectedImage(null);
+  }
+
   /* for cancel btn */
   const cancelBtnClick = () => {
     setFile(null);
@@ -86,13 +92,37 @@ export default function AddImageModal({ active, setActive }) {
         </span>
 
         <span className="modal__content__body">
+          {/*обертка для блока DD и текста*/}
+          <span className="modal__content__body__wrapper">
+
           {/*блок с добавлением картинки drag&drop */}
           <div
             className={isDragActive ? "addBlock active" : "addBlock"}
             {...getRootProps()}
           >
             {selectedImage ? (
-              <>{fileList2}</>
+              <>{fileList2}
+              {/* вот тут пробую в стили для кнопки удаления,
+              которая появляется при наведении на картинку */}
+              {/* {!setFile && (
+                // <span className="addBlock__wrapper">
+                  <div className="addBlock__wrapper2">
+                    <button className="addBlock__wrapper2__btnDel"
+                    onClick={deleteBtnClick}>
+                      Удалить картинку
+                    </button>
+                  </div>
+                // </span>
+              )} */}
+              
+                 <div className="addBlock__wrapper2">
+                    <button className="addBlock__wrapper2__btnDel"
+                    onClick={deleteBtnClick}>
+                      Удалить картинку
+                    </button>
+                  </div>
+
+              </>
             ) : (
               <>
                 {fileList}
@@ -103,7 +133,7 @@ export default function AddImageModal({ active, setActive }) {
                       <p className="addBlock__wrapper__p">
                         Перетащите файл сюда или
                       </p>
-
+{/* кнопка со стилями специально для Firefox */}
                       {browser === "Firefox" ? (
                         <>
                           <label htmlFor="uploadImg" className="modal__label">
@@ -134,6 +164,11 @@ export default function AddImageModal({ active, setActive }) {
               </>
             )}
           </div>
+
+          <p className="addBlock__p">
+          Допускаются файлы .png, .jpg, .jpeg размером до <span>20 МБ.</span>
+          </p>
+           </span>
 
           {/*блок с инфой о картинке - название и теги,
                     плюс кнопки действия */}
