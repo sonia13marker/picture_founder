@@ -20,26 +20,18 @@ export default function AddImageModal({ active, setActive }) {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: "image/*",
+    accept: "image/png, image/jpeg, image/jpg",
     maxSize: 1024 * 1024 * 5,
     maxFiles: 1,
   });
 
-  const fileList = file && (
-    <img
-      className="addBlock__wrapper__image"
-      src={file.preview}
-      alt={file.name}
-    />
-  );
+    /* for delete btn on hovered image */
+    const deleteBtnClick = () => {
+      setFile(null);
+      setSelectedImage(null);
+    }
 
-  /* for delete btn on hovered image */
-  const deleteBtnClick = () => {
-    setFile(null);
-    setSelectedImage(null);
-  }
-
-  /* for cancel btn */
+    /* for cancel btn */
   const cancelBtnClick = () => {
     setFile(null);
     setSelectedImage(null);
@@ -72,8 +64,26 @@ export default function AddImageModal({ active, setActive }) {
     }
   };
 
+/* вот тут внутри стили для кнопки удаления,
+которая появляется при добавлении картинки */
+  const fileList = file && (
+    <div className="addBlock__wrapper2">
+      <button className="addBlock__wrapper2__btnDel"
+                    onClick={deleteBtnClick}
+                    >
+                      Удалить картинку
+                    </button>
+  <img
+      className="addBlock__wrapper__image"
+      src={file.preview}
+      alt={file.name}
+    />
+                  </div>
+
+  );
+
   const fileList2 = (
-    <img
+  <img
       className="addBlock__wrapper__image"
       src={selectedImage}
       alt="Uploaded"
@@ -102,26 +112,6 @@ export default function AddImageModal({ active, setActive }) {
           >
             {selectedImage ? (
               <>{fileList2}
-              {/* вот тут пробую в стили для кнопки удаления,
-              которая появляется при наведении на картинку */}
-              {/* {!setFile && (
-                // <span className="addBlock__wrapper">
-                  <div className="addBlock__wrapper2">
-                    <button className="addBlock__wrapper2__btnDel"
-                    onClick={deleteBtnClick}>
-                      Удалить картинку
-                    </button>
-                  </div>
-                // </span>
-              )} */}
-              
-                 <div className="addBlock__wrapper2">
-                    <button className="addBlock__wrapper2__btnDel"
-                    onClick={deleteBtnClick}>
-                      Удалить картинку
-                    </button>
-                  </div>
-
               </>
             ) : (
               <>
@@ -142,7 +132,7 @@ export default function AddImageModal({ active, setActive }) {
                               type="file"
                               name="uploadImg"
                               id="uploadImg"
-                              accept="image/png, image/jpeg"
+                              accept="image/png, image/jpeg, image/jpg"
                               className="modal__outline"
                               onChange={handleFileUpload}
                             ></input>
