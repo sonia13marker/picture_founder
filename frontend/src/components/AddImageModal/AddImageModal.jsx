@@ -1,9 +1,9 @@
 import "./AddImageModal.scss";
 import add_img from "../../images/add_img.svg";
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 
-export default function AddImageModal({ active, setActive }) {
+export default function AddImageModal({ active, setActive, addImage = f => f }) {
   /*for drag & drop file */
   const [file, setFile] = useState(null);
 
@@ -99,6 +99,30 @@ export default function AddImageModal({ active, setActive }) {
 </div>
   );
 
+
+  /* для текстовых блоков */
+  let nameImage = useRef();
+  let tagsImage = useRef();
+
+  const submitInfoImage = e => {
+    e.preventDefault();
+    const name = nameImage.current.value;
+    const tags = tagsImage.current.value;
+    const image = {selectedImage};
+
+    /*функция добавления картинки на страницу */
+    addImage(name, tags);
+
+    console.log(`name of img: ${name}, tags image: ${tags}, ${image}`);
+    nameImage.current.value = "";
+    tagsImage.current.value = "";
+    /*тут идет очистка места картинки и 
+    закрытие модального окна */
+    cancelBtnClick();
+  }
+
+  
+
   return (
     <div className={active ? "modal active" : "modal"}>
       <div className="modal__content" onClick={(e) => e.stopPropagation()}>
@@ -171,7 +195,10 @@ export default function AddImageModal({ active, setActive }) {
 
           {/*блок с инфой о картинке - название и теги,
                     плюс кнопки действия */}
-          <div className="modal__content__body__infoBlock">
+          <form 
+          className="modal__content__body__infoBlock"
+          onSubmit={submitInfoImage}
+          >
             <label
               className="modal__content__body__infoBlock__label"
               htmlFor="nameImg"
@@ -181,8 +208,10 @@ export default function AddImageModal({ active, setActive }) {
                 type="text"
                 name="nameImg"
                 id="nameImg"
+                ref={nameImage}
                 className="modal__content__body__infoBlock__input"
                 placeholder="Введите название картинки"
+                required
               />
             </label>
 
@@ -190,12 +219,14 @@ export default function AddImageModal({ active, setActive }) {
               className="modal__content__body__infoBlock__label"
               htmlFor="tagsImg"
             >
-              Теги картинки
+              Теги картинки (через запятую)
               <textarea
                 name="tagsImg"
                 id="tagsImg"
+                ref={tagsImage}
                 className="modal__content__body__infoBlock__textarea"
-                placeholder="Введите теги для картинки"
+                placeholder="Введите теги для картинки, например: тег, тег2, тег три"
+                required
               ></textarea>
             </label>
 
@@ -211,7 +242,7 @@ export default function AddImageModal({ active, setActive }) {
                 Добавить
               </button>
             </span>
-          </div>
+          </form>
         </span>
       </div>
     </div>

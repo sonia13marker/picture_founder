@@ -1,0 +1,20 @@
+[
+    {
+        "id": "1",
+        "name": "name_of_picture",
+        "tags": "1tag, two tags, three tags",
+        "image": "183.png"
+    },
+    {
+        "id": "2",
+        "name": "name_of_picture2",
+        "tags": "1tag, two tags, three tags, four tags, lorem ipsum",
+        "image": "235.png"
+    },
+    {
+        "id": "3",
+        "name": "pic 3",
+        "tags": "four tags, lorem ipsum",
+        "image": "384.png"
+    }
+]

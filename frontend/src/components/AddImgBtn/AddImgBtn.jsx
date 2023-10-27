@@ -3,6 +3,7 @@ import { useState } from 'react';
 import AddImageModal from '../AddImageModal/AddImageModal';
 
 export default function AddImgBtn () {
+   
     /* for modal */
     const [modalActive, setModalActive] = useState(false);
     return (<>
@@ -10,7 +11,11 @@ export default function AddImgBtn () {
             Добавить
         </button>
 
-        <AddImageModal active={modalActive} setActive={setModalActive}/>
+        <AddImageModal 
+        active={modalActive} 
+        setActive={setModalActive}
+        // addImage={(name, tags, image) => }
+        />
         </>
     )
 }

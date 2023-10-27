@@ -7,9 +7,13 @@ import FavoritePage from './pages/FavoritePage/FavoritePage';
 import DevelopersPage from './pages/DevelopersPage/DevelopersPage';
 import data from '../package.json';
 import Footer from './components/Footer/Footer';
+import { useState } from 'react';
+import imagesData from './data/first-data.json';
 
 
 function App() {
+/*список-состояние массива картинок*/
+const [images] = useState(imagesData);
   return (
     <div className="App">
       <BrowserRouter>
@@ -34,7 +38,7 @@ function App() {
           </div>
         {/* ссылки на страницы */}
         <Routes>
-          <Route path="/" element={<MainPage/>}/>
+          <Route path="/" element={<MainPage images={images}/>}/>
           <Route path='/favorite' element={<FavoritePage />}/>
           <Route path='/developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
         </Routes>
