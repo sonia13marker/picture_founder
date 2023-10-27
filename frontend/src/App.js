@@ -6,6 +6,7 @@ import SortDropdown from './components/SortDropdown/SortDropdown';
 import FavoritePage from './pages/FavoritePage/FavoritePage';
 import DevelopersPage from './pages/DevelopersPage/DevelopersPage';
 import data from '../package.json';
+import Footer from './components/Footer/Footer';
 
 
 function App() {
@@ -38,6 +39,8 @@ function App() {
           <Route path='/developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
         </Routes>
         </div>
+
+        <Footer />
       </BrowserRouter>
     </div>
   );

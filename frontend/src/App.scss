@@ -3,6 +3,7 @@
 .main__section {
 
     margin: 0 55px;
+    flex: 1 0 auto;
 
     &__wrapper {
         @include flexRow;
@@ -51,4 +52,10 @@
         }
         
     }
+}
+
+.App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
