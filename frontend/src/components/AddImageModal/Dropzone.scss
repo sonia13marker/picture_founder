@@ -32,7 +32,6 @@
             height: 100%;
             border-radius: 20px;
             filter: brightness(50%);
-            position: relative;
         }
 
         &__p {
@@ -83,14 +82,20 @@
             }
         }
         &__btnDel2 {
-            // position: absolute;
-            // top: 0;
-            // left: 0;
+            position: absolute;
+            display: block;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+                -ms-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+            width: auto;
+            height: auto;
             @include bodyBtn;
             color: $light-gray-text;
             background-color: transparent;
             border: 2px solid $light-gray-text;
-            z-index: 99;
+            z-index: 9;
 
             &:hover {
                 background-color: rgba(176, 175, 175, 0.20);

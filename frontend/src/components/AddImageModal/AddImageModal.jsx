@@ -68,35 +68,35 @@ export default function AddImageModal({ active, setActive }) {
 которая появляется при добавлении картинки */
   const fileList = file && (
     <div className="addBlock__wrapper2">
-
-      {browser === "Firefox" ? 
-    <input type="button" 
-    className="addBlock__wrapper2__btnDel2" 
-    value="Удалить картинку"
-    onClick={deleteBtnClick}></input> 
-    : 
-<button className="addBlock__wrapper2__btnDel"
-                    onClick={deleteBtnClick}
-                    >
-                      Удалить картинку
-                    </button>
-    }
-      
-  <img
-      className="addBlock__wrapper__image"
-      src={file.preview}
-      alt={file.name}
-    />
-                  </div>
-
+      <button className="addBlock__wrapper2__btnDel" onClick={deleteBtnClick}>
+        Удалить картинку
+      </button>
+      <img
+        className="addBlock__wrapper__image"
+        src={file.preview}
+        alt={file.name}
+      />
+    </div>
   );
 
+  /*для отображения кнопки удаления
+  с картинкой в firefox */
   const fileList2 = (
+    <div className="addBlock__wrapper2">
+       {browser === "Firefox" ? <>
   <img
       className="addBlock__wrapper__image"
       src={selectedImage}
       alt="Uploaded"
     />
+    <button className="addBlock__wrapper2__btnDel"
+    onClick={deleteBtnClick}
+    >
+      Удалить картинку
+    </button>
+    </>
+: <></> }
+</div>
   );
 
   return (
