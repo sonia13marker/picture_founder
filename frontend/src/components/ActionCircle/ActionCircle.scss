@@ -1,0 +1,30 @@
+@import '../../style.scss';
+
+.wrapper {
+    @include flexRow;
+    align-items: center;
+    gap: 17px;
+    overflow: hidden;
+
+    &.active {
+        @include flexRow;
+        max-width: 190px;
+        width: 100%;
+        align-items: center;
+        gap: 17px;
+        overflow: visible;
+    }
+    
+    &__circle {
+        @include flexColumn;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: $main-black;
+
+        &:hover {
+            cursor: pointer;
+        }
+        
+    }
+}
