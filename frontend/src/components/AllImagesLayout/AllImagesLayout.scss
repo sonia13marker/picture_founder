@@ -1,0 +1,59 @@
+@import '../../style.scss';
+@import "../ActionCircle/ActionCircle.scss";
+
+.layout {
+
+    &__card {
+        // min-height: 430px;
+        min-height: 300px;
+        height: max-content;
+        max-width: 300px;
+        width: 100%;
+        background-color: $main-black;
+        color: $main-white;
+        border-radius: 20px;
+        margin-top: 15px;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &__wrapper {
+            @include flexColumn;
+
+            // &__actions {
+
+            // }
+        }
+
+        &__titleWrap {
+            @include flexRow;
+            padding: 15px;
+            
+            &__title {
+                font-size: 18px;
+                font-weight: 400;
+            }
+        }
+
+        &__image {
+            border-radius: 20px;
+            width: 100%;
+            min-height: 200px;
+            max-height: 240px;
+            object-fit: fill;
+            height: 100%;
+        }
+
+        &__tagList {
+            @include flexRow;
+            padding: 15px;
+            height: max-content;
+            width: 100%;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 25px;
+            word-spacing: 2px;
+        }
+    }
+}

@@ -2,9 +2,12 @@
 
 .wrapper {
     @include flexRow;
+    max-width: 190px;
+    width: 100%;
     align-items: center;
     gap: 17px;
-    overflow: hidden;
+    // overflow: hidden;
+    visibility: hidden;
 
     &.active {
         @include flexRow;
@@ -12,19 +15,26 @@
         width: 100%;
         align-items: center;
         gap: 17px;
-        overflow: visible;
+        // overflow: visible;
+        visibility: visible;
+        transition: $transition;
     }
     
     &__circle {
+
         @include flexColumn;
         width: 35px;
         height: 35px;
         border-radius: 50%;
         background-color: $main-black;
 
+
         &:hover {
             cursor: pointer;
+            transition: $transition;
         }
+
+        
         
     }
 }

@@ -5,11 +5,11 @@ import ShareIcon from "../ShareIcon";
 import "./ActionCircle.scss";
 
 export default function ActionCircle ({isHover, setIsHover}) {
-    // isHover ? "wrapper active" : "wrapper"
+    
     return (
         <span className={isHover ? "wrapper active" : "wrapper"}>
-
-            <span className="wrapper__circle">
+{isHover ? <>
+    <span className="wrapper__circle" >
             <EditIcon />
             </span>
 
@@ -24,6 +24,8 @@ export default function ActionCircle ({isHover, setIsHover}) {
             <span className="wrapper__circle">
             <DeleteIcon />
             </span>
+</> : <></> }
+            
 
         </span>
     )

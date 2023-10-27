@@ -12,20 +12,25 @@ export default function AllImagesLayout({name, tags, image}) {
     /*для проверки наведения на карточку */
     const [isHover, setIsHover] = useState(false);
 
-    const handleHover = () => {
-        setIsHover(!false);
+    const handleMouseHover = () => {
+        setIsHover(true);
+    }
+    const handleMouseDown = () => {
+        setIsHover(false);
     }
 
 
     return (
         <section className="layout">
-            <span className='layout__card__wrapper'>
-                <div className='layout__card__wrapper__actions'>
-                    <ActionCircle isHover={isHover} setIsHover={setIsHover}/>
-                </div>
+            <span className='layout__card__wrapper'
+            onMouseEnter={handleMouseHover}
+            onMouseLeave={handleMouseDown}
+            >
+                    <div className='layout__card__wrapper__actions'>
+                        <ActionCircle isHover={isHover} setIsHover={setIsHover}/>
+                    </div>
                 <div 
                 className='layout__card'
-                onMouseEnter={handleHover}
                 >
                     <span className='layout__card__titleWrap'>
                         <h3 className='layout__card__titleWrap__title'>{name}</h3>
