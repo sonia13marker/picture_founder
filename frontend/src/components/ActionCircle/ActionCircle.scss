@@ -8,6 +8,7 @@
     gap: 17px;
     // overflow: hidden;
     visibility: hidden;
+    // margin-top: 25px;
 
     &.active {
         @include flexRow;

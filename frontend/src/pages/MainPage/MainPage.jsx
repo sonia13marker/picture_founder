@@ -8,10 +8,10 @@ import AllImagesLayout from '../../components/AllImagesLayout/AllImagesLayout';
 export default function MainPage ({images = []}) {
     if(!images.length) return <EmptyTextComponent image={empty_icon} text="Тут ещё нет картинок. Пора бы их добавить" />;
     return (
-        <> {
+        <div className='wrapper_layout'> {
        images.map(image => <AllImagesLayout key={image.id} {...image}/>)
         
 }
-        </>
+        </div>
     )
 }

@@ -7,7 +7,7 @@ export default function AllImagesLayout({name, tags, image}) {
     /*функция для преобразования тегов */
     let newTagList = tags.split(", ").map(tag => "#" + tag).join(" ");
 
-    let newPathToImg = `${process.env.PUBLIC_URL}/assets/${image}`;
+    // let newPathToImg = `${process.env.PUBLIC_URL}/assets/${image}`;
 
     /*для проверки наведения на карточку */
     const [isHover, setIsHover] = useState(false);
@@ -38,7 +38,7 @@ export default function AllImagesLayout({name, tags, image}) {
                         избранное */}
                     </span>
                     
-                    <img src={newPathToImg} 
+                    <img src={image} 
                     alt={name} 
                     className='layout__card__image'/>
                     <p className='layout__card__tagList'>{newTagList}</p>

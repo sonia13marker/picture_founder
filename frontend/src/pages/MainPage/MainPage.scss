@@ -1,0 +1,27 @@
+@import '../../style.scss';
+
+.wrapper_layout {
+    //в принципе работает, но немного не так
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-auto-rows: max-content;
+
+    //работает только при 1920px 
+    // display: flex;
+    // flex-flow: column wrap;
+    // align-content: center;
+    // height: 1200px;
+    // max-height: max-content;
+
+
+    width: 100%;
+    row-gap: 25px;
+    column-gap: 2vw;
+
+
+    // height: max-content;
+    // max-width: 100vw;
+    // width: 100%;
+    // justify-content: center;
+    // align-items: center;
+}
