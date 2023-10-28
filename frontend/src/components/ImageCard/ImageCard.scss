@@ -1,15 +1,6 @@
 @import '../../style.scss';
 
-.layout {
-    min-height: 300px;
-    height: max-content;
-    max-width: 300px;
-    width: 100%;
-
-
-
-
-    &__card {
+.layout__card {
         min-height: 300px;
         height: max-content;
         max-width: 300px;
@@ -18,12 +9,16 @@
         color: $main-white;
         border-radius: 20px;
         margin-top: 15px;
-
+    
         &:hover {
             cursor: pointer;
         }
 
         &__wrapper {
+            min-height: 300px;
+            height: max-content;
+            max-width: 300px;
+            width: 100%;
             @include flexColumn;
 
             // &__actions {
@@ -64,5 +59,4 @@
             line-height: 25px;
             word-spacing: 2px;
         }
-    }
 }

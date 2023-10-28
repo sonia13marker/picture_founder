@@ -14,6 +14,8 @@ import imagesData from './data/first-data.json';
 function App() {
 /*список-состояние массива картинок*/
 const [images] = useState(imagesData);
+// const [favoriteArray] = useState([]);
+let favoriteArray = [];
   return (
     <div className="App">
       <BrowserRouter>
@@ -38,8 +40,8 @@ const [images] = useState(imagesData);
           </div>
         {/* ссылки на страницы */}
         <Routes>
-          <Route path="/" element={<MainPage images={images}/>}/>
-          <Route path='/favorite' element={<FavoritePage />}/>
+          <Route path="/" element={<MainPage images={images} favoriteArray={favoriteArray}/>}/>
+          <Route path='/favorite' element={<FavoritePage favoriteArray={favoriteArray}/>}/>
           <Route path='/developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
         </Routes>
         </div>
