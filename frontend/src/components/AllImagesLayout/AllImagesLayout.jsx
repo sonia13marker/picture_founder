@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import ActionCircle from '../ActionCircle/ActionCircle';
 import './AllImagesLayout.scss';
+import FavorFillIcon from '../FavorFillIcon';
+import FavorOutlineIcon from '../FavorOutlineIcon';
 
 
 export default function AllImagesLayout({name, tags, image}) {
@@ -34,6 +36,8 @@ export default function AllImagesLayout({name, tags, image}) {
                 >
                     <span className='layout__card__titleWrap'>
                         <h3 className='layout__card__titleWrap__title'>{name}</h3>
+                        <FavorFillIcon />
+                        <FavorOutlineIcon />
                         {/*тут будет звездочка для добавления в
                         избранное */}
                     </span>
