@@ -14,8 +14,21 @@ import imagesData from './data/first-data.json';
 function App() {
 /*список-состояние массива картинок*/
 const [images] = useState(imagesData);
-// const [favoriteArray] = useState([]);
-let favoriteArray = [];
+
+/*добавление в избранное */
+const [favorites, setFavorites] = useState([]);
+const [inFavorite, setInFavorite] = useState(false);
+
+
+const addToFavorites = (id) => {
+  // поиск элемента из массива и добавление его в список избранных
+  const selectedElement = images.find((item) => item.id === id);
+  if (selectedElement) {
+    setFavorites([...favorites, selectedElement]);
+  };
+  
+};
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -40,8 +53,8 @@ let favoriteArray = [];
           </div>
         {/* ссылки на страницы */}
         <Routes>
-          <Route path="/" element={<MainPage images={images} favoriteArray={favoriteArray}/>}/>
-          <Route path='/favorite' element={<FavoritePage favoriteArray={favoriteArray}/>}/>
+          <Route path="/" element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite}/>}/>
+          <Route path='/favorite' element={<FavoritePage favorites={favorites} />}/>
           <Route path='/developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
         </Routes>
         </div>

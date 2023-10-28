@@ -3,8 +3,9 @@ import { useState } from "react";
 import ActionCircle from "../ActionCircle/ActionCircle";
 import FavorFillIcon from "../FavorFillIcon";
 import FavorOutlineIcon from "../FavorOutlineIcon";
+import FavoriteComponent from "../FavoriteComponent/FavoriteComponent";
 
-export default function ImageCard({ id, name, tags, image }) {
+export default function ImageCard({ id, name, tags, image, addToFavorites, inFavorite, setInFavorite }) {
   /*функция для преобразования тегов */
   let newTagList = tags
     .split(", ")
@@ -21,11 +22,6 @@ export default function ImageCard({ id, name, tags, image }) {
     setIsHover(false);
   };
 
-  /* для добавления в избранное */
-  const [addFavorite, setAddFavorite] = useState(false);
-  const addToFavorite = (id) => {
-    setAddFavorite(!false);
-  };
 
   return (
     <span
@@ -39,8 +35,9 @@ export default function ImageCard({ id, name, tags, image }) {
       <div className="layout__card">
         <span className="layout__card__titleWrap">
           <h3 className="layout__card__titleWrap__title">{name}</h3>
-          <span onClick={() => addToFavorite(id)}>
-            {addFavorite ? <FavorFillIcon /> : <FavorOutlineIcon />}
+          <span onClick={() => addToFavorites(id)}>
+            {/* <FavorFillIcon />  <FavorOutlineIcon /> */}
+            <FavoriteComponent inFavorite={inFavorite} setInFavorite={setInFavorite}/>
           </span>
         </span>
 

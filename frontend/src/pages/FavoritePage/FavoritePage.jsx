@@ -1,22 +1,13 @@
 import EmptyTextComponent from '../../components/EmptyTextComponent/EmptyTextComponent';
-import './FavoritePage.scss';
+import '../MainPage/MainPage.scss';
 import empty from '../../images/empty_favorite.svg';
+import ImageCard from '../../components/ImageCard/ImageCard';
 
-export default function FavoritePage ({favoriteArray, name, tags, image}) {
-    if (!favoriteArray) return  <EmptyTextComponent image={empty} />
-    return (
-        <section className="layout">
-            {/* <span className='layout__card__wrapper'
-            onMouseEnter={handleMouseHover}
-            onMouseLeave={handleMouseDown}
-            >
-                <div className='layout__card__wrapper__actions'>
-                        <ActionCircle isHover={isHover} setIsHover={setIsHover}/>
-                    </div>
-            </span>
-            <div>
-
-            </div> */}
-        </section>
-    )
+export default function FavoritePage ({favorites, setFavorites}) {
+    if (!favorites) return  <EmptyTextComponent image={empty} />
+    return (<section className="wrapper_layout">
+    {favorites.map((item) => (
+        <ImageCard key={item.id} {...item} />
+      ))}
+      </section>)
 }

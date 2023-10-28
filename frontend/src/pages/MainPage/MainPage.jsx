@@ -5,7 +5,7 @@ import ImageCard from "../../components/ImageCard/ImageCard";
 
 /*тут мы отображаем либо компонент с сеткой из всех картинок,
 либо пустой компонент, если картинок еще нет */
-export default function MainPage({ images = [], favoriteArray }) {
+export default function MainPage({ images = [], favorites, setFavorites, addToFavorites, inFavorite, setInFavorite }) {
   if (!images.length)
     return (
       <EmptyTextComponent
@@ -15,11 +15,10 @@ export default function MainPage({ images = [], favoriteArray }) {
     );
   return (
     <section className="wrapper_layout">
-      {/* <div className="layout"> */}
         {images.map((image) => (
-          <ImageCard key={image.id} {...image} favoriteArray={favoriteArray} />
+          <ImageCard key={image.id} {...image} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite}
+          />
         ))}
-      {/* </div> */}
     </section>
   );
 }
