@@ -2,6 +2,7 @@ import "./AddImageModal.scss";
 import add_img from "../../images/add_img.svg";
 import React, { useCallback, useState, useEffect, useRef } from "react";
 import { useDropzone } from "react-dropzone";
+import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 
 export default function AddImageModal({ active, setActive, addImage = f => f }) {
   /*for drag & drop file */
@@ -121,7 +122,12 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
     cancelBtnClick();
   }
 
-  
+  /* для модальных окон-подтверждений */
+  const [confirmModalActive, setConfirmModalActive] = useState(false);
+
+  const getActiveConfirmModal = () => {
+    setConfirmModalActive(true);
+  }
 
   return (
     <div className={active ? "modal active" : "modal"}>
@@ -211,7 +217,7 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
                 ref={nameImage}
                 className="modal__content__body__infoBlock__input"
                 placeholder="Введите название картинки"
-                required
+                // required
               />
             </label>
 
@@ -233,7 +239,8 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
             <span className="modal__content__body__infoBlock__wrapper">
               <button
                 className="modal__content__body__infoBlock__wrapper__outlineBtn"
-                onClick={cancelBtnClick}
+                // onClick={cancelBtnClick}
+                onClick={setConfirmModalActive}
               >
                 Отмена
               </button>
@@ -245,6 +252,15 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
           </form>
         </span>
       </div>
+      {
+        active && 
+        <ConfirmModalComponent 
+     confirmModalActive={confirmModalActive} setConfirmModalActive={setConfirmModalActive}
+     nameOfModal="Сохранение изменений" bodyText="Если Вы выйдете сейчас, изменения не будут сохранены." leftBtnName="Отмена" rightBtnName="Сохранить изменения"
+     leftBtnAction={cancelBtnClick} 
+     // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
+      />
+      }
     </div>
   );
 }

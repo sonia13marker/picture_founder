@@ -1,0 +1,80 @@
+@import '../../style.scss';
+
+.confirm__background {
+    @include flexColumn;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 1);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    transform: scale(0);
+    
+    &.active {
+        transform: scale(1);
+    }
+}
+
+.confirm__content {
+    max-width: 40vw;
+    min-width: 35vw;
+    width: 100%;
+    height: max-content;
+    padding: 40px;
+    background-color: $black-for-windows;
+    border-radius: 20px;
+
+    &__header {
+        @include flexRow;
+        margin-bottom: 60px;
+
+
+        &__title {
+            @include h3BoldStyle;
+            color: $light-gray-text;
+        }
+
+        &__img {
+            @include closeBtnIcon;
+
+            &:hover {
+                @include hoverCloseBtnIcon;
+            }
+            &:active {
+                @include activeCloseBtnIcon;
+            }
+        }
+    }
+
+    &__body__text {
+        @include h4Style;
+        margin-bottom: 60px;
+    }
+
+    &__footer {
+        @include flexRow;
+        justify-content: flex-end;
+        gap: 20px;
+
+        &__outlineBtn {
+            @include bodyBtn;
+
+            &:hover {
+              @include bodyBtnHover;  
+            }
+        }
+
+        &__fillBtn {
+            @include FillBodyBtn;
+
+            &:hover {
+                @include FillBodyBtnHover;
+            } 
+
+            &:active {
+                @include FillBodyBtnActive;
+            }
+        }
+    }
+}

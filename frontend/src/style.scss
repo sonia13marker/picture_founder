@@ -63,7 +63,6 @@ $transition: all 0.3s;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Ubuntu', sans-serif;
-    // background-color: $black-for-bg;
     color: $main-white;
 }
 body {
@@ -124,6 +123,26 @@ body {
     border-color: $hover-purple;
     cursor: pointer;
     transition: $transition;
+}
+
+//------------style for X button 
+@mixin closeBtnIcon {
+    width: 24px;
+    height: 24px;
+    background: url("./images/close.svg") center center no-repeat;
+    cursor: pointer;
+}
+
+@mixin hoverCloseBtnIcon {
+    background: url("./images/close_hover.svg") center center no-repeat;
+                    cursor: pointer;
+                    transition: $transition;
+}
+
+@mixin activeCloseBtnIcon {
+    background: url("./images/close_active.svg") center center no-repeat;
+                    cursor: pointer;
+                    transition: $transition;
 }
 
 //------------scrollbar--------

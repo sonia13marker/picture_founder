@@ -34,19 +34,13 @@
             }
 
             &__img {
-                width: 24px;
-                height: 24px;
-                background: url("../../images/close.svg") center center no-repeat;
+                @include closeBtnIcon;
 
                 &:hover {
-                    background: url("../../images/close_hover.svg") center center no-repeat;
-                    cursor: pointer;
-                    transition: $transition;
+                    @include hoverCloseBtnIcon;
                 }
                 &:active {
-                    background: url("../../images/close_active.svg") center center no-repeat;
-                    cursor: pointer;
-                    transition: $transition;
+                    @include activeCloseBtnIcon;
                 }
             }
         }
