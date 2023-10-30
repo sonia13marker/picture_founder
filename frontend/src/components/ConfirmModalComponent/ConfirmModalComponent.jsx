@@ -1,11 +1,13 @@
 import "./ConfirmModalComponent.scss";
 
 export default function ConfirmModalComponent({
-    confirmModalActive, setConfirmModalActive,
+    confirmModalActive, setConfirmModalActive, 
+    // active,
     nameOfModal, bodyText, leftBtnName, rightBtnName,
     leftBtnAction, rightBtnAction,
 }) {
-  return (
+  return ( <>
+    {/* { active ?  */}
     <div className={confirmModalActive ? "confirm__background active" : "confirm__background"}>
 
         <div className="confirm__content" onClick={(e) => e.stopPropagation()}> 
@@ -30,6 +32,7 @@ export default function ConfirmModalComponent({
 
         </div>
       
-    </div>
-  );
+    </div> 
+    {/* : <></>} */}
+    </>);
 }

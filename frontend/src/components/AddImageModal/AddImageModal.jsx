@@ -37,6 +37,7 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
     setFile(null);
     setSelectedImage(null);
     setActive(false);
+    setConfirmModalActive(false);
   };
 
   /* for detected firefox */
@@ -114,7 +115,7 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
     /*функция добавления картинки на страницу */
     addImage(name, tags);
 
-    console.log(`name of img: ${name}, tags image: ${tags}, ${image}`);
+    // console.log(`name of img: ${name}, tags image: ${tags}, ${image}`);
     nameImage.current.value = "";
     tagsImage.current.value = "";
     /*тут идет очистка места картинки и 
@@ -126,6 +127,7 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
   const [confirmModalActive, setConfirmModalActive] = useState(false);
 
   const getActiveConfirmModal = () => {
+    // console.log("ldspgkdpkbgodkfgop");
     setConfirmModalActive(true);
   }
 
@@ -240,7 +242,7 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
               <button
                 className="modal__content__body__infoBlock__wrapper__outlineBtn"
                 // onClick={cancelBtnClick}
-                onClick={setConfirmModalActive}
+                onClick={() => setConfirmModalActive(true)}
               >
                 Отмена
               </button>
@@ -251,16 +253,20 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
             </span>
           </form>
         </span>
+        {/* {active &&  } */}
+        
       </div>
       {
         active && 
-        <ConfirmModalComponent 
-     confirmModalActive={confirmModalActive} setConfirmModalActive={setConfirmModalActive}
+    <ConfirmModalComponent
+     confirmModalActive={confirmModalActive} setConfirmModalActive={setConfirmModalActive} 
+    //  active={active}
      nameOfModal="Сохранение изменений" bodyText="Если Вы выйдете сейчас, изменения не будут сохранены." leftBtnName="Отмена" rightBtnName="Сохранить изменения"
      leftBtnAction={cancelBtnClick} 
      // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
       />
-      }
+  
+        }  
     </div>
   );
 }

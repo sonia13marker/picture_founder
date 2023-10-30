@@ -50,6 +50,7 @@
     &__body__text {
         @include h4Style;
         margin-bottom: 60px;
+        color: $light-gray-text;
     }
 
     &__footer {
