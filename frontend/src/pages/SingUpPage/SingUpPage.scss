@@ -1,0 +1,123 @@
+@import '../../style.scss';
+
+.singup__section {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100%;
+    height: 100%;
+    background-color: $black-for-bg;
+    @include flexColumn;
+
+    &__header {
+        @include flexColumn;
+        justify-content: center;
+        margin-bottom: 2.5vh;
+
+        &__logo {
+            @include h1Style;
+            &__span {
+                color: $main-purple;
+            }
+        }
+
+        &__text {
+            @include h2Style;
+        }
+    }
+
+    &__body {
+        @include flexColumn;
+        gap: 35px;
+        &__label {
+            @include h3Style;
+            color: $light-gray-text;
+            @include flexColumn;
+            align-items: flex-start;
+        }
+
+        &__input {
+            @include h4Style;
+            margin-top: 10px;
+            width: 25vw;
+            padding: 15px 20px;
+            border-radius: 20px;
+            background-color: $main-black;
+            color: $dark-gray-text;
+            font-family: "Ubuntu", sans-serif;
+            border: 2px solid $main-black;
+
+            &:active {
+                border: 2px solid $dark-gray-text;
+            }
+            &:hover {
+                border: 2px solid $dark-gray-text;
+            }
+        }
+
+        &__checkboxWrapper {
+           max-width: 25vw;
+           width: 100%;
+           @include flexRow;
+           gap: 7px;
+
+            &__label {
+                @include h4Style;
+                font-size: 16px;
+                color: $light-gray-text;
+                max-width: max-content;
+                text-align: justify;
+                width: 100%;
+
+                &__link {
+                    color: $main-purple;
+
+                    &:hover {
+                        color: $hover-purple;
+                        cursor: pointer;
+                        transition: $transition;
+                    }
+                    &:active {
+                        color: $main-purple;
+                    }
+                }
+            }
+
+            &__checkbox {
+
+            }
+        }
+
+
+        &__submitBtn {
+            @include FillBodyBtn;
+            
+            &.unactive {
+                cursor: not-allowed;
+                color: $light-gray-text;
+                background-color: $dark-gray-text;
+                border: 2px solid $dark-gray-text;
+
+                &:hover {
+                    cursor: not-allowed;
+                    color: $light-gray-text;
+                    background-color: $dark-gray-text;
+                    border: 2px solid $dark-gray-text;
+                }
+            }
+
+            &:hover {
+                @include FillBodyBtnHover;
+            }
+
+            &:active {
+                @include FillBodyBtnActive;
+            }
+        }
+    }
+
+    
+}
+
+.password_input {
+
+}

@@ -9,6 +9,7 @@ import data from '../package.json';
 import Footer from './components/Footer/Footer';
 import { useState } from 'react';
 import imagesData from './data/first-data.json';
+import SingUpPage from './pages/SingUpPage/SingUpPage';
 
 
 function App() {
@@ -32,13 +33,16 @@ const addToFavorites = (id) => {
   return (
     <div className="App">
       <BrowserRouter>
+      <Routes>
+            <Route path='/singup' element={<SingUpPage />} />
+        </Routes>
 
 {/* верхнее меню и навигация */}
-      <Header/>
+      {/* <Header/> */}
 
       {/* общий контейнер с поиском и сортировкой,
       который имеет отступы 55рх вместе с содержимым */}
-      <div className='main__section'>
+      {/* <div className='main__section'>
 
         <div className='main__section__wrapper'>
 
@@ -50,16 +54,18 @@ const addToFavorites = (id) => {
                 </span>
             </label>
             <SortDropdown />
-          </div>
+          </div> */}
         {/* ссылки на страницы */}
         <Routes>
           <Route path="/" element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite}/>}/>
           <Route path='/favorite' element={<FavoritePage favorites={favorites} />}/>
           <Route path='/developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
         </Routes>
-        </div>
+        {/* </div> */}
 
-        <Footer />
+        {/* <Footer /> */}
+
+
       </BrowserRouter>
     </div>
   );
