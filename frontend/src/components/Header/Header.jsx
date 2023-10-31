@@ -30,7 +30,6 @@ export default function Header () {
                         </NavLink>
                     </li>
                 </ul>
-
             </nav>
 
             <span className='header__btns'>
