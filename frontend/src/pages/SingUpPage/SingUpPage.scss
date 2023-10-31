@@ -7,6 +7,7 @@
     height: 100%;
     background-color: $black-for-bg;
     @include flexColumn;
+    padding: 40px;
 
     &__header {
         @include flexColumn;
@@ -58,7 +59,7 @@
            max-width: 25vw;
            width: 100%;
            @include flexRow;
-           gap: 7px;
+           gap: 15px;
 
             &__label {
                 @include h4Style;
@@ -121,3 +122,9 @@
 .password_input {
 
 }
+
+#alert {
+    display: none;
+    color: red;
+    margin-bottom: 10px;
+  }

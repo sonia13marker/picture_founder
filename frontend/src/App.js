@@ -7,9 +7,13 @@ import FavoritePage from './pages/FavoritePage/FavoritePage';
 import DevelopersPage from './pages/DevelopersPage/DevelopersPage';
 import data from '../package.json';
 import Footer from './components/Footer/Footer';
-import { useState } from 'react';
+import { useState, useContext, createContext,  Navigate,
+  Outlet,
+  useLocation,
+  useNavigate, Link } from 'react';
 import imagesData from './data/first-data.json';
 import SingUpPage from './pages/SingUpPage/SingUpPage';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 
 function App() {
@@ -31,11 +35,25 @@ const addToFavorites = (id) => {
 };
 
   return (
-    <div className="App">
+        <div className="App">
       <BrowserRouter>
-      <Routes>
+      {/* <Routes>
+        
             <Route path='/singup' element={<SingUpPage />} />
+        </Routes> */}
+        <Routes>
+          <Route element={<PrivateRoute />}>
+            <Route path="/admin" element={<Admin />} />
+          </Route>
         </Routes>
+
+        {/* ВАЖНО!!!! 
+        {isAuthenticated ? <Link to="/logout">Logout</Link> : <Link to="/login">Login</Link>}
+        скорее всего добавить этот код при нажатии на иконку профиля,
+        либо разместить это там, где будет находиться страница с 
+        данными о пользотвателе (стр "профиль")
+        
+        */}
 
 {/* верхнее меню и навигация */}
       {/* <Header/> */}
@@ -60,6 +78,7 @@ const addToFavorites = (id) => {
           <Route path="/" element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite}/>}/>
           <Route path='/favorite' element={<FavoritePage favorites={favorites} />}/>
           <Route path='/developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
+          
         </Routes>
         {/* </div> */}
 
@@ -68,7 +87,18 @@ const addToFavorites = (id) => {
 
       </BrowserRouter>
     </div>
+    
   );
+}
+
+
+const Admin = () => {
+  return (
+    <>
+      <div>Admin</div>
+      <Link to="/">Go to Main Page</Link>
+    </>
+  )
 }
 
 export default App;
