@@ -61,17 +61,18 @@
                     }
                 }
 
-                &__linkSelect {
-                    border: 2px solid $main-purple;
-                    border-radius: 30px;
-                    text-decoration: none;
-                    padding: 12px 20px;
-                    color: $main-white;
-                    color: $main-purple;
-                }
-
             }
         }
+    }
+
+    /*for NavLink*/
+    .active {
+        border: 2px solid $main-purple;
+                        border-radius: 30px;
+                        text-decoration: none;
+                        padding: 12px 20px;
+                        color: $main-white;
+                        color: $main-purple;
     }
 
     &__btns {
@@ -103,3 +104,4 @@
         }
     }
 }
+
