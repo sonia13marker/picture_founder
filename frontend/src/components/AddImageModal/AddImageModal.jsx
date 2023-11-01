@@ -3,6 +3,7 @@ import add_img from "../../images/add_img.svg";
 import React, { useCallback, useState, useEffect, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
+import CustomInput from "../CustomInput/CustomInput";
 
 export default function AddImageModal({ active, setActive, addImage = f => f }) {
   /*for drag & drop file */
@@ -207,7 +208,7 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
           className="modal__content__body__infoBlock"
           onSubmit={submitInfoImage}
           >
-            <label
+            {/* <label
               className="modal__content__body__infoBlock__label"
               htmlFor="nameImg"
             >
@@ -221,7 +222,8 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
                 placeholder="Введите название картинки"
                 // required
               />
-            </label>
+            </label> */}
+            <CustomInput inputId="nameImg" inputRef={nameImage} placeholder="Введите название картинки" labelName="Название картинки" errorMessage="Привет я ошибка"/>
 
             <label
               className="modal__content__body__infoBlock__label"
