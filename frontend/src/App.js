@@ -37,10 +37,10 @@ const addToFavorites = (id) => {
   return (
         <div className="App">
       <BrowserRouter>
-      {/* <Routes>
+      <Routes>
         
             <Route path='/singup' element={<SingUpPage />} />
-        </Routes> */}
+        </Routes>
         {/* <Routes>
           <Route element={<PrivateRoute />}>
             <Route path="/admin" element={<Admin />} />

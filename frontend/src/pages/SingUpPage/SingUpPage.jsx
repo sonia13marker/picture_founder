@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import "./SingUpPage.scss";
 import { useState } from "react";
 import Userfront from "@userfront/core";
+import CustomInput from "../../components/CustomInput/CustomInput";
+import CloseEyeIcon from "../../components/CloseEyeIcon";
+import OpenEyeIcon from "../../components/OpenEyeIcon";
 
 export default function SingUpPage() {
     const [checked, setChecked] = useState(false);
@@ -44,18 +47,24 @@ Userfront.signup({
       <form id="signupForm" className="singup__section__body"
       autoComplete="off"
       >
-        <div id="alert"></div>
+        {/* <div id="alert"></div> */}
 
-        <label htmlFor="email" className="singup__section__body__label">
+        <CustomInput inputId="singUp_email" placeholder="Введите эл. почту"
+        inputType="email" labelName="Электронная почта" />
+        {/*cursor: pointer */}
+        <CloseEyeIcon />
+        <OpenEyeIcon />
+
+        {/* <label htmlFor="email" className="singup__section__body__label">
           Электронная почта
         
         <input
           type="email"
-          id="email"
+          id="singUp_email"
           placeholder="Введите эл. почту"
           className="singup__section__body__input"
         />
-        </label>
+        </label> */}
         {/* 
   <label htmlFor="account-name">Account name (custom field)</label>
   <input type="text" id="account-name" /> */}

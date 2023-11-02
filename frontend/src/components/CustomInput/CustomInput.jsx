@@ -6,22 +6,21 @@ export default function CustomInput({
   let data = { inputType, placeholder, labelName, onClickFunc, errorMessage, inputId, inputRef,
   };
 
+  /* получить данные из useRef в виде переменной,
+  исп-ть для каждого символа замену на #  */
   if (inputType === "password") {
     return <InputPassword {...data} />;
   } else if (inputType === "text") {
     return <InputText {...data} />;
-  } else {
+  } else if (inputType === "email") {
+    return <InputEmail {...data} />
+    }
+    else {
     return <InputTextarea {...data} />;
   }
 }
 
-function InputText({
-  placeholder,
-  labelName,
-  onClickFunc,
-  errorMessage,
-  inputId,
-  inputRef,
+function InputText({ placeholder, labelName, onClickFunc, errorMessage, inputId, inputRef,
 }) {
   return (
     <span className="input__wrapper">
@@ -31,6 +30,29 @@ function InputText({
         <input
           className="input"
           type="text"
+          id={inputId}
+          ref={inputRef}
+          placeholder={placeholder}
+        />
+      </label>
+
+      {/* <p className='input__error'>
+                {errorMessage}!
+            </p> */}
+    </span>
+  );
+}
+
+function InputEmail({ placeholder, labelName, onClickFunc, errorMessage, inputId, inputRef,
+}) {
+  return (
+    <span className="input__wrapper">
+      <label className="input__label" htmlFor={inputId}>
+        {labelName}
+
+        <input
+          className="input__auth"
+          type="email"
           id={inputId}
           ref={inputRef}
           placeholder={placeholder}
@@ -55,14 +77,24 @@ function InputPassword({
   return (
     <span className="input__wrapper">
       <label className="input__label" htmlFor={inputId}>
-        PASSWORD
+       {labelName}
         <input
-          className="input"
+          className="input__auth password"
           type="password"
           id={inputId}
           ref={inputRef}
           placeholder={placeholder}
         />
+        <span className="icon__wrapper">
+            {/*пока открыт глаз - пароль не видно */}
+            <span className="iconOpen">
+
+            </span>
+
+            <span className="iconClose">
+    
+            </span>
+        </span>
       </label>
       {/* 
             <p className='input__error'>
