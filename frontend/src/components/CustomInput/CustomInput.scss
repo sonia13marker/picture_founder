@@ -20,7 +20,6 @@
 @mixin inputStyle_active {
     border: 2px solid $dark-gray-text;
 }
-
 /*----------------*/ 
 
 .input {
@@ -46,6 +45,9 @@
             }
 
             &.password {
+            padding-right: 45px;
+            // @include inputStyle;
+
 
             }
     }
@@ -55,12 +57,23 @@
         color: $light-gray-text;
         @include flexColumn;
         align-items: flex-start;
+
+        // &.labelPassword {
+        //     // @include flexRow;
+        //     // justify-content: center;
+        // }
     }
 
     &__wrapper {
         @include flexColumn;
         align-items: flex-start;
         gap: 5px;
+    }
+
+    &__wrapper2 {
+        @include flexColumn;
+        align-items: flex-start;
+        color: $light-gray-text;
     }
 
     &__error {
@@ -80,5 +93,43 @@
         &:hover {
            @include inputStyle_hover;
         }
+    }
+}
+
+.icon__wrapper {
+    display: block;
+    position: relative;
+    height: max-content;
+    // position: absolute;
+    // top: 0;
+    // right: 0;
+    // transform: translate(-50%, -50%);
+}
+
+.iconOpen {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-25%);
+
+    &:hover {
+        transition: $transition;
+        cursor: pointer;
+    }
+}
+
+.iconClose {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-25%);
+
+    &:hover {
+        transition: $transition;
+        cursor: pointer;
     }
 }

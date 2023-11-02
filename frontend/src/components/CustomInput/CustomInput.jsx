@@ -1,3 +1,4 @@
+import { useState } from "react";
 import CloseEyeIcon from "../CloseEyeIcon";
 import OpenEyeIcon from "../OpenEyeIcon";
 import "./CustomInput.scss";
@@ -8,8 +9,6 @@ export default function CustomInput({
   let data = { inputType, placeholder, labelName, onClickFunc, errorMessage, inputId, inputRef,
   };
 
-  /* получить данные из useRef в виде переменной,
-  исп-ть для каждого символа замену на #  */
   if (inputType === "password") {
     return <InputPassword {...data} />;
   } else if (inputType === "text") {
@@ -20,7 +19,8 @@ export default function CustomInput({
     else {
     return <InputTextarea {...data} />;
   }
-}
+
+  
 
 function InputText({ placeholder, labelName, onClickFunc, errorMessage, inputId, inputRef,
 }) {
@@ -68,18 +68,33 @@ function InputEmail({ placeholder, labelName, onClickFunc, errorMessage, inputId
   );
 }
 
-function InputPassword({
-  placeholder,
-  labelName,
-  errorMessage,
-  onClickFunc,
-  inputId,
-  inputRef,
+function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inputId, inputRef,
 }) {
+
+     /* fot input password
+    получить данные из useRef в виде переменной,
+    исп-ть для каждого символа замену на #  */
+    const [open, setOpen] = useState(true);
+    let password = inputRef;
+    
+    const selectIcon = () => {
+        setOpen(!open);
+    }
+    
+    function encryptPassword (password) {
+
+        // while (open) {
+        //     password.map(i => i === "#");
+        // }
+        setOpen(!open);
+    }
+    
+
   return (
-    <span className="input__wrapper">
-      <label className="input__label" htmlFor={inputId}>
+    <span className="input__wrapper2">
+      <label className="input__label" htmlFor={inputId}></label>
        {labelName}
+       <span className="icon__wrapper">
         <input
           className="input__auth password"
           type="password"
@@ -87,17 +102,26 @@ function InputPassword({
           ref={inputRef}
           placeholder={placeholder}
         />
-        <span className="icon__wrapper">
-            {/*пока открыт глаз - пароль не видно */}
-            <span className="iconOpen">
-                <OpenEyeIcon />
-            </span>
+        {/*пока открыт глаз - пароль не видно */}
+       {
+        open ?
+        (
+        <span className="iconOpen" onClick={selectIcon}>
+            <OpenEyeIcon />
+        </span>) :
+        (
+            <span className="iconClose" onClick={selectIcon}>
+                <CloseEyeIcon />
+            </span> 
+        )
+       }
+            
 
             {/* <span className="iconClose">
                 <CloseEyeIcon />
             </span> */}
         </span>
-      </label>
+      
       {/* 
             <p className='input__error'>
                 {errorMessage}!
@@ -119,4 +143,5 @@ function InputTextarea({ placeholder, labelName, inputId, inputRef }) {
       ></textarea>
     </label>
   );
+}
 }

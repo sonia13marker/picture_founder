@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./SingUpPage.scss";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Userfront from "@userfront/core";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
@@ -13,13 +13,15 @@ export default function SingUpPage() {
     }
 
     // Sample: how to use Userfront.signup()
-Userfront.init("demo1234");
-Userfront.signup({
-  method: "password",
-  email: "jane@example.com",
-  password: "testmodepassword",
-  password_verify: "testmodepassword"
-});
+// Userfront.init("demo1234");
+// Userfront.signup({
+//   method: "password",
+//   email: "jane@example.com",
+//   password: "testmodepassword",
+//   password_verify: "testmodepassword"
+// });
+
+let passwordRef = useRef();
 
 // Userfront.signup()
 // .catch(function(error) {
@@ -35,6 +37,15 @@ Userfront.signup({
 // if (password !== passwordVerify) {
 //   return setAlert("Password verification must match.");
 // }
+let hell = document.getElementById("signupForm");
+console.log(hell);
+// const handleSubmit = (event) => {
+//   event.preventDefault();
+// let form = event.target;
+// const passwordValue = form.singUp_password.value;
+// console.log(passwordValue);
+// }
+
   return (
     <div className="singup__section">
       <span className="singup__section__header">
@@ -46,11 +57,17 @@ Userfront.signup({
 
       <form id="signupForm" className="singup__section__body"
       autoComplete="off"
+      // onSubmit={handleSubmit}
       >
         {/* <div id="alert"></div> */}
 
         <CustomInput inputId="singUp_email" placeholder="Введите эл. почту"
         inputType="email" labelName="Электронная почта" />
+
+        <CustomInput inputType="password" labelName="Пароль" inputId="singUp_password" placeholder="Введите пароль"
+        inputRef={passwordRef}
+        // passwordValue={passwordValue}
+        />
         {/*cursor: pointer */}
         {/* <CloseEyeIcon />
         <OpenEyeIcon /> */}
@@ -69,16 +86,16 @@ Userfront.signup({
   <label htmlFor="account-name">Account name (custom field)</label>
   <input type="text" id="account-name" /> */}
 
-        <label htmlFor="password" className="singup__section__body__label">
+        {/* <label htmlFor="password" className="singup__section__body__label">
           Пароль
         
         <input
           type="password"
-          id="password"
+          id="singUp_password"
           placeholder="Введите пароль"
           className="singup__section__body__input password_input"
         />
-        </label>
+        </label> */}
 
         <label htmlFor="passwordVerify" className="singup__section__body__label">
           Повторите пароль
