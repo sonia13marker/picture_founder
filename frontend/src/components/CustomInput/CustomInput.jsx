@@ -1,3 +1,5 @@
+import CloseEyeIcon from "../CloseEyeIcon";
+import OpenEyeIcon from "../OpenEyeIcon";
 import "./CustomInput.scss";
 
 export default function CustomInput({
@@ -88,12 +90,12 @@ function InputPassword({
         <span className="icon__wrapper">
             {/*пока открыт глаз - пароль не видно */}
             <span className="iconOpen">
-
+                <OpenEyeIcon />
             </span>
 
-            <span className="iconClose">
-    
-            </span>
+            {/* <span className="iconClose">
+                <CloseEyeIcon />
+            </span> */}
         </span>
       </label>
       {/* 

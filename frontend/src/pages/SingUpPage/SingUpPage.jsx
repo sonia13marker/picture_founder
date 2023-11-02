@@ -52,8 +52,8 @@ Userfront.signup({
         <CustomInput inputId="singUp_email" placeholder="Введите эл. почту"
         inputType="email" labelName="Электронная почта" />
         {/*cursor: pointer */}
-        <CloseEyeIcon />
-        <OpenEyeIcon />
+        {/* <CloseEyeIcon />
+        <OpenEyeIcon /> */}
 
         {/* <label htmlFor="email" className="singup__section__body__label">
           Электронная почта

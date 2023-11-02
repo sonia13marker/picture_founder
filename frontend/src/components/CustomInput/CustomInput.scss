@@ -1,6 +1,7 @@
 @import '../../style.scss';
 
-.input {
+/*---------mixins for styling input-------*/ 
+@mixin inputStyle {
     @include h4Style;
     margin-top: 10px;
     width: 35vw;
@@ -10,34 +11,42 @@
     color: $dark-gray-text;
     font-family: "Ubuntu", sans-serif;
     border: 2px solid $main-black;
+}
+
+@mixin inputStyle_hover {
+    border: 2px solid $dark-gray-text;
+}
+
+@mixin inputStyle_active {
+    border: 2px solid $dark-gray-text;
+}
+
+/*----------------*/ 
+
+.input {
+    @include inputStyle;
 
     &:active {
-        border: 2px solid $dark-gray-text;
+       @include inputStyle_active;
     }
     &:hover {
-        border: 2px solid $dark-gray-text;
+       @include inputStyle_hover;
     }
 
     &__auth {
-        @include h4Style;
-            margin-top: 10px;
-            width: 25vw;
-            padding: 15px 20px;
-            border-radius: 20px;
-            background-color: $main-black;
-            color: $dark-gray-text;
-            font-family: "Ubuntu", sans-serif;
-            border: 2px solid $main-black;
+        @include inputStyle;
+        width: 25vw;
+            
 
             &:active {
-                border: 2px solid $dark-gray-text;
+                @include inputStyle_active;
             }
             &:hover {
-                border: 2px solid $dark-gray-text;
+                @include inputStyle_hover;
             }
 
             &.password {
-                
+
             }
     }
 
@@ -60,23 +69,16 @@
     }
 
     &__textarea {
-        @include h4Style;
-        margin-top: 10px;
+       @include inputStyle;
         width: 35vw;
         height: 21vh;
-        padding: 15px 20px;
-        border-radius: 20px;
-        background-color: $main-black;
-        color: $dark-gray-text;
-        font-family: "Ubuntu", sans-serif;
-        border: 2px solid $main-black;
         resize: none;
 
         &:active {
-            border: 2px solid $dark-gray-text;
+           @include inputStyle_active;
         }
         &:hover {
-            border: 2px solid $dark-gray-text;
+           @include inputStyle_hover;
         }
     }
 }
