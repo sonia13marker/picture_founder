@@ -12,8 +12,9 @@
     transform: scale(0);
     @include flexColumn;
 
-    &.active {
+    &.activeModal {
         transform: scale(1);
+    
     }
     &__content {
         background-color: $black-for-windows;
@@ -63,54 +64,6 @@
                 align-items: flex-end;
                 justify-content: flex-start;
                 gap: 35px;
-
-                &__label {
-                    @include h3Style;
-                    color: $light-gray-text;
-                    @include flexColumn;
-                    align-items: flex-start;
-                    
-                }
-
-                &__input {
-                    @include h4Style;
-                    margin-top: 10px;
-                    width: 35vw;
-                    padding: 15px 20px;
-                    border-radius: 20px;
-                    background-color: $main-black;
-                    color: $dark-gray-text;
-                    font-family: "Ubuntu", sans-serif;
-                    border: 2px solid $main-black;
-
-                    &:active {
-                        border: 2px solid $dark-gray-text;
-                    }
-                    &:hover {
-                        border: 2px solid $dark-gray-text;
-                    }
-                }
-
-                &__textarea {
-                    @include h4Style;
-                    margin-top: 10px;
-                    width: 35vw;
-                    height: 21vh;
-                    padding: 15px 20px;
-                    border-radius: 20px;
-                    background-color: $main-black;
-                    color: $dark-gray-text;
-                    font-family: "Ubuntu", sans-serif;
-                    border: 2px solid $main-black;
-                    resize: none;
-
-                    &:active {
-                        border: 2px solid $dark-gray-text;
-                    }
-                    &:hover {
-                        border: 2px solid $dark-gray-text;
-                    }
-                }
 
                 &__wrapper {
                     @include flexRow;

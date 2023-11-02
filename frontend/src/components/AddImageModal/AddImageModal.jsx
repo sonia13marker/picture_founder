@@ -133,7 +133,7 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
   }
 
   return (
-    <div className={active ? "modal active" : "modal"}>
+    <div className={active ? "modal activeModal" : "modal"}>
       <div className="modal__content" onClick={(e) => e.stopPropagation()}>
         <span className="modal__content__head">
           <h3 className="modal__content__head__h3">Добавить картинку</h3>
@@ -208,37 +208,14 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
           className="modal__content__body__infoBlock"
           onSubmit={submitInfoImage}
           >
-            {/* <label
-              className="modal__content__body__infoBlock__label"
-              htmlFor="nameImg"
-            >
-              Название картинки
-              <input
-                type="text"
-                name="nameImg"
-                id="nameImg"
-                ref={nameImage}
-                className="modal__content__body__infoBlock__input"
-                placeholder="Введите название картинки"
-                // required
-              />
-            </label> */}
-            <CustomInput inputId="nameImg" inputRef={nameImage} placeholder="Введите название картинки" labelName="Название картинки" errorMessage="Привет я ошибка"/>
 
-            <label
-              className="modal__content__body__infoBlock__label"
-              htmlFor="tagsImg"
-            >
-              Теги картинки (через запятую)
-              <textarea
-                name="tagsImg"
-                id="tagsImg"
-                ref={tagsImage}
-                className="modal__content__body__infoBlock__textarea"
-                placeholder="Введите теги для картинки, например: тег, тег2, тег три"
-                required
-              ></textarea>
-            </label>
+{/* отображения инпута с названием картинки */}
+            <CustomInput inputType="text" inputId="nameImg" inputRef={nameImage} placeholder="Введите название картинки" labelName="Название картинки" errorMessage="Привет я ошибка"/>
+{/* отображения инпута textarea с тегами картинки */}
+            <CustomInput inputId="tagsImg" inputRef={tagsImage}
+            placeholder="Введите теги для картинки, например: тег, тег2, тег три"  labelName=" Теги картинки (через запятую)"
+            />
+
 
             <span className="modal__content__body__infoBlock__wrapper">
               <button
