@@ -36,25 +36,6 @@
             align-items: flex-start;
         }
 
-        // &__input {
-        //     @include h4Style;
-        //     margin-top: 10px;
-        //     width: 25vw;
-        //     padding: 15px 20px;
-        //     border-radius: 20px;
-        //     background-color: $main-black;
-        //     color: $dark-gray-text;
-        //     font-family: "Ubuntu", sans-serif;
-        //     border: 2px solid $main-black;
-
-        //     &:active {
-        //         border: 2px solid $dark-gray-text;
-        //     }
-        //     &:hover {
-        //         border: 2px solid $dark-gray-text;
-        //     }
-        // }
-
         &__checkboxWrapper {
            max-width: 25vw;
            width: 100%;
@@ -81,10 +62,6 @@
                         color: $main-purple;
                     }
                 }
-            }
-
-            &__checkbox {
-
             }
         }
 

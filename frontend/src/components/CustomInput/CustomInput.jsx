@@ -71,6 +71,7 @@ function InputEmail({ placeholder, labelName, onClickFunc, errorMessage, inputId
 function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inputId, inputRef,
 }) {
 
+  // let passwordRef, passworVerifydRef;
      /* fot input password
     получить данные из useRef в виде переменной,
     исп-ть для каждого символа замену на #  */
@@ -122,10 +123,12 @@ function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inpu
             </span> */}
         </span>
       
-      {/* 
+      
             <p className='input__error'>
-                {errorMessage}!
-            </p> */}
+                {/* {errorMessage}! */}
+               {/* { passwordRef !== passworVerifydRef ?
+    "Пароли не равны!" : ""}  */}
+            </p>
     </span>
   );
 }
