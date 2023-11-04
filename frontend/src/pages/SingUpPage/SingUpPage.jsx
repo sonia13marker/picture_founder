@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import "./SingUpPage.scss";
 import { useReducer, useRef, useState } from "react";
-import Userfront from "@userfront/core";
 import CustomInput from "../../components/CustomInput/CustomInput";
 
 export default function SingUpPage() {
@@ -25,74 +24,38 @@ const checkedFunc = () => {
 //   password_verify: "testmodepassword"
 // });
 
-/* useRef не подходит для считывания пароля из input type="text",
-приходит такой результат в консоль: 
-{current: input#singUp_password.input__auth.password} */
-// let passwordRef = useRef();
-// console.log(passwordRef);
 
-// let passworVerifydRef = useRef();
-// console.log(passworVerifydRef);
 
-// if (passworVerifydRef !== passwordRef ) {
-//   alert("Пароли не равны!")
-// } else {
-//   alert("ok")
-// }
 
 // Userfront.signup()
 // .catch(function(error) {
 //   setAlert(error.message);
 // });
 
-// const setAlert = (error) => {
-//   alert(error);
-// }
-
-// var password = password.value;
-// var passwordVerify = passwordVerify.value;
-// if (password !== passwordVerify) {
-//   return setAlert("Password verification must match.");
-// }
-
-
-// let hell = document.getElementById("signupForm");
-// console.log(hell);
-// let passwordValue = hell?.singUp_password?.value;
-// console.log(passwordValue);
 const [passwordValue, setPasswordValue] = useState("");
-let passwordRef = useRef();
-
-
-const handleChangeForPassword = (event) => {
-  const newPassVer = event.target.value.replace(/./g, "#");
-  setPasswordValue(newPassVer);
+const handleChangePassword = (event) => {
+  setPasswordValue(event.target.value);
+  console.log(passwordValue);
 }
+
 const [passwordVerValue, setPasswordVerValue] = useState("");
-
-const handleChangeForVerPassword = (event) => {
-  const newPassVer = event.target.value.replace(/./g, "#");
- setPasswordVerValue(newPassVer);
- console.log(passwordVerValue);
+const handleChangeVerPassword = (event) => {
+  setPasswordVerValue(event.target.value);
+  console.log(passwordVerValue);
 }
-
 
 const handleSubmit = (event) => {
-  alert("sending password" + setPasswordValue);
+
+  console.log(passwordValue);
+  console.log(passwordVerValue);
 
   event.preventDefault();
 
   if(passwordVerValue !==  passwordValue) {
-    alert("NOOOOO YOU WRONG")
+    alert("NOOOOO YOU ARE WRONG")
   } else {
     alert("ok")
   }
-  // let str = String(passwordRef);
-  // event.preventDefault();
-  // setPasswordValue(str);
-// let form = event.target;
-// const passwordValue = form?.singUp_password?.value;
-// console.log(passwordValue);
 }
 
 
@@ -112,42 +75,27 @@ const handleSubmit = (event) => {
       // autoComplete="off"
       onSubmit={handleSubmit}
       >
-
+  {/* email input */}
         <CustomInput inputId="singUp_email" placeholder="Введите эл. почту"
         inputType="email" labelName="Электронная почта" />
-
-        {/* <CustomInput inputType="password" labelName="Пароль" inputId="singUp_password" placeholder="Введите пароль"
-        // value={value} onChange={handleChange}
-        // inputRef={passwordRef}
-        // passwordValue={passwordValue}
-        /> */}
-<label>
-Введите пароль
-</label>
-        <input type="text" value={passwordValue} onChange={handleChangeForPassword}>
-
-        </input>
-
-        <label>
-Введите пароль еще раз
-</label>
-        <input type="text" value={passwordVerValue} onChange={handleChangeForVerPassword}>
-
-        </input>
-        
+  {/* password input */}
+        <CustomInput inputType="password" labelName="Пароль" inputId="singUp_password" placeholder="Введите пароль"
+        value={passwordValue} onChange={handleChangePassword}
+        />  
+  {/* repeat password input */}      
         <CustomInput inputType="password" labelName="Повторите пароль" inputId="singUp_passwordVerify" placeholder="Введите пароль ещё раз"
-        // inputRef={passworVerifydRef}
-        // passwordValue={passwordValue}
+        value={passwordVerValue}
+        onChange={handleChangeVerPassword}
         />
 
         <span className="singup__section__body__checkboxWrapper">
         <input type="checkbox" 
         // onChange={checkedFunc}
         onClick={checkedFunc}
-        id="singUp_Checkbox"
+        id="singUp_checkbox"
        />
           <label
-            htmlFor="singUp_Checkbox"
+            htmlFor="singUp_checkbox"
             className="singup__section__body__checkboxWrapper__label"
           >
             Я ознакомлен и согласен с условиями обработки моих персональных

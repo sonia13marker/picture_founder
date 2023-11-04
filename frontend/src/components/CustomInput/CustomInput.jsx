@@ -68,28 +68,18 @@ function InputEmail({ placeholder, labelName, onClickFunc, errorMessage, inputId
   );
 }
 
-function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inputId, inputRef,
+function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inputId, inputRef, passwordValue, passwordVerValue
 }) {
+  // console.log("aaa " + passwordValue);
+  // console.log("hhh " + passwordVerValue);
 
-  // let passwordRef, passworVerifydRef;
-     /* fot input password
-    получить данные из useRef в виде переменной,
-    исп-ть для каждого символа замену на #  */
     const [open, setOpen] = useState(true);
-    let password = inputRef;
+    const [isHidden, setIsHidden] = useState(true);
     
     const selectIcon = () => {
         setOpen(!open);
+        setIsHidden(!isHidden);
     }
-    
-    function encryptPassword (password) {
-
-        // while (open) {
-        //     password.map(i => i === "#");
-        // }
-        setOpen(!open);
-    }
-    
 
   return (
     <span className="input__wrapper2">
@@ -98,9 +88,9 @@ function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inpu
        <span className="icon__wrapper">
         <input
           className="input__auth password"
-          type="password"
+          type={isHidden ? "password" : "text"}
           id={inputId}
-          ref={inputRef}
+          // ref={inputRef}
           placeholder={placeholder}
         />
         {/*пока открыт глаз - пароль не видно */}
@@ -116,11 +106,7 @@ function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inpu
             </span> 
         )
        }
-            
 
-            {/* <span className="iconClose">
-                <CloseEyeIcon />
-            </span> */}
         </span>
       
       
