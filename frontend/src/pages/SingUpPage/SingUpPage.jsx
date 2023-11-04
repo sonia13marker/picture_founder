@@ -1,17 +1,15 @@
 import { Link } from "react-router-dom";
 import "./SingUpPage.scss";
-import { useRef, useState } from "react";
+import { useReducer, useRef, useState } from "react";
 import Userfront from "@userfront/core";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 
 export default function SingUpPage() {
-    const [checked, setChecked] = useState(false);
-    const getTheChecked = () => {
-        setChecked(!checked)
-    }
 
+/* for checkbox */
+const [checked, checkedFunc] = useReducer(checked => !checked, false)
     // Sample: how to use Userfront.signup()
 // Userfront.init("demo1234");
 // Userfront.signup({
@@ -68,52 +66,19 @@ console.log(hell);
         inputRef={passwordRef}
         // passwordValue={passwordValue}
         />
-        {/*cursor: pointer */}
-        {/* <CloseEyeIcon />
-        <OpenEyeIcon /> */}
-
-        {/* <label htmlFor="email" className="singup__section__body__label">
-          Электронная почта
         
-        <input
-          type="email"
-          id="singUp_email"
-          placeholder="Введите эл. почту"
-          className="singup__section__body__input"
+        <CustomInput inputType="password" labelName="Повторите пароль" inputId="singUp_passwordVerify" placeholder="Введите пароль ещё раз"
+        inputRef={passwordRef}
+        // passwordValue={passwordValue}
         />
-        </label> */}
-        {/* 
-  <label htmlFor="account-name">Account name (custom field)</label>
-  <input type="text" id="account-name" /> */}
 
-        {/* <label htmlFor="password" className="singup__section__body__label">
-          Пароль
-        
-        <input
-          type="password"
-          id="singUp_password"
-          placeholder="Введите пароль"
-          className="singup__section__body__input password_input"
-        />
-        </label> */}
-
-        <label htmlFor="passwordVerify" className="singup__section__body__label">
-          Повторите пароль
-        
-        <input
-          type="password"
-          id="passwordVerify"
-          placeholder="Введите пароль ещё раз"
-          className="singup__section__body__input password_input"
-        />
-        </label>
         <span className="singup__section__body__checkboxWrapper">
         <input type="checkbox" className="singup__section__body__checkboxWrapper__checkbox" 
-        onClick={getTheChecked}
-        id="inputCheckbox"
+        onChange={checkedFunc}
+        id="singUp_Checkbox"
        />
           <label
-            htmlFor="password-checkbox"
+            htmlFor="singUp_Checkbox"
             className="singup__section__body__checkboxWrapper__label"
           >
             Я ознакомлен и согласен с условиями обработки моих персональных
