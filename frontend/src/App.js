@@ -39,8 +39,8 @@ const addToFavorites = (id) => {
       <BrowserRouter>
       <Routes>
         
-            <Route path='/singup' element={<SingUpPage />} 
-            />
+            <Route path='/singup' element={<SingUpPage />} />
+            <Route path='/login' element={<LoginPage />} />
         </Routes>
         {/* <Routes>
           <Route element={<PrivateRoute />}>
@@ -54,6 +54,10 @@ const addToFavorites = (id) => {
         либо разместить это там, где будет находиться страница с 
         данными о пользотвателе (стр "профиль")
         
+
+
+            просто пример, его надо делать на странице аккаунта 
+    const {singOut} = useAuth();
         */}
 
         {/* ссылки на страницы */}
@@ -64,13 +68,13 @@ const addToFavorites = (id) => {
             она делает это автоматически */}
             <Route index element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite}/>}/>
             <Route path='favorite' element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <FavoritePage favorites={favorites} />
-            </PrivateRoute>
+            // </PrivateRoute>
             }/>
             <Route path='developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
 
-            <Route path='login' element={<LoginPage />} />
+            {/* <Route path='login' element={<LoginPage />} /> */}
             {/* <Route path="*" element={<NotFoundPage />} /> */}
           </Route>
         </Routes>

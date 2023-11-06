@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./SingUpPage.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 // import "../../components/CustomInput/CustomInput.scss";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
@@ -12,11 +12,8 @@ export default function SingUpPage() {
 будет выдавать одни и те же результаты. это аналог 
 испол-я функции useState, но более простой*/
 // const [checked, checkedFunc] = useReducer(checked => !checked, false)
-const [checked, setChecked] = useState(false);
+const [checked, checkedFunc] = useReducer(checked => !checked, false);
 
-const checkedFunc = () => {
-  setChecked(!checked);
-}
     // Sample: how to use Userfront.signup()
 // Userfront.init("demo1234");
 // Userfront.signup({
@@ -92,7 +89,7 @@ const handleSubmit = (event) => {
   console.log("success password ", passwordValue);
   console.log("success verify password ", passwordVerValue);
 
-  if (checked === true) {
+  if (checked === true && errorMessage === "") {
     nextPage();
   }
   /* сделать проверку на зарегистрированного пользователя,
@@ -193,8 +190,7 @@ const handleSubmit = (event) => {
 
         <span className="singup__section__body__checkboxWrapper">
         <input type="checkbox" 
-        // onChange={checkedFunc}
-        onClick={checkedFunc}
+        onChange={checkedFunc}
         id="singUp_checkbox"
        />
           <label

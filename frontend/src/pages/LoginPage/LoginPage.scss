@@ -1,0 +1,59 @@
+@import '../../style.scss';
+
+.login {
+
+&__wrapper {
+    max-width: 100%;
+    gap: 5px;
+    width: auto;
+
+    &__label {
+        @include h4Style;
+    }
+}
+
+&__lineWrapper {
+    @include flexRow;
+    width: 100%;
+
+    &__link {
+        @include h4Style;
+        color: $light-gray-text;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+            color: $light-gray-text;
+            transition: $transition;
+            cursor: pointer;
+        }
+
+        &:active {
+            color: $main-purple;
+            transition: $transition;
+        }
+
+        &.boldLink {
+            @include h4BoldStyle;
+        }
+    }
+
+}
+
+&__button {
+    margin-top: 2.5vh;
+    @include flexColumn;
+    align-items: center;
+    gap: 20px;
+
+    &__container {
+        @include flexRow;
+        align-items: center;
+        gap: 3px;
+        @include h4Style;
+        font-weight: 300;
+        color: $light-gray-text;
+    }
+}
+
+}
