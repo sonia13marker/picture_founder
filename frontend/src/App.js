@@ -62,21 +62,20 @@ const addToFavorites = (id) => {
 
         {/* ссылки на страницы */}
         <Routes>
-          <Route path="/" element={<Layout />}>
-            {/* из-за строчки, которая написана выше, нам теперь
-            не надо ставить "/" вначале каждой страницы,
-            она делает это автоматически */}
-            <Route index element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite}/>}/>
-            <Route path='favorite' element={
-            // <PrivateRoute>
-              <FavoritePage favorites={favorites} />
-            // </PrivateRoute>
-            }/>
-            <Route path='developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
-
-            {/* <Route path='login' element={<LoginPage />} /> */}
-            {/* <Route path="*" element={<NotFoundPage />} /> */}
-          </Route>
+          {/* <Route element={<PrivateRoute />}> */}
+            {/* <Route path="/" element={<Layout />}> */}
+            <Route element={<Layout/>}>
+              <Route path='/main' element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite}/>}/>
+              <Route path='/favorite' element={
+              // <PrivateRoute>
+                <FavoritePage favorites={favorites} />
+              // </PrivateRoute>
+              }/>
+              <Route path='/developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
+              {/* <Route path="*" element={<NotFoundPage />} /> */}
+              </Route>
+            {/* </Route> */}
+          {/* </Route> */}
         </Routes>
 
 

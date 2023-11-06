@@ -25,13 +25,15 @@ export default function LoginPage () {
         event.preventDefault();
 
         /* получаем форму */
-        const form = event.target;
-        /* проверка что там не пусто ?.*/
-        const user = form.username.value;
+        // const form = event.target;
+        // /* проверка что там не пусто ?.*/
+        // const user = form.username.value;
 
-        singIn(user, () => navigate(from, { replace: true }));
+        // singIn(user, () => navigate(from, { replace: true }));
     }
-
+const goToMainPage = () => {
+  navigate('/main');
+}
     /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
 const [loginEmail, setLoginEmail] = useState("");
@@ -149,7 +151,9 @@ const goToSingupPage = () => {
 Logout
 </button> */}
 <span className='login__button'>
-    <button type="submit" className="singup__section__body__submitBtn">
+    <button type="submit" className="singup__section__body__submitBtn"
+    onClick={goToMainPage}
+    >
               Войти в аккаунт
             </button>
             <span className='login__button__container'>

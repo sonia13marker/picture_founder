@@ -32,7 +32,7 @@ const [checked, checkedFunc] = useReducer(checked => !checked, false);
 // });
 let navigate = useNavigate();
 const nextPage = () => {
-  navigate('/', {replace: true});
+  navigate('/main', {replace: true});
 }
 /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
@@ -90,6 +90,8 @@ const handleSubmit = (event) => {
   console.log("success verify password ", passwordVerValue);
 
   if (checked === true && errorMessage === "") {
+    /* потом сделать перенаправление на стр. логина,
+    чтобы после регистрации сразу залогиниться */
     nextPage();
   }
   /* сделать проверку на зарегистрированного пользователя,
