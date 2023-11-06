@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./SingUpPage.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import "../../components/CustomInput/CustomInput.scss";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
@@ -33,12 +33,18 @@ const checkedFunc = () => {
 // .catch(function(error) {
 //   setAlert(error.message);
 // });
+let navigate = useNavigate();
+const nextPage = () => {
+  navigate('/', {replace: true});
+}
 /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
 const [email, setEmail] = useState("");
 const handleChangeEmail = (event) => {
   setEmail(event.target.value);
- const emailRegex = /^[^s@]+@[^s@]+\.[^s@]+$/;
+}
+useEffect(() => {
+  const emailRegex = /^[^s@]+@[^s@]+\.[a-zA-Z]{2,}$/;
 
   if (email.match(emailRegex)) {
     setErrorMessageEmail("");
@@ -46,7 +52,8 @@ const handleChangeEmail = (event) => {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     console.log("invalid email");
   };
-}
+}, [email]);
+
 /*for first password input */
 const [passwordValue, setPasswordValue] = useState("");
 const handleChangePassword = (event) => {
@@ -70,6 +77,14 @@ const selectIconTwo = () => {
   setIsClose(!isClose);
   setIsHidden(!isHidden);
 }
+useEffect(() => {
+  if (passwordVerValue !== passwordValue) {
+    setErrorMessage("Пароли не равны!");
+  } else if (passwordVerValue === passwordValue) {
+    setErrorMessage("");
+    console.log("success singup");
+  }
+}, [passwordValue, passwordVerValue])
 const [errorMessage, setErrorMessage] = useState("");
 /* for submit button */
 const handleSubmit = (event) => {
@@ -77,11 +92,8 @@ const handleSubmit = (event) => {
   console.log("success password ", passwordValue);
   console.log("success verify password ", passwordVerValue);
 
-if (passwordVerValue !== passwordValue) {
-    setErrorMessage("Пароли не равны!");
-  } else if (passwordVerValue === passwordValue) {
-    setErrorMessage("");
-    console.log("success singup");
+  if (checked === true) {
+    nextPage();
   }
   /* сделать проверку на зарегистрированного пользователя,
   и если true, вывести ошибку "Пользователь с этой почтой уже зарегистрирован!" */
@@ -145,15 +157,7 @@ if (passwordVerValue !== passwordValue) {
             </span> 
         )
        }
-
         </span>
-      
-      
-            <p className='input__error'>
-                {/* {errorMessage}! */}
-               {/* { passwordRef !== passworVerifydRef ?
-    "Пароли не равны!" : ""}  */}
-            </p>
     </span>
   {/* REPEAT password input */}      
             <span className="input__wrapper2">
@@ -181,10 +185,7 @@ if (passwordVerValue !== passwordValue) {
             </span> 
         )
        }
-
         </span>
-      
-      
             <p className='input__error'>
                 {errorMessage}
             </p>
