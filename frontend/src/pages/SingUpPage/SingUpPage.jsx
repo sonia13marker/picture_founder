@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "./SingUpPage.scss";
 import { useReducer, useRef, useState } from "react";
 import CustomInput from "../../components/CustomInput/CustomInput";
+import TestComp from "../../components/TestComp";
 
 export default function SingUpPage() {
 
@@ -38,6 +39,7 @@ const handleChangePassword = (event) => {
   console.log(passwordValue);
 }
 
+
 const [passwordVerValue, setPasswordVerValue] = useState("");
 const handleChangeVerPassword = (event) => {
   setPasswordVerValue(event.target.value);
@@ -51,11 +53,11 @@ const handleSubmit = (event) => {
 
   event.preventDefault();
 
-  if(passwordVerValue !==  passwordValue) {
-    alert("NOOOOO YOU ARE WRONG")
-  } else {
-    alert("ok")
-  }
+  // if(passwordVerValue !==  passwordValue) {
+  //   alert("NOOOOO YOU ARE WRONG")
+  // } else {
+  //   alert("ok")
+  // }
 }
 
 
@@ -72,7 +74,7 @@ const handleSubmit = (event) => {
       </span>
 
       <form id="signupForm" className="singup__section__body"
-      // autoComplete="off"
+      autoComplete="off"
       onSubmit={handleSubmit}
       >
   {/* email input */}
@@ -80,12 +82,13 @@ const handleSubmit = (event) => {
         inputType="email" labelName="Электронная почта" />
   {/* password input */}
         <CustomInput inputType="password" labelName="Пароль" inputId="singUp_password" placeholder="Введите пароль"
-        value={passwordValue} onChange={handleChangePassword}
+        passVal={passwordValue} 
+        onChangeFunc={handleChangePassword}
         />  
   {/* repeat password input */}      
         <CustomInput inputType="password" labelName="Повторите пароль" inputId="singUp_passwordVerify" placeholder="Введите пароль ещё раз"
-        value={passwordVerValue}
-        onChange={handleChangeVerPassword}
+        passVal={passwordVerValue}
+        onChangeFunc={handleChangeVerPassword}
         />
 
         <span className="singup__section__body__checkboxWrapper">

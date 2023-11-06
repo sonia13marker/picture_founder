@@ -4,9 +4,11 @@ import OpenEyeIcon from "../OpenEyeIcon";
 import "./CustomInput.scss";
 
 export default function CustomInput({
-  inputType, placeholder, labelName, onClickFunc, errorMessage, inputId, inputRef,
+  placeholder, labelName, errorMessage, onClickFunc, inputId, inputType, inputRef, passVal, passwordVerValue,
+    onChangeFunc
 }) {
-  let data = { inputType, placeholder, labelName, onClickFunc, errorMessage, inputId, inputRef,
+  let data = { placeholder, labelName, errorMessage, onClickFunc, inputId, inputRef, passVal, passwordVerValue,
+    onChangeFunc, inputType
   };
 
   if (inputType === "password") {
@@ -68,7 +70,8 @@ function InputEmail({ placeholder, labelName, onClickFunc, errorMessage, inputId
   );
 }
 
-function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inputId, inputRef, passwordValue, passwordVerValue
+function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inputId, inputRef, passVal, passwordVerValue,
+  onChangeFunc
 }) {
   // console.log("aaa " + passwordValue);
   // console.log("hhh " + passwordVerValue);
@@ -89,9 +92,12 @@ function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inpu
         <input
           className="input__auth password"
           type={isHidden ? "password" : "text"}
+          // type="password"
           id={inputId}
+          onChange={onChangeFunc}
           // ref={inputRef}
           placeholder={placeholder}
+          value={passVal}
         />
         {/*пока открыт глаз - пароль не видно */}
        {
