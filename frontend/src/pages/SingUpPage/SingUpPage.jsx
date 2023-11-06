@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./SingUpPage.scss";
 import { useState } from "react";
-import "../../components/CustomInput/CustomInput.scss";
+// import "../../components/CustomInput/CustomInput.scss";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
 
@@ -33,6 +33,20 @@ const checkedFunc = () => {
 // .catch(function(error) {
 //   setAlert(error.message);
 // });
+/*for email */
+const [errorMessageEmail, setErrorMessageEmail] = useState("");
+const [email, setEmail] = useState("");
+const handleChangeEmail = (event) => {
+  setEmail(event.target.value);
+ const emailRegex = /^[^s@]+@[^s@]+\.[^s@]+$/;
+
+  if (email.match(emailRegex)) {
+    setErrorMessageEmail("");
+  } else {
+    setErrorMessageEmail("Введён неверный адрес эл.почты!");
+    console.log("invalid email");
+  };
+}
 /*for first password input */
 const [passwordValue, setPasswordValue] = useState("");
 const handleChangePassword = (event) => {
@@ -56,23 +70,23 @@ const selectIconTwo = () => {
   setIsClose(!isClose);
   setIsHidden(!isHidden);
 }
+const [errorMessage, setErrorMessage] = useState("");
 /* for submit button */
 const handleSubmit = (event) => {
   event.preventDefault();
-  console.log(passwordValue);
-  console.log(passwordVerValue);
+  console.log("success password ", passwordValue);
+  console.log("success verify password ", passwordVerValue);
 
-
-  if(passwordVerValue !==  passwordValue) {
-    alert("NOOOOO YOU ARE WRONG")
-  } else {
-    alert("ok")
+if (passwordVerValue !== passwordValue) {
+    setErrorMessage("Пароли не равны!");
+  } else if (passwordVerValue === passwordValue) {
+    setErrorMessage("");
+    console.log("success singup");
   }
+  /* сделать проверку на зарегистрированного пользователя,
+  и если true, вывести ошибку "Пользователь с этой почтой уже зарегистрирован!" */
+
 }
-
-
-
-
   return (
     <div className="singup__section">
       <span className="singup__section__header">
@@ -90,18 +104,19 @@ const handleSubmit = (event) => {
   <span className="input__wrapper">
       <label className="input__label" htmlFor="singUp_email">
       Электронная почта
-
         <input
           className="input__auth"
           type="email"
           id="singUp_email"
           placeholder="Введите эл. почту"
+          value={email}
+          onChange={handleChangeEmail}
         />
       </label>
 
-      {/* <p className='input__error'>
-                {errorMessage}!
-            </p> */}
+      <p className='input__error'>
+                {errorMessageEmail}
+            </p>
     </span>
 
   {/* password input */}
@@ -140,7 +155,7 @@ const handleSubmit = (event) => {
     "Пароли не равны!" : ""}  */}
             </p>
     </span>
-  {/* repeat password input */}      
+  {/* REPEAT password input */}      
             <span className="input__wrapper2">
       <label className="input__label" htmlFor="singUp_passwordVerify"></label>
       Повторите пароль
@@ -171,9 +186,7 @@ const handleSubmit = (event) => {
       
       
             <p className='input__error'>
-                {/* {errorMessage}! */}
-               {/* { passwordRef !== passworVerifydRef ?
-    "Пароли не равны!" : ""}  */}
+                {errorMessage}
             </p>
     </span>
 

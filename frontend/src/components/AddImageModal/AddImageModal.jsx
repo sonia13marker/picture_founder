@@ -3,7 +3,6 @@ import add_img from "../../images/add_img.svg";
 import React, { useCallback, useState, useEffect, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
-import CustomInput from "../CustomInput/CustomInput";
 
 export default function AddImageModal({ active, setActive, addImage = f => f }) {
   /*for drag & drop file */
