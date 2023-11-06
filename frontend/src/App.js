@@ -39,7 +39,8 @@ const addToFavorites = (id) => {
       <BrowserRouter>
       <Routes>
         
-            <Route path='/singup' element={<SingUpPage />} />
+            <Route path='/singup' element={<SingUpPage />} 
+            />
         </Routes>
         {/* <Routes>
           <Route element={<PrivateRoute />}>

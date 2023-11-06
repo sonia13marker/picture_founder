@@ -210,13 +210,35 @@ export default function AddImageModal({ active, setActive, addImage = f => f }) 
           >
 
 {/* отображения инпута с названием картинки */}
-            <CustomInput inputType="text" inputId="nameImg" inputRef={nameImage} placeholder="Введите название картинки" labelName="Название картинки" errorMessage="Привет я ошибка"/>
+<span className="input__wrapper">
+       <label className="input__label" htmlFor="nameImg">
+       Название картинки
+
+         <input
+           className="input"
+           type="text"
+           id="nameImg"
+           ref={nameImage}
+           placeholder="Введите название картинки"
+         />
+     </label>
+
+       {/* <p className='input__error'>
+                 {errorMessage}!
+             </p> */}
+     </span>
+
 {/* отображения инпута textarea с тегами картинки */}
-            <CustomInput inputId="tagsImg" inputRef={tagsImage}
-            placeholder="Введите теги для картинки, например: тег, тег2, тег три"  labelName=" Теги картинки (через запятую)"
-            />
+<label className="input__label" htmlFor="tagsImg">
+Теги картинки (через запятую)
 
-
+      <textarea
+        className="input__textarea"
+        id="tagsImg"
+        ref={tagsImage}
+        placeholder="Введите теги для картинки, например: тег, тег2, тег три"
+      ></textarea>
+    </label>
             <span className="modal__content__body__infoBlock__wrapper">
               <button
                 className="modal__content__body__infoBlock__wrapper__outlineBtn"

@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import "./SingUpPage.scss";
-import { useReducer, useRef, useState } from "react";
-import CustomInput from "../../components/CustomInput/CustomInput";
-import TestComp from "../../components/TestComp";
+import { useState } from "react";
+import "../../components/CustomInput/CustomInput.scss";
+import OpenEyeIcon from "../../components/OpenEyeIcon";
+import CloseEyeIcon from "../../components/CloseEyeIcon";
 
 export default function SingUpPage() {
 
@@ -32,34 +33,42 @@ const checkedFunc = () => {
 // .catch(function(error) {
 //   setAlert(error.message);
 // });
-
+/*for first password input */
 const [passwordValue, setPasswordValue] = useState("");
 const handleChangePassword = (event) => {
   setPasswordValue(event.target.value);
-  console.log(passwordValue);
+}
+const [open, setOpen] = useState(true);
+const [hidden, setHidden] = useState(true);
+const selectIcon = () => {
+    setOpen(!open);
+    setHidden(!hidden);
 }
 
-
+/*for secon password input - verify*/
 const [passwordVerValue, setPasswordVerValue] = useState("");
 const handleChangeVerPassword = (event) => {
   setPasswordVerValue(event.target.value);
-  console.log(passwordVerValue);
 }
-
+const [isClose, setIsClose] = useState(true);
+const [isHidden, setIsHidden] = useState(true);
+const selectIconTwo = () => {
+  setIsClose(!isClose);
+  setIsHidden(!isHidden);
+}
+/* for submit button */
 const handleSubmit = (event) => {
-
+  event.preventDefault();
   console.log(passwordValue);
   console.log(passwordVerValue);
 
-  event.preventDefault();
 
-  // if(passwordVerValue !==  passwordValue) {
-  //   alert("NOOOOO YOU ARE WRONG")
-  // } else {
-  //   alert("ok")
-  // }
+  if(passwordVerValue !==  passwordValue) {
+    alert("NOOOOO YOU ARE WRONG")
+  } else {
+    alert("ok")
+  }
 }
-
 
 
 
@@ -74,22 +83,99 @@ const handleSubmit = (event) => {
       </span>
 
       <form id="signupForm" className="singup__section__body"
-      autoComplete="off"
+      // autoComplete="off"
       onSubmit={handleSubmit}
       >
   {/* email input */}
-        <CustomInput inputId="singUp_email" placeholder="Введите эл. почту"
-        inputType="email" labelName="Электронная почта" />
-  {/* password input */}
-        <CustomInput inputType="password" labelName="Пароль" inputId="singUp_password" placeholder="Введите пароль"
-        passVal={passwordValue} 
-        onChangeFunc={handleChangePassword}
-        />  
-  {/* repeat password input */}      
-        <CustomInput inputType="password" labelName="Повторите пароль" inputId="singUp_passwordVerify" placeholder="Введите пароль ещё раз"
-        passVal={passwordVerValue}
-        onChangeFunc={handleChangeVerPassword}
+  <span className="input__wrapper">
+      <label className="input__label" htmlFor="singUp_email">
+      Электронная почта
+
+        <input
+          className="input__auth"
+          type="email"
+          id="singUp_email"
+          placeholder="Введите эл. почту"
         />
+      </label>
+
+      {/* <p className='input__error'>
+                {errorMessage}!
+            </p> */}
+    </span>
+
+  {/* password input */}
+                    <span className="input__wrapper2">
+      <label className="input__label" htmlFor="singUp_password"></label>
+      Пароль
+       <span className="icon__wrapper">
+        <input
+          className="input__auth password"
+          type={hidden ? "password" : "text"}
+          id="singUp_password"
+          onChange={handleChangePassword}
+          placeholder="Введите пароль"
+          value={passwordValue}
+        />
+        {/*пока открыт глаз - пароль не видно */}
+       {
+        open ?
+        (
+        <span className="iconOpen" onClick={selectIcon}>
+            <OpenEyeIcon />
+        </span>) :
+        (
+            <span className="iconClose" onClick={selectIcon}>
+                <CloseEyeIcon />
+            </span> 
+        )
+       }
+
+        </span>
+      
+      
+            <p className='input__error'>
+                {/* {errorMessage}! */}
+               {/* { passwordRef !== passworVerifydRef ?
+    "Пароли не равны!" : ""}  */}
+            </p>
+    </span>
+  {/* repeat password input */}      
+            <span className="input__wrapper2">
+      <label className="input__label" htmlFor="singUp_passwordVerify"></label>
+      Повторите пароль
+       <span className="icon__wrapper">
+        <input
+          className="input__auth password"
+          type={isHidden ? "password" : "text"}
+          id="singUp_passwordVerify"
+          onChange={handleChangeVerPassword}
+          placeholder="Введите пароль ещё раз"
+          value={passwordVerValue}
+        />
+        {/*пока открыт глаз - пароль не видно */}
+       {
+        isClose ?
+        (
+        <span className="iconOpen" onClick={selectIconTwo}>
+            <OpenEyeIcon />
+        </span>) :
+        (
+            <span className="iconClose" onClick={selectIconTwo}>
+                <CloseEyeIcon />
+            </span> 
+        )
+       }
+
+        </span>
+      
+      
+            <p className='input__error'>
+                {/* {errorMessage}! */}
+               {/* { passwordRef !== passworVerifydRef ?
+    "Пароли не равны!" : ""}  */}
+            </p>
+    </span>
 
         <span className="singup__section__body__checkboxWrapper">
         <input type="checkbox" 
