@@ -23,18 +23,28 @@ function App() {
 const [images] = useState(imagesData);
 
 /*добавление в избранное */
-const [favorites, setFavorites] = useState([]);
+// const [favorites, setFavorites] = useState([]);
+const [favor, setFavor] = useState([]);
 const [inFavorite, setInFavorite] = useState(false);
 
-
-const addToFavorites = (id) => {
-  // поиск элемента из массива и добавление его в список избранных
-  const selectedElement = images.find((item) => item.id === id);
-  if (selectedElement) {
-    setFavorites([...favorites, selectedElement]);
-  };
+const addToFavorite = (id) => {
+  let selectedElement = images.find((item) => item.id === id);
+  if (favor.includes(selectedElement)) {
+    return null
+  } else {
+    setInFavorite(!inFavorite);
+  }
+  setFavor((prevFavor) => [...prevFavor, selectedElement]);
+}
+console.log(favor);
+// const addToFavorites = (id) => {
+//   // поиск элемента из массива и добавление его в список избранных
+//   const selectedElement = images.find((item) => item.id === id);
+//   if (selectedElement) {
+//     setFavorites([...favorites, selectedElement]);
+//   };
   
-};
+// };
 
   return (
         <div className="App">
@@ -67,8 +77,14 @@ const addToFavorites = (id) => {
           <Route element={<Layout />}>
             {/*ссылаюсь на уже существующую страницу  */}
           <Route path="/" element={<Navigate to="/main" replace />} />
-              <Route path="/main" index element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite} />} />
-              <Route path="/favorite" element={<FavoritePage favorites={favorites} />} />
+              <Route path="/main" index element={<MainPage images={images} 
+              // favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} 
+              addToFavorite={addToFavorite}
+              favor={favor} setFavor={setFavor}
+              inFavorite={inFavorite} setInFavorite={setInFavorite} />} />
+              <Route path="/favorite" element={<FavoritePage //favorites={favorites} 
+              favor={favor}
+              />} />
               <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
           </Route>
   </Routes>

@@ -2,7 +2,7 @@ import FavorFillIcon from '../FavorFillIcon';
 import FavorOutlineIcon from '../FavorOutlineIcon';
 import './FavoriteComponent.scss';
 
-export default function FavoriteComponent ({inFavorite, setInFavorite }) {
+export default function FavoriteComponent ({inFavorite}) {
     return(<>
         {/* {
             addFavorite ? <FavorFillIcon /> : <FavorOutlineIcon />
