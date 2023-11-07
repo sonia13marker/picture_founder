@@ -3,7 +3,7 @@
 .wrapper_layout {
     //в принципе работает, но немного не так
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-auto-rows: max-content;
 
     //работает только при 1920px 
@@ -16,7 +16,7 @@
     row-gap: 10px;
     column-gap: 2vw;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     justify-items: center;
 
 }
