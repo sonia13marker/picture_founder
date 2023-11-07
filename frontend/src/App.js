@@ -7,7 +7,8 @@ import data from '../package.json';
 import { useState, useContext, createContext,  Navigate,
   Outlet,
   useLocation,
-  useNavigate, Link } from 'react';
+  useNavigate } from 'react';
+import { Link } from 'react-router-dom';
 import imagesData from './data/first-data.json';
 import SingUpPage from './pages/SingUpPage/SingUpPage';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
@@ -36,12 +37,7 @@ const addToFavorites = (id) => {
 
   return (
         <div className="App">
-      <BrowserRouter>
-      <Routes>
-        
-            <Route path='/singup' element={<SingUpPage />} />
-            <Route path='/login' element={<LoginPage />} />
-        </Routes>
+      <BrowserRouter basename="/picture_founder">
         {/* <Routes>
           <Route element={<PrivateRoute />}>
             <Route path="/admin" element={<Admin />} />
@@ -62,37 +58,20 @@ const addToFavorites = (id) => {
 
         {/* ссылки на страницы */}
         <Routes>
-          {/* <Route element={<PrivateRoute />}> */}
-            {/* <Route path="/" element={<Layout />}> */}
-            <Route element={<Layout/>}>
-              <Route path='/main' element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite}/>}/>
-              <Route path='/favorite' element={
-              // <PrivateRoute>
-                <FavoritePage favorites={favorites} />
-              // </PrivateRoute>
-              }/>
-              <Route path='/developers' element={<DevelopersPage  numberVersion={data.version}/>}/>
-              {/* <Route path="*" element={<NotFoundPage />} /> */}
-              </Route>
-            {/* </Route> */}
-          {/* </Route> */}
-        </Routes>
+          <Route path="/singup" element={<SingUpPage />} />
+          <Route path="/login" element={<LoginPage />} />
 
-
+          <Route path="/" element={<Layout />}>
+              <Route path="main" element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite} />} />
+              <Route path="favorite" element={<FavoritePage favorites={favorites} />} />
+              <Route path="developers" element={<DevelopersPage numberVersion={data.version} />} />
+          </Route>
+  </Routes>
       </BrowserRouter>
     </div>
     
   );
 }
 
-
-const Admin = () => {
-  return (
-    <>
-      <div>Admin</div>
-      <Link to="/">Go to Main Page</Link>
-    </>
-  )
-}
 
 export default App;
