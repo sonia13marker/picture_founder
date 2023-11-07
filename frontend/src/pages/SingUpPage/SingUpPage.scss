@@ -35,9 +35,9 @@
 
         &__checkboxWrapper {
            max-width: 25vw;
-           width: 100%;
+           width: auto;
            @include flexRow;
-           gap: 15px;
+           gap: 5px;
 
             &__label {
                 @include h4Style;

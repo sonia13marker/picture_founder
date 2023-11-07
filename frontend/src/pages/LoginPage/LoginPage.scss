@@ -20,6 +20,7 @@
         @include h4Style;
         color: $light-gray-text;
         text-decoration: none;
+        // width: auto;
 
         &:hover {
             text-decoration: underline;

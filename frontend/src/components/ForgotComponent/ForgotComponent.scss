@@ -1,0 +1,11 @@
+@import '../../style.scss';
+@import '../../pages/SingUpPage/SingUpPage.scss';
+
+.forgorPass {
+    gap: 10px;
+    &__text {
+        @include h4Style;
+        color: $light-gray-text;
+        margin-top: 25px;
+    }
+}

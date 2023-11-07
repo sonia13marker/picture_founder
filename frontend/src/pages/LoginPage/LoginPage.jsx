@@ -142,7 +142,7 @@ const goToSingupPage = () => {
             </label>
         </span>
 
-        <Link to="#" className='login__lineWrapper__link'>
+        <Link to="/forgot_password" className='login__lineWrapper__link'>
         Забыли пароль?
         </Link>
     </span>
@@ -164,10 +164,6 @@ Logout
         </span>
 </form>
       </div>
-      
-
-     
-
 
     )
 }

@@ -14,6 +14,8 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Layout from './components/Layout/Layout';
 
 import LoginPage from './pages/LoginPage/LoginPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
+import ForgotPasswordSuccessPage from './pages/ForgotPasswordSuccessPage/ForgotPasswordSuccessPage';
 
 
 function App() {
@@ -59,6 +61,8 @@ const addToFavorites = (id) => {
         <Routes>
           <Route path="/singup" element={<SingUpPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path='/forgot_password' element={<ForgotPasswordPage />} />
+          <Route path='/forgot_password-success' element={<ForgotPasswordSuccessPage />} />
 
           <Route element={<Layout />}>
             {/*ссылаюсь на уже существующую страницу  */}
