@@ -4,11 +4,10 @@ import MainPage from './pages/MainPage/MainPage';
 import FavoritePage from './pages/FavoritePage/FavoritePage';
 import DevelopersPage from './pages/DevelopersPage/DevelopersPage';
 import data from '../package.json';
-import { useState, useContext, createContext,  Navigate,
-  Outlet,
+import { useState, useContext, createContext, Outlet,
   useLocation,
   useNavigate } from 'react';
-import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import imagesData from './data/first-data.json';
 import SingUpPage from './pages/SingUpPage/SingUpPage';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
@@ -61,10 +60,12 @@ const addToFavorites = (id) => {
           <Route path="/singup" element={<SingUpPage />} />
           <Route path="/login" element={<LoginPage />} />
 
-          <Route path="/" element={<Layout />}>
-              <Route path="main" element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite} />} />
-              <Route path="favorite" element={<FavoritePage favorites={favorites} />} />
-              <Route path="developers" element={<DevelopersPage numberVersion={data.version} />} />
+          <Route element={<Layout />}>
+            {/*ссылаюсь на уже существующую страницу  */}
+          <Route path="/" element={<Navigate to="/main" replace />} />
+              <Route path="/main" index element={<MainPage images={images} favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} inFavorite={inFavorite} setInFavorite={setInFavorite} />} />
+              <Route path="/favorite" element={<FavoritePage favorites={favorites} />} />
+              <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
           </Route>
   </Routes>
       </BrowserRouter>
