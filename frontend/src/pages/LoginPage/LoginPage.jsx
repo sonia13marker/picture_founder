@@ -30,6 +30,9 @@ export default function LoginPage () {
         // const user = form.username.value;
 
         // singIn(user, () => navigate(from, { replace: true }));
+        if (loginEmail && password && errorMessageEmail === "" && errorMessagePassword === "") {
+          goToMainPage();
+        }
     }
 const goToMainPage = () => {
   navigate('/main');
@@ -41,7 +44,7 @@ const handleChangeEmail = (event) => {
   setLoginEmail(event.target.value);
 }
 useEffect(() => {
-  const emailRegex = /^[^s@]+@[^s@]+\.[a-zA-Z]{2,}$/;
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (loginEmail.match(emailRegex)) {
     setErrorMessageEmail("");
@@ -53,9 +56,14 @@ useEffect(() => {
 
 /*for password input */
 const [password, setPassword] = useState("");
+const [errorMessagePassword, setErrorMessagePassword] = useState("");
 const handleChangePassword = (event) => {
   setPassword(event.target.value);
 }
+useEffect(() => {
+  //сделать проверку на пароль, чтобы он совпадал с тем, 
+  //который был записан при регистрации
+}, [password])
 const [open, setOpen] = useState(true);
 const [hidden, setHidden] = useState(true);
 const selectIcon = () => {
@@ -152,7 +160,7 @@ Logout
 </button> */}
 <span className='login__button'>
     <button type="submit" className="singup__section__body__submitBtn"
-    onClick={goToMainPage}
+    onClick={handleSubmit}
     >
               Войти в аккаунт
             </button>

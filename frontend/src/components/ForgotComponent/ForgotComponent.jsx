@@ -10,7 +10,7 @@ const handleChangeEmail = (event) => {
   setEmail(event.target.value);
 }
 useEffect(() => {
-  const emailRegex = /^[^s@]+@[^s@]+\.[a-zA-Z]{2,}$/;
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (email.match(emailRegex)) {
     setErrorMessageEmail("");

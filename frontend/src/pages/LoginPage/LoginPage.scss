@@ -35,6 +35,7 @@
         }
 
         &.boldLink {
+            text-decoration: underline;
             @include h4BoldStyle;
         }
     }

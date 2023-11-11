@@ -41,7 +41,7 @@ const handleChangeEmail = (event) => {
   setEmail(event.target.value);
 }
 useEffect(() => {
-  const emailRegex = /^[^s@]+@[^s@]+\.[a-zA-Z]{2,}$/;
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (email.match(emailRegex)) {
     setErrorMessageEmail("");
@@ -89,7 +89,7 @@ const handleSubmit = (event) => {
   console.log("success password ", passwordValue);
   console.log("success verify password ", passwordVerValue);
 
-  if (checked === true && errorMessage === "") {
+  if (checked === true && errorMessage === "" && errorMessageEmail === "" && passwordValue && passwordVerValue) {
     /* потом сделать перенаправление на стр. логина,
     чтобы после регистрации сразу залогиниться */
     nextPage();

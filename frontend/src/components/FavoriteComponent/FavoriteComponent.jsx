@@ -5,7 +5,7 @@ import './FavoriteComponent.scss';
 export default function FavoriteComponent ({inFavorite}) {
     return(<>
         {
-            inFavorite ? <span className='favorite_icon__fill' /> : <span className='favorite_icon__outline' /> 
+            inFavorite ? <FavorFillIcon /> : <FavorOutlineIcon />
         }
     </>)
 }
