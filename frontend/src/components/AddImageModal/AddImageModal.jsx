@@ -5,26 +5,22 @@ import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponen
 
 export default function AddImageModal({ active, setActive, addImage = f => f }) {
   
-/*------------------------- */
+/*-------------------------*/
 const [file, setFile] = useState(null);
 const [selectedImage, setSelectedImage] = useState(null);
-  
+/*-------------------------*/ 
+
     /* for cancel btn */
   const cancelBtnClick = () => {
-    // setFile(null);
-    // setSelectedImage(null);
-    // deleteBtnClick();
-    setActive(!active);
+    setActive(false);
     setConfirmModalActive(!confirmModalActive);
   };
-
-  
-
 
   /* для текстовых блоков */
   let nameImage = useRef();
   let tagsImage = useRef();
 
+  /* для отправки картинки на сервер */
   const submitInfoImage = e => {
     e.preventDefault();
     const name = nameImage.current.value;
@@ -37,28 +33,13 @@ const [selectedImage, setSelectedImage] = useState(null);
     // console.log(`name of img: ${name}, tags image: ${tags}, ${image}`);
     nameImage.current.value = "";
     tagsImage.current.value = "";
-    // setFile(null);
-    // setSelectedImage(null);
-    /*тут идет очистка места картинки и 
-    закрытие модального окна */
-    // cancelBtnClick();
-    // endSubmitInfo();
+    setFile(null);
+    setSelectedImage(null);
+    setActive(!active);
   }
-
-  // const endSubmitInfo = () => {
-  //   setFile(null);
-  //   setSelectedImage(null);
-  //   setActive(!active);
-  //   setConfirmModalActive(!confirmModalActive);
-  // }
-
   /* для модальных окон-подтверждений */
   const [confirmModalActive, setConfirmModalActive] = useState(false);
 
-  const getActiveConfirmModal = () => {
-    // console.log("ldspgkdpkbgodkfgop");
-    setConfirmModalActive(!confirmModalActive);
-  }
 
   return (<>
     <div className={active ? "modal activeModal" : "modal"}>
@@ -116,7 +97,7 @@ const [selectedImage, setSelectedImage] = useState(null);
                 // onClick={cancelBtnClick}
                 onClick={() => setConfirmModalActive(!confirmModalActive)}
               >
-                Отмена
+                Отмена 
               </button>
               
 
@@ -139,7 +120,7 @@ const [selectedImage, setSelectedImage] = useState(null);
 
     <ConfirmModalComponent
      confirmModalActive={confirmModalActive} setConfirmModalActive={setConfirmModalActive} 
-     nameOfModal="Сохранение изменений" bodyText="Если Вы выйдете сейчас, изменения не будут сохранены." leftBtnName="Отмена" rightBtnName="Сохранить изменения"
+     nameOfModal="Сохранение изменений" bodyText="Если Вы выйдете сейчас, изменения не будут сохранены." leftBtnName="Отмена изменений" rightBtnName="Сохранить изменения"
      leftBtnAction={cancelBtnClick} 
      // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
       /> 

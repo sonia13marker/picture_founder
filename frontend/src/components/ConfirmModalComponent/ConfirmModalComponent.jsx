@@ -6,7 +6,6 @@ export default function ConfirmModalComponent({
     leftBtnAction, rightBtnAction,
 }) {
   return ( <>
-    {/* { active ?  */}
     <div className={confirmModalActive ? "confirm__background activeModal" : "confirm__background"}>
 
         <div className="confirm__content" onClick={(e) => e.stopPropagation()}> 
@@ -14,7 +13,7 @@ export default function ConfirmModalComponent({
         <h3 className="confirm__content__header__title">{nameOfModal}</h3>
 
         <span className="confirm__content__header__img"
-        onClick={() => setConfirmModalActive(!confirmModalActive)}
+        onClick={() => setConfirmModalActive(false)}
         ></span>
       </span>
 
@@ -33,6 +32,5 @@ export default function ConfirmModalComponent({
         </div>
       
     </div> 
-    {/* : <></>} */}
     </>);
 }
