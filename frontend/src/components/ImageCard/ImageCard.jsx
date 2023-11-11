@@ -3,8 +3,7 @@ import { useState } from "react";
 import ActionCircle from "../ActionCircle/ActionCircle";
 import FavoriteComponent from "../FavoriteComponent/FavoriteComponent";
 
-export default function ImageCard({ id, name, tags, image, addToFavorite, inFavorite, setInFavorite, icon
-  // inFavorite, setInFavorite 
+export default function ImageCard({ id, name, tags, image, addToFavorite, inFavorite, setInFavorite
 }) {
   /*функция для преобразования тегов */
   let newTagList = tags
@@ -22,6 +21,9 @@ export default function ImageCard({ id, name, tags, image, addToFavorite, inFavo
     setIsHover(false);
   };
 
+  // const addToFavorite = (id) => {
+  //   setIdImg(id);
+  //  }
 
   return (
     <span
@@ -36,11 +38,8 @@ export default function ImageCard({ id, name, tags, image, addToFavorite, inFavo
         <span className="layout__card__titleWrap">
           <h3 className="layout__card__titleWrap__title">{name}</h3>
           <span onClick={() => addToFavorite(id)}>
-            {/* <FavoriteComponent 
-            inFavorite={inFavorite} setInFavorite={setInFavorite}/> */}
-            {
-              icon
-            }
+            <FavoriteComponent 
+            inFavorite={inFavorite} setInFavorite={setInFavorite}/>
           </span>
         </span>
 
