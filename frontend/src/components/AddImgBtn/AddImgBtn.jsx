@@ -6,8 +6,9 @@ export default function AddImgBtn () {
    
     /* for modal */
     const [modalActive, setModalActive] = useState(false);
+    
     return (<>
-        <button className='add_btn' onClick={() => setModalActive(true)}>
+        <button className='add_btn' onClick={() => setModalActive(!modalActive)}>
             Добавить
         </button>
 
