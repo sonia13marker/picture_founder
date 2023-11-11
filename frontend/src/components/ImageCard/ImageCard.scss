@@ -1,29 +1,21 @@
 @import '../../style.scss';
 
 .layout__card {
-        min-height: 300px;
-        height: max-content;
+        min-height: 355px;
+        height: 100%;
         max-width: 300px;
         width: 100%;
         background-color: $main-black;
         color: $main-white;
         border-radius: 20px;
         margin-top: 15px;
-    
-        &:hover {
-            cursor: pointer;
-        }
 
         &__wrapper {
-            min-height: 300px;
-            height: max-content;
+            min-height: 355px;
             max-width: 300px;
             width: 100%;
             @include flexColumn;
-
-            // &__actions {
-
-            // }
+            
             &:hover {
                 opacity: 1;
             }
@@ -43,16 +35,19 @@
         &__image {
             border-radius: 20px;
             width: 100%;
+            max-width: 300px;
             min-height: 200px;
+            height: 100%;
             max-height: 240px;
             object-fit: fill;
-            height: 100%;
         }
 
         &__tagList {
             @include flexRow;
             padding: 15px;
-            height: max-content;
+            min-height: 55px;
+            max-height: max-content;
+            height: 100%;
             width: 100%;
             font-size: 15px;
             font-weight: 400;
