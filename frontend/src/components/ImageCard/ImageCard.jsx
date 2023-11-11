@@ -24,7 +24,6 @@ export default function ImageCard({ id, name, tags, image, addToFavorite, inFavo
   // const addToFavorite = (id) => {
   //   setIdImg(id);
   //  }
-
   return (
     <span
       className="layout__card__wrapper"
@@ -32,7 +31,10 @@ export default function ImageCard({ id, name, tags, image, addToFavorite, inFavo
       onMouseLeave={handleMouseDown}
     >
       <div className="layout__card__wrapper__actions">
-        <ActionCircle isHover={isHover} setIsHover={setIsHover} />
+        <ActionCircle 
+        id={id} name={name} tags={tags} image={image}
+        // dataOfImage={[id, name, tags, image ]} 
+        isHover={isHover}/>
       </div>
       <div className="layout__card">
         <span className="layout__card__titleWrap">
