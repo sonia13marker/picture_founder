@@ -63,6 +63,13 @@ const handleChangePassword = (event) => {
 useEffect(() => {
   //сделать проверку на пароль, чтобы он совпадал с тем, 
   //который был записан при регистрации
+
+  //проверка на наличие пароля
+  if (password === "") {
+    setErrorMessagePassword("Пароль не введён!")
+  } else {
+    setErrorMessagePassword("")
+  }
 }, [password])
 const [open, setOpen] = useState(true);
 const [hidden, setHidden] = useState(true);
@@ -134,6 +141,9 @@ const goToSingupPage = () => {
         )
        }
         </span>
+        <p className='input__error'>
+                {errorMessagePassword}
+            </p>
     </span>
 
     <span className='login__lineWrapper'>
