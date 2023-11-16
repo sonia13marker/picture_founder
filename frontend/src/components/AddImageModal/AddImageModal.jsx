@@ -36,8 +36,15 @@ export default function AddImageModal({
     // console.log(`name of img: ${name}, tags image: ${tags}, ${image}`);
     nameImage.current.value = "";
     tagsImage.current.value = "";
-    setFile(null);
-    setSelectedImage(null);
+    if (file) { setFile(null);
+    } else {
+      return null;
+    }
+    if (selectedImage) {
+      setSelectedImage(null);
+    } else {
+      return null;
+    }
     setActive(!active);
   };
   /* для модальных окон-подтверждений */
@@ -46,7 +53,9 @@ export default function AddImageModal({
   return (
     <>
       <div className={active ? "modal activeModal" : "modal"}>
-        <div className="modal__content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal__content" 
+        //onClick={(e) => e.stopPropagation()}
+        >
           <span className="modal__content__head">
             <h3 className="modal__content__head__h3">Добавить картинку</h3>
             {/* тут идет обычкновенное закрытие текущего окна
@@ -112,14 +121,7 @@ export default function AddImageModal({
             </form>
           </span>
         </div>
-        {/* {
-        active &&  */}
-
-        {/*   
-        }   */}
-      </div>
-
-      <ConfirmModalComponent
+        <ConfirmModalComponent
         confirmModalActive={confirmModalActive}
         setConfirmModalActive={setConfirmModalActive}
         nameOfModal="Сохранение изменений"
@@ -129,6 +131,8 @@ export default function AddImageModal({
         leftBtnAction={cancelBtnClick}
         // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
       />
+      </div>
+  
     </>
   );
 }

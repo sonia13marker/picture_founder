@@ -11,17 +11,21 @@ export default function EditImageModal ({active, setActive, id, name, tags, imag
   let tagsImage = useRef();
 
   /*for submit */
-  const saveTheDataImage = () => {
+  const saveTheDataImage = (e) => {
+    e.preventDefault();
 
   }
 
   /* for cancel btn */
   const cancelBtnClick = () => {
-
+    setActive(!active);
+    setConfirmModalActive(!confirmModalActive);
   }
     return (<>
         <div className={active ? "modal activeModal" : "modal"}>
-        <div className="modal__content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal__content" 
+        //onClick={(e) => e.stopPropagation()}
+        >
           <span className="modal__content__head">
             <h3 className="modal__content__head__h3">Редактировать картинку</h3>
             {/* тут идет обычкновенное закрытие текущего окна
@@ -90,8 +94,7 @@ export default function EditImageModal ({active, setActive, id, name, tags, imag
             </form>
           </span>
         </div>
-      </div>
-      <ConfirmModalComponent
+        <ConfirmModalComponent
         confirmModalActive={confirmModalActive}
         setConfirmModalActive={setConfirmModalActive}
         nameOfModal="Сохранение изменений"
@@ -101,5 +104,7 @@ export default function EditImageModal ({active, setActive, id, name, tags, imag
         leftBtnAction={cancelBtnClick}
         // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
       />
+      </div>
+
       </>)
 }

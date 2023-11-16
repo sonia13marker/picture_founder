@@ -6,31 +6,34 @@ export default function ConfirmModalComponent({
     leftBtnAction, rightBtnAction,
 }) {
   return ( <>
+  {
+    confirmModalActive ?     
     <div className={confirmModalActive ? "confirm__background activeModal" : "confirm__background"}>
 
-        <div className="confirm__content" onClick={(e) => e.stopPropagation()}> 
-        <span className="confirm__content__header">
-        <h3 className="confirm__content__header__title">{nameOfModal}</h3>
+    <div className="confirm__content" onClick={(e) => e.stopPropagation()}> 
+    <span className="confirm__content__header">
+    <h3 className="confirm__content__header__title">{nameOfModal}</h3>
 
-        <span className="confirm__content__header__img"
-        onClick={() => setConfirmModalActive(false)}
-        ></span>
-      </span>
+    <span className="confirm__content__header__img"
+    onClick={() => setConfirmModalActive(!confirmModalActive)}
+    ></span>
+  </span>
 
-      <p className="confirm__content__body__text">{bodyText}</p>
+  <p className="confirm__content__body__text">{bodyText}</p>
 
-      <span className="confirm__content__footer">
-        <button className="confirm__content__footer__outlineBtn" onClick={leftBtnAction}>
-          {leftBtnName}
-        </button>
+  <span className="confirm__content__footer">
+    <button className="confirm__content__footer__outlineBtn" onClick={leftBtnAction}>
+      {leftBtnName}
+    </button>
 
-        <button className="confirm__content__footer__fillBtn" onClick={rightBtnAction}>
-          {rightBtnName}
-        </button>
-      </span>
+    <button className="confirm__content__footer__fillBtn" onClick={rightBtnAction}>
+      {rightBtnName}
+    </button>
+  </span>
+    </div>
+</div> : 
+<></>
+  }
 
-        </div>
-      
-    </div> 
     </>);
 }
