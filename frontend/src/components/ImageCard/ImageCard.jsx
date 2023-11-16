@@ -5,11 +5,17 @@ import FavoriteComponent from "../FavoriteComponent/FavoriteComponent";
 
 export default function ImageCard({ id, name, tags, image, addToFavorite, inFavorite, setInFavorite
 }) {
-  /*функция для преобразования тегов */
+  /*функция для преобразования тегов 
+  .trim() для удаления пробелов до и после слова*/
   let newTagList = tags
-    .split(", ")
-    .map((tag) => "#" + tag)
-    .join(" ");
+    .split(",")
+    .map((tag) => {
+      tag = tag.trim();
+      tag = "#" + tag;
+      tag = tag.replaceAll(" ", "_");
+      tag = tag + " ";
+      return tag;
+    })
 
   /*для проверки наведения на карточку */
   const [isHover, setIsHover] = useState(false);
