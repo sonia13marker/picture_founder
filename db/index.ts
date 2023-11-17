@@ -1,4 +1,6 @@
 import goose from "mongoose"
+import user from "./models/user"
+import image from "./models/image"
 
 async function TestConnect(): Promise<void> {
     try{
@@ -15,4 +17,9 @@ async function TestConnect(): Promise<void> {
     }
 }
 
-export {TestConnect}
+const db_models = {
+    UserModel: user,
+    ImageModel: image
+}
+
+export {TestConnect, db_models}

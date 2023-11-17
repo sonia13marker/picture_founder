@@ -1,5 +1,5 @@
 import express from "express"
-import { TestConnect } from "./db/connect"
+import { TestConnect } from "./db"
 
 const app = express()
 
