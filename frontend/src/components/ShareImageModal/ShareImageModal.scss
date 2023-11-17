@@ -1,0 +1,19 @@
+@import '../../style.scss';
+@import '../EditImageModal/EditImageModal.scss';
+
+.modal__content__body {
+
+    &__inputWrapper {
+
+        &__input {
+            
+        }
+    }
+
+    &__iconWrapper {
+        @include flexRow;
+        gap: 25px;
+    }
+
+}
+
