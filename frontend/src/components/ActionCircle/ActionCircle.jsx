@@ -6,36 +6,45 @@ import ShareIcon from "../ShareIcon";
 import "./ActionCircle.scss";
 import EditImageModal from "../EditImageModal/EditImageModal";
 
-export default function ActionCircle ({isHover, id, name, tags, image}) {
-    // console.log(dataOfImage);
-    const [activeEditModal, setActiveEditModal] = useState(false);
-    // const say = () => {
-    //     console.log("hello");
-    // }
-    
-    return (<>
-        <span className={isHover ? "wrapper active" : "wrapper"}>
+export default function ActionCircle({ isHover, id, name, tags, image }) {
+  // console.log(dataOfImage);
+  const [activeEditModal, setActiveEditModal] = useState(false);
+  // const say = () => {
+  //     console.log("hello");
+  // }
 
-{/* onClick = и вызвать подходящее модальное окно*/}
-    <span className="wrapper__circle" onClick={() => setActiveEditModal(!activeEditModal)}>
-            <EditIcon />
-            </span>
-
-            <span className="wrapper__circle">
-            <ShareIcon />
-            </span>
-
-            <span className="wrapper__circle">
-            <DownloadIcon />
-            </span>
-
-            <span className="wrapper__circle">
-            <DeleteIcon />
-            </span>
-            
-
+  return (
+    <>
+      <span className={isHover ? "wrapper active" : "wrapper"}>
+        {/* onClick = и вызвать подходящее модальное окно*/}
+        <span
+          className="wrapper__circle"
+          onClick={() => setActiveEditModal(!activeEditModal)}
+          title="Редактировать"
+        >
+          <EditIcon />
         </span>
-        <EditImageModal id={id} name={name} tags={tags} image={image} 
-        active={activeEditModal} setActive={setActiveEditModal}/>
-        </>)
+
+        <span className="wrapper__circle" title="Поделиться">
+          <ShareIcon />
+        </span>
+
+        <span className="wrapper__circle" title="Скачать">
+          <DownloadIcon />
+        </span>
+
+        <span className="wrapper__circle" title="Удалить">
+          <DeleteIcon />
+        </span>
+      </span>
+      <EditImageModal
+        id={id}
+        name={name}
+        tags={tags}
+        image={image}
+        active={activeEditModal}
+        setActive={setActiveEditModal}
+      />
+    </>
+  );
 }
