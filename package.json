@@ -2,19 +2,30 @@
   "name": "picture_founder",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+  "main": "app.ts",
+  "directories": {
+    "doc": "doc"
   },
-  "author": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WaterMelonyOcO/picture_founder.git"
+  },
+  "author": "WaterMelonyOcO, SonyaMarker",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WaterMelonyOcO/picture_founder/issues"
+  },
+  "homepage": "https://github.com/WaterMelonyOcO/picture_founder#readme",
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "tsc": "^2.0.4"
+  },
   "dependencies": {
     "express": "^4.18.2",
-    "fs": "^0.0.1-security",
-    "path": "^0.12.7"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
+    "mongoose": "^8.0.1",
+    "multer": "^1.4.5-lts.1"
   }
 }
