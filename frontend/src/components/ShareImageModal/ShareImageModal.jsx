@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import CopyIcon from '../CopyIcon';
 import SuccessCopyIcon from '../SuccessCopyIcon';
 import './ShareImageModal.scss';
@@ -16,6 +16,8 @@ import {
     TelegramIcon,
     WhatsappIcon,
 } from "react-share"; 
+import Clipboard from 'clipboard';
+
 
 
 export default function ShareImageModal ({active, setActive}) {
@@ -27,10 +29,18 @@ export default function ShareImageModal ({active, setActive}) {
     const defaultBR = 20;
 
     /* for copy icon */
-    const [copied, setCopied] = useState("");
+    const [copied, setCopied] = useState(false);
+    const linkRef = useRef(null);
 
-    const getCopyLink = (shareUrl) => {
-        setCopied(shareUrl);
+    const getCopyLink = () => {
+        const clipboard = new Clipboard(linkRef.current);
+        clipboard.on('success', (e) => {
+            setCopied(true);
+            console.log('Copied to clipboard:', e.text);
+            clipboard.destroy(); // Уничтожаем объект Clipboard после копирования, чтобы избежать утечек памяти
+          });
+        
+        //   console.log(copied, "hellllllll")
     }
     return(
         <div className={active ? "modal activeModal" : "modal"}>
@@ -65,7 +75,8 @@ export default function ShareImageModal ({active, setActive}) {
             </span> 
         ) :
         (
-        <span className="iconOpen" onClick={() => getCopyLink(shareUrl)}>
+        <span className="iconOpen" ref={linkRef} onClick={getCopyLink}
+        data-clipboard-text={shareUrl}>
             <CopyIcon />
         </span>) 
        }
