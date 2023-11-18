@@ -72,7 +72,7 @@ const tagsCounter = 29;
               favor={favor}
               />} />
               <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
-              <Route path='/personal_account' element={<PersonalAccountPage email={currentEmail}
+              <Route path='/account' element={<PersonalAccountPage email={currentEmail}
               password={currentPassword}
               imageCounter={imageCounter} tagsCounter={tagsCounter}
               />}

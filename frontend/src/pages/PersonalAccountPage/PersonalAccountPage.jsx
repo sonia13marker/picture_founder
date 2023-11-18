@@ -2,6 +2,7 @@ import './PersonalAccountPage.scss';
 import OpenEyeIcon from '../../components/OpenEyeIcon';
 import CloseEyeIcon from '../../components/CloseEyeIcon';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function PersonalAccountPage ({email, imageCounter, tagsCounter, password}) {
 
@@ -55,6 +56,12 @@ useEffect(() => {
         console.log("success NEW verify password ", passwordVerValue);
         console.log("success change password");
     }
+  }
+
+  const navigate = useNavigate();
+
+  const goToLogin = () => {
+    navigate("/login", {replace: true})
   }
 
     return(<section className='account'>
@@ -176,7 +183,7 @@ useEffect(() => {
     </section>
 </div>
 <button className='account__wrapper__logoutBtn'
-    //onClick={}
+    onClick={goToLogin}
     >
     Выйти из аккаунта
     </button>
