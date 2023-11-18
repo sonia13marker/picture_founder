@@ -105,3 +105,14 @@
     }
 }
 
+.loginBtnActive {
+    width: 42px;
+    height: 42px;
+    background-color: $main-black;
+    border-radius: 50%;
+    border: 2px solid $main-purple;
+    @include flexColumn;
+    cursor: pointer;
+    background: url('../../images/login_icon_active.svg') center center no-repeat;
+}
+

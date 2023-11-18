@@ -36,8 +36,13 @@ export default function Header () {
                     <AddImgBtn></AddImgBtn>
 {/* потом сделать проверку на авторизацию,
 если юзер уже заходил в акк, то
-перенаправить на стр. ЛК */}
-                    <Link to="/login" className='header__btns__login'></Link>
+перенаправить на стр. ЛК 
+
+если NavLink to="/account", то срабатывают стили на fill иконки*/}
+                    <NavLink to="/login" 
+                    //className='header__btns__login'
+                    className={({isActive}) => isActive ? "loginBtnActive": "header__btns__login"}
+                    ></NavLink>
                 </span>
 
         </div>
