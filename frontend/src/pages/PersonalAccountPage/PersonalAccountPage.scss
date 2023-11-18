@@ -13,14 +13,10 @@
 
     &__title {
         @include h2Style;
-        margin-bottom: 110px;
+        margin: 55px 0 110px 0;
     }
 
     &__wrapper {
-        // @include flexRow;
-        // justify-content: space-around;
-        // align-items: flex-start;
-        // gap: 10vw;
         width: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -63,4 +59,9 @@
             }
         }
     }
+}
+
+.fontWeight {
+    font-weight: 400;
+    color: $light-gray-text;
 }

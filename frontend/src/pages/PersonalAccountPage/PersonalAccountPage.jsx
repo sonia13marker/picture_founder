@@ -3,6 +3,7 @@ import OpenEyeIcon from '../../components/OpenEyeIcon';
 import CloseEyeIcon from '../../components/CloseEyeIcon';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from '../../components/Header/Header';
 
 export default function PersonalAccountPage ({email, imageCounter, tagsCounter, password}) {
 
@@ -64,7 +65,12 @@ useEffect(() => {
     navigate("/login", {replace: true})
   }
 
-    return(<section className='account'>
+    return(
+    <>
+        <Header />
+
+    <section className='account'>
+
         <h2 className='account__title'>
             Аккаунт 
         </h2>
@@ -92,11 +98,11 @@ useEffect(() => {
     </span>
 
     <h4 className='account__wrapper__leftSide__text'>
-        Общее количество картинок: {imageCounter ? imageCounter : 0}
+        Общее количество картинок: <span className='fontWeight'>{imageCounter ? imageCounter : 0}</span>
     </h4>
 
     <h4 className='account__wrapper__leftSide__text'>
-        Общее количество тегов: {tagsCounter ? tagsCounter : 0}
+        Общее количество тегов: <span className='fontWeight'>{tagsCounter ? tagsCounter : 0}</span>
     </h4>
     </section>
 
@@ -187,5 +193,6 @@ useEffect(() => {
     >
     Выйти из аккаунта
     </button>
-        </section> )
+        </section> 
+        </>)
 }

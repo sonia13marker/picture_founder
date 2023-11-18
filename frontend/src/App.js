@@ -59,6 +59,7 @@ const tagsCounter = 29;
           <Route path="/login" element={<LoginPage />} />
           <Route path='/forgot_password' element={<ForgotPasswordPage />} />
           <Route path='/forgot_password-success' element={<ForgotPasswordSuccessPage />} />
+          <Route path='/account' element={<PersonalAccountPage email={currentEmail} password={currentPassword} imageCounter={imageCounter} tagsCounter={tagsCounter}/>} />
 
           <Route element={<Layout />}>
             {/*ссылаюсь на уже существующую страницу  */}
@@ -72,11 +73,7 @@ const tagsCounter = 29;
               favor={favor}
               />} />
               <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
-              <Route path='/account' element={<PersonalAccountPage email={currentEmail}
-              password={currentPassword}
-              imageCounter={imageCounter} tagsCounter={tagsCounter}
-              />}
-              />
+              
           </Route>
   </Routes>
       </BrowserRouter>
