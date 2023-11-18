@@ -16,6 +16,7 @@ import Layout from './components/Layout/Layout';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import ForgotPasswordSuccessPage from './pages/ForgotPasswordSuccessPage/ForgotPasswordSuccessPage';
+import PersonalAccountPage from './pages/PersonalAccountPage/PersonalAccountPage';
 
 
 function App() {
@@ -67,6 +68,8 @@ const [inFavorite, setInFavorite] = useState(false);
               favor={favor}
               />} />
               <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
+              <Route path='/personal_account' element={<PersonalAccountPage />}
+              />
           </Route>
   </Routes>
       </BrowserRouter>

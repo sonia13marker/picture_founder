@@ -1,0 +1,66 @@
+@import '../../style.scss';
+@import '../../components/CustomInput/CustomInput.scss';
+
+
+.account {
+    max-width: 100vw;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__title {
+        @include h2Style;
+        margin-bottom: 110px;
+    }
+
+    &__wrapper {
+        // @include flexRow;
+        // justify-content: space-around;
+        // align-items: flex-start;
+        // gap: 10vw;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        justify-content: space-around;
+        justify-items: center;
+        align-items: start;
+        margin-bottom: 110px;
+
+        &__leftSide {
+           &__title {
+            @include h3BoldStyle;
+            margin-bottom: 55px;
+            color: $light-gray-text;
+           } 
+
+           &__text {
+            @include h4BoldStyle;
+            margin-top: 25px;
+            color: $light-gray-text;
+            
+           }
+        }
+
+        &__rightSide {
+           
+            &__form {
+                @include flexColumn;
+                gap: 45px;
+                align-items: flex-start;
+            }
+        }
+
+        &__logoutBtn {
+            @include bodyBtn;
+            margin-bottom: 70px;
+
+            &:hover {
+                @include bodyBtnHover;
+            }
+        }
+    }
+}

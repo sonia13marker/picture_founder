@@ -63,7 +63,7 @@ const selectIcon = () => {
     setHidden(!hidden);
 }
 
-/*for secon password input - verify*/
+/*for second password input - verify*/
 const [passwordVerValue, setPasswordVerValue] = useState("");
 const handleChangeVerPassword = (event) => {
   setPasswordVerValue(event.target.value);
