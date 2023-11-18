@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import CopyIcon from "../CopyIcon";
 import SuccessCopyIcon from "../SuccessCopyIcon";
 import "./ShareImageModal.scss";
@@ -29,14 +29,25 @@ export default function ShareImageModal({ active, setActive }) {
   /* for copy icon */
   const [copied, setCopied] = useState(false);
   const linkRef = useRef(null);
+  const clipboard = useRef(null);
 
-  const getCopyLink = () => {
-    const clipboard = new Clipboard(linkRef.current);
-    clipboard.on("success", (e) => {
+  useEffect(() => {
+    if (clipboard.current) {
+      clipboard.current.destroy();
+    }
+    clipboard.current = new Clipboard(linkRef.current);
+    clipboard.current.on("success", (e) => {
       setCopied(true);
       console.log("Copied to clipboard:", e.text);
-      clipboard.destroy(); // Уничтожаем объект Clipboard после копирования, чтобы избежать утечек памяти
-    });
+    });return () => {
+      if (clipboard.current) {
+        clipboard.current.destroy();
+      }
+    };
+  }, [])
+
+  const getCopyLink = () => {
+    clipboard.current.onClick(linkRef.current);
   };
   return (
     <div className={active ? "modal activeModal" : "modal"}>
