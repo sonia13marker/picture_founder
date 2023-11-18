@@ -50,12 +50,12 @@ export default function ShareImageModal({ active, setActive }) {
         </span>
 
         <span className="wrappers">
-          <span className="modal__content__body__inputWrapper">
+          <span>
             <label className="input__label" htmlFor="urlInput"></label>
             Скопировать ссылку
             <span className="icon__wrapper">
               <input
-                className="input__auth password modal__content__body__inputWrapper__input"
+                className="input__auth password modal__content__body__input"
                 type="text"
                 id="urlInput"
                 value={shareUrl}
