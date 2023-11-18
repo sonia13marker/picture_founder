@@ -27,6 +27,10 @@ const [images] = useState(imagesData);
 const [favor, setFavor] = useState([]);
 const [inFavorite, setInFavorite] = useState(false);
 
+const currentEmail = 'privet12345_hello@seelssocute.ru';
+const currentPassword = '12345';
+const imageCounter = 10; 
+const tagsCounter = 29;
 
   return (
         <div className="App">
@@ -68,7 +72,10 @@ const [inFavorite, setInFavorite] = useState(false);
               favor={favor}
               />} />
               <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
-              <Route path='/personal_account' element={<PersonalAccountPage />}
+              <Route path='/personal_account' element={<PersonalAccountPage email={currentEmail}
+              password={currentPassword}
+              imageCounter={imageCounter} tagsCounter={tagsCounter}
+              />}
               />
           </Route>
   </Routes>

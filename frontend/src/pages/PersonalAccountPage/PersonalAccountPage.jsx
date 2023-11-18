@@ -3,7 +3,7 @@ import OpenEyeIcon from '../../components/OpenEyeIcon';
 import CloseEyeIcon from '../../components/CloseEyeIcon';
 import { useState, useEffect } from 'react';
 
-export default function PersonalAccountPage ({email, imageCounter, tagsCounter}) {
+export default function PersonalAccountPage ({email, imageCounter, tagsCounter, password}) {
 
     /*for password inputs */
     const [passwordValue, setPasswordValue] = useState("");
@@ -27,16 +27,35 @@ const selectIconTwo = () => {
   setIsClose(!isClose);
   setIsHidden(!isHidden);
 }
-useEffect(() => {
-    if (passwordVerValue !== passwordValue) {
-      setErrorMessage("Пароли не равны!");
-    } else if (passwordVerValue === passwordValue) {
-      setErrorMessage("");
-      console.log("success singup");
-    }
-  }, [passwordValue, passwordVerValue])
-  const [errorMessage, setErrorMessage] = useState("");
 
+const [errorMessage, setErrorMessage] = useState("");
+const [errorVerMessage, setErrorVerMessage] = useState("");
+
+useEffect(() => {
+
+    if (passwordValue === password) {
+        setErrorMessage("Новый пароль не может совпадать со старым!");
+    };
+    if (passwordVerValue !== passwordValue) {
+        setErrorVerMessage("Пароли не равны!");
+    };
+    if (passwordValue === password && passwordVerValue === passwordValue) {
+        setErrorMessage("Новый пароль не может совпадать со старым!");
+    }
+    if (passwordValue !== password && passwordVerValue === passwordValue) {
+        setErrorMessage("");
+        setErrorVerMessage("");
+    }
+  }, [passwordValue, passwordVerValue, password]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (errorMessage === "" && errorVerMessage === "" && passwordValue && passwordVerValue) {
+        console.log("success NEW password ", passwordValue);
+        console.log("success NEW verify password ", passwordVerValue);
+        console.log("success change password");
+    }
+  }
 
     return(<section className='account'>
         <h2 className='account__title'>
@@ -80,7 +99,7 @@ useEffect(() => {
         </h3>
 
         <form className='account__wrapper__rightSide__form'
-        //onSubmit={}
+        onSubmit={handleSubmit}
         >
 
             {/* password input */}
@@ -143,7 +162,7 @@ useEffect(() => {
        }
         </span>
             <p className='input__error'>
-                {errorMessage}
+                {errorVerMessage}
             </p>
     </span>
 
