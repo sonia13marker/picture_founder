@@ -2,3 +2,4 @@ data.json
 pic/
 node_modules
 package-lock.json
+test/
