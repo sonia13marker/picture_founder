@@ -53,3 +53,26 @@
         
     }
 }
+
+@media screen and (max-width: 690px) {
+    .main__section__input {
+        width: 240px;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .main__section {
+        margin: 0 40px;
+    }
+    .main__section__input {
+       font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .main__section__wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+}

@@ -83,3 +83,15 @@
         }
     }
 }
+
+@media screen and (max-width: 690px) {
+    .dropdown__btn, .dropdown__ul {
+        width: 180px;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .dropdown__btn, .dropdown__ul__li, .dropdown__ul {
+       font-size: 14px;
+    }
+}
