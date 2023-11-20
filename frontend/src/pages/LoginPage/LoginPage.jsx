@@ -35,7 +35,7 @@ export default function LoginPage () {
         }
     }
 const goToMainPage = () => {
-  navigate('/main');
+  navigate('/account');
 }
     /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
