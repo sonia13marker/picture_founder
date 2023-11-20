@@ -34,3 +34,12 @@
         }
     }
 }
+
+@media screen and (max-width: 580px) {
+    .card_wrapper__first__name {
+        font-size: 15px;
+    }
+    .dev__wrapper__info__btn, .dev__wrapper__info__version {
+        font-size: 14px;
+    }
+}

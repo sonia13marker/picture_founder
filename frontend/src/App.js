@@ -59,6 +59,9 @@ const tagsCounter = 29;
     ForgotPasswordPage
     ForgotPasswordSuccessPage
     PersonalAccountPage
+    MainPage
+    FavoritePage
+    DevelopersPage 
         */}
 
         {/* ссылки на страницы */}
