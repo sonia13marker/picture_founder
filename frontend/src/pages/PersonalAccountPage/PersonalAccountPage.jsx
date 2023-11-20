@@ -68,6 +68,9 @@ export default function PersonalAccountPage({
     }
   };
 
+  const checkTheChangePassword = (errorMessage !== "" ||
+  errorVerMessage !== "") || (passwordValue === "" && passwordVerValue === "");
+
   /* for confirm modals */
   const [changePassModalActive, setChangePassModalActive] = useState(false);
   const cancelChangePassModal = () => {
@@ -201,8 +204,8 @@ export default function PersonalAccountPage({
 
               <button
                 type="submit"
-                className={"singup__section__body__submitBtn"}
-                onClick={() => setChangePassModalActive(!changePassModalActive)}
+                className={ checkTheChangePassword ?"singup__section__body__submitBtn unactive" : "singup__section__body__submitBtn"}
+                onClick={checkTheChangePassword ? null : () => setChangePassModalActive(!changePassModalActive)}
               >
                 Сохранить изменения
               </button>
