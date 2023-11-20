@@ -10,3 +10,18 @@
         color: $dark-gray-text;
     }
 }
+
+@media screen and (max-width: 580px) {
+    .main_empty__text {
+        font-size: 14px;
+    }
+    
+}
+
+@media screen and (max-width: 375px) {
+    .main_empty__text {
+        width: 280px;
+        text-align: center;
+    }
+    
+}
