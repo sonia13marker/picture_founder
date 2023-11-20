@@ -51,6 +51,14 @@ const tagsCounter = 29;
 
             просто пример, его надо делать на странице аккаунта 
     const {singOut} = useAuth();
+
+
+    адаптация есть на: 
+    SingUpPage
+    LoginPage
+    ForgotPasswordPage
+    ForgotPasswordSuccessPage
+    PersonalAccountPage
         */}
 
         {/* ссылки на страницы */}

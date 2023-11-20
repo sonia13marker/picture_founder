@@ -13,6 +13,7 @@
 
     &__title {
         @include h2Style;
+        font-size: clamp(19px, 2vw, 24px);;
         margin: 55px 0 110px 0;
     }
 
@@ -64,4 +65,23 @@
 .fontWeight {
     font-weight: 400;
     color: $light-gray-text;
+}
+
+@media screen and (max-width: 780px) {
+    .account__title {
+        margin: 55px 0 75px 0;
+    }
+    .account__wrapper__leftSide__title {
+        font-size: 16px;
+    }
+    .account__wrapper {
+        grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 580px) {
+     .account__wrapper__leftSide__text, .account__wrapper__logoutBtn {
+       font-size: 14px;
+    }
 }
