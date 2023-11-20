@@ -20,6 +20,7 @@
         @include h4Style;
         color: $light-gray-text;
         text-decoration: none;
+        font-size: 16px;
         // width: auto;
 
         &:hover {
@@ -58,4 +59,29 @@
     }
 }
 
+}
+
+@media screen and (max-width: 1000px) {
+    .login__lineWrapper {
+        max-width: 400px;
+    }
+    
+}
+
+@media screen and (max-width: 580px) {
+    .login__lineWrapper__link, .login__lineWrapper__link.boldLink, .login__button__container {
+        font-size: 14px;
+    }
+    
+    
+}
+
+@media screen and (max-width: 385px) {
+    .login__lineWrapper {
+        max-width: 280px;
+    }
+    .login__lineWrapper__link, .login__lineWrapper__link.boldLink, .login__button__container {
+        font-size: 14px;
+    }
+    
 }

@@ -73,6 +73,7 @@
         @include flexColumn;
         align-items: flex-start;
         color: $light-gray-text;
+        font-size: 18px;
     }
 
     &__error {
@@ -134,7 +135,7 @@
 }
 
 @media screen and (max-width: 1000px) {
-    .input__label {
+    .input__label, .input__wrapper2 {
         font-size: 16px;
     }
     .input__auth {
@@ -143,7 +144,7 @@
 }
 
 @media screen and (max-width: 580px) {
-    .input__label {
+    .input__label, .input__wrapper2 {
         font-size: 14px;
     }
     .input__auth {

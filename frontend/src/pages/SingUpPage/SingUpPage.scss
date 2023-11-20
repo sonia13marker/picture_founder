@@ -97,17 +97,15 @@
 }
 
 @media screen and (max-width: 1000px) {
-    .singup__section {
-        height: 100%;
-    }
+
     .singup__section__body__checkboxWrapper {
-        width: 350px;
+        max-width: 350px;
     }
 }
 
 @media screen and (max-width: 580px) {
     .singup__section__body__checkboxWrapper {
-        width: 320px;
+        max-width: 320px;
     }
     .singup__section__body__checkboxWrapper__label {
         font-size: 14px;
@@ -120,6 +118,6 @@
 @media screen and (max-width: 385px) {
 
     .singup__section__body__checkboxWrapper {
-    width: 280px;
+    max-width: 280px;
     }
 }
