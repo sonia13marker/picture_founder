@@ -19,3 +19,9 @@
         cursor: pointer;
     }
 }
+
+@media screen and (max-width: 880px) {
+    .add_btn {
+        padding: 10px 20px;
+    }
+}
