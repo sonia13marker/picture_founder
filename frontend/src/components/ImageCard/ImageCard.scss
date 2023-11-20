@@ -55,3 +55,24 @@
             word-spacing: 2px;
         }
 }
+
+@media screen and (max-width: 1000px) {
+    .layout__card__titleWrap__title {
+        font-size: 16px;
+    }
+    
+}
+
+@media screen and (max-width: 580px) {
+    .layout__card__titleWrap__title {
+        font-size: 15px;
+    }
+    
+}
+
+@media screen and (max-width: 385px) {
+    .layout__card__titleWrap__title, .layout__card__tagList {
+        font-size: 14px;
+    }
+    
+}
