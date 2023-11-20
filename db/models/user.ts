@@ -1,9 +1,9 @@
 import {Schema, model} from "mongoose"
 
 const UserScheme = new Schema({
-    userName: String,
-    email: String,
-    images: [{type: Schema.ObjectId, ref: "Image"}]
+    UserName: String,
+    UserEmail: String,
+    UserImages: [{type: Schema.ObjectId, ref: "Image"}]
 })
 
 

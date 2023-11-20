@@ -3,3 +3,6 @@ import goose from "mongoose"
 import { db_models } from "../../../db"
 
 const route = Router()
+
+
+export default route
