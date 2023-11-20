@@ -147,7 +147,7 @@ const goToSingupPage = () => {
     </span>
 
     <span className='login__lineWrapper'>
-    <span className="singup__section__body__checkboxWrapper login__wrapper">
+    <span className="singup__section__body__checkboxWrapper login__wrapper gap">
         <input type="checkbox" 
         onChange={checkedFunc}
         id="login_checkbox"
