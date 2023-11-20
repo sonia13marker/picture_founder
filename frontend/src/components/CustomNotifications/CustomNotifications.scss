@@ -1,0 +1,21 @@
+@import '../../style.scss';
+
+.notif__wrapper {
+    width: 20vw;
+    height: auto;
+    padding: 22px 25px;
+    border-radius: 20px;
+    background-color: $main-black;
+    color: $main-white;
+    box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.70);
+    @include flexRow;
+    position: fixed;
+    justify-content: flex-start;
+    bottom: 20px;
+    right: 55px;
+    z-index: 15;
+
+    &__title {
+        @include h3Style;
+    }
+}
