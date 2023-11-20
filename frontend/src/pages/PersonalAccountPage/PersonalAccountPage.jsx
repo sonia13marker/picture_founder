@@ -4,6 +4,7 @@ import CloseEyeIcon from "../../components/CloseEyeIcon";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
+import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 
 export default function PersonalAccountPage({
   email,
@@ -67,11 +68,25 @@ export default function PersonalAccountPage({
     }
   };
 
-  const navigate = useNavigate();
+  /* for confirm modals */
+  const [changePassModalActive, setChangePassModalActive] = useState(false);
+  const cancelChangePassModal = () => {
+    setPasswordVerValue("");
+    setPasswordValue("");
+    setChangePassModalActive(!changePassModalActive);
+  }
 
+  const [logOutModalActive, setLogOutModalActive] = useState(false);
+  const canselLogoutModal = () => {
+    setLogOutModalActive(!logOutModalActive);
+  }
+
+  // сделать действие выхода из акка
+  const navigate = useNavigate();
   const goToLogin = () => {
     navigate("/login", { replace: true });
   };
+
 
   return (
     <>
@@ -187,17 +202,39 @@ export default function PersonalAccountPage({
               <button
                 type="submit"
                 className={"singup__section__body__submitBtn"}
-                //onClick={}
+                onClick={() => setChangePassModalActive(!changePassModalActive)}
               >
                 Сохранить изменения
               </button>
             </form>
           </section>
         </div>
-        <button className="account__wrapper__logoutBtn" onClick={goToLogin}>
+        <button className="account__wrapper__logoutBtn" onClick={() => setLogOutModalActive(!logOutModalActive)}>
           Выйти из аккаунта
         </button>
       </section>
+      <ConfirmModalComponent 
+      confirmModalActive={changePassModalActive}
+      setConfirmModalActive={setChangePassModalActive}
+      nameOfModal="Смена пароля"
+      bodyText="Вы уверены, что хотите сменить пароль?"
+      leftBtnName="Отмена"
+      rightBtnName="Да, сменить"
+      leftBtnAction={cancelChangePassModal}
+      /*действие для смены пароля
+      rightBtnAction={}*/
+      />
+
+      <ConfirmModalComponent 
+      confirmModalActive={logOutModalActive}
+      setConfirmModalActive={setLogOutModalActive}
+      nameOfModal="Выход из аккаунта"
+      bodyText="Вы уверены, что хотите выйти?"
+      leftBtnName="Отмена"
+      rightBtnName="Да, выйти"
+      leftBtnAction={canselLogoutModal}
+      rightBtnAction={goToLogin}
+      />
     </>
   );
 }
