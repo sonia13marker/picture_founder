@@ -9,3 +9,22 @@
         margin-top: 25px;
     }
 }
+
+@media screen and (max-width: 585px) {
+    .forgorPass__text {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 490px) {
+    .forgorPass__text {
+        width: 380px;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 385px) {
+    .forgorPass__text {
+        width: 320px;
+    }
+}
