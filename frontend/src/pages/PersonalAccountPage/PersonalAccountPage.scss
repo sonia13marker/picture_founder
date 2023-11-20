@@ -81,7 +81,21 @@
 }
 
 @media screen and (max-width: 580px) {
+    .account__title {
+        margin: 25px 0 75px 0;
+    }
+    .account__wrapper__leftSide__title {
+        margin-bottom: 40px;
+    }
      .account__wrapper__leftSide__text, .account__wrapper__logoutBtn {
        font-size: 14px;
     }
+    .account__wrapper {
+        grid-template-rows: auto 1fr;
+        gap: 55px;
+    }
+    .account__wrapper__rightSide__form {
+        gap: 25px;
+    }
+
 }

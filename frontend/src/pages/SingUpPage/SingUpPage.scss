@@ -104,8 +104,15 @@
 }
 
 @media screen and (max-width: 580px) {
+    .singup__section {
+        overflow-y: hidden;
+    }
+    .singup__section__body {
+        gap: 25px;
+    }
     .singup__section__body__checkboxWrapper {
         max-width: 320px;
+        gap: 10px;
     }
     .singup__section__body__checkboxWrapper__label {
         font-size: 14px;
@@ -113,11 +120,14 @@
     .singup__section__body__submitBtn.unactive, .singup__section__body__submitBtn {
         font-size: 14px;
     } 
+    .singup__section__body__checkboxWrapper__label {
+        text-align: left;
+    }
 }
 
 @media screen and (max-width: 385px) {
-
     .singup__section__body__checkboxWrapper {
     max-width: 280px;
+    gap: 20px;
     }
 }

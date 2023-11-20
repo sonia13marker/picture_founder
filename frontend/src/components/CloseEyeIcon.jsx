@@ -15,7 +15,7 @@ const CloseEyeIcon = () => {
     onMouseEnter={handleMouseOn}
     onMouseLeave={handleMouseDown}
     >
-    <path d="M19.5 16L17.025 12.604M12 17.5V14M4.5 16L6.969 12.612M3 8C6.6 16 17.4 16 21 8" stroke={isHover ? "#765BAB" : "#B0AFAF" } stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M19.5 16L17.025 12.604M12 17.5V14M4.5 16L6.969 12.612M3 8C6.6 16 17.4 16 21 8" stroke={isHover ? "#765BAB" : "#B0AFAF" } strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
 }
 

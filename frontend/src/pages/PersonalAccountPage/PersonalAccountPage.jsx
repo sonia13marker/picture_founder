@@ -42,6 +42,10 @@ export default function PersonalAccountPage({
     if (passwordValue === password) {
       setErrorMessage("Новый пароль не может совпадать со старым!");
     }
+    if ((passwordValue === password) && (passwordVerValue === passwordValue) ) {
+      setErrorMessage("Новый пароль не может совпадать со старым!");
+      setErrorVerMessage("");
+    };
     if (passwordVerValue !== passwordValue) {
       setErrorVerMessage("Пароли не равны!");
     }
