@@ -4,7 +4,7 @@
 @mixin inputStyle {
     @include h4Style;
     margin-top: 10px;
-    width: 35vw;
+    width: 400px;
     padding: 15px 20px;
     border-radius: 20px;
     background-color: $main-black;
@@ -34,7 +34,6 @@
 
     &__auth {
         @include inputStyle;
-        width: 25vw;
             
 
             &:active {
@@ -131,5 +130,31 @@
     &:hover {
         transition: $transition;
         cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .input__label {
+        font-size: 16px;
+    }
+    .input__auth {
+    width: 350px;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .input__label {
+        font-size: 14px;
+    }
+    .input__auth {
+    width: 320px;
+    font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 385px) {
+
+    .input__auth {
+    width: 280px;
     }
 }

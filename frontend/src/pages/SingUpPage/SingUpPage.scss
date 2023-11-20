@@ -13,6 +13,7 @@
 
         &__logo {
             @include h1Style;
+            font-size: clamp(45px, 2vw, 55px);
             &__span {
                 color: $main-purple;
             }
@@ -20,6 +21,7 @@
 
         &__text {
             @include h2Style;
+            font-size: clamp(19px, 2vw, 24px);
         }
     }
 
@@ -34,7 +36,8 @@
         }
 
         &__checkboxWrapper {
-           max-width: 25vw;
+            max-width: 400px;
+            width: 100%;
            width: auto;
            @include flexRow;
            gap: 5px;
@@ -91,4 +94,32 @@
     }
 
     
+}
+
+@media screen and (max-width: 1000px) {
+    .singup__section {
+        height: 100%;
+    }
+    .singup__section__body__checkboxWrapper {
+        width: 350px;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .singup__section__body__checkboxWrapper {
+        width: 320px;
+    }
+    .singup__section__body__checkboxWrapper__label {
+        font-size: 14px;
+    }
+    .singup__section__body__submitBtn.unactive, .singup__section__body__submitBtn {
+        font-size: 14px;
+    } 
+}
+
+@media screen and (max-width: 385px) {
+
+    .singup__section__body__checkboxWrapper {
+    width: 280px;
+    }
 }
