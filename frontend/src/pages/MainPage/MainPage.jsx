@@ -9,6 +9,7 @@ export default function MainPage({ images = [], favorites, setFavorites, favor, 
 
 }) {
 
+
   const addToFavorite = (id) => {
     // поиск элемента из массива и добавление его в список избранных
     let selectedElement = images.find((item) => item.id === id);

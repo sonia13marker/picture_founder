@@ -3,11 +3,26 @@ import { Outlet } from "react-router-dom";
 import Header from "../Header/Header";
 import SortDropdown from "../SortDropdown/SortDropdown";
 import Footer from "../Footer/Footer";
+import { useEffect, useState } from 'react';
+import HeaderMobile from '../HeaderMobile/HeaderMobile';
 
 export default function Layout() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   return (
     <>
-      <Header />
+
+{ windowWidth <= 435 ? <HeaderMobile /> : <Header />}
+
+      
             {/* общий контейнер с поиском и сортировкой,
       который имеет отступы 55рх вместе с содержимым */}
       <div className="main__section">
