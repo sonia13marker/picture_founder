@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 import HeaderMobile from "../../components/HeaderMobile/HeaderMobile";
+import Footer from "../../components/Footer/Footer";
 
 export default function PersonalAccountPage({
   email,
@@ -233,6 +234,9 @@ export default function PersonalAccountPage({
           Выйти из аккаунта
         </button>
       </section>
+
+      <Footer />
+      
       <ConfirmModalComponent 
       confirmModalActive={changePassModalActive}
       setConfirmModalActive={setChangePassModalActive}

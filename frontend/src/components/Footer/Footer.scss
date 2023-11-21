@@ -38,6 +38,9 @@
             
         }
     }
+    &.forMobile {
+        margin-bottom: 50px;
+    }
 }
 
 @media screen and (max-width: 385px) {
