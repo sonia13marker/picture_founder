@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
+import HeaderMobile from "../../components/HeaderMobile/HeaderMobile";
 
 export default function PersonalAccountPage({
   email,
@@ -94,10 +95,22 @@ export default function PersonalAccountPage({
     navigate("/login", { replace: true });
   };
 
+  /* проверка на отображение разных хедеров */
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <>
-      <Header />
+
+{ windowWidth <= 435 ? <HeaderMobile /> : <Header />}
 
       <section className="account">
         <h2 className="account__title">Аккаунт</h2>

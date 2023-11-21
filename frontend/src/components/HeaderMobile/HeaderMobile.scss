@@ -12,6 +12,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 19;
 
     
         &__ul {
@@ -27,6 +28,16 @@
                     background-color: $main-purple;
                     border-radius: 50%;
                     border: none;
+
+                    &:hover {
+                        @include FillBodyBtnHover;
+                        border: none;
+                    }
+
+                    &:active {
+                        @include FillBodyBtnActive;
+                        border: none;
+                    }
                 }
             }
         }
