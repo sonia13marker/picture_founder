@@ -4,6 +4,7 @@
 .singup__section {
     width: 100vw;
     height: 100vh;
+    overflow-y: hidden;
     @include flexColumn;
 
     &__header {

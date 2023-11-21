@@ -20,7 +20,7 @@ export default function Layout() {
   return (
     <>
 
-{ windowWidth <= 435 ? <HeaderMobile /> : <Header />}
+{ windowWidth <= 768 ? <HeaderMobile /> : <Header />}
 
       
             {/* общий контейнер с поиском и сортировкой,

@@ -85,6 +85,14 @@ body {
     align-items: center;
 }
 
+//---------
+.forgotPassWrapper {
+    max-height: 100vh;
+    height: 100%;
+    overflow-y: hidden;
+
+}
+
 //---------------styles for outline btn-------------
 @mixin bodyBtn {
     @include h4BoldStyle;

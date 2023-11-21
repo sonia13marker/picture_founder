@@ -73,16 +73,20 @@
     }
     .account__wrapper__leftSide__title {
         font-size: 16px;
+        text-align: center;
     }
     .account__wrapper {
         grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+    .account__wrapper__rightSide__form {
+        align-items: center;
     }
 }
 
 @media screen and (max-width: 580px) {
     .account__title {
-        margin: 25px 0 75px 0;
+        margin: 35px 0 75px 0;
     }
     .account__wrapper__leftSide__title {
         margin-bottom: 40px;

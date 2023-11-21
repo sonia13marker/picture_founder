@@ -18,7 +18,7 @@ export default function Footer() {
 
     const date = new Date().getFullYear();
     return (
-        <div className={ windowWidth <= 435 ? "footer forMobile" :"footer"}>
+        <div className={ windowWidth <= 768 ? "footer forMobile" :"footer"}>
             <span className='footer__bg'>
                 <span className='footer__fg'>
                 <p className='footer__fg__text'>

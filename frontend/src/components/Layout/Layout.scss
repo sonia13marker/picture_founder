@@ -11,6 +11,7 @@
         @include flexRow;
         align-items: flex-start;
         margin-bottom: 35px;
+        margin-top: 60px;
     }
 
     &__label {
@@ -68,6 +69,9 @@
     }
     .main__section__input {
        font-size: 14px;
+    }
+    .main__section__wrapper {
+        margin-top: 30px;
     }
 }
 

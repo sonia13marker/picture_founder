@@ -1,8 +1,9 @@
 import ForgotComponent from "../../components/ForgotComponent/ForgotComponent";
-
+import '../../style.scss';
 
 export default function ForgotPasswordPage () {
     return (
+        <div className="forgotPassWrapper">
         <ForgotComponent 
         isLogo="true"
         title="Забыли пароль?"
@@ -10,5 +11,5 @@ export default function ForgotPasswordPage () {
         input="true"
         buttonName="Отправить"
         />
-    )
+   </div> )
 }
