@@ -1,6 +1,10 @@
 {
     "imageID": "324knd",
+    "imageName": "kjffffffffffff",
+    "imageHash": "sdlkjs89u3wq3as",
     "ownerID": "kjsdd322",
     "uploadDate": "21-03-3302T23:43",
-    "imageSize": "323Kb" //тут я ещё думаю
+    "imageSize": 3238787, //это в битах. Потом подумаю на конвериацией
+    "imageTags": ["sjkhd", ....],
+    "isFavorite": false
 }
