@@ -1,5 +1,5 @@
 import './Layout.scss';
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import Header from "../Header/Header";
 import SortDropdown from "../SortDropdown/SortDropdown";
 import Footer from "../Footer/Footer";
@@ -20,7 +20,18 @@ export default function Layout() {
   return (
     <>
 
-{ windowWidth <= 768 ? <HeaderMobile /> : <Header />}
+{ windowWidth <= 768 ? <>
+  <Link to={"/main"} className='header__link'>
+            <span className='header__logo'>
+                Pic
+                <p className='header__logo__p'>
+                    2
+                </p>
+            </span>
+            </Link>
+
+<HeaderMobile />
+</> : <Header />}
 
       
             {/* общий контейнер с поиском и сортировкой,

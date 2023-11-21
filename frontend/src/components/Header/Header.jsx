@@ -22,9 +22,13 @@ export default function Header () {
                         <NavLink to="/main" className="header__nav__ul__li__link">
                         Главная
                         </NavLink>
+                        </li>
+                        <li className='header__nav__ul__li'>
                         <NavLink to="/favorite" className="header__nav__ul__li__link">
                         Избранное
                         </NavLink>
+                        </li>
+                        <li className='header__nav__ul__li'>
                         <NavLink to="/developers" className="header__nav__ul__li__link">
                         Разработчики
                         </NavLink>

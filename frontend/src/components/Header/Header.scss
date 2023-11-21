@@ -31,17 +31,16 @@
     &__nav {
 
         &__ul {
-            list-style-type: none;
+            @include flexRow;
             gap: 20px;
 
 
             &__li {
+                list-style-type: none;
                 @include h4Style;
                 color: $main-white;
                 display: flex;
                 flex-direction: row;
-                gap: 20px;
-            
 
                 &__link {
                     display: block;
@@ -127,6 +126,14 @@
     .header__btns__login {
         width: 38px;
         height: 38px;
+    }
+    
+}
+
+@media screen and (max-width: 768px) {
+    .header__logo {
+        margin-top: 25px;
+        font-size: 30px;
     }
     
 }

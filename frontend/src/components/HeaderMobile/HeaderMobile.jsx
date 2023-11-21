@@ -17,7 +17,7 @@ export default function HeaderMobile() {
         <ul className="headerMobile__wrapper__ul">
           <li className="headerMobile__wrapper__ul__li">
             <NavLink
-              to="/main"
+              to="/"
             >
               <HomeIcon />
             </NavLink>

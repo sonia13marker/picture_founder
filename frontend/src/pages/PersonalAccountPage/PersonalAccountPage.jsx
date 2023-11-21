@@ -2,7 +2,7 @@ import "./PersonalAccountPage.scss";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 import HeaderMobile from "../../components/HeaderMobile/HeaderMobile";
@@ -44,10 +44,10 @@ export default function PersonalAccountPage({
     if (passwordValue === password) {
       setErrorMessage("Новый пароль не может совпадать со старым!");
     }
-    if ((passwordValue === password) && (passwordVerValue === passwordValue) ) {
+    if (passwordValue === password && passwordVerValue === passwordValue) {
       setErrorMessage("Новый пароль не может совпадать со старым!");
       setErrorVerMessage("");
-    };
+    }
     if (passwordVerValue !== passwordValue) {
       setErrorVerMessage("Пароли не равны!");
     }
@@ -74,8 +74,10 @@ export default function PersonalAccountPage({
     }
   };
 
-  const checkTheChangePassword = (errorMessage !== "" ||
-  errorVerMessage !== "") || (passwordValue === "" && passwordVerValue === "");
+  const checkTheChangePassword =
+    errorMessage !== "" ||
+    errorVerMessage !== "" ||
+    (passwordValue === "" && passwordVerValue === "");
 
   /* for confirm modals */
   const [changePassModalActive, setChangePassModalActive] = useState(false);
@@ -83,12 +85,12 @@ export default function PersonalAccountPage({
     setPasswordVerValue("");
     setPasswordValue("");
     setChangePassModalActive(!changePassModalActive);
-  }
+  };
 
   const [logOutModalActive, setLogOutModalActive] = useState(false);
   const canselLogoutModal = () => {
     setLogOutModalActive(!logOutModalActive);
-  }
+  };
 
   // сделать действие выхода из акка
   const navigate = useNavigate();
@@ -101,17 +103,29 @@ export default function PersonalAccountPage({
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   return (
     <>
+      {windowWidth <= 768 ? (
+        <>
+          <Link to={"/main"} className="header__link">
+            <span className="header__logo">
+              Pic
+              <p className="header__logo__p">2</p>
+            </span>
+          </Link>
 
-{ windowWidth <= 435 ? <HeaderMobile /> : <Header />}
+          <HeaderMobile />
+        </>
+      ) : (
+        <Header />
+      )}
 
       <section className="account">
         <h2 className="account__title">Аккаунт</h2>
@@ -222,42 +236,53 @@ export default function PersonalAccountPage({
 
               <button
                 type="submit"
-                className={ checkTheChangePassword ?"singup__section__body__submitBtn unactive" : "singup__section__body__submitBtn"}
-                onClick={checkTheChangePassword ? null : () => setChangePassModalActive(!changePassModalActive)}
+                className={
+                  checkTheChangePassword
+                    ? "singup__section__body__submitBtn unactive"
+                    : "singup__section__body__submitBtn"
+                }
+                onClick={
+                  checkTheChangePassword
+                    ? null
+                    : () => setChangePassModalActive(!changePassModalActive)
+                }
               >
                 Сохранить изменения
               </button>
             </form>
           </section>
         </div>
-        <button className="account__wrapper__logoutBtn" onClick={() => setLogOutModalActive(!logOutModalActive)}>
+        <button
+          className="account__wrapper__logoutBtn"
+          onClick={() => setLogOutModalActive(!logOutModalActive)}
+        >
           Выйти из аккаунта
         </button>
       </section>
 
       <Footer />
-      
-      <ConfirmModalComponent 
-      confirmModalActive={changePassModalActive}
-      setConfirmModalActive={setChangePassModalActive}
-      nameOfModal="Смена пароля"
-      bodyText="Вы уверены, что хотите сменить пароль?"
-      leftBtnName="Отмена"
-      rightBtnName="Да, сменить"
-      leftBtnAction={cancelChangePassModal}
-      /*действие для смены пароля
+
+      <ConfirmModalComponent
+        confirmModalActive={changePassModalActive}
+        setConfirmModalActive={setChangePassModalActive}
+        nameOfModal="Смена пароля"
+        bodyText="Вы уверены, что хотите сменить пароль?"
+        leftBtnName="Отмена"
+        rightBtnName="Да, сменить"
+        leftBtnAction={cancelChangePassModal}
+        /*действие для смены пароля
       rightBtnAction={}*/
       />
 
-      <ConfirmModalComponent 
-      confirmModalActive={logOutModalActive}
-      setConfirmModalActive={setLogOutModalActive}
-      nameOfModal="Выход из аккаунта"
-      bodyText="Вы уверены, что хотите выйти?"
-      leftBtnName="Отмена"
-      rightBtnName="Да, выйти"
-      leftBtnAction={canselLogoutModal}
-      rightBtnAction={goToLogin}
+      <ConfirmModalComponent
+        confirmModalActive={logOutModalActive}
+        setConfirmModalActive={setLogOutModalActive}
+        nameOfModal="Выход из аккаунта"
+        bodyText="Вы уверены, что хотите выйти?"
+        leftBtnName="Отмена"
+        rightBtnName="Да, выйти"
+        leftBtnAction={canselLogoutModal}
+        rightBtnAction={goToLogin}
       />
     </>
   );

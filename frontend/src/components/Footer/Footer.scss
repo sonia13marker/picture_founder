@@ -43,6 +43,13 @@
     }
 }
 
+@media screen and (max-width: 768px) {
+    .footer__fg {
+        margin-top: 40px;
+    }
+    
+}
+
 @media screen and (max-width: 385px) {
     .footer__fg {
         flex-direction: column;
