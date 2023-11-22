@@ -134,6 +134,13 @@
     }
 }
 
+@media screen and (max-width: 1075px) {
+    .input__textarea {
+       height: 18vh;
+    }
+       
+   }
+
 @media screen and (max-width: 1000px) {
     .input__label, .input__wrapper2 {
         font-size: 16px;
@@ -142,6 +149,14 @@
     width: 350px;
     }
 }
+
+@media screen and (max-width: 890px) {
+    .input__textarea {
+        height: 14vh;
+        width: 55vw;
+    }
+}
+
 
 @media screen and (max-width: 580px) {
     .input__label, .input__wrapper2 {
@@ -153,9 +168,27 @@
     }
 }
 
-@media screen and (max-width: 385px) {
+@media screen and (max-width: 495px) {
+    .input__textarea {
+        height: 125px;
+        width: 300px;
+    }
+}
 
+
+@media screen and (max-width: 385px) {
     .input__auth {
     width: 280px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .input__textarea {
+        width: 280px;
+    }
+}
+@media screen and (max-width: 355px) {
+    .input__textarea {
+        width: 250px;
     }
 }

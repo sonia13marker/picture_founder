@@ -11,7 +11,7 @@ import AddImageModal from "../AddImageModal/AddImageModal";
 export default function HeaderMobile() {
     /* for AddImageModal */
     const [modalActive, setModalActive] = useState(false);
-  return (
+  return (<>
     <div className="headerMobile__wrapper">
       <nav>
         <ul className="headerMobile__wrapper__ul">
@@ -56,11 +56,11 @@ export default function HeaderMobile() {
           </li>
         </ul>
       </nav>
-      <AddImageModal 
+    </div>
+    <AddImageModal 
         active={modalActive} 
         setActive={setModalActive}
         // addImage={(name, tags, image) => }
         />
-    </div>
-  );
+        </>  );
 }

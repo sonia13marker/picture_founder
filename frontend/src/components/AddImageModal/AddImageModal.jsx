@@ -86,7 +86,7 @@ export default function AddImageModal({
                 <label className="input__label" htmlFor="nameImg">
                   Название картинки
                   <input
-                    className="input"
+                    className="input modalInput"
                     type="text"
                     id="nameImg"
                     ref={nameImage}
