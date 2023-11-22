@@ -2,6 +2,7 @@ import "./AddImageModal.scss";
 import React, { useCallback, useState, useEffect, useRef } from "react";
 import Dropzone from "../Dropzone/Dropzone";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
+import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 
 export default function AddImageModal({
   active,
@@ -10,12 +11,11 @@ export default function AddImageModal({
 }) {
   /*-------------------------*/
   const [file, setFile] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
   /*-------------------------*/
 
   /* for cancel btn */
   const cancelBtnClick = () => {
-    setActive(false);
+    setActive(!active);
     setConfirmModalActive(!confirmModalActive);
   };
 
@@ -36,17 +36,14 @@ export default function AddImageModal({
     // console.log(`name of img: ${name}, tags image: ${tags}, ${image}`);
     nameImage.current.value = "";
     tagsImage.current.value = "";
-    if (file) { setFile(null);
-    } else {
-      return null;
-    }
-    if (selectedImage) {
-      setSelectedImage(null);
+    if (file) { 
+      setFile(null);
     } else {
       return null;
     }
     setActive(!active);
   };
+  console.log("no ffff", file);
   /* для модальных окон-подтверждений */
   const [confirmModalActive, setConfirmModalActive] = useState(false);
 
@@ -68,13 +65,11 @@ export default function AddImageModal({
 
           <span className="modal__content__body">
             {/* добавление картинки в компоненте */}
-            <Dropzone
-              file={file}
-              setFile={setFile}
-              selectedImage={selectedImage}
-              setSelectedImage={setSelectedImage}
+            <UploadImageComponent 
+            file={file}
+            setFile={setFile}
+            name={nameImage}
             />
-
             {/*блок с инфой о картинке - название и теги,
                     плюс кнопки действия */}
             <form
