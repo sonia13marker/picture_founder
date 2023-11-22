@@ -63,6 +63,7 @@ route.post( "/create", async ( req: Request, resp: Response ): Promise<void> => 
     if ( ValidateData.error ){
         resp.status(400)
         resp.json({message: "non valide data"})
+        console.log(ValidateData.error.message);
         return
     }
 

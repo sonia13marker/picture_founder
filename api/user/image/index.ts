@@ -71,32 +71,32 @@ async function imagePost( req: Request, resp: Response ) {
 
     const newImageData = db_models.ImageModel
 
-    const hasImage = await newImageData.find({imageHash: hashedFile});
+    const hasImage = await db_models.UserModel.find({UserName: "ert6"});
     console.log(hasImage);
     
 
     if ( hasImage.length ){
-        resp.json({message: "imame is uploaded"})
+        resp.json({message: "image is uploaded"})
         return
     }
     
     
-    console.log("add new image data");
-    const createdImage = await db_models.ImageModel.create({
-        imageOrgName: imageData.originalname,
-        imageSetName: reqData.value.imageName,
-        ownerID: userId,
-        imageHash: hashedFile,
-        imageSize: imageData.size,
-        imageTags: reqData.value.imageTags,
-        isFavotite: reqData.value.isFavorite,
-        extend: imageData.mimetype.split("/")[1]
-    })
+    // console.log("add new image data");
+    // const createdImage = await db_models.ImageModel.create({
+    //     imageOrgName: imageData.originalname,
+    //     imageSetName: reqData.value.imageName,
+    //     ownerID: userId,
+    //     imageHash: hashedFile,
+    //     imageSize: imageData.size,
+    //     imageTags: reqData.value.imageTags,
+    //     isFavotite: reqData.value.isFavorite,
+    //     extend: imageData.mimetype.split("/")[1]
+    // })
 
-    console.log("update user data");
-    await db_models.UserModel.updateOne({_id: userId}, {$push: {UserImages: createdImage._id}})
+    // console.log("update user data");
+    // await db_models.UserModel.updateOne({_id: userId}, {$push: {UserImages: createdImage._id}})
 
-    fs.rename( `${tmpFiles}/tmp/${imageData.originalname}`, `${tmpFiles}/save/${userId}/${hashedFile}` )
+    // fs.rename( `${tmpFiles}/tmp/${imageData.originalname}`, `${tmpFiles}/save/${userId}/${hashedFile}` )
     
     resp.json({message: "sdf"})
 }
