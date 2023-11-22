@@ -12,6 +12,7 @@
     z-index: 4;
     transform: scale(0);
     @include flexColumn;
+    z-index: 11;
 
     &.activeModal {
         transform: scale(1);
@@ -20,7 +21,7 @@
     &__content {
         background-color: $black-for-windows;
         // width: max-content;
-        // max-width: 800px;
+        // max-width: 90vw;
         // width: 100%;
         height: max-content;
         border-radius: 20px;
@@ -130,11 +131,34 @@
     width: 35vw;
 }
 
+// @media screen and (max-width: 1495px) {
+//     .modal__content__body__wrapper {
+//         height: 39vh;
+//     } 
+// }
+
+@media screen and (max-width: 1075px) {
+    .modal__content__body__wrapper {
+        height: 36vh;
+    }
+    
+}
+
 @media screen and (max-width: 890px) {
+    .modal__content {
+        height: auto;
+        overflow-y: auto;
+        z-index: 25;
+        margin: 20px;
+    }
     .modal__content__body {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
         gap: 40px;
+    }
+    .modal__content__body__wrapper {
+        height: 25vh;
+        width: 55vw;
     }
     .modal__content__body__infoBlock {
         align-items: center;
@@ -154,6 +178,10 @@
 }
 
 @media screen and (max-width: 495px) {
+    .modal__content__body__wrapper {
+        height: 235px;
+        width: 300px;
+    }
     .input.modalInput {
         width: 300px;
     }
@@ -166,6 +194,9 @@
     .modal__content {
         padding: 35px;
     }
+    .modal__content__body__wrapper {
+        width: 280px;
+    }
 }
 
 @media screen and (max-width: 355px) {
@@ -175,4 +206,8 @@
     .input.modalInput {
         width: 250px;
     }
+    .modal__content__body__wrapper {
+        width: 250px;
+        height: 210px;
+    } 
 }

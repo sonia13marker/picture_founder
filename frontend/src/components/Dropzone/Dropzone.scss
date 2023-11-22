@@ -38,7 +38,7 @@
             @include h4Style;
             max-width: 170px;
             line-height: 40px;
-            text-align-last: center;
+            text-align: center;
         }
 
         &__outlineBtn {
@@ -116,25 +116,8 @@
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' stroke='%23B0AFAFFF' stroke-width='4' stroke-dasharray='6%2c 14' stroke-dashoffset='29' stroke-linecap='square'/%3e%3c/svg%3e");
 }
 
-@media screen and (max-width: 1945px) {
-    .modal__content__body__wrapper {
-        height: 39vh;
-    }
-    
-}
-
-@media screen and (max-width: 1075px) {
-    .modal__content__body__wrapper {
-        height: 36vh;
-    }
-    
-}
 
 @media screen and (max-width: 890px) {
-    .modal__content__body__wrapper {
-        height: 25vh;
-        width: 55vw;
-    }
     .addBlock {
         width: 100%;
     }
@@ -145,32 +128,18 @@
     .addBlock__wrapper__p, .addBlock__wrapper__outlineBtn, .addBlock__wrapper2__btnDel {
         font-size: 14px;
     }
-
-}
-
-@media screen and (max-width: 495px) {
-    .modal__content__body__wrapper {
-        height: 235px;
-        width: 300px;
-    }
     .addBlock__wrapper > img {
         display: none;
     }
 
 }
 
-@media screen and (max-width: 400px) {
-    .modal__content__body__wrapper {
-        width: 280px;
-    }
+// @media screen and (max-width: 495px) {
+//     .addBlock__wrapper > img {
+//         display: none;
+//     }
 
-}
+// }
 
-@media screen and (max-width: 355px) {
-    .modal__content__body__wrapper {
-        width: 250px;
-        height: 210px;
-    } 
-}
 
 
