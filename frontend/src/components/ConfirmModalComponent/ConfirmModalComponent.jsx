@@ -10,7 +10,9 @@ export default function ConfirmModalComponent({
     confirmModalActive ?     
     <div className={confirmModalActive ? "confirm__background activeModal" : "confirm__background"}>
 
-    <div className="confirm__content" onClick={(e) => e.stopPropagation()}> 
+    <div className="confirm__content" 
+    //onClick={(e) => e.stopPropagation()}
+    > 
     <span className="confirm__content__header">
     <h3 className="confirm__content__header__title">{nameOfModal}</h3>
 

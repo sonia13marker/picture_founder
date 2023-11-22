@@ -131,6 +131,7 @@ return ( <>
                               name="uploadImg"
                               id="uploadImg"
                               className="addBlock__wrapper__outlineBtn"
+                              onChange={handleFileUpload}
                             >
                               {" "}
                               Выберите файл
