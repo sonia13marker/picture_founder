@@ -1,14 +1,28 @@
-import { Router, Request, Response } from "express"
+import { Router, Request, Response, urlencoded } from "express"
 import { db_models } from "../../db"
-import imageRoute from "./image"
+import * as imageRoute from "./image"
 import Joi from "joi"
+import multer from "multer"
+import cry from "crypto"
+import fs from "fs"
+
 const route = Router()
 
+const tmpFiles = "uploads"
 type newUserIn = {
     UserName: String,
     UserEmail: String,
     UserPassword: String
 }
+
+const stConf = multer.diskStorage({
+    destination: (req, file, cb) =>{
+        cb(null, "uploads/tmp");
+    },
+    filename(req, file, callback) {
+        callback(null, file.originalname)
+    }
+})
 
 const newUserInScheme = Joi.object({
     UserName: Joi.string().min(2).required(),
@@ -18,10 +32,10 @@ const newUserInScheme = Joi.object({
 
 route.get( "/:id", async ( req: Request, resp: Response ): Promise<void> => {
     
-    const UserID = req.params.id;
+    const userId = req.params.id;
 
     try {
-        const getUser = await db_models.UserModel.findById(UserID)
+        const getUser = await db_models.UserModel.findById(userId)
 
         resp.json({
             "UserID":getUser?.id,
@@ -32,7 +46,7 @@ route.get( "/:id", async ( req: Request, resp: Response ): Promise<void> => {
     } catch (error) {
         // console.log(error);
 
-        let errText = `{"message": 'user ${UserID} not found'}`
+        let errText = `{"message": 'user ${userId} not found'}`
         resp.statusCode = 404;
         resp.json(errText)
         console.error(errText);
@@ -53,13 +67,14 @@ route.post( "/create", async ( req: Request, resp: Response ): Promise<void> => 
     }
 
     let dbUser = await db_models.UserModel.create(ValidateData.value)
+    await fs.promises.mkdir(`${tmpFiles}/save/${dbUser._id}`)
  
     //console.log(newUserData);
     resp.json({message: "complete user create", data: {"UserID": dbUser.id, "UserEmail": dbUser.UserName}})
-    
+        
 })
 
-
-route.use("/:id/image", imageRoute)
+route.get("/:id/image", imageRoute.imageGet)
+route.post("/:id/image", urlencoded({extended: false}), multer({storage: stConf}).single("image"), imageRoute.imagePost)
 
 export default route

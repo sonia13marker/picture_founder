@@ -1,6 +1,7 @@
 import goose from "mongoose"
 import user from "./models/user"
 import image from "./models/image"
+import { exit } from "process";
 
 async function ConnectDB(db_ip: String): Promise<void> {
     try{
@@ -14,6 +15,7 @@ async function ConnectDB(db_ip: String): Promise<void> {
     }
     catch (e){
         console.log("error on connetc to db");
+        exit(0)
     }
 }
 

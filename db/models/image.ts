@@ -1,3 +1,4 @@
+import { string } from "joi"
 import {Schema, model} from "mongoose"
 
 const ImageSchema = new Schema({
@@ -5,8 +6,11 @@ const ImageSchema = new Schema({
     imageSetName: String,
     imageSize: Number,
     imageHash: String,
-    ownerID: {type: Schema.ObjectId, ref: "User"}
-})
+    ownerID: {type: Schema.ObjectId, ref: "User"},
+    imageTags: [String],
+    isFavotite: Boolean,
+    extend: String
+}, {timestamps: true})
 
-const Image = model("image", ImageSchema)
+const Image = model("Image", ImageSchema)
 export default Image

@@ -9,6 +9,6 @@ app.use(express.json())
 app.use("/api",api)
 
 app.listen( 4500, async ()=>{
-    await ConnectDB("192.168.5.65");
+    await ConnectDB("192.168.5.53");
     console.log("server start");
 })
