@@ -1,6 +1,5 @@
 import "./AddImageModal.scss";
 import React, { useCallback, useState, useEffect, useRef } from "react";
-import Dropzone from "../Dropzone/Dropzone";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 
