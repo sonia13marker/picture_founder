@@ -44,6 +44,7 @@
         &__outlineBtn {
 
                 @include bodyBtn;
+                z-index: 5;
 
                 &:hover {
                     @include bodyBtnHover;
