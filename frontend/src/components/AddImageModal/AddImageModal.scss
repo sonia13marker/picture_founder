@@ -162,8 +162,26 @@
 }
 
 @media screen and (max-width: 495px) {
-    .input.modalInput {
-        width: 300px;
+    .modal__content {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+    }
+    .modal__content__body {
+        justify-items: center;
+        align-items: center;
+    }
+    .modal__content__body__wrapper {
+        width: 100%;
+    }
+    .modal__content__body__infoBlock {
+        width: 100%;
+    }
+    .input__wrapper, .input__label, .input__textarea, #tagsImg {
+        width: 100%;
+    }
+    .input.modalInput, #nameImg {
+        width: 100%;
     }
 }
 
