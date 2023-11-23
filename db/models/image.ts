@@ -6,7 +6,7 @@ const ImageSchema = new Schema({
     imageSetName: String,
     imageSize: Number,
     imageHash: String,
-    ownerID: {type: Schema.ObjectId, ref: "User"},
+    ownerId: {type: Schema.ObjectId, ref: "User"},
     imageTags: [String],
     isFavotite: Boolean,
     extend: String

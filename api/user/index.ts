@@ -69,5 +69,6 @@ route.post("/create", async (req: Request, resp: Response): Promise<void> => {
 
 route.get("/:id/image", hasUser, imageRoute.imageGet)
 route.post("/:id/image", hasUser, urlencoded({ extended: false }), multer({ storage: stConf }).single("image"), imageRoute.imagePost)
+route.delete("/:id/image/:imgId", hasUser, imageRoute.imageDelete)
 
 export default route

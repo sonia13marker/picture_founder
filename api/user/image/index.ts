@@ -32,7 +32,17 @@ async function imageGet ( req: Request, resp: Response ) {
     const needData = imagesGetScheme.validate(req.query);
     const userId = req.params.id
 
-    const userImages = await db_models.UserModel.findById(userId).populate("UserImages").exec()
+    if ( needData.error ){
+        resp.json({message: "invalid data"})
+        return
+    }
+
+
+
+    const userImages = await db_models.UserModel.findById(userId).populate({
+        path: "UserImages",
+        options: {skip: needData.value.offset}
+    }).exec()
     const userImagesArray = userImages?.UserImages
     
     resp.json({
@@ -84,7 +94,7 @@ async function imagePost( req: Request, resp: Response ) {
     const createdImage = await db_models.ImageModel.create({
         imageOrgName: imageData.originalname,
         imageSetName: reqData.value.imageName,
-        ownerID: userId,
+        ownerId: userId,
         imageHash: hashedFile,
         imageSize: imageData.size,
         imageTags: reqData.value.imageTags,
@@ -106,4 +116,32 @@ async function imagePost( req: Request, resp: Response ) {
     }})
 }
 
-export { imageGet, imagePost }
+async function imageDelete (req: Request, resp: Response) {
+    const userId = req.params.id;
+    const imageId = req.params.imgId;
+
+    let hasImage;
+    try {
+        hasImage = await db_models.ImageModel.exists({_id: imageId, ownerId: userId})
+        console.log(hasImage);
+    } catch (error) {
+        resp.json({message: "image not found"})
+        return
+    }
+    
+    if ( !hasImage ){
+        resp.json({message: "image not found"})
+        return
+    }
+
+    const imageData = await db_models.ImageModel.findByIdAndDelete({_id: imageId, ownerId: userId})
+    await  db_models.UserModel.updateOne({_id: userId}, {$pull: {UserImages: imageData?.id}})
+    
+    await fs.rm(`${tmpFiles}/save/${userId}/${imageData?.imageHash}`)
+    
+    resp.json({message: "remove image", data: {
+        imageName: imageData?.imageSetName
+    }})
+}
+
+export { imageGet, imagePost, imageDelete }
