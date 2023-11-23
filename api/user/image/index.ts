@@ -117,6 +117,7 @@ async function imagePost( req: Request, resp: Response ) {
 }
 
 async function imageDelete (req: Request, resp: Response) {
+    
     const userId = req.params.id;
     const imageId = req.params.imgId;
 
@@ -135,7 +136,7 @@ async function imageDelete (req: Request, resp: Response) {
     }
 
     const imageData = await db_models.ImageModel.findByIdAndDelete({_id: imageId, ownerId: userId})
-    await  db_models.UserModel.updateOne({_id: userId}, {$pull: {UserImages: imageData?.id}})
+    await db_models.UserModel.updateOne({_id: userId}, {$pull: {UserImages: imageData?.id}})
     
     await fs.rm(`${tmpFiles}/save/${userId}/${imageData?.imageHash}`)
     
@@ -144,4 +145,30 @@ async function imageDelete (req: Request, resp: Response) {
     }})
 }
 
-export { imageGet, imagePost, imageDelete }
+async function fullImageGet( req: Request, resp: Response ) {
+    
+    const userId = req.params.id;
+    const imageId = req.params.imgId;
+
+    let hasImage;
+    try {
+        hasImage = await db_models.ImageModel.exists({_id: imageId, ownerId: userId})
+        console.log(hasImage);
+    } catch (error) {
+        resp.json({message: "image not found"})
+        return
+    }
+    
+    if ( !hasImage ){
+        resp.json({message: "image not found"})
+        return
+    }
+
+    const imageData = await db_models.ImageModel.find({_id: imageId, ownerId: userId})
+    
+    resp.json({
+        ...imageData
+    })
+}
+
+export { imageGet, imagePost, imageDelete, fullImageGet }
