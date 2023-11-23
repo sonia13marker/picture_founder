@@ -124,6 +124,13 @@
     width: 35vw;
 }
 
+@media screen and (max-width: 1000px) {
+    .modal__content__head__h3 {
+        font-size: 16px;
+    }
+    
+}
+
 
 @media screen and (max-width: 890px) {
     .modal__content {

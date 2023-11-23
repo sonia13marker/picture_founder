@@ -17,9 +17,9 @@
 }
 
 .confirm__content {
-    max-width: 42vw;
     min-width: 35vw;
-    width: 100%;
+    width: auto;
+    max-width: max-content;
     height: max-content;
     padding: 40px;
     background-color: $black-for-windows;
@@ -48,6 +48,7 @@
     }
 
     &__body__text {
+        width: max-content;
         @include h4Style;
         margin-bottom: 60px;
         color: $light-gray-text;
@@ -80,15 +81,6 @@
     }
 }
 
-@media screen and (max-width: 1180px) {
-    .confirm__content {
-        width: auto;
-        max-width: max-content;
-    }
-    .confirm__content__body__text {
-        width: max-content;
-    }
-}
 
 @media screen and (max-width: 1000px) {
     .confirm__content__header__title {
