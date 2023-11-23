@@ -17,10 +17,6 @@ export default function ActionCircle({ isHover, id, name, tags, image }) {
   const closeDelModal = () => {
     setActiveDelModal(!activeDelModal);
   }
-  // const say = () => {
-  //     console.log("hello");
-  // }
-
   return (
     <>
       <span className={isHover ? "wrapper active" : "wrapper"}>

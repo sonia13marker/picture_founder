@@ -9,6 +9,7 @@
     opacity: 0;
     transition: $transition;
     height: 35px;
+    pointer-events:none;
 
     &.active {
         @include flexRow;
@@ -19,6 +20,7 @@
         gap: 17px;
         opacity: 1;
         transition: $transition;
+        pointer-events: visibleFill;
     }
     
     &__circle {
