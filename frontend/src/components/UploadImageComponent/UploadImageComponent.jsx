@@ -4,9 +4,6 @@ import add_img from "../../images/add_img.svg";
 
 export default function UploadImageComponent({ file,
     setFile, name }) {
-  /* for uploading image */
-  const [image, setImage] = useState(null);
-
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
@@ -22,7 +19,7 @@ export default function UploadImageComponent({ file,
     const reader = new FileReader();
 
     reader.onload = () => {
-      setImage(reader.result);
+      setFile(reader.result);
     };
 
     reader.readAsDataURL(file);
@@ -34,13 +31,14 @@ export default function UploadImageComponent({ file,
 
   /* for delete btn on hovered image */
   const deleteBtnClick = () => {
-    setImage(null);
+    setFile(null);
   };
 
-  useEffect(() => {
-    setFile(image);
-  }, [setFile, image]);
-  console.log("fffff", file);
+  // useEffect(() => {
+  //   setFile(image);
+  // }, [image, setFile]);
+
+  console.log("fffff", !!file);
   return (
     <>
       {/*обертка для блока DD и текста*/}
@@ -52,7 +50,7 @@ export default function UploadImageComponent({ file,
           onDrop={handleDrop}
           onDragOver={handleDragOver}
         >
-          {image ? (
+          {file ? (
             <>
               <div className="addBlock__wrapper2">
                 <button
@@ -63,7 +61,7 @@ export default function UploadImageComponent({ file,
                 </button>
                 <img
                   className="addBlock__wrapper__image"
-                  src={image}
+                  src={file}
                   alt={name}
                 />
               </div>

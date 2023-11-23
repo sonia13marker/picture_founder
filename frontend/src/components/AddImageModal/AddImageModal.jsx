@@ -2,6 +2,7 @@ import "./AddImageModal.scss";
 import React, { useCallback, useState, useEffect, useRef } from "react";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
+import NewCompModal from "../NewCompModal";
 
 export default function AddImageModal({
   active,
@@ -13,7 +14,10 @@ export default function AddImageModal({
   /*-------------------------*/
 
   /* for cancel btn */
-  const cancelBtnClick = () => {
+  const cancelBtnClick = (e) => {
+    // e.preventDefault();
+    // console.log('close btn');
+    setFile(null);
     setActive(!active);
     setConfirmModalActive(!confirmModalActive);
   };
@@ -35,22 +39,23 @@ export default function AddImageModal({
     // console.log(`name of img: ${name}, tags image: ${tags}, ${image}`);
     nameImage.current.value = "";
     tagsImage.current.value = "";
-    if (file) { 
+    if (file) {
       setFile(null);
     } else {
-      return null;
+      return;
     }
     setActive(!active);
   };
-  console.log("no ffff", file);
+  console.log("no ffff", !!file);
   /* для модальных окон-подтверждений */
   const [confirmModalActive, setConfirmModalActive] = useState(false);
 
   return (
     <>
       <div className={active ? "modal activeModal" : "modal"}>
-        <div className="modal__content" 
-        //onClick={(e) => e.stopPropagation()}
+        <div
+          className="modal__content"
+          // onClick={(e) => e.stopPropagation()}
         >
           <span className="modal__content__head">
             <h3 className="modal__content__head__h3">Добавить картинку</h3>
@@ -64,16 +69,16 @@ export default function AddImageModal({
 
           <span className="modal__content__body">
             {/* добавление картинки в компоненте */}
-            <UploadImageComponent 
-            file={file}
-            setFile={setFile}
-            name={nameImage}
+            <UploadImageComponent
+              file={file}
+              setFile={setFile}
+              name={nameImage}
             />
             {/*блок с инфой о картинке - название и теги,
                     плюс кнопки действия */}
-            <form
+            <div
               className="modal__content__body__infoBlock"
-              onSubmit={submitInfoImage}
+              //onSubmit={submitInfoImage}
             >
               {/* отображения инпута с названием картинки */}
               <span className="input__wrapper">
@@ -103,7 +108,10 @@ export default function AddImageModal({
                 <button
                   className="modal__content__body__infoBlock__wrapper__outlineBtn"
                   // onClick={cancelBtnClick}
-                  onClick={() => setConfirmModalActive(!confirmModalActive)}
+                  onClick={() => {
+                    console.log("closed");
+                    setConfirmModalActive(!confirmModalActive);
+                  }}
                 >
                   Отмена
                 </button>
@@ -112,10 +120,15 @@ export default function AddImageModal({
                   Добавить
                 </button>
               </span>
-            </form>
+            </div>
           </span>
         </div>
-        <ConfirmModalComponent
+        <NewCompModal
+          confirmModalActive={confirmModalActive}
+          setConfirmModalActive={setConfirmModalActive}
+          leftBtnAction={cancelBtnClick}
+        />
+        {/* <ConfirmModalComponent
         confirmModalActive={confirmModalActive}
         setConfirmModalActive={setConfirmModalActive}
         nameOfModal="Сохранение изменений"
@@ -124,9 +137,8 @@ export default function AddImageModal({
         rightBtnName="Сохранить изменения"
         leftBtnAction={cancelBtnClick}
         // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
-      />
+      /> */}
       </div>
-  
     </>
   );
 }
