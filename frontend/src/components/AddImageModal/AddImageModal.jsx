@@ -44,11 +44,11 @@ export default function AddImageModal({
     setActive(!active);
   };
   const checkTheFileFunc = () => {
-    if (file) {
+    // if (file) {
       setConfirmModalActive(!confirmModalActive)
-    } else {
-      setActive(!active);
-    }
+    // } else {
+    //   setActive(!active);
+    // }
   }
   /* для модальных окон-подтверждений */
   const [confirmModalActive, setConfirmModalActive] = useState(false);

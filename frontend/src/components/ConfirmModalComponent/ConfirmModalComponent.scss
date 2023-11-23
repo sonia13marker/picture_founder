@@ -79,3 +79,56 @@
         }
     }
 }
+
+@media screen and (max-width: 1180px) {
+    .confirm__content {
+        width: auto;
+        max-width: max-content;
+    }
+    .confirm__content__body__text {
+        width: max-content;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .confirm__content__header__title {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 890px) {
+    .confirm__background.activeModal {
+        z-index: 16;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .confirm__background.activeModal, .confirm__content__body__text, .confirm__content__footer__outlineBtn, .confirm__content__footer__fillBtn {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 495px) {
+    .confirm__content { 
+        width: 350px;
+    }
+    .confirm__content__body__text {
+        width: 100%;
+    }
+    .confirm__content__footer {
+        flex-direction: column-reverse;
+    }
+    .confirm__content__footer__outlineBtn, .confirm__content__footer__fillBtn {
+        //width: 195px;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .confirm__content { 
+        width: 300px;
+    }
+    .confirm__content__header, .confirm__content__body__text {
+        margin-bottom: 40px;
+    }
+}
