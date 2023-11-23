@@ -20,3 +20,15 @@
     gap: 30px;
 }
 
+@media screen and (max-width: 580px) {
+    .wrappers {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 385px) {
+    .wrappers {
+        align-items: center;
+    }
+}
+

@@ -19,3 +19,54 @@
 .autoBtn {
     margin-top: auto;
 }
+
+#nameImg {
+    width: 35vw;
+}
+@media screen and (max-width: 1075px) {
+    .modal__content__body__wrapper {
+        height: 30vh;
+    }
+    .modal__content__body__imgBlock {
+        width: 100%;
+    }
+    
+}
+
+@media screen and (max-width: 890px) {
+    #nameImg {
+        width: 55vw;
+    }
+    
+}
+
+@media screen and (max-width: 545px) {
+    .modal__content__body__infoBlock__wrapper.autoBtn {
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+    .modal__content__body__infoBlock__wrapper__fillBtn, .modal__content__body__infoBlock__wrapper__outlineBtn {
+        width: 100%;
+    }
+    
+}
+
+@media screen and (max-width: 495px) {
+    #nameImg {
+        width: 300px;
+    }
+    
+}
+
+@media screen and (max-width: 400px) {
+    #nameImg {
+        width: 280px;
+    }
+    
+}
+
+@media screen and (max-width: 355px) {
+    #nameImg {
+        width: 250px;
+    }
+}
