@@ -6,8 +6,6 @@ export default function ConfirmModalComponent({
     leftBtnAction, rightBtnAction,
 }) {
   return ( <>
-  {
-    confirmModalActive ?     
     <div className={confirmModalActive ? "confirm__background activeModal" : "confirm__background"}>
 
     <div className="confirm__content" 
@@ -33,9 +31,6 @@ export default function ConfirmModalComponent({
     </button>
   </span>
     </div>
-</div> : 
-<></>
-  }
-
+</div> 
     </>);
 }

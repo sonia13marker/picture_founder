@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./UploadImageComponent.scss";
 import add_img from "../../images/add_img.svg";
 
@@ -34,11 +34,6 @@ export default function UploadImageComponent({ file,
     setFile(null);
   };
 
-  // useEffect(() => {
-  //   setFile(image);
-  // }, [image, setFile]);
-
-  console.log("fffff", !!file);
   return (
     <>
       {/*обертка для блока DD и текста*/}

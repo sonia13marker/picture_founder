@@ -116,7 +116,6 @@ export default function AddImageModal({
                 </button>
 
                 <button 
-                type="submit"
                 className="modal__content__body__infoBlock__wrapper__fillBtn">
                   Добавить
                 </button>
