@@ -14,6 +14,8 @@ export default function AddImageModal({
 
   /* for cancel btn */
   const cancelBtnClick = (e) => {
+    nameImage.current.value = "";
+    tagsImage.current.value = "";
     setFile(null);
     setActive(!active);
     setConfirmModalActive(!confirmModalActive);
@@ -44,7 +46,7 @@ export default function AddImageModal({
     setActive(!active);
   };
   const checkTheFileFunc = () => {
-    if (file) {
+    if (file || nameImage || tagsImage) {
       setConfirmModalActive(!confirmModalActive)
     } else {
       setActive(!active);
@@ -116,7 +118,8 @@ export default function AddImageModal({
                 </button>
 
                 <button 
-                className="modal__content__body__infoBlock__wrapper__fillBtn">
+                className="modal__content__body__infoBlock__wrapper__fillBtn"
+                onClick={submitInfoImage}>
                   Добавить
                 </button>
               </span>
