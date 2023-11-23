@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-11-21T10:32:05.493Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="kyuDw4weKijdUl49zprv" version="22.1.2" type="device">
+<mxfile host="app.diagrams.net" modified="2023-11-23T12:22:43.553Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="75aOiWMbmXItgOyA3Kec" version="22.1.2" type="device">
   <diagram name="Page-1" id="VDa84fjbdHk5lfzFZGqd">
-    <mxGraphModel dx="3209" dy="833" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="3134" dy="791" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -225,11 +225,17 @@
         <mxCell id="HGypwTEKrNq7sxcKAlPX-7" value="Примерный JSON для одного изображения" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="-1530" y="250" width="210" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="Cym9JzraUJ4T-Hf_X6xU-4" value="&lt;p style=&quot;line-height: 100%; font-size: 15px;&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;{&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;userId&quot;: &quot;sdjkf23njk2&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;userName&quot;: &quot;fff&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;userEmail&quot;: &quot;sdf@sdf.rt&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;opt&quot;: {&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;imageCount&quot;: -1,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; .....&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; }&lt;br&gt;}&lt;br&gt;&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="Cym9JzraUJ4T-Hf_X6xU-4" value="&lt;p style=&quot;line-height: 100%; font-size: 15px;&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;{&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;userId&quot;: &quot;sdjkf23njk2&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;userName&quot;: &quot;fff&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;userEmail&quot;: &quot;sdf@sdf.rt&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;opt&quot;: {&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;imageCount&quot;: -1,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; .....&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; }&lt;br&gt;}&lt;br&gt;&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="-1060" y="60" width="310" height="170" as="geometry" />
         </mxCell>
-        <mxCell id="Cym9JzraUJ4T-Hf_X6xU-5" value="Примерный JSON данных пользователя" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="Cym9JzraUJ4T-Hf_X6xU-5" value="Примерный JSON данных пользователя" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="-970" y="250" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="tefrl1qHMUOD7vbDIaVz-1" value="&lt;div style=&quot;font-size: 15px;&quot; align=&quot;left&quot;&gt;...&lt;/div&gt;&lt;div style=&quot;font-size: 15px;&quot; align=&quot;left&quot;&gt;data: {&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;imageId&quot;: &quot;jskldhnf&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;imageName&quot;: &quot;lkld&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; &quot;imageTags&quot;: [&quot;jksd&quot;, &quot;skjdh&quot;]&lt;br&gt;}&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="-190" y="1180" width="215" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="tefrl1qHMUOD7vbDIaVz-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.514;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="tefrl1qHMUOD7vbDIaVz-1" target="FO7ApF4EuNFh9P2Lm897-145">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

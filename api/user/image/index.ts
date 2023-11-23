@@ -30,7 +30,9 @@ const newImageScheme = Joi.object({
 async function imageGet ( req: Request, resp: Response ) {
     
     const needData = imagesGetScheme.validate(req.query);
-    const userImages = await db_models.UserModel.findById(req.params.id).populate("UserImages").exec()
+    const userId = req.params.id
+
+    const userImages = await db_models.UserModel.findById(userId).populate("UserImages").exec()
     const userImagesArray = userImages?.UserImages
     
     resp.json({
@@ -43,14 +45,12 @@ async function imageGet ( req: Request, resp: Response ) {
 
 async function imagePost( req: Request, resp: Response ) {
     
-    const reqData = newImageScheme.validate(req.body)
+    //получаю параметры изображения и id пользователя
     const userId = req.params.id
+    const reqData = newImageScheme.validate(req.body)
     const imageData = <Express.Multer.File>req.file;
     
-    const HashSumImage = cry.createHash("sha256")
-    
-    console.log(imageData);
-    
+    // проверяю есть ли ошибки при валидации данных
     if ( reqData.error ){
         console.error(`[ERROR] error on upload new image \n ${reqData.error.name}`);
         resp.status(400);
@@ -58,6 +58,7 @@ async function imagePost( req: Request, resp: Response ) {
         return
     }
 
+    //проверяю есть ли изображение
     if ( !imageData ){
         console.error(`[ERROR] error on upload is empty | userid ${userId}`);
         resp.status(400);
@@ -65,40 +66,44 @@ async function imagePost( req: Request, resp: Response ) {
         return
     }
 
+    //создаю хэш сумму изображения
+    const HashSumImage = cry.createHash("sha256")
     HashSumImage.update(imageData.originalname)
     
     const hashedFile = HashSumImage.digest("hex")
 
-    const newImageData = db_models.ImageModel
-
-    const hasImage = await db_models.UserModel.find({UserName: "ert6"});
-    console.log(hasImage);
-    
-
-    if ( hasImage.length ){
+    //проверяю, есть ли такое изображение у пользователя
+    const hasImage = await db_models.ImageModel.exists({imageHash: hashedFile, ownerID: userId})    
+    if ( hasImage ){
         resp.json({message: "image is uploaded"})
         return
     }
     
-    
-    // console.log("add new image data");
-    // const createdImage = await db_models.ImageModel.create({
-    //     imageOrgName: imageData.originalname,
-    //     imageSetName: reqData.value.imageName,
-    //     ownerID: userId,
-    //     imageHash: hashedFile,
-    //     imageSize: imageData.size,
-    //     imageTags: reqData.value.imageTags,
-    //     isFavotite: reqData.value.isFavorite,
-    //     extend: imageData.mimetype.split("/")[1]
-    // })
+    //добавляю в базу данных новое изображение
+    console.log("add new image data");
+    const createdImage = await db_models.ImageModel.create({
+        imageOrgName: imageData.originalname,
+        imageSetName: reqData.value.imageName,
+        ownerID: userId,
+        imageHash: hashedFile,
+        imageSize: imageData.size,
+        imageTags: reqData.value.imageTags,
+        isFavotite: reqData.value.isFavorite,
+        extend: imageData.mimetype.split("/")[1]
+    })
 
-    // console.log("update user data");
-    // await db_models.UserModel.updateOne({_id: userId}, {$push: {UserImages: createdImage._id}})
+    //обновляю пользовательские данные
+    console.log("update user data");
+    await db_models.UserModel.updateOne({_id: userId}, {$push: {UserImages: createdImage._id}})
 
-    // fs.rename( `${tmpFiles}/tmp/${imageData.originalname}`, `${tmpFiles}/save/${userId}/${hashedFile}` )
+    //переношу изображение из временного хранилише в пользовательское
+    fs.rename( `${tmpFiles}/tmp/${imageData.originalname}`, `${tmpFiles}/save/${userId}/${hashedFile}` )
     
-    resp.json({message: "sdf"})
+    resp.json({message: "image uploaded", data: {
+        imageId: createdImage.id,
+        imageName: createdImage.imageSetName,
+        imageTags: createdImage.imageTags
+    }})
 }
 
 export { imageGet, imagePost }

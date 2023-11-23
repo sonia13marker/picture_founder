@@ -1,14 +1,14 @@
 import express from "express"
 import { ConnectDB } from "./db"
 import api from "./api"
+import { env } from "./env"
 
 const app = express()
-
 app.use(express.json())
 
 app.use("/api",api)
 
-app.listen( 4500, async ()=>{
-    await ConnectDB("192.168.5.53");
+app.listen( env.PORT, async ()=>{
+    await ConnectDB(env.DB_IP);
     console.log("server start");
 })
