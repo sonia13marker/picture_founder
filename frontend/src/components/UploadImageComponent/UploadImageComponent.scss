@@ -157,19 +157,3 @@
         width: 100%;
     }
 }
-
-@media screen and (max-width: 400px) {
-    .modal__content__body__wrapper, .addBlock {
-        width: 280px;
-    }
-}
-
-@media screen and (max-width: 355px) {
-    .modal__content__body__wrapper {
-        width: 250px;
-        height: 210px;
-    } 
-    .addBlock {
-        width: 250px;
-    }
-}

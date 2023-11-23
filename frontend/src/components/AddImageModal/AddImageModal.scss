@@ -166,16 +166,19 @@
         width: 100vw;
         height: 100vh;
         margin: 0;
+        padding: 30px 35px;
+    }
+    .modal__content__head {
+        margin-bottom: 40px;
     }
     .modal__content__body {
         justify-items: center;
         align-items: center;
-    }
-    .modal__content__body__wrapper {
-        width: 100%;
+        gap: 30px;
     }
     .modal__content__body__infoBlock {
         width: 100%;
+        gap: 20px;
     }
     .input__wrapper, .input__label, .input__textarea, #tagsImg {
         width: 100%;
