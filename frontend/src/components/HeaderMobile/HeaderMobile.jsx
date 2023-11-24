@@ -22,7 +22,13 @@ export default function HeaderMobile() {
               <HomeIcon />
             </NavLink>
           </li>
-
+          <li className="headerMobile__wrapper__ul__li">
+            <button className='headerMobile__wrapper__ul__li__btn'
+                    onClick={() => setModalActive(!modalActive)}
+            >
+              <AddIcon />
+            </button>
+          </li>
           <li className="headerMobile__wrapper__ul__li">
             <NavLink
               to="/favorite"
@@ -31,29 +37,6 @@ export default function HeaderMobile() {
             </NavLink>
           </li>
 
-          <li className="headerMobile__wrapper__ul__li">
-            <button className='headerMobile__wrapper__ul__li__btn'
-            onClick={() => setModalActive(!modalActive)}
-            >
-              <AddIcon />
-            </button>
-          </li>
-
-          <li className="headerMobile__wrapper__ul__li">
-            <NavLink
-              to="/developers"
-            >
-              <DevelopersIcon />
-            </NavLink>
-          </li>
-
-          <li className="headerMobile__wrapper__ul__li">
-            <NavLink
-              to="/login"
-            >
-              <LoginIcon />
-            </NavLink>
-          </li>
         </ul>
       </nav>
     </div>

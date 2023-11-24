@@ -1,5 +1,5 @@
 import './Layout.scss';
-import { Outlet, Link } from "react-router-dom";
+import {Outlet, Link, NavLink} from "react-router-dom";
 import Header from "../Header/Header";
 import SortDropdown from "../SortDropdown/SortDropdown";
 import Footer from "../Footer/Footer";
@@ -21,14 +21,22 @@ export default function Layout() {
     <>
 
 { windowWidth <= 768 ? <>
-  <Link to={"/main"} className='header__link'>
+
+    <div className='header'>
+      <Link to={"/main"} className='header__link'>
             <span className='header__logo'>
                 Pic
                 <p className='header__logo__p'>
                     2
                 </p>
             </span>
-            </Link>
+      </Link>
+
+      <NavLink to="/login"
+          //className='header__btns__login'
+               className={({isActive}) => isActive ? "loginBtnActive": "header__btns__login"}
+      ></NavLink>
+    </div>
 
 <HeaderMobile />
 </> : <Header />}

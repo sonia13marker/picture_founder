@@ -18,6 +18,7 @@
         &__ul {
             width: 100%;
             @include flexRow;
+            justify-content: space-around;
             &__li {
                 list-style-type: none;
 

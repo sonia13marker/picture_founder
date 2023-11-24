@@ -2,7 +2,7 @@ import "./PersonalAccountPage.scss";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import {useNavigate, Link, NavLink} from "react-router-dom";
 import Header from "../../components/Header/Header";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 import HeaderMobile from "../../components/HeaderMobile/HeaderMobile";
@@ -114,12 +114,21 @@ export default function PersonalAccountPage({
     <>
       {windowWidth <= 768 ? (
         <>
-          <Link to={"/main"} className="header__link">
-            <span className="header__logo">
-              Pic
-              <p className="header__logo__p">2</p>
+          <div className='header'>
+            <Link to={"/main"} className='header__link'>
+            <span className='header__logo'>
+                Pic
+                <p className='header__logo__p'>
+                    2
+                </p>
             </span>
-          </Link>
+            </Link>
+
+            <NavLink to="/login"
+                //className='header__btns__login'
+                     className={({isActive}) => isActive ? "loginBtnActive": "header__btns__login"}
+            ></NavLink>
+          </div>
 
           <HeaderMobile />
         </>
