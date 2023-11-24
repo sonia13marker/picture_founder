@@ -2,7 +2,6 @@ import './LoginPage.scss';
 // import useAuth from '../hooks/useAuth';
 import { useState, useEffect, useReducer } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
 import OpenEyeIcon from '../../components/OpenEyeIcon';
 import CloseEyeIcon from '../../components/CloseEyeIcon';
 import { Link } from 'react-router-dom';
@@ -12,7 +11,6 @@ export default function LoginPage () {
     // const { setAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const {singIn} = useAuth();
 
     /* проверка пути, откуда пришел пользователь на стр логина. 
     тут идет проверка на передачу у location стейта, у которого 

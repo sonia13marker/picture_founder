@@ -10,9 +10,7 @@ import { useState, useContext, createContext, Outlet,
 import { Navigate } from 'react-router-dom';
 import imagesData from './data/first-data.json';
 import SingUpPage from './pages/SingUpPage/SingUpPage';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Layout from './components/Layout/Layout';
-
 import LoginPage from './pages/LoginPage/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import ForgotPasswordSuccessPage from './pages/ForgotPasswordSuccessPage/ForgotPasswordSuccessPage';
