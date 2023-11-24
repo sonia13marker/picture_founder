@@ -7,8 +7,6 @@
     <list default="true" id="a080ea1c-d4a8-4020-bb77-4c811a74b60c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/Layout/Layout.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Layout/Layout.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SortDropdown/SortDropdown.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SortDropdown/SortDropdown.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SortDropdown/SortDropdown.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SortDropdown/SortDropdown.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +48,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1700826450564</updated>
-      <workItem from="1700826451994" duration="4485000" />
+      <workItem from="1700826451994" duration="4711000" />
     </task>
     <servers />
   </component>

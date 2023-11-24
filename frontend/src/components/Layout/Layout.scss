@@ -65,7 +65,7 @@
 
 @media screen and (max-width: 580px) {
     .main__section {
-        margin: 0 40px;
+        margin: 0 30px;
     }
     .main__section__input {
        font-size: 14px;
@@ -88,5 +88,14 @@
         flex-direction: row;
         gap: 10px;
         width: 100%;
+    }
+    .main__section {
+        margin: 0 30px;
+    }
+}
+
+@media screen and (max-width: 345px) {
+    .main__section {
+        margin: 0 20px;
     }
 }
