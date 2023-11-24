@@ -51,7 +51,7 @@ export default function ShareImageModal({ active, setActive }) {
   };
   return (
     <div className={active ? "modal activeModal" : "modal"}>
-      <div className="modal__content">
+      <div className="modal__content shareModal">
         <span className="modal__content__head">
           <h3 className="modal__content__head__h3">Поделиться</h3>
           <span
