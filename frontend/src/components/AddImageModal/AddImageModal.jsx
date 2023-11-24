@@ -46,7 +46,7 @@ export default function AddImageModal({
     setActive(!active);
   };
   const checkTheFileFunc = () => {
-    if (file || nameImage || tagsImage) {
+    if (file || nameImage.current.value || tagsImage.current.value) {
       setConfirmModalActive(!confirmModalActive)
     } else {
       setActive(!active);
