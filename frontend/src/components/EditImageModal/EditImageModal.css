@@ -1,0 +1,576 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+/*---------mixins for styling input-------*/
+/*----------------*/
+.input {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-top: 10px;
+  width: 400px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  background-color: #1D1D1D;
+  color: #B0AFAF;
+  font-family: "Ubuntu", sans-serif;
+  border: 2px solid #1D1D1D;
+}
+.input:active {
+  border: 2px solid #B0AFAF;
+}
+.input:hover {
+  border: 2px solid #B0AFAF;
+}
+.input__auth {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-top: 10px;
+  width: 400px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  background-color: #1D1D1D;
+  color: #B0AFAF;
+  font-family: "Ubuntu", sans-serif;
+  border: 2px solid #1D1D1D;
+}
+.input__auth:active {
+  border: 2px solid #B0AFAF;
+}
+.input__auth:hover {
+  border: 2px solid #B0AFAF;
+}
+.input__auth.password {
+  padding-right: 45px;
+}
+.input__label {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #C5C5C5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+}
+.input__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+  gap: 5px;
+}
+.input__wrapper2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+  color: #C5C5C5;
+  font-size: 18px;
+}
+.input__error {
+  color: #CA0524;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+}
+.input__textarea {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-top: 10px;
+  width: 400px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  background-color: #1D1D1D;
+  color: #B0AFAF;
+  font-family: "Ubuntu", sans-serif;
+  border: 2px solid #1D1D1D;
+  width: 35vw;
+  height: 21vh;
+  resize: none;
+}
+.input__textarea:active {
+  border: 2px solid #B0AFAF;
+}
+.input__textarea:hover {
+  border: 2px solid #B0AFAF;
+}
+
+.icon__wrapper {
+  display: block;
+  position: relative;
+  height: -moz-max-content;
+  height: max-content;
+}
+
+.iconOpen {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-25%);
+}
+.iconOpen:hover {
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.iconClose {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-25%);
+}
+.iconClose:hover {
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1075px) {
+  .input__textarea {
+    height: 18vh;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .input__label, .input__wrapper2 {
+    font-size: 16px;
+  }
+  .input__auth {
+    width: 350px;
+  }
+}
+@media screen and (max-width: 890px) {
+  .input__textarea {
+    height: 14vh;
+    width: 55vw;
+  }
+}
+@media screen and (max-width: 580px) {
+  .input__label, .input__wrapper2 {
+    font-size: 14px;
+  }
+  .input__auth {
+    width: 320px;
+    font-size: 12px;
+  }
+}
+@media screen and (max-width: 495px) {
+  .input__textarea {
+    height: 125px;
+    width: 300px;
+  }
+}
+@media screen and (max-width: 385px) {
+  .input__auth {
+    width: 280px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .input__textarea {
+    width: 280px;
+  }
+}
+@media screen and (max-width: 355px) {
+  .input__textarea {
+    width: 250px;
+  }
+}
+.modal {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0, 0, 0);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 4;
+  transform: scale(0);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 11;
+}
+.modal.activeModal {
+  transform: scale(1);
+}
+.modal__content {
+  background-color: #141414;
+  height: -moz-max-content;
+  height: max-content;
+  border-radius: 20px;
+  padding: 40px;
+}
+.modal__content__head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+}
+.modal__content__head__h3 {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #C5C5C5;
+}
+.modal__content__head__img {
+  width: 24px;
+  height: 24px;
+  background: url("./images/close.svg") center center no-repeat;
+  cursor: pointer;
+}
+.modal__content__head__img:hover {
+  background: url("./images/close_hover.svg") center center no-repeat;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.modal__content__head__img:active {
+  background: url("./images/close_active.svg") center center no-repeat;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.modal__content__body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+}
+.modal__content__body__infoBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 35px;
+}
+.modal__content__body__infoBlock__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.modal__content__body__infoBlock__wrapper__outlineBtn {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  background-color: #1D1D1D;
+  color: #9E76E9;
+  border: 2px solid #9E76E9;
+  border-radius: 30px;
+  padding: 12px 20px;
+}
+.modal__content__body__infoBlock__wrapper__outlineBtn:hover {
+  border: 2px solid #765bab;
+  color: #765bab;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.modal__content__body__infoBlock__wrapper__fillBtn {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  background-color: #9E76E9;
+  color: #1D1D1D;
+  border: 2px solid #9E76E9;
+  border-radius: 30px;
+  padding: 12px 20px;
+}
+.modal__content__body__infoBlock__wrapper__fillBtn:hover {
+  border-color: #9E76E9;
+  background-color: #765bab;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.modal__content__body__infoBlock__wrapper__fillBtn:active {
+  border-color: #765bab;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.modal__label {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  background-color: #1D1D1D;
+  color: #9E76E9;
+  border: 2px solid #9E76E9;
+  border-radius: 30px;
+  padding: 12px 20px;
+  position: relative;
+}
+.modal__label:hover {
+  border: 2px solid #765bab;
+  color: #765bab;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.modal__outline {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.input.modalInput {
+  width: 35vw;
+}
+
+@media screen and (max-width: 1000px) {
+  .modal__content__head__h3 {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 890px) {
+  .modal__content {
+    height: auto;
+    z-index: 15;
+    margin: 20px;
+  }
+  .modal__content__body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 40px;
+  }
+  .modal__content__body__infoBlock {
+    align-items: center;
+  }
+  .input.modalInput {
+    width: 55vw;
+  }
+  .modal__content__head__h3 {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .modal__content__head__h3, .modal__content__body__infoBlock__wrapper__fillBtn, .modal__content__body__infoBlock__wrapper__outlineBtn {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 495px) {
+  .modal__content {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 30px 35px;
+  }
+  .modal__content__head {
+    margin-bottom: 40px;
+  }
+  .modal__content__body {
+    justify-items: center;
+    align-items: center;
+    gap: 30px;
+  }
+  .modal__content__body__infoBlock {
+    width: 100%;
+    gap: 20px;
+  }
+  .input__wrapper, .input__label, .input__textarea, #tagsImg {
+    width: 100%;
+  }
+  .input.modalInput, #nameImg {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 400px) {
+  .input.modalInput {
+    width: 280px;
+  }
+  .modal__content {
+    padding: 35px;
+  }
+}
+@media screen and (max-width: 355px) {
+  .modal__content {
+    padding: 30px;
+  }
+  .input.modalInput {
+    width: 250px;
+  }
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+.modal__content__body__imgBlock {
+  height: 56vh;
+  width: 38vw;
+  max-height: -moz-max-content;
+  max-height: max-content;
+  height: 100%;
+}
+.modal__content__body__imgBlock__img {
+  -o-object-fit: fill;
+     object-fit: fill;
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+}
+
+.autoBtn {
+  margin-top: auto;
+}
+
+#nameImg {
+  width: 35vw;
+}
+
+@media screen and (max-width: 1075px) {
+  .modal__content__body__wrapper {
+    height: 30vh;
+  }
+  .modal__content__body__imgBlock {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 890px) {
+  #nameImg {
+    width: 55vw;
+  }
+}
+@media screen and (max-width: 545px) {
+  .modal__content__body__infoBlock__wrapper.autoBtn {
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+  .modal__content__body__infoBlock__wrapper__fillBtn, .modal__content__body__infoBlock__wrapper__outlineBtn {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 495px) {
+  #nameImg {
+    width: 300px;
+  }
+}
+@media screen and (max-width: 400px) {
+  #nameImg {
+    width: 280px;
+  }
+}
+@media screen and (max-width: 355px) {
+  #nameImg {
+    width: 250px;
+  }
+}/*# sourceMappingURL=EditImageModal.css.map */

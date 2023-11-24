@@ -1,0 +1,117 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+.main__section {
+  margin: 0 55px;
+  flex: 1 0 auto;
+  max-height: -moz-max-content;
+  max-height: max-content;
+  height: 100%;
+}
+.main__section__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-items: flex-start;
+  margin-bottom: 35px;
+  margin-top: 60px;
+}
+.main__section__label {
+  position: relative;
+}
+.main__section__label__img {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background: url("../../images/search.svg") no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+}
+.main__section__label__img:hover {
+  background: url("../../images/search_hover.svg");
+}
+.main__section__input {
+  font-size: 15px;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+  width: 320px;
+  height: 54px;
+  padding: 15px 44px 15px 20px;
+  background-color: #1D1D1D;
+  color: #FAFAFA;
+  border: none;
+  border-radius: 20px;
+}
+.main__section__input:hover {
+  outline: 2px solid #9E76E9;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+.main__section__input::-moz-placeholder {
+  color: #FAFAFA;
+}
+.main__section__input::placeholder {
+  color: #FAFAFA;
+}
+
+@media screen and (max-width: 690px) {
+  .main__section__input {
+    width: 240px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .main__section {
+    margin: 0 40px;
+  }
+  .main__section__input {
+    font-size: 14px;
+  }
+  .main__section__wrapper {
+    margin-top: 30px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .main__section__wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+}/*# sourceMappingURL=Layout.css.map */

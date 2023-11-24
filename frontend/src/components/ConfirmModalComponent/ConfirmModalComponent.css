@@ -1,0 +1,188 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+.confirm__background {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0, 0, 0);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  transform: scale(0);
+}
+.confirm__background.activeModal {
+  transform: scale(1);
+}
+
+.confirm__content {
+  min-width: 35vw;
+  width: auto;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  height: -moz-max-content;
+  height: max-content;
+  padding: 40px;
+  background-color: #141414;
+  border-radius: 20px;
+}
+.confirm__content__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+}
+.confirm__content__header__title {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #C5C5C5;
+}
+.confirm__content__header__img {
+  width: 24px;
+  height: 24px;
+  background: url("./images/close.svg") center center no-repeat;
+  cursor: pointer;
+}
+.confirm__content__header__img:hover {
+  background: url("./images/close_hover.svg") center center no-repeat;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.confirm__content__header__img:active {
+  background: url("./images/close_active.svg") center center no-repeat;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.confirm__content__body__text {
+  width: -moz-max-content;
+  width: max-content;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 60px;
+  color: #C5C5C5;
+}
+.confirm__content__footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+.confirm__content__footer__outlineBtn {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  background-color: #1D1D1D;
+  color: #9E76E9;
+  border: 2px solid #9E76E9;
+  border-radius: 30px;
+  padding: 12px 20px;
+}
+.confirm__content__footer__outlineBtn:hover {
+  border: 2px solid #765bab;
+  color: #765bab;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.confirm__content__footer__fillBtn {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  background-color: #9E76E9;
+  color: #1D1D1D;
+  border: 2px solid #9E76E9;
+  border-radius: 30px;
+  padding: 12px 20px;
+}
+.confirm__content__footer__fillBtn:hover {
+  border-color: #9E76E9;
+  background-color: #765bab;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.confirm__content__footer__fillBtn:active {
+  border-color: #765bab;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+@media screen and (max-width: 1000px) {
+  .confirm__content__header__title {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 890px) {
+  .confirm__background.activeModal {
+    z-index: 16;
+  }
+}
+@media screen and (max-width: 580px) {
+  .confirm__background.activeModal, .confirm__content__body__text, .confirm__content__footer__outlineBtn, .confirm__content__footer__fillBtn {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 495px) {
+  .confirm__content {
+    width: 350px;
+  }
+  .confirm__content__body__text {
+    width: 100%;
+  }
+  .confirm__content__footer {
+    flex-direction: column-reverse;
+  }
+  .confirm__content__footer__outlineBtn, .confirm__content__footer__fillBtn {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 375px) {
+  .confirm__content {
+    width: 300px;
+  }
+  .confirm__content__header, .confirm__content__body__text {
+    margin-bottom: 40px;
+  }
+}/*# sourceMappingURL=ConfirmModalComponent.css.map */

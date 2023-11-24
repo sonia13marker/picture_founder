@@ -1,0 +1,64 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+.main_empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+  gap: 20px;
+}
+.main_empty__text {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: #B0AFAF;
+}
+
+@media screen and (max-width: 580px) {
+  .main_empty__text {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 375px) {
+  .main_empty__text {
+    width: 280px;
+    text-align: center;
+  }
+}/*# sourceMappingURL=EmptyTextComponent.css.map */

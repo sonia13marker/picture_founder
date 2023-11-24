@@ -1,0 +1,360 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+/*---------mixins for styling input-------*/
+/*----------------*/
+.input {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-top: 10px;
+  width: 400px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  background-color: #1D1D1D;
+  color: #B0AFAF;
+  font-family: "Ubuntu", sans-serif;
+  border: 2px solid #1D1D1D;
+}
+.input:active {
+  border: 2px solid #B0AFAF;
+}
+.input:hover {
+  border: 2px solid #B0AFAF;
+}
+.input__auth {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-top: 10px;
+  width: 400px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  background-color: #1D1D1D;
+  color: #B0AFAF;
+  font-family: "Ubuntu", sans-serif;
+  border: 2px solid #1D1D1D;
+}
+.input__auth:active {
+  border: 2px solid #B0AFAF;
+}
+.input__auth:hover {
+  border: 2px solid #B0AFAF;
+}
+.input__auth.password {
+  padding-right: 45px;
+}
+.input__label {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #C5C5C5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+}
+.input__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+  gap: 5px;
+}
+.input__wrapper2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-start;
+  color: #C5C5C5;
+  font-size: 18px;
+}
+.input__error {
+  color: #CA0524;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+}
+.input__textarea {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-top: 10px;
+  width: 400px;
+  padding: 15px 20px;
+  border-radius: 20px;
+  background-color: #1D1D1D;
+  color: #B0AFAF;
+  font-family: "Ubuntu", sans-serif;
+  border: 2px solid #1D1D1D;
+  width: 35vw;
+  height: 21vh;
+  resize: none;
+}
+.input__textarea:active {
+  border: 2px solid #B0AFAF;
+}
+.input__textarea:hover {
+  border: 2px solid #B0AFAF;
+}
+
+.icon__wrapper {
+  display: block;
+  position: relative;
+  height: -moz-max-content;
+  height: max-content;
+}
+
+.iconOpen {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-25%);
+}
+.iconOpen:hover {
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.iconClose {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-25%);
+}
+.iconClose:hover {
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1075px) {
+  .input__textarea {
+    height: 18vh;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .input__label, .input__wrapper2 {
+    font-size: 16px;
+  }
+  .input__auth {
+    width: 350px;
+  }
+}
+@media screen and (max-width: 890px) {
+  .input__textarea {
+    height: 14vh;
+    width: 55vw;
+  }
+}
+@media screen and (max-width: 580px) {
+  .input__label, .input__wrapper2 {
+    font-size: 14px;
+  }
+  .input__auth {
+    width: 320px;
+    font-size: 12px;
+  }
+}
+@media screen and (max-width: 495px) {
+  .input__textarea {
+    height: 125px;
+    width: 300px;
+  }
+}
+@media screen and (max-width: 385px) {
+  .input__auth {
+    width: 280px;
+  }
+}
+@media screen and (max-width: 400px) {
+  .input__textarea {
+    width: 280px;
+  }
+}
+@media screen and (max-width: 355px) {
+  .input__textarea {
+    width: 250px;
+  }
+}
+.account {
+  max-width: 100vw;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.account__title {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  font-size: clamp(19px, 2vw, 24px);
+  margin: 55px 0 110px 0;
+}
+.account__wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  justify-content: space-around;
+  justify-items: center;
+  align-items: start;
+  margin-bottom: 110px;
+}
+.account__wrapper__leftSide__title {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 55px;
+  color: #C5C5C5;
+}
+.account__wrapper__leftSide__text {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 25px;
+  color: #C5C5C5;
+}
+.account__wrapper__rightSide__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 45px;
+  align-items: flex-start;
+}
+.account__wrapper__logoutBtn {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  background-color: #1D1D1D;
+  color: #9E76E9;
+  border: 2px solid #9E76E9;
+  border-radius: 30px;
+  padding: 12px 20px;
+  margin-bottom: 70px;
+}
+.account__wrapper__logoutBtn:hover {
+  border: 2px solid #765bab;
+  color: #765bab;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.fontWeight {
+  font-weight: 400;
+  color: #C5C5C5;
+}
+
+@media screen and (max-width: 780px) {
+  .account__title {
+    margin: 55px 0 75px 0;
+  }
+  .account__wrapper__leftSide__title {
+    font-size: 16px;
+    text-align: center;
+  }
+  .account__wrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .account__wrapper__rightSide__form {
+    align-items: center;
+  }
+}
+@media screen and (max-width: 580px) {
+  .account__title {
+    margin: 35px 0 75px 0;
+  }
+  .account__wrapper__leftSide__title {
+    margin-bottom: 40px;
+  }
+  .account__wrapper__leftSide__text, .account__wrapper__logoutBtn {
+    font-size: 14px;
+  }
+  .account__wrapper {
+    grid-template-rows: auto 1fr;
+    gap: 65px;
+  }
+}/*# sourceMappingURL=PersonalAccountPage.css.map */

@@ -4,10 +4,12 @@
   "homepage": "https://WaterMelonyOcO.github.io/picture_founder",
   "private": true,
   "dependencies": {
+    "@babel/preset-react": "^7.23.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@userfront/core": "^0.6.6",
+    "Babel": "^0.0.1",
     "clipboard": "^2.0.11",
     "node-sass": "8.0",
     "react": "^18.2.0",
@@ -15,7 +17,6 @@
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "react-share": "^4.4.1",
-    "sass-loader": "^13.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -45,7 +46,21 @@
     ]
   },
   "devDependencies": {
+    "css-loader": "^6.8.1",
     "gh-pages": "^6.0.0",
-    "sass": "^1.68.0"
+    "image-minimizer-webpack-plugin": "^3.8.3",
+    "imagemin": "^8.0.1",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-jpegtran": "^7.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-svgo": "^10.0.1",
+    "mini-css-extract-plugin": "^2.7.6",
+    "postcss-loader": "^7.3.3",
+    "postcss-preset-env": "^9.3.0",
+    "sass": "^1.69.5",
+    "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
+    "svgo": "^3.0.4",
+    "webpack-cli": "^5.1.4"
   }
 }

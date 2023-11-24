@@ -1,0 +1,136 @@
+@charset "UTF-8";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+/*этот стиль для внутреннего выпадающего списка*/
+.dropdown {
+  /*а это стиль для внешней обертки с кнопкой*/
+}
+.dropdown__ul {
+  margin-top: 5px;
+  list-style: none;
+  height: -moz-max-content;
+  height: max-content;
+  width: 200px;
+  border-radius: 20px;
+  background-color: #1D1D1D;
+  z-index: 2;
+  position: absolute;
+}
+.dropdown__ul__li {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 15px 20px;
+}
+.dropdown__ul__li:hover {
+  color: #765bab;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.dropdown__ul__li_active {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 15px 20px;
+  color: #765bab;
+  transition: all 0.3s;
+}
+.dropdown__wrapper {
+  position: relative;
+  display: inline-block;
+}
+.dropdown__btn {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #1D1D1D;
+  border: none;
+  border-radius: 20px;
+  color: #FAFAFA;
+}
+.dropdown__btn:hover {
+  color: #B0AFAF;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.dropdown__btn_active {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #1D1D1D;
+  border: none;
+  border-radius: 20px;
+  color: #765bab;
+}
+.dropdown__btn_active:hover {
+  cursor: pointer;
+}
+.dropdown__btn__img {
+  width: 24px;
+  height: 24px;
+  background: url("../../images/sort_icon.svg") center center no-repeat;
+}
+.dropdown__btn__img:hover {
+  background: url("../../images/sort_hover_icon.svg") center center no-repeat;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+@media screen and (max-width: 690px) {
+  .dropdown__btn, .dropdown__ul {
+    width: 180px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .dropdown__btn, .dropdown__ul__li, .dropdown__ul {
+    font-size: 14px;
+  }
+}/*# sourceMappingURL=SortDropdown.css.map */
