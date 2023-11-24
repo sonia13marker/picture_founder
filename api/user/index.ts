@@ -90,7 +90,9 @@ route.put("/:id", hasUser, urlencoded({ extended: false }), async (req: Request,
             messgae: "data updated"
         })
     } catch (error) {
-
+        resp.json({
+            message: "error on edit data"
+        })
     }
 
 
