@@ -43,7 +43,7 @@ export default function Header () {
 перенаправить на стр. ЛК 
 
 если NavLink to="/account", то срабатывают стили на fill иконки*/}
-                    <NavLink to="/login" 
+                    <NavLink to="/account" 
                     //className='header__btns__login'
                     className={({isActive}) => isActive ? "loginBtnActive": "header__btns__login"}
                     ></NavLink>

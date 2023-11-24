@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import OpenEyeIcon from '../../components/OpenEyeIcon';
 import CloseEyeIcon from '../../components/CloseEyeIcon';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginUser } from 'store/slices/userSlice';
 
 export default function LoginPage () {
   /*replace: true не оставляет возможности вернуться назад */
@@ -18,6 +20,8 @@ export default function LoginPage () {
     если их нет, передаем, что юзер пришел с главной страницы.*/
     const from = location.state?.from?.pathname || '/';
 
+    const dispatch = useDispatch();
+
     const handleSubmit = (event) => {
         /* чтобы форма не отправлялась */
         event.preventDefault();
@@ -28,32 +32,34 @@ export default function LoginPage () {
         // const user = form.username.value;
 
         // singIn(user, () => navigate(from, { replace: true }));
-        if (loginEmail && password && errorMessageEmail === "" && errorMessagePassword === "") {
+        if (UserEmail && UserPassword && errorMessageEmail === "" && errorMessagePassword === "") {
           goToMainPage();
         }
+
+        dispatch(loginUser(UserEmail, UserPassword));
     }
 const goToMainPage = () => {
-  navigate('/account');
+  navigate('/main');
 }
     /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
-const [loginEmail, setLoginEmail] = useState("");
+const [UserEmail, setLoginEmail] = useState("");
 const handleChangeEmail = (event) => {
   setLoginEmail(event.target.value);
 }
 useEffect(() => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  if (loginEmail.match(emailRegex)) {
+  if (UserEmail.match(emailRegex)) {
     setErrorMessageEmail("");
   } else {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     console.log("invalid email");
   };
-}, [loginEmail]);
+}, [UserEmail]);
 
 /*for password input */
-const [password, setPassword] = useState("");
+const [UserPassword, setPassword] = useState("");
 const [errorMessagePassword, setErrorMessagePassword] = useState("");
 const handleChangePassword = (event) => {
   setPassword(event.target.value);
@@ -63,12 +69,12 @@ useEffect(() => {
   //который был записан при регистрации
 
   //проверка на наличие пароля
-  if (password === "") {
+  if (UserPassword === "") {
     setErrorMessagePassword("Пароль не введён!")
   } else {
     setErrorMessagePassword("")
   }
-}, [password])
+}, [UserPassword])
 const [open, setOpen] = useState(true);
 const [hidden, setHidden] = useState(true);
 const selectIcon = () => {
@@ -102,7 +108,7 @@ const goToSingupPage = () => {
           type="email"
           id="singUp_email"
           placeholder="Введите электронную почту"
-          value={loginEmail}
+          value={UserEmail}
           onChange={handleChangeEmail}
         />
       </label>
@@ -123,7 +129,7 @@ const goToSingupPage = () => {
           id="singUp_password"
           onChange={handleChangePassword}
           placeholder="Введите пароль"
-          value={password}
+          value={UserPassword}
         />
         {/*пока открыт глаз - пароль не видно */}
        {

@@ -7,13 +7,26 @@ import Header from "../../components/Header/Header";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 import HeaderMobile from "../../components/HeaderMobile/HeaderMobile";
 import Footer from "../../components/Footer/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { updatePasswordUser } from "store/slices/userSlice";
 
 export default function PersonalAccountPage({
-  email,
   imageCounter,
   tagsCounter,
-  password,
 }) {
+
+  const dispatch = useDispatch();
+
+  const { currentUser } = useSelector(({user}) => user);
+
+  const [values, setValues] = useState({ UserEmail: "", UserPassword: ""});
+
+  useEffect(() => {
+    if(!currentUser) return;
+
+    setValues(currentUser);
+  }, [currentUser])
+
   /*for password inputs */
   const [passwordValue, setPasswordValue] = useState("");
   const handleChangePassword = (event) => {
@@ -41,24 +54,25 @@ export default function PersonalAccountPage({
   const [errorVerMessage, setErrorVerMessage] = useState("");
 
   useEffect(() => {
-    if (passwordValue === password) {
+    if (passwordValue === values.UserPassword) {
       setErrorMessage("Новый пароль не может совпадать со старым!");
     }
-    if (passwordValue === password && passwordVerValue === passwordValue) {
+    if (passwordValue === values.UserPassword && passwordVerValue === passwordValue) {
       setErrorMessage("Новый пароль не может совпадать со старым!");
       setErrorVerMessage("");
     }
     if (passwordVerValue !== passwordValue) {
       setErrorVerMessage("Пароли не равны!");
     }
-    if (passwordValue === password && passwordVerValue === passwordValue) {
+    if (passwordValue === values.UserPassword && passwordVerValue === passwordValue) {
       setErrorMessage("Новый пароль не может совпадать со старым!");
     }
-    if (passwordValue !== password && passwordVerValue === passwordValue) {
+    if (passwordValue !== values.UserPassword && passwordVerValue === passwordValue) {
       setErrorMessage("");
       setErrorVerMessage("");
     }
-  }, [passwordValue, passwordVerValue, password]);
+  }, [passwordValue, passwordVerValue, values.UserPassword]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,6 +85,7 @@ export default function PersonalAccountPage({
       console.log("success NEW password ", passwordValue);
       console.log("success NEW verify password ", passwordVerValue);
       console.log("success change password");
+      dispatch(updatePasswordUser(passwordValue));
     }
   };
 
@@ -151,7 +166,7 @@ export default function PersonalAccountPage({
                   className="input__auth"
                   type="email"
                   id="personalAcc_email"
-                  defaultValue={email}
+                  defaultValue={values.UserEmail}
                   readOnly
                 />
               </label>
@@ -279,8 +294,8 @@ export default function PersonalAccountPage({
         leftBtnName="Отмена"
         rightBtnName="Да, сменить"
         leftBtnAction={cancelChangePassModal}
-        /*действие для смены пароля
-      rightBtnAction={}*/
+        //действие для смены пароля
+      rightBtnAction={handleSubmit}
       />
 
       <ConfirmModalComponent

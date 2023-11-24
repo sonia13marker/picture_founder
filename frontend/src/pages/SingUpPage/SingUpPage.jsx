@@ -4,6 +4,8 @@ import { useEffect, useState, useReducer } from "react";
 // import "../../components/CustomInput/CustomInput.scss";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
+import { useDispatch, useSelector } from "react-redux";
+import { createUser } from "store/slices/userSlice";
 
 export default function SingUpPage() {
 
@@ -32,27 +34,27 @@ const [checked, checkedFunc] = useReducer(checked => !checked, false);
 // });
 let navigate = useNavigate();
 const nextPage = () => {
-  navigate('/main', {replace: true});
+  navigate('/login', {replace: true});
 }
 /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
-const [email, setEmail] = useState("");
+const [UserEmail, setEmail] = useState("");
 const handleChangeEmail = (event) => {
   setEmail(event.target.value);
 }
 useEffect(() => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  if (email.match(emailRegex)) {
+  if (UserEmail.match(emailRegex)) {
     setErrorMessageEmail("");
   } else {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     console.log("invalid email");
   };
-}, [email]);
+}, [UserEmail]);
 
 /*for first password input */
-const [passwordValue, setPasswordValue] = useState("");
+const [UserPassword, setPasswordValue] = useState("");
 const handleChangePassword = (event) => {
   setPasswordValue(event.target.value);
 }
@@ -75,27 +77,34 @@ const selectIconTwo = () => {
   setIsHidden(!isHidden);
 }
 useEffect(() => {
-  if (passwordVerValue !== passwordValue) {
+  if (passwordVerValue !== UserPassword) {
     setErrorMessage("Пароли не равны!");
-  } else if (passwordVerValue === passwordValue) {
+  } else if (passwordVerValue === UserPassword) {
     setErrorMessage("");
     console.log("success singup");
   }
-}, [passwordValue, passwordVerValue])
+}, [UserPassword, passwordVerValue])
 const [errorMessage, setErrorMessage] = useState("");
 /* for submit button */
+
+const dispatch = useDispatch();
+const { currentUser } = useSelector(({user}) => user);
 const handleSubmit = (event) => {
   event.preventDefault();
-  console.log("success password ", passwordValue);
+  console.log("success user email ", UserEmail, typeof(UserEmail));
+  console.log("success user password ", UserPassword, typeof(UserPassword));
   console.log("success verify password ", passwordVerValue);
 
-  if (checked === true && errorMessage === "" && errorMessageEmail === "" && passwordValue && passwordVerValue) {
-    /* потом сделать перенаправление на стр. логина,
-    чтобы после регистрации сразу залогиниться */
+  if (checked === true && errorMessage === "" && errorMessageEmail === "" && UserPassword && passwordVerValue) {
+    dispatch(createUser({UserEmail, UserPassword}));
     nextPage();
   }
-  /* сделать проверку на зарегистрированного пользователя,
+   /* сделать проверку на зарегистрированного пользователя,
   и если true, вывести ошибку "Пользователь с этой почтой уже зарегистрирован!" */
+  if (currentUser.email === UserEmail) {
+    setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
+  } else return;
+ 
 
 }
   return (
@@ -120,8 +129,9 @@ const handleSubmit = (event) => {
           type="email"
           id="singUp_email"
           placeholder="Введите эл. почту"
-          value={email}
+          value={UserEmail}
           onChange={handleChangeEmail}
+          required
         />
       </label>
 
@@ -141,7 +151,8 @@ const handleSubmit = (event) => {
           id="singUp_password"
           onChange={handleChangePassword}
           placeholder="Введите пароль"
-          value={passwordValue}
+          value={UserPassword}
+          required
         />
         {/*пока открыт глаз - пароль не видно */}
        {
@@ -170,6 +181,7 @@ const handleSubmit = (event) => {
           onChange={handleChangeVerPassword}
           placeholder="Введите пароль ещё раз"
           value={passwordVerValue}
+          required
         />
         {/*пока открыт глаз - пароль не видно */}
        {

@@ -32,7 +32,7 @@ export default function Layout() {
             </span>
       </Link>
 
-      <NavLink to="/login"
+      <NavLink to="/account"
           //className='header__btns__login'
                className={({isActive}) => isActive ? "loginBtnActive": "header__btns__login"}
       ></NavLink>

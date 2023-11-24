@@ -2,8 +2,10 @@ import "./ImageCard.scss";
 import { useState } from "react";
 import ActionCircle from "../ActionCircle/ActionCircle";
 import FavoriteComponent from "../FavoriteComponent/FavoriteComponent";
+import { useDispatch } from "react-redux";
+import { addImageToFavorite } from "store/slices/userSlice";
 
-export default function ImageCard({ id, name, tags, image, addToFavorite, inFavorite, setInFavorite
+export default function ImageCard({ id, name, tags, image, inFavorite, setInFavorite
 }) {
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
@@ -27,9 +29,12 @@ export default function ImageCard({ id, name, tags, image, addToFavorite, inFavo
     setIsHover(false);
   };
 
-  // const addToFavorite = (id) => {
-  //   setIdImg(id);
-  //  }
+  const itemData = { id, name, tags, image };
+  const dispatch = useDispatch();
+
+  const addToFavorite = () => {
+    dispatch(addImageToFavorite({...itemData}));
+  }
   return (
     <span
       className="layout__card__wrapper"
@@ -45,7 +50,7 @@ export default function ImageCard({ id, name, tags, image, addToFavorite, inFavo
       <div className="layout__card">
         <span className="layout__card__titleWrap">
           <h3 className="layout__card__titleWrap__title">{name}</h3>
-          <span onClick={() => addToFavorite(id)}>
+          <span onClick={addToFavorite}>
             <FavoriteComponent 
             inFavorite={inFavorite} setInFavorite={setInFavorite}/>
           </span>

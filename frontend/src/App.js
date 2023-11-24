@@ -1,12 +1,13 @@
 import './App.scss';
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Redirect} from "react-router-dom";
 import MainPage from './pages/MainPage/MainPage';
 import FavoritePage from './pages/FavoritePage/FavoritePage';
 import DevelopersPage from './pages/DevelopersPage/DevelopersPage';
 import data from '../package.json';
 import { useState, useContext, createContext, Outlet,
   useLocation,
-  useNavigate } from 'react';
+  useNavigate, 
+  useEffect} from 'react';
 import { Navigate } from 'react-router-dom';
 import imagesData from './data/first-data.json';
 import SingUpPage from './pages/SingUpPage/SingUpPage';
@@ -15,6 +16,9 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import ForgotPasswordSuccessPage from './pages/ForgotPasswordSuccessPage/ForgotPasswordSuccessPage';
 import PersonalAccountPage from './pages/PersonalAccountPage/PersonalAccountPage';
+import { useDispatch, useSelector } from 'react-redux';
+import { addImageToFavorite } from 'store/slices/userSlice';
+import { store } from 'store';
 
 
 function App() {
@@ -29,6 +33,14 @@ const currentEmail = 'privet12345_hello@seelssocute.ru';
 const currentPassword = '12345';
 const imageCounter = 10; 
 const tagsCounter = 29;
+
+// const dispatch = useDispatch();
+
+// useEffect(()=> {
+//   dispatch(addImageToFavorite());
+// }, [dispatch])
+
+const isUserLoggedIn = store.getState().auth.isLoggedIn;
 
   return (
         <div className="App">
@@ -49,23 +61,12 @@ const tagsCounter = 29;
 
             просто пример, его надо делать на странице аккаунта 
     const {singOut} = useAuth();
-
-
-    адаптация есть на: 
-    SingUpPage
-    LoginPage
-    ForgotPasswordPage
-    ForgotPasswordSuccessPage
-    PersonalAccountPage
-    MainPage
-    FavoritePage
-    DevelopersPage 
         */}
 
         {/* ссылки на страницы */}
         <Routes>
           <Route path="/singup" element={<SingUpPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route exact path="/login" element={<LoginPage />}/> 
           <Route path='/forgot_password' element={<ForgotPasswordPage />} />
           <Route path='/forgot_password-success' element={<ForgotPasswordSuccessPage />} />
           <Route path='/account' element={<PersonalAccountPage email={currentEmail} password={currentPassword} imageCounter={imageCounter} tagsCounter={tagsCounter}/>} />

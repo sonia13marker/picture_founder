@@ -10,17 +10,17 @@ export default function MainPage({ images = [], favorites, setFavorites, favor, 
 }) {
 
 
-  const addToFavorite = (id) => {
-    // поиск элемента из массива и добавление его в список избранных
-    let selectedElement = images.find((item) => item.id === id);
-    if (favor.includes(selectedElement)) {
-      return null
-    } else {
-      setInFavorite(!inFavorite);
-    }
-    setFavor((prevFavor) => [...prevFavor, selectedElement]);
-  }
-  console.log(favor);
+  // const addToFavorite = (id) => {
+  //   // поиск элемента из массива и добавление его в список избранных
+  //   let selectedElement = images.find((item) => item.id === id);
+  //   if (favor.includes(selectedElement)) {
+  //     return null
+  //   } else {
+  //     setInFavorite(!inFavorite);
+  //   }
+  //   setFavor((prevFavor) => [...prevFavor, selectedElement]);
+  // }
+  // console.log(favor);
   if (!images.length)
     return (
       <EmptyTextComponent
@@ -32,7 +32,7 @@ export default function MainPage({ images = [], favorites, setFavorites, favor, 
     <section className="wrapper_layout">
         {images.map((image) => (
           <ImageCard key={image.id} {...image} favorites={favorites} setFavorites={setFavorites} 
-          addToFavorite={addToFavorite} 
+          //addToFavorite={addToFavorite} 
           inFavorite={inFavorite} 
           setInFavorite={setInFavorite}
           />
