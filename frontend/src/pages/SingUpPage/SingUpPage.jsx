@@ -5,7 +5,7 @@ import { useEffect, useState, useReducer } from "react";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser } from "store/slices/userSlice";
+import { createUser } from "../../store/slices/userSlice";
 
 export default function SingUpPage() {
 

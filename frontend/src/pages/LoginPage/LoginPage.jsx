@@ -6,7 +6,7 @@ import OpenEyeIcon from '../../components/OpenEyeIcon';
 import CloseEyeIcon from '../../components/CloseEyeIcon';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginUser } from 'store/slices/userSlice';
+import { loginUser } from '../../store/slices/userSlice';
 
 export default function LoginPage () {
   /*replace: true не оставляет возможности вернуться назад */

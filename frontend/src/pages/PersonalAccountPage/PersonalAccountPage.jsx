@@ -8,7 +8,7 @@ import ConfirmModalComponent from "../../components/ConfirmModalComponent/Confir
 import HeaderMobile from "../../components/HeaderMobile/HeaderMobile";
 import Footer from "../../components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { updatePasswordUser } from "store/slices/userSlice";
+import { updatePasswordUser } from "../../store/slices/userSlice";
 
 export default function PersonalAccountPage({
   imageCounter,

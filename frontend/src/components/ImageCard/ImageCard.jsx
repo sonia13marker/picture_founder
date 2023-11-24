@@ -3,7 +3,7 @@ import { useState } from "react";
 import ActionCircle from "../ActionCircle/ActionCircle";
 import FavoriteComponent from "../FavoriteComponent/FavoriteComponent";
 import { useDispatch } from "react-redux";
-import { addImageToFavorite } from "store/slices/userSlice";
+import { addImageToFavorite } from "../../store/slices/userSlice";
 
 export default function ImageCard({ id, name, tags, image, inFavorite, setInFavorite
 }) {

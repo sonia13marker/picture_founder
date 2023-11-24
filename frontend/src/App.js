@@ -17,8 +17,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import ForgotPasswordSuccessPage from './pages/ForgotPasswordSuccessPage/ForgotPasswordSuccessPage';
 import PersonalAccountPage from './pages/PersonalAccountPage/PersonalAccountPage';
 import { useDispatch, useSelector } from 'react-redux';
-import { addImageToFavorite } from 'store/slices/userSlice';
-import { store } from 'store';
+import { store } from './store/index';
 
 
 function App() {
@@ -40,7 +39,6 @@ const tagsCounter = 29;
 //   dispatch(addImageToFavorite());
 // }, [dispatch])
 
-const isUserLoggedIn = store.getState().auth.isLoggedIn;
 
   return (
         <div className="App">
