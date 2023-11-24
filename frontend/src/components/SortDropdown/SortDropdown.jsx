@@ -41,12 +41,10 @@ export default function SortDropdown () {
         };
     return (
         <div className='dropdown__wrapper' ref={dropdown}>
-            <button type="button" className={selectedSort !== -1 ? "dropdown__btn_active" : "dropdown__btn" } onClick={openDropdown}>
+            <button className={selectedSort !== -1 ? "dropdown__btn_active" : "dropdown__btn" } onClick={openDropdown}>
             Сортировать
 
-            <span className='dropdown__btn__img'>
-
-            </span>
+            <span className='dropdown__btn__img'></span>
      </button>
      {dropdownState.open && (
         <div className="dropdown">

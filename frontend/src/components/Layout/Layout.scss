@@ -82,3 +82,11 @@
         gap: 30px;
     }
 }
+
+@media screen and (max-width: 385px) {
+    .main__section__wrapper {
+        flex-direction: row;
+        gap: 10px;
+        width: 100%;
+    }
+}

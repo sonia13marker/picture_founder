@@ -95,3 +95,23 @@
        font-size: 14px;
     }
 }
+
+@media screen and (max-width: 385px) {
+    .dropdown__btn, .dropdown__btn_active {
+        font-size: 0;
+        color: transparent;
+        width: 100%;
+        border-radius: 50%;
+        padding: 15px;
+    }
+    .dropdown__ul {
+        right: 0;
+        margin-top: 7px;
+        width: 165px;
+    }
+
+    .dropdown__btn_active .dropdown__btn__img {
+        background: url("../../images/sort_icon_active.svg") center center no-repeat;
+    }
+}
+
