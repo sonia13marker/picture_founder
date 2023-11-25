@@ -1,9 +1,6 @@
 import { Router, Request, Response } from "express"
-import goose, { Error } from "mongoose"
 import { db_models } from "../../../db"
 import Joi from "joi";
-import multer from "multer";
-import { Express } from "express"
 import cry from "crypto"
 import fs from "fs/promises"
 

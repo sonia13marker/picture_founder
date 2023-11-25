@@ -67,8 +67,8 @@ route.put("/:id", hasUser, urlencoded({ extended: false }), async (req: Request,
 
     const userId = req.params.id;
 
-    let ValidateData = UserInScheme.validate(req.body)  
-    
+    let ValidateData = UserInScheme.validate(req.body)
+
     if (ValidateData.error) {
         resp.status(400)
         resp.json({ message: "wrong pasword" })
@@ -79,17 +79,17 @@ route.put("/:id", hasUser, urlencoded({ extended: false }), async (req: Request,
     try {
         const userDb = await db_models.UserModel.findById(userId);
         const hash = cry.createHash('sha256');
-        
+
         hash.update(ValidateData.value.UserPassword)
         const NewUserPassword = hash.digest('hex')
 
-        if ( NewUserPassword === userDb?.UserPassword ){
+        if (NewUserPassword === userDb?.UserPassword) {
             resp.status(409)
-            resp.json({message: "wrong password"})
+            resp.json({ message: "wrong password" })
             console.log("[ERR] edit same password");
             return
         }
-        
+
         await userDb?.updateOne({
             $set: {
                 UserPassword: NewUserPassword
@@ -109,13 +109,25 @@ route.put("/:id", hasUser, urlencoded({ extended: false }), async (req: Request,
 
 })
 
+route.get("/:id/stat", hasUser, async (req: Request, resp: Response): Promise<void> => {
+    
+    const userId = req.params.id
+    const userDB = await db_models.UserModel.findById(userId)
+    
+    resp.json({
+        stat:{
+            ...userDB?.UserStat
+        }
+    })
+})
 
-route.post("/create", async (req: Request, resp: Response): Promise<void> => {
+
+route.post("/create", urlencoded({ extended: false }), async (req: Request, resp: Response): Promise<void> => {
     console.log("Try create user");
 
     let ValidateData = newUserInScheme.validate(req.body)
     const userData = ValidateData.value
-    const hasUser = await db_models.UserModel.exists({UserEmail: userData.UserEmail})
+    const hasUser = await db_models.UserModel.exists({ UserEmail: userData.UserEmail })
 
     if (ValidateData.error) {
         resp.status(400)
@@ -124,7 +136,7 @@ route.post("/create", async (req: Request, resp: Response): Promise<void> => {
         return
     }
 
-    if ( hasUser ){
+    if (hasUser) {
         resp.status(400)
         resp.json({ message: "user is exist" })
         console.log("[ERR] try create exist user");
@@ -137,7 +149,7 @@ route.post("/create", async (req: Request, resp: Response): Promise<void> => {
     userData.UserPassword = hash.digest('hex')
 
     let dbUser = await db_models.UserModel.create(userData)
-    await fs.promises.mkdir(`${tmpFiles}/save/${dbUser._id}`, {recursive: true})
+    await fs.promises.mkdir(`${tmpFiles}/save/${dbUser._id}`, { recursive: true })
 
     //console.log(newUserData);
     resp.json({ message: "complete user create", data: { "UserID": dbUser.id, "UserEmail": dbUser.UserName } })
