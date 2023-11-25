@@ -20,20 +20,20 @@ const imagesGetScheme = Joi.object({
     offset: Joi.number().default(0)
 })
 
-const newImageScheme = Joi.object({
-    imageName: Joi.string().min(2).required(),
+const ImageScheme = Joi.object({
+    imageName: Joi.string().min(2),
     imageTags: Joi.array().items(Joi.string()).required(),
     isFavorite: Joi.boolean().default(false)
 })
 
 
-async function imageGet ( req: Request, resp: Response ) {
-    
+async function imageGet(req: Request, resp: Response) {
+
     const needData = imagesGetScheme.validate(req.query);
     const userId = req.params.id
 
-    if ( needData.error ){
-        resp.json({message: "invalid data"})
+    if (needData.error) {
+        resp.json({ message: "invalid data" })
         return
     }
 
@@ -41,10 +41,10 @@ async function imageGet ( req: Request, resp: Response ) {
 
     const userImages = await db_models.UserModel.findById(userId).populate({
         path: "UserImages",
-        options: {skip: needData.value.offset}
+        options: { skip: needData.value.offset }
     }).exec()
     const userImagesArray = userImages?.UserImages
-    
+
     resp.json({
         filter: needData.value.filter,
         offset: needData.value.offset,
@@ -53,47 +53,47 @@ async function imageGet ( req: Request, resp: Response ) {
 }
 
 
-async function imagePost( req: Request, resp: Response ) {
-    
+async function imagePost(req: Request, resp: Response) {
+
     //получаю параметры изображения и id пользователя
     const userId = req.params.id
-    const reqData = newImageScheme.validate(req.body)
+    const reqData = ImageScheme.validate(req.body)
     const imageData = <Express.Multer.File>req.file;
-    
+
     // проверяю есть ли ошибки при валидации данных
-    if ( reqData.error ){
+    if (reqData.error) {
         console.error(`[ERROR] error on upload new image \n ${reqData.error.name}`);
         resp.status(400);
-        resp.json({message: `[ERROR] error on upload new image \n ${reqData.error.name}`})
+        resp.json({ message: `[ERROR] error on upload new image \n ${reqData.error.name}` })
         return
     }
 
     //проверяю есть ли изображение
-    if ( !imageData ){
+    if (!imageData) {
         console.error(`[ERROR] error on upload is empty | userid ${userId}`);
         resp.status(400);
-        resp.json({message: `[ERROR] error on upload is empty | userid ${userId}`})
+        resp.json({ message: `[ERROR] error on upload is empty | userid ${userId}` })
         return
     }
 
     //создаю хэш сумму изображения
     const HashSumImage = cry.createHash("sha256")
     HashSumImage.update(imageData.originalname)
-    
+
     const hashedFile = HashSumImage.digest("hex")
 
     //проверяю, есть ли такое изображение у пользователя
-    const hasImage = await db_models.ImageModel.exists({imageHash: hashedFile, ownerID: userId})    
-    if ( hasImage ){
-        resp.json({message: "image is uploaded"})
+    const hasImage = await db_models.ImageModel.exists({ imageHash: hashedFile, ownerID: userId })
+    if (hasImage) {
+        resp.json({ message: "image is uploaded" })
         return
     }
-    
+
     //добавляю в базу данных новое изображение
     console.log("add new image data");
     const createdImage = await db_models.ImageModel.create({
         imageOrgName: imageData.originalname,
-        imageSetName: reqData.value.imageName,
+        imageSetName: (reqData.value.imageName || imageData.originalname),
         ownerId: userId,
         imageHash: hashedFile,
         imageSize: imageData.size,
@@ -104,71 +104,113 @@ async function imagePost( req: Request, resp: Response ) {
 
     //обновляю пользовательские данные
     console.log("update user data");
-    await db_models.UserModel.updateOne({_id: userId}, {$push: {UserImages: createdImage._id}})
+    await db_models.UserModel.updateOne({ _id: userId }, { $push: { UserImages: createdImage._id } })
 
     //переношу изображение из временного хранилише в пользовательское
-    fs.rename( `${tmpFiles}/tmp/${imageData.originalname}`, `${tmpFiles}/save/${userId}/${hashedFile}` )
-    
-    resp.json({message: "image uploaded", data: {
-        imageId: createdImage.id,
-        imageName: createdImage.imageSetName,
-        imageTags: createdImage.imageTags
-    }})
+    fs.rename(`${tmpFiles}/tmp/${imageData.originalname}`, `${tmpFiles}/save/${userId}/${hashedFile}`)
+
+    resp.json({
+        message: "image uploaded", data: {
+            imageId: createdImage.id,
+            imageName: createdImage.imageSetName,
+            imageTags: createdImage.imageTags
+        }
+    })
 }
 
-async function imageDelete (req: Request, resp: Response) {
-    
+async function imageDelete(req: Request, resp: Response) {
+
     const userId = req.params.id;
     const imageId = req.params.imgId;
 
     let hasImage;
     try {
-        hasImage = await db_models.ImageModel.exists({_id: imageId, ownerId: userId})
+        hasImage = await db_models.ImageModel.exists({ _id: imageId, ownerId: userId })
         console.log(hasImage);
     } catch (error) {
-        resp.json({message: "image not found"})
-        return
-    }
-    
-    if ( !hasImage ){
-        resp.json({message: "image not found"})
+        resp.json({ message: "image not found" })
         return
     }
 
-    const imageData = await db_models.ImageModel.findByIdAndDelete({_id: imageId, ownerId: userId})
-    await db_models.UserModel.updateOne({_id: userId}, {$pull: {UserImages: imageData?.id}})
-    
+    if (!hasImage) {
+        resp.json({ message: "image not found" })
+        return
+    }
+
+    const imageData = await db_models.ImageModel.findByIdAndDelete({ _id: imageId, ownerId: userId })
+    await db_models.UserModel.updateOne({ _id: userId }, { $pull: { UserImages: imageData?.id } })
+
     await fs.rm(`${tmpFiles}/save/${userId}/${imageData?.imageHash}`)
-    
-    resp.json({message: "remove image", data: {
-        imageName: imageData?.imageSetName
-    }})
+
+    resp.json({
+        message: "remove image", data: {
+            imageName: imageData?.imageSetName
+        }
+    })
 }
 
-async function fullImageGet( req: Request, resp: Response ) {
-    
+async function fullImageGet(req: Request, resp: Response) {
+
     const userId = req.params.id;
     const imageId = req.params.imgId;
 
     let hasImage;
     try {
-        hasImage = await db_models.ImageModel.exists({_id: imageId, ownerId: userId})
+        hasImage = await db_models.ImageModel.exists({ _id: imageId, ownerId: userId })
         console.log(hasImage);
     } catch (error) {
-        resp.json({message: "image not found"})
-        return
-    }
-    
-    if ( !hasImage ){
-        resp.json({message: "image not found"})
+        resp.json({ message: "image not found" })
         return
     }
 
-    const imageData = await db_models.ImageModel.find({_id: imageId, ownerId: userId})
-    
+    if (!hasImage) {
+        resp.json({ message: "image not found" })
+        return
+    }
+
+    const imageData = await db_models.ImageModel.find({ _id: imageId, ownerId: userId })
+
     resp.json({
         ...imageData
     })
 }
 
-export { imageGet, imagePost, imageDelete, fullImageGet }
+async function imageEdit(req: Request, resp: Response) {
+
+    const imageId = req.params.imgId
+    const valData = ImageScheme.validate(req.body)
+
+    if (valData.error) {
+        resp.status(400);
+        console.log(`[ERR] on edit image data \n ${valData.error.message}`);
+        resp.json({ message: "error on edit image" });
+        return
+    }
+
+    const hasImage = await db_models.ImageModel.exists({ _id: imageId });
+
+    if (!hasImage) {
+        resp.status(400)
+        resp.json({ message: "image not found" })
+        return
+    }
+
+    await db_models.ImageModel.findByIdAndUpdate(imageId, {
+        $set: {
+            imageSetName: valData.value.imageName,
+            imageTags: valData.value.imageTags,
+            isFavotite: valData.value.isFavorite
+        }
+    })
+
+    resp.json({
+        message: "update image data",
+        data: {
+            imageSetName: valData.value.imageName,
+            imageTags: valData.value.imageTags,
+            isFavotite: valData.value.isFavorite
+        }
+    })
+}
+
+export { imageGet, imagePost, imageDelete, fullImageGet, imageEdit }

@@ -26,14 +26,12 @@ const stConf = multer.diskStorage({
 })
 
 const newUserInScheme = Joi.object({
-    UserName: Joi.string().min(2).required(),
     UserEmail: Joi.string().min(6).required(),
     UserPassword: Joi.string().min(8)
 })
 
 const UserInScheme = Joi.object({
-    UserName: Joi.string().min(2),
-    UserEmail: Joi.string().min(6)
+    UserPassword: Joi.string().min(8).required()
 })
 
 route.get("/:id", hasUser, async (req: Request, resp: Response): Promise<void> => {
@@ -73,16 +71,28 @@ route.put("/:id", hasUser, urlencoded({ extended: false }), async (req: Request,
     
     if (ValidateData.error) {
         resp.status(400)
-        resp.json({ message: "non valide data" })
+        resp.json({ message: "wrong pasword" })
         console.log(ValidateData.error.message);
         return
     }
 
     try {
-        const userDb = await db_models.UserModel.findByIdAndUpdate(userId, {
+        const userDb = await db_models.UserModel.findById(userId);
+        const hash = cry.createHash('sha256');
+        
+        hash.update(ValidateData.value.UserPassword)
+        const NewUserPassword = hash.digest('hex')
+
+        if ( NewUserPassword === userDb?.UserPassword ){
+            resp.status(409)
+            resp.json({message: "wrong password"})
+            console.log("[ERR] edit same password");
+            return
+        }
+        
+        await userDb?.updateOne({
             $set: {
-                UserName: ValidateData.value.UserName,
-                UserEmail: ValidateData.value.UserEmail
+                UserPassword: NewUserPassword
             }
         });
 
@@ -104,6 +114,8 @@ route.post("/create", async (req: Request, resp: Response): Promise<void> => {
     console.log("Try create user");
 
     let ValidateData = newUserInScheme.validate(req.body)
+    const userData = ValidateData.value
+    const hasUser = await db_models.UserModel.exists({UserEmail: userData.UserEmail})
 
     if (ValidateData.error) {
         resp.status(400)
@@ -112,7 +124,12 @@ route.post("/create", async (req: Request, resp: Response): Promise<void> => {
         return
     }
 
-    const userData = ValidateData.value
+    if ( hasUser ){
+        resp.status(400)
+        resp.json({ message: "user is exist" })
+        console.log("[ERR] try create exist user");
+        return
+    }
 
     const hash = cry.createHash('sha256');
     hash.update(ValidateData.value.UserPassword)
@@ -120,7 +137,7 @@ route.post("/create", async (req: Request, resp: Response): Promise<void> => {
     userData.UserPassword = hash.digest('hex')
 
     let dbUser = await db_models.UserModel.create(userData)
-    await fs.promises.mkdir(`${tmpFiles}/save/${dbUser._id}`)
+    await fs.promises.mkdir(`${tmpFiles}/save/${dbUser._id}`, {recursive: true})
 
     //console.log(newUserData);
     resp.json({ message: "complete user create", data: { "UserID": dbUser.id, "UserEmail": dbUser.UserName } })
@@ -131,5 +148,6 @@ route.get("/:id/image", hasUser, imageRoute.imageGet)
 route.post("/:id/image", hasUser, urlencoded({ extended: false }), multer({ storage: stConf }).single("image"), imageRoute.imagePost)
 route.delete("/:id/image/:imgId", hasUser, imageRoute.imageDelete)
 route.get("/:id/image/:imgId", hasUser, imageRoute.fullImageGet)
+route.put("/:id/image/:imgId", urlencoded({ extended: false }), hasUser, imageRoute.imageEdit)
 
 export default route
