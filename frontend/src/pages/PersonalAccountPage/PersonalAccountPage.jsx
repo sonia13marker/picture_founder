@@ -10,22 +10,13 @@ import Footer from "../../components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { updatePasswordUser } from "../../store/slices/userSlice";
 
-export default function PersonalAccountPage({
-  imageCounter,
-  tagsCounter,
-}) {
+export default function PersonalAccountPage() {
 
   const dispatch = useDispatch();
 
-  const { currentUser } = useSelector(({user}) => user);
+  /* get email of current user */
+  const currentUserEmail = useSelector(state => state.user.currentUser.data.UserEmail);
 
-  const [values, setValues] = useState({ UserEmail: "", UserPassword: ""});
-
-  useEffect(() => {
-    if(!currentUser) return;
-
-    setValues(currentUser);
-  }, [currentUser])
 
   /*for password inputs */
   const [passwordValue, setPasswordValue] = useState("");
@@ -53,6 +44,8 @@ export default function PersonalAccountPage({
   const [errorMessage, setErrorMessage] = useState("");
   const [errorVerMessage, setErrorVerMessage] = useState("");
 
+  /* исправить на новые значения когда пойму, 
+  что делать с хэшированным паролем 
   useEffect(() => {
     if (passwordValue === values.UserPassword) {
       setErrorMessage("Новый пароль не может совпадать со старым!");
@@ -72,7 +65,7 @@ export default function PersonalAccountPage({
       setErrorVerMessage("");
     }
   }, [passwordValue, passwordVerValue, values.UserPassword]);
-
+*/
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -166,7 +159,7 @@ export default function PersonalAccountPage({
                   className="input__auth"
                   type="email"
                   id="personalAcc_email"
-                  defaultValue={values.UserEmail}
+                  defaultValue={currentUserEmail || ""}
                   readOnly
                 />
               </label>
@@ -179,14 +172,16 @@ export default function PersonalAccountPage({
             <h4 className="account__wrapper__leftSide__text">
               Общее количество картинок:{" "}
               <span className="fontWeight">
-                {imageCounter ? imageCounter : 0}
+                0
+                {/* {imageCounter ? imageCounter : 0} */}
               </span>
             </h4>
 
             <h4 className="account__wrapper__leftSide__text">
               Общее количество тегов:{" "}
               <span className="fontWeight">
-                {tagsCounter ? tagsCounter : 0}
+                0
+                {/* {tagsCounter ? tagsCounter : 0} */}
               </span>
             </h4>
           </section>

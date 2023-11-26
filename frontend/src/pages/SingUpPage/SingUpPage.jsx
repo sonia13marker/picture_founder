@@ -66,11 +66,6 @@ useEffect(() => {
 }, [UserPassword, passwordVerValue])
 const [errorMessage, setErrorMessage] = useState("");
 
-const dataOfUser = {UserEmail, UserPassword};
-const createUserFunc = (dataOfUser) => {
-  dispatch(createUserAction(dataOfUser))
-  console.log(currentUser, dataOfUser);
-}
 
 /* for submit button */
 const dispatch = useDispatch();
@@ -84,9 +79,6 @@ const handleSubmit = (event) => {
   if (checked === true && errorMessage === "" && errorMessageEmail === "" && UserPassword && passwordVerValue) {
     dispatch(createUser({UserEmail, UserPassword}));
 
-    console.log("currentUser ", currentUser,
-    "UserEmail", UserEmail);
-    createUserFunc(dataOfUser);
     nextPage();
   }
    /* сделать проверку на зарегистрированного пользователя,

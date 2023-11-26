@@ -2,10 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setAuthStatus } from './authSlice';
 import axios from "axios";
 
-// const setUserId = (state, action) => {
-//     state.UserID = action.payload;
-//   };
-
 export const getImages = createAsyncThunk(
     "user/getImages",
     async (payload, thunkAPI) => {
@@ -42,8 +38,11 @@ export const createUser = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const res = await axios.post('http://95.31.50.131/api/user/create', payload);
-             const UserID = res.data.data.UserID;
-             thunkAPI.dispatch(setUserID(UserID));
+            const userEmail = res.data.data.UserEmail;
+            console.log(userEmail);
+            thunkAPI.dispatch(setCurrentUser(userEmail));
+            const UserID = res.data.data.UserID;
+            thunkAPI.dispatch(setUserID(UserID));
             return res.data; 
             
             
@@ -111,36 +110,37 @@ const userSlise = createSlice({
             const img = action.payload;
             state.images.push(img);
           },
-          createUserAction: (state, action) => {
-            const data = action.payload;
-            state.currentUser.push(data);
-          },
-        setUserID: (state, action) => {
+            setCurrentUser: (state, action) => {
+                const UserEmail = action.payload;
+                state.currentUser.push(UserEmail);
+                console.log("current user email", UserEmail);
+            },
+            setUserID: (state, action) => {
             state.UserId = action.payload;
-            console.log("state.UserId success", state.UserId);
+            console.log("UserId success", state.UserId);
+            // state.currentUser.push(state.UserId);
+            // console.log("CurrentUser + UserId", currentUser);
           },
     },
     extraReducers: (builder) => {
-       // builder.addCase(createUser.fulfilled, addCurrentUser);
-       builder.addCase(createUser.fulfilled, (state, { payload }) => {
+       builder
+       .addCase(createUser.fulfilled, (state, { payload }) => {
         addCurrentUser(state, { payload });
         setAuthStatus(true);
-        state.userId = payload.id; // Добавьте эту строку
       });
-        builder.addCase(loginUser.fulfilled, (state, { payload }) => {
+        builder
+        .addCase(loginUser.fulfilled, (state, { payload }) => {
             addCurrentUser(state, { payload });
             setAuthStatus(true); 
     });
-        builder.addCase(updatePasswordUser.fulfilled, addCurrentUser);
-    //     builder.addCase(addImageToFavorite.rejected, (state) => {
-    //         state.isLoading = false;
-    //     });
-    builder
+        builder
+        .addCase(updatePasswordUser.fulfilled, addCurrentUser);
+        builder
       .addCase(getImages.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getImages.fulfilled, (state, action) => {
-        state.images = action.payload; // Обновляем состояние с полученными картинками
+        state.images = action.payload; 
         state.isLoading = false;
       })
       .addCase(getImages.rejected, (state) => {
@@ -164,6 +164,6 @@ const userSlise = createSlice({
 
 export const selectUserID = (state) => state.user.userID;
 
-export const { toggleFavorites, addImageToPage, createUserAction, setUserID } = userSlise.actions;
+export const { toggleFavorites, addImageToPage, createUserAction, setUserID, setCurrentUser } = userSlise.actions;
 
 export default userSlise.reducer;

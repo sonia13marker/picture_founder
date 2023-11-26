@@ -5,20 +5,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import OpenEyeIcon from '../../components/OpenEyeIcon';
 import CloseEyeIcon from '../../components/CloseEyeIcon';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../store/slices/userSlice';
 
 export default function LoginPage () {
-  /*replace: true не оставляет возможности вернуться назад */
-    // const { setAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
-    /* проверка пути, откуда пришел пользователь на стр логина. 
-    тут идет проверка на передачу у location стейта, у которого 
-    должны присутствовать след. значения. 
-    если их нет, передаем, что юзер пришел с главной страницы.*/
-    const from = location.state?.from?.pathname || '/';
+    // const UserPassword = useSelector(state => state.user.)
+
 
     const dispatch = useDispatch();
 
@@ -26,37 +21,31 @@ export default function LoginPage () {
         /* чтобы форма не отправлялась */
         event.preventDefault();
 
-        /* получаем форму */
-        // const form = event.target;
-        // /* проверка что там не пусто ?.*/
-        // const user = form.username.value;
-
-        // singIn(user, () => navigate(from, { replace: true }));
-        if (UserEmail && UserPassword && errorMessageEmail === "" && errorMessagePassword === "") {
+        if (loginEmail && UserPassword && errorMessageEmail === "" && errorMessagePassword === "") {
           goToMainPage();
         }
 
-        dispatch(loginUser(UserEmail, UserPassword));
+        dispatch(loginUser(loginEmail, UserPassword));
     }
 const goToMainPage = () => {
   navigate('/main');
 }
     /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
-const [UserEmail, setLoginEmail] = useState("");
+const [loginEmail, setLoginEmail] = useState("");
 const handleChangeEmail = (event) => {
   setLoginEmail(event.target.value);
 }
 useEffect(() => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  if (UserEmail.match(emailRegex)) {
+  if (loginEmail.match(emailRegex)) {
     setErrorMessageEmail("");
   } else {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     console.log("invalid email");
   };
-}, [UserEmail]);
+}, [loginEmail]);
 
 /*for password input */
 const [UserPassword, setPassword] = useState("");
@@ -67,6 +56,9 @@ const handleChangePassword = (event) => {
 useEffect(() => {
   //сделать проверку на пароль, чтобы он совпадал с тем, 
   //который был записан при регистрации
+  // if (UserPassword !== UserPassword) {
+  //   setErrorMessagePassword("Введён неверный пароль!")
+  // }
 
   //проверка на наличие пароля
   if (UserPassword === "") {
@@ -101,14 +93,14 @@ const goToSingupPage = () => {
       <form id="loginForm" className="singup__section__body" onSubmit={handleSubmit}>
           {/* email input */}
   <span className="input__wrapper">
-      <label className="input__label" htmlFor="singUp_email">
+      <label className="input__label" htmlFor="login_email">
       Электронная почта
         <input
           className="input__auth"
           type="email"
-          id="singUp_email"
+          id="login_email"
           placeholder="Введите электронную почту"
-          value={UserEmail}
+          value={loginEmail}
           onChange={handleChangeEmail}
         />
       </label>
@@ -120,13 +112,13 @@ const goToSingupPage = () => {
 
     {/* password input */}
     <span className="input__wrapper2">
-      <label className="input__label" htmlFor="singUp_password"></label>
+      <label className="input__label" htmlFor="login_password"></label>
       Пароль
        <span className="icon__wrapper">
         <input
           className="input__auth password"
           type={hidden ? "password" : "text"}
-          id="singUp_password"
+          id="login_password"
           onChange={handleChangePassword}
           placeholder="Введите пароль"
           value={UserPassword}
