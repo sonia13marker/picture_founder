@@ -85,20 +85,17 @@ const userSlise = createSlice({
         UserId: null,
     },
     reducers: {
-        addImageToFavorite: (state, { payload }) => {
-            let newFav = [...state.favorite];
-            const found = state.favorite.find(({ id }) => id === payload.id);
-
-            if (found) {
-                return;
+        toggleFavorites: (state, action) => {
+            const item = action.payload;
+            const index = state.favorite.findIndex((favoriteItem) => favoriteItem.id === item.id);
+            if (index === -1) {
+              state.favorite.push(item);
             } else {
-                newFav.push(payload)
+              state.favorite.splice(index, 1);
             }
-
-            state.favorite = newFav;
-        }, 
+          },
         setUserID: (state, action) => {
-            state.userId = action.payload;
+            state.UserId = action.payload;
           },
     },
     extraReducers: (builder) => {
@@ -133,6 +130,6 @@ const userSlise = createSlice({
 
 export const selectUserID = (state) => state.user.userID;
 
-export const { addImageToFavorite, setUserID } = userSlise.actions;
+export const { toggleFavorites, setUserID } = userSlise.actions;
 
 export default userSlise.reducer;

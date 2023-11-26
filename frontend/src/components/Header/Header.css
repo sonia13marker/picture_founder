@@ -160,8 +160,22 @@ html {
   }
 }
 @media screen and (max-width: 768px) {
+  .header {
+    background-color: transparent;
+    margin: 30px 55px;
+    padding: 0;
+  }
   .header__logo {
-    margin-top: 25px;
     font-size: 30px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .header {
+    margin: 30px 40px;
+  }
+}
+@media screen and (max-width: 385px) {
+  .header {
+    margin: 30px 25px;
   }
 }/*# sourceMappingURL=Header.css.map */

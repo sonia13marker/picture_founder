@@ -601,6 +601,9 @@ html {
   #nameImg {
     width: 300px;
   }
+  .modal__content__body__imgBlock {
+    height: 235px;
+  }
 }
 @media screen and (max-width: 400px) {
   #nameImg {
@@ -640,5 +643,11 @@ html {
 @media screen and (max-width: 385px) {
   .wrappers {
     align-items: center;
+  }
+}
+@media screen and (max-width: 495px) {
+  .modal__content.shareModal {
+    height: auto;
+    width: auto;
   }
 }/*# sourceMappingURL=ShareImageModal.css.map */

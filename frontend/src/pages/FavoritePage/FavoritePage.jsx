@@ -2,11 +2,21 @@ import EmptyTextComponent from '../../components/EmptyTextComponent/EmptyTextCom
 import '../MainPage/MainPage.scss';
 import empty from '../../images/empty_favorite.svg';
 import ImageCard from '../../components/ImageCard/ImageCard';
+import { useSelector } from 'react-redux';
 
-export default function FavoritePage ({favorites, setFavorites, favor}) {
-    return ( !favor ? <EmptyTextComponent image={empty} /> :
+export default function FavoritePage () {
+  const favoriteImages = useSelector(state => state.user.favorite); 
+
+  if (!favoriteImages.length)
+    return (
+      <EmptyTextComponent
+        image={empty}
+        text="Тут ещё нет картинок. Пора бы их добавить"
+      /> 
+    );
+    return ( 
     <section className="wrapper_layout">
-    {favor.map((item) => (
+    {favoriteImages.map((item) => (
         <ImageCard key={item.id} {...item} />
       ))}
       </section>)

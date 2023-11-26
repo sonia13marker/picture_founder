@@ -71,6 +71,9 @@ html {
   font-size: 18px;
   font-weight: 400;
 }
+.layout__card__titleWrap__icon:hover {
+  cursor: pointer;
+}
 .layout__card__image {
   border-radius: 20px;
   width: 100%;

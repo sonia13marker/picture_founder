@@ -56,6 +56,7 @@ html {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  justify-content: space-around;
 }
 .headerMobile__wrapper__ul__li {
   list-style-type: none;
