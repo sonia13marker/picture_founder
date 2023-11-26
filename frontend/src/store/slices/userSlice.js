@@ -10,7 +10,7 @@ export const getImages = createAsyncThunk(
     "user/getImages",
     async (payload, thunkAPI) => {
       try {
-        const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/images`);
+        const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`);
   
         // Возвращаем полученные данные
         return res.data;
@@ -23,6 +23,21 @@ export const getImages = createAsyncThunk(
       }
     }
   );
+
+  const addImage = createAsyncThunk(
+    "user/addImage",
+    async (payload, thunkAPI) => {
+        try {
+            const dataOfImage = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`);
+            console.log("dataOfImage ", dataOfImage);
+            return dataOfImage;
+        } catch (err) {
+            console.log(err);
+            const serializedError = err.toJSON();
+            return thunkAPI.rejectWithValue(serializedError);
+        }
+    }
+  )
 
 export const createUser = createAsyncThunk(
     "user/createUser",
@@ -94,6 +109,12 @@ const userSlise = createSlice({
               state.favorite.splice(index, 1);
             }
           },
+          addImageToPage: (state, action) => {
+            const img = action.payload;
+            // const index = state.images.findIndex((pageImage) => pageImage.id === img.id);
+            // if (index === -1) return;
+            state.images.push(img);
+          },
         setUserID: (state, action) => {
             state.UserId = action.payload;
           },
@@ -125,11 +146,23 @@ const userSlise = createSlice({
         state.isLoading = false;
       });
 
+      builder
+      .addCase(addImage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addImage.fulfilled, (state, action) => {
+        state.images = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(addImage.rejected, (state) => {
+        state.isLoading = false;
+      })
+
 }})
 
 
 export const selectUserID = (state) => state.user.userID;
 
-export const { toggleFavorites, setUserID } = userSlise.actions;
+export const { toggleFavorites, addImageToPage, setUserID } = userSlise.actions;
 
 export default userSlise.reducer;

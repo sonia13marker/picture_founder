@@ -2,12 +2,23 @@ import "./AddImageModal.scss";
 import React, { useState, useRef } from "react";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { addImageToPage } from "../../store/slices/userSlice";
+
 
 export default function AddImageModal({
   active,
   setActive,
   addImage = (f) => f,
 }) {
+  const dispatch = useDispatch();
+  const images = useSelector(state => state.user.images);
+  console.log("array of images ", images);
+
+  const addToPage = (dataOfImage) => {
+    dispatch(addImageToPage(dataOfImage))
+  }
+
   /*-------------------------*/
   const [file, setFile] = useState(null);
   /*-------------------------*/
@@ -30,12 +41,14 @@ export default function AddImageModal({
     e.preventDefault();
     const name = nameImage.current.value;
     const tags = tagsImage.current.value;
-    // const image = {selectedImage};
+    const image = {file};
+    const key = Math.random();
+
+    const dataOfImage = {name, tags, image, key};
 
     /*функция добавления картинки на страницу */
-    addImage(name, tags);
-
-    // console.log(`name of img: ${name}, tags image: ${tags}, ${image}`);
+    addToPage(dataOfImage);
+    
     nameImage.current.value = "";
     tagsImage.current.value = "";
     if (file) {

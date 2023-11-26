@@ -28,7 +28,7 @@ export default function MainPage({ favorites, setFavorites, favor, setFavor, inF
   // }
   // console.log(favor);
   // const UserID = useSelector(selectUserID);
-  // const images = useSelector((state) => state.user.images);
+  const images = useSelector((state) => state.user.images);
   //
   //
   // const fetchImages = () => {
@@ -37,7 +37,9 @@ export default function MainPage({ favorites, setFavorites, favor, setFavor, inF
   // useEffect(() => {
   //   fetchImages();
   // }, []);
-console.log(images)
+// console.log(images)
+
+
 
   if (!images.length)
     return (
@@ -49,7 +51,7 @@ console.log(images)
   return (
     <section className="wrapper_layout">
         {images.map((image) => (
-          <ImageCard key={image.id} {...image} 
+          <ImageCard key={image.key} {...image} 
           //favorites={favorites} setFavorites={setFavorites} 
           //addToFavorite={addToFavorite} 
           // inFavorite={inFavorite} 

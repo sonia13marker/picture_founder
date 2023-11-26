@@ -9,6 +9,8 @@ import FavorOutlineIcon from "../FavorOutlineIcon";
 
 export default function ImageCard({ id, name, tags, image, 
 }) {
+
+  console.log(id, name, tags, image)
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
   let newTagList = tags
@@ -37,7 +39,6 @@ export default function ImageCard({ id, name, tags, image,
 
   const inFavorite = favorite.some((item) => item.id === id);
 
-  console.log("Favorite:" ,favorite);
 
   const addToFavorite = () => {
     dispatch(toggleFavorites({...itemData}));
