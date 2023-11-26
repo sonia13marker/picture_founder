@@ -1,43 +1,24 @@
 import './App.scss';
-import {BrowserRouter, Routes, Route, Redirect} from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import MainPage from './pages/MainPage/MainPage';
 import FavoritePage from './pages/FavoritePage/FavoritePage';
 import DevelopersPage from './pages/DevelopersPage/DevelopersPage';
 import data from '../package.json';
-import { useState, useContext, createContext, Outlet,
-  useLocation,
-  useNavigate, 
-  useEffect} from 'react';
 import { Navigate } from 'react-router-dom';
-import imagesData from './data/first-data.json';
 import SingUpPage from './pages/SingUpPage/SingUpPage';
 import Layout from './components/Layout/Layout';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage';
 import ForgotPasswordSuccessPage from './pages/ForgotPasswordSuccessPage/ForgotPasswordSuccessPage';
 import PersonalAccountPage from './pages/PersonalAccountPage/PersonalAccountPage';
-import { useDispatch, useSelector } from 'react-redux';
-import { store } from './store/index';
 
 
 function App() {
-/*список-состояние массива картинок*/
-const [images] = useState(imagesData);
-
-/*добавление в избранное */
-const [favor, setFavor] = useState([]);
-const [inFavorite, setInFavorite] = useState(false);
 
 const currentEmail = 'privet12345_hello@seelssocute.ru';
 const currentPassword = '12345';
 const imageCounter = 10; 
 const tagsCounter = 29;
-
-// const dispatch = useDispatch();
-
-// useEffect(()=> {
-//   dispatch(addImageToFavorite());
-// }, [dispatch])
 
 
   return (
@@ -54,11 +35,6 @@ const tagsCounter = 29;
         скорее всего добавить этот код при нажатии на иконку профиля,
         либо разместить это там, где будет находиться страница с 
         данными о пользотвателе (стр "профиль")
-        
-
-
-            просто пример, его надо делать на странице аккаунта 
-    const {singOut} = useAuth();
         */}
 
         {/* ссылки на страницы */}
@@ -72,14 +48,8 @@ const tagsCounter = 29;
           <Route element={<Layout />}>
             {/*ссылаюсь на уже существующую страницу  */}
           <Route path="/" element={<Navigate to="/main" replace />} />
-              <Route path="/main" index element={<MainPage images={images} 
-              // favorites={favorites} setFavorites={setFavorites} addToFavorites={addToFavorites} 
-              //addToFavorite={addToFavorite}
-              favor={favor} setFavor={setFavor}
-              inFavorite={inFavorite} setInFavorite={setInFavorite} />} />
-              <Route path="/favorite" element={<FavoritePage //favorites={favorites} 
-              favor={favor}
-              />} />
+              <Route path="/main" index element={<MainPage />} />
+              <Route path="/favorite" element={<FavoritePage />} />
               <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
               
           </Route>

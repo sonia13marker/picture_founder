@@ -2,17 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setAuthStatus } from './authSlice';
 import axios from "axios";
 
-const setUserId = (state, action) => {
-    state.UserID = action.payload;
-  };
+// const setUserId = (state, action) => {
+//     state.UserID = action.payload;
+//   };
 
 export const getImages = createAsyncThunk(
     "user/getImages",
     async (payload, thunkAPI) => {
       try {
         const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`);
-  
-        // Возвращаем полученные данные
         return res.data;
       } catch (error) {
         console.log(error);
@@ -44,8 +42,8 @@ export const createUser = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const res = await axios.post('http://95.31.50.131/api/user/create', payload);
-            const UserID = res.data.UserID;
-            thunkAPI.dispatch(setUserID(UserID));
+             const UserID = res.data.data.UserID;
+             thunkAPI.dispatch(setUserID(UserID));
             return res.data; 
             
             
@@ -93,7 +91,7 @@ const addCurrentUser = (state, { payload }) => {
 const userSlise = createSlice({
     name: 'user',
     initialState: {
-        currentUser: {},
+        currentUser: [],
         favorite: [],
         isLoading: false,
         images: [],
@@ -111,12 +109,15 @@ const userSlise = createSlice({
           },
           addImageToPage: (state, action) => {
             const img = action.payload;
-            // const index = state.images.findIndex((pageImage) => pageImage.id === img.id);
-            // if (index === -1) return;
             state.images.push(img);
+          },
+          createUserAction: (state, action) => {
+            const data = action.payload;
+            state.currentUser.push(data);
           },
         setUserID: (state, action) => {
             state.UserId = action.payload;
+            console.log("state.UserId success", state.UserId);
           },
     },
     extraReducers: (builder) => {
@@ -163,6 +164,6 @@ const userSlise = createSlice({
 
 export const selectUserID = (state) => state.user.userID;
 
-export const { toggleFavorites, addImageToPage, setUserID } = userSlise.actions;
+export const { toggleFavorites, addImageToPage, createUserAction, setUserID } = userSlise.actions;
 
 export default userSlise.reducer;

@@ -5,37 +5,17 @@ import { useEffect, useState, useReducer } from "react";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser } from "../../store/slices/userSlice";
+import { createUser, createUserAction } from "../../store/slices/userSlice";
 
 export default function SingUpPage() {
 
-/* for checkbox 
-мы используем функцию-редьюсер потому что она всегда
-будет выдавать одни и те же результаты. это аналог 
-испол-я функции useState, но более простой*/
-// const [checked, checkedFunc] = useReducer(checked => !checked, false)
 const [checked, checkedFunc] = useReducer(checked => !checked, false);
 
-    // Sample: how to use Userfront.signup()
-// Userfront.init("demo1234");
-// Userfront.signup({
-//   method: "password",
-//   email: "jane@example.com",
-//   password: "testmodepassword",
-//   password_verify: "testmodepassword"
-// });
-
-
-
-
-// Userfront.signup()
-// .catch(function(error) {
-//   setAlert(error.message);
-// });
 let navigate = useNavigate();
 const nextPage = () => {
   navigate('/login', {replace: true});
 }
+
 /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
 const [UserEmail, setEmail] = useState("");
@@ -49,7 +29,7 @@ useEffect(() => {
     setErrorMessageEmail("");
   } else {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
-    console.log("invalid email");
+    // console.log("invalid email");
   };
 }, [UserEmail]);
 
@@ -81,22 +61,32 @@ useEffect(() => {
     setErrorMessage("Пароли не равны!");
   } else if (passwordVerValue === UserPassword) {
     setErrorMessage("");
-    console.log("success singup");
+    // console.log("success singup");
   }
 }, [UserPassword, passwordVerValue])
 const [errorMessage, setErrorMessage] = useState("");
-/* for submit button */
 
+const dataOfUser = {UserEmail, UserPassword};
+const createUserFunc = (dataOfUser) => {
+  dispatch(createUserAction(dataOfUser))
+  console.log(currentUser, dataOfUser);
+}
+
+/* for submit button */
 const dispatch = useDispatch();
-const { currentUser } = useSelector(({user}) => user);
+const currentUser = useSelector(state => state.user.currentUser);
 const handleSubmit = (event) => {
   event.preventDefault();
-  console.log("success user email ", UserEmail, typeof(UserEmail));
-  console.log("success user password ", UserPassword, typeof(UserPassword));
-  console.log("success verify password ", passwordVerValue);
+  // console.log("success user email ", UserEmail);
+  // console.log("success user password ", UserPassword);
+  // console.log("success verify password ", passwordVerValue);
 
   if (checked === true && errorMessage === "" && errorMessageEmail === "" && UserPassword && passwordVerValue) {
     dispatch(createUser({UserEmail, UserPassword}));
+
+    console.log("currentUser ", currentUser,
+    "UserEmail", UserEmail);
+    createUserFunc(dataOfUser);
     nextPage();
   }
    /* сделать проверку на зарегистрированного пользователя,
