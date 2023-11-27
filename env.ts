@@ -5,7 +5,8 @@ type Env = EnvType<typeof schema>;
 
 export const schema = {
     DB_IP: String,
-    PORT: Number
+    PORT: Number,
+    TOKEN_SECRET: String
 };
 
 let env: Env;

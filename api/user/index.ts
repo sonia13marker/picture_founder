@@ -25,11 +25,6 @@ const stConf = multer.diskStorage({
     }
 })
 
-const newUserInScheme = Joi.object({
-    UserEmail: Joi.string().min(6).required(),
-    UserPassword: Joi.string().min(8)
-})
-
 const UserInScheme = Joi.object({
     UserPassword: Joi.string().min(8).required()
 })
@@ -119,41 +114,6 @@ route.get("/:id/stat", hasUser, async (req: Request, resp: Response): Promise<vo
             ...userDB?.UserStat
         }
     })
-})
-
-
-route.post("/create", urlencoded({ extended: false }), async (req: Request, resp: Response): Promise<void> => {
-    console.log("Try create user");
-
-    let ValidateData = newUserInScheme.validate(req.body)
-    const userData = ValidateData.value
-    const hasUser = await db_models.UserModel.exists({ UserEmail: userData.UserEmail })
-
-    if (ValidateData.error) {
-        resp.status(400)
-        resp.json({ message: "non valide data" })
-        console.log(ValidateData.error.message);
-        return
-    }
-
-    if (hasUser) {
-        resp.status(400)
-        resp.json({ message: "user is exist" })
-        console.log("[ERR] try create exist user");
-        return
-    }
-
-    const hash = cry.createHash('sha256');
-    hash.update(ValidateData.value.UserPassword)
-
-    userData.UserPassword = hash.digest('hex')
-
-    let dbUser = await db_models.UserModel.create(userData)
-    await fs.promises.mkdir(`${tmpFiles}/save/${dbUser._id}`, { recursive: true })
-
-    //console.log(newUserData);
-    resp.json({ message: "complete user create", data: { "UserID": dbUser.id, "UserEmail": dbUser.UserName } })
-
 })
 
 route.get("/:id/image", hasUser, imageRoute.imageGet)
