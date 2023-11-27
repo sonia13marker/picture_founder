@@ -15,22 +15,9 @@ export default function MainPage({ favorites, setFavorites, favor, setFavor, inF
 
 }) {
 
-// const dispatch = useDispatch();
-  // const addToFavorite = (id) => {
-  //   // поиск элемента из массива и добавление его в список избранных
-  //   let selectedElement = images.find((item) => item.id === id);
-  //   if (favor.includes(selectedElement)) {
-  //     return null
-  //   } else {
-  //     setInFavorite(!inFavorite);
-  //   }
-  //   setFavor((prevFavor) => [...prevFavor, selectedElement]);
-  // }
-  // console.log(favor);
-  // const UserID = useSelector(selectUserID);
   const images = useSelector((state) => state.user.images);
   const data = useSelector(state => state.user);
-  console.log(data)
+  console.log("main page", images)
   //
   //
   // const fetchImages = () => {

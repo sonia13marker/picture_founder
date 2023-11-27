@@ -18,13 +18,15 @@ export const getImages = createAsyncThunk(
     }
   );
 
-  const addImage = createAsyncThunk(
+ export const addUserImage = createAsyncThunk(
     "user/addImage",
     async (payload, thunkAPI) => {
         try {
-            const dataOfImage = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`);
-            console.log("dataOfImage ", dataOfImage);
-            return dataOfImage;
+            const currentUserId = payload.id;
+            const res = await axios.post(`http://95.31.50.131/api/user/${currentUserId}/image`);
+            console.log("res data in addImage", res.data);
+            thunkAPI.dispatch(addImageToPage(res.data));
+            return res.data;
         } catch (err) {
             console.log(err);
             const serializedError = err.toJSON();
@@ -38,10 +40,14 @@ export const createUser = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const res = await axios.post('http://95.31.50.131/api/user/create', payload);
+            /* после отправки запроса я получаю данные: email & id,
+            записываю их в переменные и передаю текущему юзеру */
             const userEmail = res.data.data.UserEmail;
             console.log(userEmail);
+            /* добавление эмейла в текущего юзера */
             thunkAPI.dispatch(setCurrentUser(userEmail));
             const UserID = res.data.data.UserID;
+            /* добавление id текущего юзера */
             thunkAPI.dispatch(setUserID(UserID));
             return res.data; 
             
@@ -109,6 +115,7 @@ const userSlise = createSlice({
           addImageToPage: (state, action) => {
             const img = action.payload;
             state.images.push(img);
+            console.log("yooooooo images", img)
           },
             setCurrentUser: (state, action) => {
                 const UserEmail = action.payload;
@@ -148,14 +155,14 @@ const userSlise = createSlice({
       });
 
       builder
-      .addCase(addImage.pending, (state) => {
+      .addCase(addUserImage.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(addImage.fulfilled, (state, action) => {
+      .addCase(addUserImage.fulfilled, (state, action) => {
         state.images = action.payload;
         state.isLoading = false;
       })
-      .addCase(addImage.rejected, (state) => {
+      .addCase(addUserImage.rejected, (state) => {
         state.isLoading = false;
       })
 
