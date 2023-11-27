@@ -1,6 +1,9 @@
 const path = require('path');
+
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: path.join(__dirname, 'src', 'index.js'),
@@ -13,6 +16,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
     }),
+    new HtmlWebpackPlugin(),
   ],
   devServer: {
     publicPath: '/dist/', 
@@ -22,16 +26,23 @@ module.exports = {
   },
   module: {
     rules: [
-        {
-            test: /\.jsx?$/,
-            exclude: /node_modules/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-react'],
-              },
+      // babel loader
+      {
+        test: /\.(js|jsx)$/i,
+        use: { 
+          loader: 'babel-loader',
+        options: {
+        presets: [
+          ['@babel/preset-react', { 
+            runtime: 'automatic' }
+          ]
+            ],
             },
-          },
+            },
+        exclude: /(node_modules)/,
+        resolve: { extensions: ['.js', '.jsx'] },
+    },
+    // scss to css loader
       {
         test: /\.(scss|css)$/,
         use: [
@@ -59,6 +70,33 @@ module.exports = {
     ],
   },
    optimization: {
+    minimize: true,
+    emitOnErrors: true,
+    concatenateModules: true,
+    moduleIds: 'size',
+    mergeDuplicateChunks: true,
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'async',
+      minSize: 20000,
+      minRemainingSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      enforceSizeThreshold: 50000,
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          reuseExistingChunk: true,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+    },
+      },
      minimizer: [
        new ImageMinimizerPlugin({
          minimizer: {
