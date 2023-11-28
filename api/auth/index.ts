@@ -48,6 +48,7 @@ route.post("/login", async (req: Request, resp: Response): Promise<void> => {
   resp.status(200).json({
     message: "login success",
     token: token,
+    userId: userDb[0]._id
   });
   console.log(`[LOG] user ${userDb[0].id} is login`);
   

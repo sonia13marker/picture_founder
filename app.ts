@@ -6,7 +6,7 @@ import { env } from "./env"
 const app = express()
 app.use(express.json())
 
-app.use("/api",api)
+app.use("/api", api)
 
 app.listen( env.PORT, async ()=>{
     await ConnectDB(env.DB_IP);
