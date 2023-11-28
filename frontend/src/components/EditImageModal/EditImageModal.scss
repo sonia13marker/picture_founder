@@ -4,6 +4,7 @@
 .modal__content__body__imgBlock {
     height: 56vh;
     width: 38vw;
+    max-height: -moz-max-content;
     max-height: max-content;
     height: 100%;
 

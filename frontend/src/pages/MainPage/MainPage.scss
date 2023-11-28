@@ -4,6 +4,7 @@
     //в принципе работает, но немного не так
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: -moz-max-content;
     grid-auto-rows: max-content;
 
     //работает только при 1920px 

@@ -6,6 +6,7 @@
     &__ul {
         margin-top: 5px;
         list-style: none;
+        height: -moz-max-content;
         height: max-content;
         width: 200px;
         border-radius: 20px;

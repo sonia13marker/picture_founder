@@ -19,7 +19,9 @@
 .confirm__content {
     min-width: 35vw;
     width: auto;
+    max-width: -moz-max-content;
     max-width: max-content;
+    height: -moz-max-content;
     height: max-content;
     padding: 40px;
     background-color: $black-for-windows;
@@ -48,6 +50,7 @@
     }
 
     &__body__text {
+        width: -moz-max-content;
         width: max-content;
         @include h4Style;
         margin-bottom: 60px;
