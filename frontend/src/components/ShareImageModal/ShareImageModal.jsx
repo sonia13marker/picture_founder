@@ -20,7 +20,7 @@ import Clipboard from "clipboard";
 
 export default function ShareImageModal({ active, setActive }) {
   /* сменить на приходящий уровень для каждой картинки */
-  let shareUrl = "https://memozg.ru/img/posts/298_62d5a8b22c104.jpg";
+  // let shareUrl = "https://memozg.ru/img/posts/298_62d5a8b22c104.jpg";
 
   /* constants for values to icons */
   const defaultSize = 45;
@@ -50,8 +50,8 @@ export default function ShareImageModal({ active, setActive }) {
     clipboard.current.onClick(linkRef.current);
   };
   return (
-    <div className={active ? "modal activeModal" : "modal"}>
-      <div className="modal__content shareModal">
+    <div className={active ? "shareModal activeModal" : "shareModal"}>
+      <div className="shareModal__content">
         <span className="modal__content__head">
           <h3 className="modal__content__head__h3">Поделиться</h3>
           <span
@@ -66,10 +66,10 @@ export default function ShareImageModal({ active, setActive }) {
             Скопировать ссылку
             <span className="icon__wrapper">
               <input
-                className="input__auth password modal__content__body__input"
+                className="input__auth password shareModal__content__body__input"
                 type="text"
                 id="urlInput"
-                value={shareUrl}
+                // value={shareUrl}
                 readOnly
               />
               {copied ? (
@@ -81,7 +81,7 @@ export default function ShareImageModal({ active, setActive }) {
                   className="iconOpen"
                   ref={linkRef}
                   onClick={getCopyLink}
-                  data-clipboard-text={shareUrl}
+                  // data-clipboard-text={shareUrl}
                 >
                   <CopyIcon />
                 </span>
@@ -89,20 +89,28 @@ export default function ShareImageModal({ active, setActive }) {
             </span>
           </span>
 
-          <span className="modal__content__body__iconWrapper">
-            <VKShareButton url={shareUrl}>
+          <span className="shareModal__content__body__iconWrapper">
+            <VKShareButton 
+            //url={shareUrl}
+            >
               <VKIcon size={defaultSize} borderRadius={defaultBR} />
             </VKShareButton>
 
-            <TelegramShareButton url={shareUrl}>
+            <TelegramShareButton 
+            //url={shareUrl}
+            >
               <TelegramIcon size={defaultSize} borderRadius={defaultBR} />
             </TelegramShareButton>
 
-            <WhatsappShareButton url={shareUrl}>
+            <WhatsappShareButton 
+            //url={shareUrl}
+            >
               <WhatsappIcon size={defaultSize} borderRadius={defaultBR} />
             </WhatsappShareButton>
 
-            <EmailShareButton url={shareUrl} title="Почта">
+            <EmailShareButton 
+            //url={shareUrl}
+             title="Почта">
               <EmailIcon size={defaultSize} borderRadius={defaultBR} />
             </EmailShareButton>
           </span>

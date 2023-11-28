@@ -1,18 +1,46 @@
 @import '../../style.scss';
 @import '../EditImageModal/EditImageModal.scss';
 
-.modal__content__body {
+.shareModal {
 
-    &__input {
-            min-width: 35vw;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 1);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 4;
+    transform: scale(0);
+    @include flexColumn;
+    z-index: 11;
+
+    &.activeModal {
+        transform: scale(1);
     }
 
-    &__iconWrapper {
-        @include flexRow;
-        gap: 25px;
+    &__content {
+        background-color: $black-for-windows;
+        height: -moz-max-content;
+        height: max-content;
+        border-radius: 20px;
+        padding: 40px;
+
+
+        &__body {
+
+            &__input {
+                min-width: 35vw;
+        }
+    
+        &__iconWrapper {
+            @include flexRow;
+            gap: 25px;
+        }
+        }
     }
 
 }
+
 
 .wrappers {
     @include flexColumn;
@@ -33,7 +61,7 @@
 }
 
 @media screen and (max-width: 495px) {
-    .modal__content.shareModal {
+    .shareModal__content {
         height: auto;
         width: auto;
     }
