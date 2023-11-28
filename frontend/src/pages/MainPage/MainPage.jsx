@@ -15,9 +15,9 @@ export default function MainPage({ favorites, setFavorites, favor, setFavor, inF
 
 }) {
 
-  const images = useSelector((state) => state.user.images);
-  const data = useSelector(state => state.user);
-  console.log("main page", images)
+  // const images = useSelector((state) => state.user.images);
+  // const data = useSelector(state => state.user);
+  // console.log("main page", images)
   //
   //
   // const fetchImages = () => {

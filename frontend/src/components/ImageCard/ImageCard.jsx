@@ -7,13 +7,13 @@ import FavorFillIcon from "../FavorFillIcon";
 import FavorOutlineIcon from "../FavorOutlineIcon";
 // import { addImageToFavorite } from "../../store/slices/userSlice";
 
-export default function ImageCard({ currentUserId, imageName, imageTegs, image, 
+export default function ImageCard({ currentUserId, name, tags, image, 
 }) {
 
-  console.log(currentUserId, imageName, imageTegs, image);
+  console.log(currentUserId, name, tags, image);
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
-  let newTagList = imageTegs
+  let newTagList = tags
     .split(",")
     .map((tag) => {
       tag = tag.trim();
@@ -33,7 +33,7 @@ export default function ImageCard({ currentUserId, imageName, imageTegs, image,
     setIsHover(false);
   };
 
-   const itemData = { currentUserId, imageName, imageTegs, image };
+   const itemData = { currentUserId, name, tags, image };
   const dispatch = useDispatch();
   const favorite = useSelector((state) => state.user.favorite);
 
@@ -51,12 +51,12 @@ export default function ImageCard({ currentUserId, imageName, imageTegs, image,
     >
       <div className="layout__card__wrapper__actions">
         <ActionCircle 
-        id={currentUserId} name={imageName} tags={imageTegs} image={image}
+        id={currentUserId} name={name} tags={tags} image={image}
         isHover={isHover}/>
       </div>
       <div className="layout__card">
         <span className="layout__card__titleWrap">
-          <h3 className="layout__card__titleWrap__title">{imageName}</h3>
+          <h3 className="layout__card__titleWrap__title">{name}</h3>
           <span onClick={() => addToFavorite(itemData)} className="layout__card__titleWrap__icon">
             {
               inFavorite ? <FavorFillIcon /> : <FavorOutlineIcon />
@@ -64,7 +64,7 @@ export default function ImageCard({ currentUserId, imageName, imageTegs, image,
           </span>
         </span>
 
-        <img src={image.file} alt={imageName} className="layout__card__image" />
+        <img src={image} alt={tags} className="layout__card__image" />
         <p className="layout__card__tagList">{newTagList}</p>
       </div>
     </span>
