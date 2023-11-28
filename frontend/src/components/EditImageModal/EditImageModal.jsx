@@ -88,7 +88,7 @@ export default function EditImageModal ({active, setActive, id, name, tags, imag
                 </button>
 
                 <button className="modal__content__body__infoBlock__wrapper__fillBtn">
-                Сохранить изменения
+                Сохранить
                 </button>
               </span>
             </form>
