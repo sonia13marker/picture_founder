@@ -43,3 +43,15 @@
             }
         }
 }
+
+@media screen and (max-width: 768px) {
+    .headerMobile__wrapper__ul__li:nth-child(2n+1) {
+        width: 100%;
+        text-align: center;
+    }
+    .headerMobile__wrapper__ul__li__link {
+        display: block;
+        width: 100%;
+    }
+    
+}

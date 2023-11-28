@@ -2,8 +2,6 @@ import { NavLink } from "react-router-dom";
 import "./HeaderMobile.scss";
 import HomeIcon from "../HomeIcon";
 import FavoriteIcon from "../FavoriteIcon";
-import DevelopersIcon from "../DevelopersIcon";
-import LoginIcon from "../LoginIcon";
 import AddIcon from "../AddIcon";
 import { useState } from "react";
 import AddImageModal from "../AddImageModal/AddImageModal";
@@ -18,6 +16,7 @@ export default function HeaderMobile() {
           <li className="headerMobile__wrapper__ul__li">
             <NavLink
               to="/"
+              className="headerMobile__wrapper__ul__li__link"
             >
               <HomeIcon />
             </NavLink>
@@ -32,6 +31,7 @@ export default function HeaderMobile() {
           <li className="headerMobile__wrapper__ul__li">
             <NavLink
               to="/favorite"
+              className="headerMobile__wrapper__ul__li__link"
             >
               <FavoriteIcon />
             </NavLink>
