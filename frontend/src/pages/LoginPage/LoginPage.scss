@@ -61,6 +61,10 @@
 
 }
 
+#login_checkbox {
+    accent-color: $main-purple;
+}
+
 @media screen and (max-width: 1000px) {
     .login__lineWrapper {
         max-width: 400px;
