@@ -58,13 +58,17 @@ const selectIconTwo = () => {
 }
 useEffect(() => {
   if (passwordVerValue !== UserPassword) {
-    setErrorMessage("Пароли не равны!");
+    setErrorVerMessage("Пароли не равны!");
   } else if (passwordVerValue === UserPassword) {
-    setErrorMessage("");
+    setErrorVerMessage("");
     // console.log("success singup");
-  }
+  };
+  if (UserPassword.length < 8) {
+    setErrorMessage("Минимальная длиная пароля - 8 символов!");
+  } else setErrorMessage("");
 }, [UserPassword, passwordVerValue])
 const [errorMessage, setErrorMessage] = useState("");
+const [errorVerMessage, setErrorVerMessage] = useState("");
 
 
 /* for submit button */
@@ -76,7 +80,7 @@ const handleSubmit = (event) => {
   // console.log("success user password ", UserPassword);
   // console.log("success verify password ", passwordVerValue);
 
-  if (checked === true && errorMessage === "" && errorMessageEmail === "" && UserPassword && passwordVerValue) {
+  if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && UserPassword && passwordVerValue) {
     dispatch(createUser({UserEmail, UserPassword}));
 
     nextPage();
@@ -150,6 +154,9 @@ const handleSubmit = (event) => {
         )
        }
         </span>
+        <p className='input__error'>
+                {errorMessage}
+            </p>
     </span>
   {/* REPEAT password input */}      
             <span className="input__wrapper2">
@@ -180,7 +187,7 @@ const handleSubmit = (event) => {
        }
         </span>
             <p className='input__error'>
-                {errorMessage}
+                {errorVerMessage}
             </p>
     </span>
 
