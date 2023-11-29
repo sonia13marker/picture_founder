@@ -15,43 +15,57 @@ const UserInScheme = Joi.object({
 
 route.post("/login", async (req: Request, resp: Response): Promise<void> => {
 
+  console.log(req.body);
+
   const userReq = UserInScheme.validate(req.body)
 
   if (userReq.error) {
 
-    resp.status(400)
-    resp.json({ message: "non valide data" })
+    resp.status(400);
+    resp.json({ message: "non valide data" });
     console.log(userReq.error.message);
     return
 
   }
-  
 
-  const hasUser = db_models.UserModel.exists({UserEmail: userReq.value.UserEmail})
+  try {
 
-  if ( !hasUser ){
+    const hasUser = db_models.UserModel.exists({ UserEmail: userReq.value.UserEmail })
+
+    if (!hasUser) {
+      resp.status(404);
+      resp.json({ message: "user not found" })
+      return
+    }
+
+  } catch (error) {
+    resp.json({message: "some error"}).status(404);
+  }
+  const hasUser = db_models.UserModel.exists({ UserEmail: userReq.value.UserEmail })
+
+  if (!hasUser) {
     resp.status(404);
-    resp.json({message: "user not found"})
+    resp.json({ message: "user not found" })
     return
   }
 
-  const userDb = await db_models.UserModel.find({UserEmail: userReq.value.UserEmail});
+  const userDb = await db_models.UserModel.find({ UserEmail: userReq.value.UserEmail });
   const passHash = cry.createHash("sha256").update(userReq.value.UserPassword).digest("hex");
-  
-  if ( passHash !== userDb[0].UserPassword){
+
+  if (passHash !== userDb[0].UserPassword) {
     resp.status(404);
-    resp.json({message: "non valid password"})
+    resp.json({ message: "non valid password" })
     return
   }
 
-  const token = sign({id: userDb[0]._id, email: userDb[0].UserEmail}, env.TOKEN_SECRET, {expiresIn: "1d"});
+  const token = sign({ id: userDb[0]._id, email: userDb[0].UserEmail }, env.TOKEN_SECRET, { expiresIn: "1d" });
   resp.status(200).json({
     message: "login success",
     token: token,
     userId: userDb[0]._id
   });
   console.log(`[LOG] user ${userDb[0].id} is login`);
-  
+
 
 })
 
@@ -90,8 +104,8 @@ route.post("/regis", async (req: Request, resp: Response): Promise<void> => {
 
 })
 
-route.post( "/logout", async (req: Request, resp: Response): Promise<void> => {
-  
+route.post("/logout", async (req: Request, resp: Response): Promise<void> => {
+
 })
 
 export default route;

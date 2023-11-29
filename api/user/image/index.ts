@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express"
 import { db_models } from "../../../db"
-import Joi from "joi";
+import Joi from "joi"
 import cry from "crypto"
 import fs from "fs/promises"
 
@@ -210,4 +210,24 @@ async function imageEdit(req: Request, resp: Response) {
     })
 }
 
-export { imageGet, imagePost, imageDelete, fullImageGet, imageEdit }
+
+async function getImageFile( req: Request, resp: Response ) {
+    const path = require("path");
+
+    const imageId = req.params.imgId;
+    const imageDB = await db_models.ImageModel.findById(imageId);
+    
+    const imagePath = path.resolve(`uploads/save/${imageDB?.ownerId}/${imageDB?.imageHash}`)
+    const tmpPath = path.resolve(`uploads/tmp`)
+    fs.copyFile(imagePath, `${tmpPath}/${imageDB?.imageOrgName}`)
+    .catch((rs)=>{resp.json({message: "error on download image"}).status(505)})
+
+    console.log(`[LOG] send image for user ${imageDB?.ownerId}`);
+    
+
+    resp.sendFile(`${tmpPath}/${imageDB?.imageOrgName}`)
+    fs.rm(`${tmpPath}/${imageDB?.imageOrgName}`)
+
+}
+
+export { imageGet, imagePost, imageDelete, fullImageGet, imageEdit, getImageFile}
