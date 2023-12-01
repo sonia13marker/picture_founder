@@ -21,31 +21,32 @@ export default function LoginPage () {
         /* чтобы форма не отправлялась */
         event.preventDefault();
 
-        if (loginEmail && UserPassword && errorMessageEmail === "" && errorMessagePassword === "") {
+        if (UserEmail && UserPassword && errorMessageEmail === "" && errorMessagePassword === "") {
           goToMainPage();
         }
 
-        dispatch(loginUser(loginEmail, UserPassword));
+        dispatch(loginUser({UserEmail, UserPassword}));
+        console.log("DATA FROM LOGIN PAGE:", UserEmail, UserPassword)
     }
 const goToMainPage = () => {
   navigate('/main');
 }
     /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
-const [loginEmail, setLoginEmail] = useState("");
+const [UserEmail, setLoginEmail] = useState("");
 const handleChangeEmail = (event) => {
   setLoginEmail(event.target.value);
 }
 useEffect(() => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  if (loginEmail.match(emailRegex)) {
+  if (UserEmail.match(emailRegex)) {
     setErrorMessageEmail("");
   } else {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     console.log("invalid email");
   };
-}, [loginEmail]);
+}, [UserEmail]);
 
 /*for password input */
 const [UserPassword, setPassword] = useState("");
@@ -100,7 +101,7 @@ const goToSingupPage = () => {
           type="email"
           id="login_email"
           placeholder="Введите электронную почту"
-          value={loginEmail}
+          value={UserEmail}
           onChange={handleChangeEmail}
         />
       </label>

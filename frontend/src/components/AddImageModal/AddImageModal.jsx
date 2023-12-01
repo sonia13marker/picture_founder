@@ -35,8 +35,8 @@ export default function AddImageModal({
   const dispatch = useDispatch();
   const images = useSelector(state => state.user.images);
   const id = useSelector(state => state.user.UserId);
-  console.log("what is it?", id);
-  console.log("array of images ", images);
+  // console.log("what is it?", id);
+  // console.log("array of images ", images);
 
   // const addToPage = (dataOfImage) => {
   //   dispatch(addImageToPage({dataOfImage: dataOfImage}, { id: currentUserId}))

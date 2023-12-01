@@ -10,7 +10,7 @@ import FavorOutlineIcon from "../FavorOutlineIcon";
 export default function ImageCard({ currentUserId, name, tags, image, 
 }) {
 
-  console.log(currentUserId, name, tags, image);
+  // console.log(currentUserId, name, tags, image);
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
   let newTagList = tags
