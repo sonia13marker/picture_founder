@@ -15,7 +15,13 @@ export default function PersonalAccountPage() {
   const dispatch = useDispatch();
 
   /* get email of current user */
-  const currentUserEmail = useSelector(state => state.user.currentUser.data.UserEmail);
+  //const currentUserEmail = useSelector(state => state.user.currentUser.data.UserEmail);
+
+  // const id = useSelector(state => state.user.UserId);
+  // console.log("ID IN MAIN PAGE", id);
+
+  // const currentUserEmail = useSelector(state => state.user.currentUser.userId);
+  // console.log("currentUser in personal page", currentUserEmail);
 
 
   /*for password inputs */
@@ -159,7 +165,7 @@ export default function PersonalAccountPage() {
                   className="input__auth"
                   type="email"
                   id="personalAcc_email"
-                  defaultValue={currentUserEmail || ""}
+                  // defaultValue={currentUserEmail || ""}
                   readOnly
                 />
               </label>

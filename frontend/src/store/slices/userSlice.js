@@ -99,11 +99,12 @@ export const createUser = createAsyncThunk(
             const res = await axios.post('http://95.31.50.131/api/auth/regis', payload);
             /* после отправки запроса я получаю данные: email & id,
             записываю их в переменные и передаю текущему юзеру */
-            console.log("HELLLLLLLLLL", res);
-             const userEmail = res.data.data.UserEmail;
-             console.log(userEmail);
-            // /* добавление эмейла в текущего юзера */
-             thunkAPI.dispatch(setCurrentUser(userEmail));
+            //  const userEmailCreate = res.data.data.UserEmail;
+            //  console.log("userEmailCreate singup", userEmailCreate);
+             /* добавление эмейла в текущего юзера */
+            //  thunkAPI.dispatch(setCurrentUser(userEmailCreate));
+
+             
              const UserID = res.data.data.UserID;
              console.log("UserID", UserID);
             // /* добавление id текущего юзера */
@@ -125,14 +126,21 @@ export const loginUser = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const res = await axios.post('http://95.31.50.131/api/auth/login', payload);
-      console.log("hoaihdiasdisajdsia", res);
-      const UserToken = res.data.token;
-      console.log("userToken", UserToken);
-      thunkAPI.dispatch(setUserToken(UserToken));
+      /* получаю токен юзера и сохраняю его глобально */
+      const userTokenLogin = res.data.token;
+      console.log("userToken", userTokenLogin);
+      thunkAPI.dispatch(setUserToken(userTokenLogin));
 
-      const userId = res.data.userId;
-      console.log("userToken", userId);
-      thunkAPI.dispatch(setUserID(userId));
+      /* получаю ID юзера и сохраняю его глобально */
+      const userIdLogin = res.data.userId;
+      console.log("userToken", userIdLogin);
+      thunkAPI.dispatch(setUserID(userIdLogin));
+
+
+        const userEmailLogin = res.data.userEmail;
+              console.log("userEmailLogin login", userEmailLogin);
+             /* добавление эмейла в текущего юзера */
+              thunkAPI.dispatch(setCurrentUser(userEmailLogin));
       return res.data;
       
     } catch (error) {
