@@ -67,14 +67,11 @@ export default function AddImageModal({
   const submitInfoImage = (e) => {
     e.preventDefault();
     const imageName = nameImage.current.value;
-    const imageTegs = tagsImage.current.value;
+    const tags = tagsImage.current.value;
 
-    // let imageTegs = [];
+    //преобразование строки в массив строк  
+    let imageTegs = [tags.split(",").map((tg) => tg.trim())];
 
-    // for (let i = 0; i < tags.lenght; i++) {
-    //   imageTegs.push(i);
-    //   console.log(imageTegs);
-    // }
     const image = {file};
     const key = Math.random();
 
