@@ -36,8 +36,16 @@ html {
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
 }
 
+body {
+  overscroll-behavior-y: contain;
+  overflow-y: auto;
+  scrollbar-gutter: auto;
+}
+
 .layout__card {
-  min-height: 355px;
+  max-height: 500px;
+  min-height: -moz-min-content;
+  min-height: min-content;
   height: 100%;
   max-width: 300px;
   width: 100%;
@@ -47,6 +55,8 @@ html {
   margin-top: 15px;
 }
 .layout__card__wrapper {
+  max-height: -moz-max-content;
+  max-height: max-content;
   min-height: 355px;
   max-width: 300px;
   width: 100%;
@@ -79,8 +89,9 @@ html {
   width: 100%;
   max-width: 300px;
   min-height: 200px;
-  height: 100%;
-  max-height: 240px;
+  height: -moz-max-content;
+  height: max-content;
+  max-height: 280px;
   -o-object-fit: fill;
      object-fit: fill;
 }

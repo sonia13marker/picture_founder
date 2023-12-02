@@ -36,6 +36,12 @@ html {
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
 }
 
+body {
+  overscroll-behavior-y: contain;
+  overflow-y: auto;
+  scrollbar-gutter: auto;
+}
+
 .main__section {
   margin: 0 55px;
   flex: 1 0 auto;
