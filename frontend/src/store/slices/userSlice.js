@@ -22,7 +22,7 @@ export const getImages = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             // const currentUserId = payload.id;
-            const res = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`);
+            const res = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}});
             console.log("res data in addImage", res.data);
             thunkAPI.dispatch(addImageToPage(res.data));
             return res.data;
@@ -99,16 +99,11 @@ export const createUser = createAsyncThunk(
             const res = await axios.post('http://95.31.50.131/api/auth/regis', payload);
             /* после отправки запроса я получаю данные: email & id,
             записываю их в переменные и передаю текущему юзеру */
-            //  const userEmailCreate = res.data.data.UserEmail;
-            //  console.log("userEmailCreate singup", userEmailCreate);
-             /* добавление эмейла в текущего юзера */
-            //  thunkAPI.dispatch(setCurrentUser(userEmailCreate));
 
-             
              const UserID = res.data.data.UserID;
              console.log("UserID", UserID);
-            // /* добавление id текущего юзера */
-             thunkAPI.dispatch(setUserID(UserID));
+            /* добавление id текущего юзера */
+            thunkAPI.dispatch(setUserID(UserID));
             return res.data; 
             
             
@@ -151,23 +146,6 @@ export const loginUser = createAsyncThunk(
   }
 
 )
-
-
-// //надо куда-то деть authToken
-// export const loginUser = createAsyncThunk(
-//     "user/loginUser",
-//     async (payload, thunkAPI) => {
-//         try {
-//             const res = await axios.post('http://95.31.50.131/api/auth', payload);
-//             const login = await axios('http://95.31.50.131/api/auth', payload);
-//             return login.data;
-//         } catch (error) {
-//             console.log(error);
-//             const serializedError = error.toJSON();
-//             return thunkAPI.rejectWithValue(serializedError);
-//         }
-//     }
-// );
 
 /* обновление пароля */
 // export const updatePasswordUser = createAsyncThunk(

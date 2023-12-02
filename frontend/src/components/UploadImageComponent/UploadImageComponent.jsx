@@ -1,9 +1,10 @@
 import React from "react";
 import "./UploadImageComponent.scss";
 import add_img from "../../images/add_img.svg";
+import { ACCEPT_FILE_TYPE } from "../../data/constants";
 
 export default function UploadImageComponent({ file,
-    setFile, name }) {
+    setFile, name, setSize, fileError, setFileError, setFileType }) {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
@@ -23,6 +24,11 @@ export default function UploadImageComponent({ file,
     };
 
     reader.readAsDataURL(file);
+    const fileSize = file.size;
+    const fileType = file.type;
+    setSize(fileSize);
+    setFileType (fileType);
+    console.log("Размер файла:", fileType, fileSize);
   };
 
   const handleDragOver = (e) => {
@@ -32,6 +38,7 @@ export default function UploadImageComponent({ file,
   /* for delete btn on hovered image */
   const deleteBtnClick = () => {
     setFile(null);
+    setFileError("");
   };
 
   return (
@@ -52,7 +59,7 @@ export default function UploadImageComponent({ file,
                   className="addBlock__wrapper2__btnDel"
                   onClick={deleteBtnClick}
                 >
-                  Удалить картинку
+                  Удалить файл
                 </button>
                 <img
                   className="addBlock__wrapper__image"
@@ -71,7 +78,7 @@ export default function UploadImageComponent({ file,
                   type="file"
                   name="uploadImg"
                   id="uploadImg"
-                  accept="image/png, image/jpeg, image/jpg"
+                  accept={ACCEPT_FILE_TYPE}
                   className="modal__outline"
                   onChange={handleFileUpload}
                 ></input>
@@ -80,7 +87,8 @@ export default function UploadImageComponent({ file,
           )}
         </div>
         <p className="addBlock__p">
-          Допускаются файлы .png, .jpg, .jpeg размером до <span>20 МБ.</span>
+          <p className="input__error">{fileError}</p>
+          Допускаются файлы .png, .jpg, .jpeg размером до <span className="addBlock__p__bold">20 МБ.</span>
         </p>
       </span>
     </>

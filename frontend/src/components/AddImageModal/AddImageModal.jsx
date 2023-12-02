@@ -1,21 +1,41 @@
 import "./AddImageModal.scss";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { addImageToPage } from "../../store/slices/userSlice";
 import addUserImage from '../../store/slices/userSlice';
 import axios from "axios";
+import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 
 
 export default function AddImageModal({
   active,
   setActive,
-  //addImage = (f) => f,
 }) {
-  /*-------------------------*/
+  /*------работа с изображениями-----------*/
   const [file, setFile] = useState(null);
+  const [size, setSize] = useState(null);
+  const [fileType, setFileType] = useState(null);
+  const [fileError, setFileError] = useState("");
   /*-------------------------*/
+
+  //отслеживание ошибок, связанных с изображениями
+  useEffect(() => {
+    if (size > MAX_SIZE_OF_FILE) {
+      setFileError("Размер файла превышает 20МБ!")
+    } else {
+      setFileError("");
+    }
+  }, [size])
+
+  useEffect(() => {
+    if (!ACCEPT_FILE_TYPE.includes(fileType)) {
+      setFileError("Неверный тип файла!");
+    } else {
+      setFileError("");
+    }
+  }, [fileType]);
 
   /* for cancel btn */
   const cancelBtnClick = (e) => {
@@ -35,27 +55,46 @@ export default function AddImageModal({
   const dispatch = useDispatch();
   const images = useSelector(state => state.user.images);
   const id = useSelector(state => state.user.UserId);
+  console.log("ID in add image modal", id);
   // console.log("what is it?", id);
   // console.log("array of images ", images);
 
-  // const addToPage = (dataOfImage) => {
-  //   dispatch(addImageToPage({dataOfImage: dataOfImage}, { id: currentUserId}))
-  // }
-  
-  /*старый не рабочий код 
+  const addToPage = (dataOfImage) => {
+    console.log("addToPage func id", id, "data of image", dataOfImage );
+    dispatch(addUserImage({id: id, data: dataOfImage}));
+    // dispatch(addImageToPage({data: dataOfImage}));
+  }
   const submitInfoImage = (e) => {
     e.preventDefault();
     const imageName = nameImage.current.value;
     const imageTegs = tagsImage.current.value;
+
+    // let imageTegs = [];
+
+    // for (let i = 0; i < tags.lenght; i++) {
+    //   imageTegs.push(i);
+    //   console.log(imageTegs);
+    // }
     const image = {file};
     const key = Math.random();
 
 
-    const dataOfImage = {id, image, imageName, imageTegs};
+    const dataOfImage = {image, imageName, imageTegs};
 
-    /*функция добавления картинки на страницу 
-    // addToPage(dataOfImage);
-    dispatch(addUserImage(dataOfImage))
+    // //функция проверки на все заполненные поля
+    // const checkTheInputsValue = () => {
+    //   if (!file && !imageName && !imageTegs) {
+    //     setFileError("Не все поля заполнены!");
+    //   } else {
+    //     setFileError("");
+    //   }
+    // } 
+
+    //функция добавления картинки на страницу 
+    addToPage(dataOfImage);
+    console.log("dataOfImage", dataOfImage);
+    // // dispatch(addImageToPage(dataOfImage));
+
 
     nameImage.current.value = "";
     tagsImage.current.value = "";
@@ -65,31 +104,27 @@ export default function AddImageModal({
       return;
     }
     setActive(!active);
-  };*/
-  /* странно работающий код, но отправляющий запрос на сервер */
-  const submitInfoImage = async (e) => {
-    e.preventDefault();
-    const imageName = nameImage.current.value;
-    const imageTegs = tagsImage.current.value;
-  
-    const formData = new FormData();
-    formData.append('file', file); // добавляем файл в объект FormData
-    formData.append('imageName', imageName);
-    formData.append('imageTegs', imageTegs);
-  
-    try {
-      const res = await axios.post(`http://95.31.50.131/api/user/${id}/image`, formData);
-      console.log("res data in addImage", res.data);
-      dispatch(addImageToPage(formData));
-      nameImage.current.value = "";
-      tagsImage.current.value = "";
-      setFile(null);
-      setActive(!active);
-    } catch (err) {
-      console.log(err);
-      // const serializedError = err.toJSON();
-      // return thunkAPI.rejectWithValue(serializedError);
-    }
+
+    // } else {
+    //   setFileError("Не все поля заполнены!");
+    // }
+    // checkTheInputsValue();
+
+    // if (fileError === "" && file && imageName && imageTegs) {
+    //   addToPage(dataOfImage);
+    //   console.log("dataOfImage", dataOfImage);
+    //   console.log(file && imageName && imageTegs);
+    //   // dispatch(addImageToPage(dataOfImage));
+
+    //   nameImage.current.value = "";
+    //   tagsImage.current.value = "";
+    //   setFile(null);
+    //   setActive(!active);
+    //   setFileError("");
+    // } else {
+    //   setFileError("Не все поля заполнены!");
+    // }
+    
   };
   const checkTheFileFunc = () => {
     if (file || nameImage.current.value || tagsImage.current.value) {
@@ -124,6 +159,10 @@ export default function AddImageModal({
               file={file}
               setFile={setFile}
               name={nameImage}
+              setSize={setSize}
+              fileError={fileError}
+              setFileError={setFileError}
+              setFileType={setFileType}
             />
             {/*блок с инфой о картинке - название и теги,
                     плюс кнопки действия */}
@@ -141,6 +180,7 @@ export default function AddImageModal({
                     id="nameImg"
                     ref={nameImage}
                     placeholder="Введите название картинки"
+                    required
                   />
                 </label>
               </span>
@@ -153,6 +193,7 @@ export default function AddImageModal({
                   id="tagsImg"
                   ref={tagsImage}
                   placeholder="Введите теги для картинки, например: тег, тег2, тег три"
+                  required
                 ></textarea>
               </label>
               <span className="modal__content__body__infoBlock__wrapper">
