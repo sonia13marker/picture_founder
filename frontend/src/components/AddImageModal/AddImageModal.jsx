@@ -55,7 +55,7 @@ export default function AddImageModal({
   const dispatch = useDispatch();
   const images = useSelector(state => state.user.images);
   const id = useSelector(state => state.user.UserId);
-  console.log("ID in add image modal", id);
+  // console.log("ID in add image modal", id);
   // console.log("what is it?", id);
   // console.log("array of images ", images);
 

@@ -21,10 +21,10 @@ export const getImages = createAsyncThunk(
     "user/addImage",
     async (payload, thunkAPI) => {
         try {
-            // const currentUserId = payload.id;
+            const dataOfImage = payload.data;
             const res = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}}, payload);
-            console.log("res data in addImage", res.data);
-            thunkAPI.dispatch(addImageToPage(res.data));
+            console.log("res data in addImage", dataOfImage);
+            thunkAPI.dispatch(addImageToPage(dataOfImage));
             return res.data;
         } catch (err) {
             console.log(err);

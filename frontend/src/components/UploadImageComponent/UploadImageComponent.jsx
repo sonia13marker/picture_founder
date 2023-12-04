@@ -87,7 +87,7 @@ export default function UploadImageComponent({ file,
           )}
         </div>
         <p className="addBlock__p">
-          <p className="input__error">{fileError}</p>
+          <p className="input__error">{fileError || null}</p>
           Допускаются файлы .png, .jpg, .jpeg размером до <span className="addBlock__p__bold">20 МБ.</span>
         </p>
       </span>
