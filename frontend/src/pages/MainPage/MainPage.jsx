@@ -30,21 +30,18 @@ export default function MainPage({ favorites, setFavorites, favor, setFavor, inF
   const id = useSelector(state => state.user.UserId);
   console.log("ID IN MAIN PAGE", id);
   const userToken = useSelector(state => state.user.userToken);
-  console.log("TOKEN IN MAIN PAGE", userToken);
   console.log("main page", images);
   const dispatch = useDispatch();
-
-  
   
   const fetchImages = () => {
+    console.log("token in img ", userToken);
+
     dispatch(getImages({ id: id, token: userToken }));
   };
   useEffect(() => {
     fetchImages();
   }, []);
 console.log(images)
-
-
 
   if (!images.length)
     return (

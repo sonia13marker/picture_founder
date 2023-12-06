@@ -7,7 +7,9 @@ export const getImages = createAsyncThunk(
     "user/getImages",
     async (payload, thunkAPI) => {
       try {
-        const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}});
+        const { id, token } = payload;
+        console.log('payload', token);
+        const res = await axios.get(`http://95.31.50.131/api/user/${id}/image`, {headers:{Authorization: `Bearer ${token}`}});
         return res.data;
       } catch (error) {
         console.log(error);
@@ -17,22 +19,42 @@ export const getImages = createAsyncThunk(
     }
   );
     /* добавление картинки, когда юзер уже в своем акке */
- export const addUserImage = createAsyncThunk(
-    "user/addImage",
-    async (payload, thunkAPI) => {
-        try {
-            const dataOfImage = payload.data;
-            const res = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}}, payload);
-            console.log("res data in addImage", dataOfImage);
-            thunkAPI.dispatch(addImageToPage(dataOfImage));
-            return res.data;
-        } catch (err) {
-            console.log(err);
-            const serializedError = err.toJSON();
-            return thunkAPI.rejectWithValue(serializedError);
-        }
-    }
-  )
+//  export const addUserImage = createAsyncThunk(
+//     "user/addImage",
+//     async (payload, thunkAPI) => {
+//         try {
+//             const dataOfImage = payload.data;
+//             const res = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}}, payload);
+//             console.log("res data in addImage", dataOfImage);
+//             thunkAPI.dispatch(addImageToPage(dataOfImage));
+//             return res.data;
+//         } catch (err) {
+//             console.log(err);
+//             const serializedError = err.toJSON();
+//             return thunkAPI.rejectWithValue(serializedError);
+//         }
+//     }
+//   )
+
+export const addUserImage = createAsyncThunk(
+  "user/addImage",
+  async (payload, thunkAPI) => {
+      try {
+        const { id, token, data } = payload;
+        console.log("res data in addImage", data);
+
+        const res = await axios.post(`http://95.31.50.131/api/user/${id}/image`, {
+          headers: { Authorization: `Bearer ${token}` }
+        }, data);
+          //thunkAPI.dispatch(addImageToPage(data));
+        return res.data;
+      } catch (err) {
+          console.log(err);
+          const serializedError = err.toJSON();
+          return thunkAPI.rejectWithValue(serializedError);
+      }
+  }
+)
     /* удаление картинки */
   export const deleteUserImage = createAsyncThunk(
     "user/deleteImage",
@@ -120,6 +142,7 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (payload, thunkAPI) => {
     try {
+      console.log('login p', payload);
       const res = await axios.post('http://95.31.50.131/api/auth/login', payload);
       /* получаю токен юзера и сохраняю его глобально */
       const userTokenLogin = res.data.token;
@@ -130,7 +153,6 @@ export const loginUser = createAsyncThunk(
       const userIdLogin = res.data.userId;
       console.log("userToken", userIdLogin);
       thunkAPI.dispatch(setUserID(userIdLogin));
-
 
         const userEmailLogin = res.data.userEmail;
               console.log("userEmailLogin login", userEmailLogin);

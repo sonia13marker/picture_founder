@@ -4,7 +4,7 @@ import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponen
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { addImageToPage } from "../../store/slices/userSlice";
-import addUserImage from '../../store/slices/userSlice';
+import {addUserImage} from '../../store/slices/userSlice';
 import axios from "axios";
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 
@@ -55,14 +55,15 @@ export default function AddImageModal({
   const dispatch = useDispatch();
   const images = useSelector(state => state.user.images);
   const id = useSelector(state => state.user.UserId);
-  // console.log("ID in add image modal", id);
-  // console.log("what is it?", id);
-  // console.log("array of images ", images);
+  const userToken = useSelector(state => state.user.userToken);
 
+  let c = 0;
   const addToPage = (dataOfImage) => {
-    console.log("addToPage func id", id, "data of image", dataOfImage );
-    dispatch(addUserImage({id: id, data: dataOfImage}));
-    // dispatch(addImageToPage({data: dataOfImage}));
+    if (dataOfImage) {
+      console.log(c, 'id: ', id, 'token: ', userToken, 'data: ', dataOfImage);
+      c++;
+      dispatch(addUserImage({id: id, token: userToken, data: {dataOfImage}}));
+    }
   }
   const submitInfoImage = (e) => {
     e.preventDefault();
@@ -101,26 +102,6 @@ export default function AddImageModal({
       return;
     }
     setActive(!active);
-
-    // } else {
-    //   setFileError("Не все поля заполнены!");
-    // }
-    // checkTheInputsValue();
-
-    // if (fileError === "" && file && imageName && imageTegs) {
-    //   addToPage(dataOfImage);
-    //   console.log("dataOfImage", dataOfImage);
-    //   console.log(file && imageName && imageTegs);
-    //   // dispatch(addImageToPage(dataOfImage));
-
-    //   nameImage.current.value = "";
-    //   tagsImage.current.value = "";
-    //   setFile(null);
-    //   setActive(!active);
-    //   setFileError("");
-    // } else {
-    //   setFileError("Не все поля заполнены!");
-    // }
     
   };
   const checkTheFileFunc = () => {
