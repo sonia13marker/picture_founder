@@ -6,7 +6,6 @@ import { env } from "../env";
 export default async function authUser( req: Request, resp: Response, next: NextFunction): Promise<void> {
     
     const authData = req.headers
-    console.log(authData);
 
     if ( !authData.authorization ){
         resp.json({message:"non autorizate"})
@@ -18,7 +17,7 @@ export default async function authUser( req: Request, resp: Response, next: Next
             resp.json({message:"non autorizate"})
             return
         }
-
+		console.log("user is autentificate")
         next()
     })
 }

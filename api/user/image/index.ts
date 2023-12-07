@@ -41,7 +41,7 @@ async function imageGet(req: Request, resp: Response) {
         options: { skip: needData.value.offset }
     }).exec()
     const userImagesArray = userImages?.UserImages
-
+	console.log(`get images from user ${userId}`)
     resp.json({
         filter: needData.value.filter,
         offset: needData.value.offset,
@@ -166,6 +166,7 @@ async function fullImageGet(req: Request, resp: Response) {
     }
 
     const imageData = await db_models.ImageModel.find({ _id: imageId, ownerId: userId })
+	console.log(`get full image data. image ${imageData[0]?.imageOrgName}`)
 
     resp.json({
         ...imageData
@@ -199,7 +200,7 @@ async function imageEdit(req: Request, resp: Response) {
             isFavotite: valData.value.isFavorite
         }
     })
-
+	console.log(`edit image ${valData.value.imageName}`)
     resp.json({
         message: "update image data",
         data: {
@@ -224,7 +225,7 @@ async function getImageFile( req: Request, resp: Response ) {
 
     console.log(`[LOG] send image for user ${imageDB?.ownerId}`);
     
-
+	console.log(`get image[file] ${imageDB?.imageOrgName}`)
     resp.sendFile(`${tmpPath}/${imageDB?.imageOrgName}`)
     fs.rm(`${tmpPath}/${imageDB?.imageOrgName}`)
 
