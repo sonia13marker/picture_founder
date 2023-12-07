@@ -220,8 +220,14 @@ async function getImageFile( req: Request, resp: Response ) {
     
     const imagePath = path.resolve(`uploads/save/${imageDB?.ownerId}/${imageDB?.imageHash}`)
     const tmpPath = path.resolve(`uploads/tmp`)
-    fs.copyFile(imagePath, `${tmpPath}/${imageDB?.imageOrgName}`)
-    .catch((rs)=>{resp.json({message: "error on download image"}).status(505)})
+
+    try {
+    	await fs.copyFile(imagePath, `${tmpPath}/${imageDB?.imageOrgName}`)
+    }
+    catch(e){
+    	resp.json({message: "error on download image"}).status(505)
+    	return
+    }
 
     console.log(`[LOG] send image for user ${imageDB?.ownerId}`);
     
