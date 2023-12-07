@@ -99,8 +99,8 @@ route.post("/regis", async (req: Request, resp: Response): Promise<void> => {
   let dbUser = await db_models.UserModel.create(userData)
   await fs.promises.mkdir(`${tmpFiles}/save/${dbUser._id}`, { recursive: true })
 
-  //console.log(newUserData);
-  resp.json({ message: "complete user create", data: { "UserID": dbUser.id, "UserEmail": dbUser.UserName } })
+  console.log(`create new user ${dbUser.UserEmail}`);
+  resp.json({ message: "complete user create", data: { "UserID": dbUser.id, "UserEmail": dbUser.UserEmail } })
 
 })
 

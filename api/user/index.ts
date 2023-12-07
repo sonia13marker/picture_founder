@@ -36,10 +36,12 @@ route.get("/:id", hasUser, async (req: Request, resp: Response): Promise<void> =
 
     resp.json({
         "UserID": getUser?.id,
-        "UserName": getUser?.UserName,
         "UserEmail": getUser?.UserEmail,
         "ImageCount": getUser?.UserImages.length
     })
+
+    console.log(`get user ${userId}`);
+    
 
 
 })
@@ -100,7 +102,7 @@ route.put("/:id", hasUser, urlencoded({ extended: false }), async (req: Request,
         })
     }
 
-
+    console.log(`user ${userId} is update`);
 
 })
 
@@ -114,6 +116,8 @@ route.get("/:id/stat", hasUser, async (req: Request, resp: Response): Promise<vo
             ...userDB?.UserStat
         }
     })
+
+    console.log(`user ${userId} is get stat`);
 })
 
 route.get("/:id/image", hasUser, imageRoute.imageGet)

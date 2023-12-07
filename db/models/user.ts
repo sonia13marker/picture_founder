@@ -7,7 +7,6 @@ const statScheme = new Schema({
 })
 
 const UserScheme = new Schema({
-    UserName: {type: String, require: true},
     UserEmail: {type: String, require: true},
     UserImages: [{type: Schema.ObjectId, ref: "Image"}],
     UserPassword: {type: String, require: true},
