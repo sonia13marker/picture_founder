@@ -3,35 +3,21 @@ import empty_icon from "../../images/empty_main.svg";
 import EmptyTextComponent from "../../components/EmptyTextComponent/EmptyTextComponent";
 import ImageCard from "../../components/ImageCard/ImageCard";
 import { useDispatch } from "react-redux";
-//import images from '../../data/first-data.json'
-// import { getImages } from "../../store/slices/imagesSlice";
-import { getImages, selectUserID } from "../../store/slices/userSlice";
+import { getImages } from "../../store/slices/userSlice";
 import { useEffect } from "react";
 import { useSelector } from 'react-redux';
 
-export default function MainPage({ favorites, setFavorites, favor, setFavor, inFavorite, setInFavorite, 
+export default function MainPage() {
 
-}) {
 
-  /*
-   с бэкенда приходят такие данные о картинке: 
-   {
-    "imageID": "324knd",
-    "imageName": "kjffffffffffff",
-    "imageHash": "sdlkjs89u3wq3as",
-    "ownerID": "kjsdd322",
-    "uploadDate": "21-03-3302T23:43",
-    "imageSize": 3238787, //это в битах. Потом подумаю на конвериацией
-    "imageTags": ["sjkhd", ....],
-    "isFavorite": false
-}
-   */
-  const images = useSelector((state) => state.user.images);
   const id = useSelector(state => state.user.UserId);
   console.log("ID IN MAIN PAGE", id);
+
   const userToken = useSelector(state => state.user.userToken);
-  console.log("token IN MAIN PAGE", userToken); 
-  // console.log("main page", images);
+  console.log("TOKEN IN MAIN PAGE", userToken); 
+
+  const images = useSelector((state) => state.user.images.images);
+
   const dispatch = useDispatch();
   
   const fetchImages = (id, userToken) => {
@@ -40,28 +26,59 @@ export default function MainPage({ favorites, setFavorites, favor, setFavor, inF
     dispatch(getImages({ id: id, token: userToken }));
   };
   
+  // useEffect(() => {
+  //   fetchImages(id, userToken);
+  //   // console.log("IMAGES IN MAIN PAGE", images);
+  // }, [id, images, userToken]);
   useEffect(() => {
     fetchImages(id, userToken);
-  }, []);
-console.log("IMAGES IN MAIN PAGE", images);
+  }, [id, userToken]);
 
-  if (!images.length)
-    return (
-      <EmptyTextComponent
-        image={empty_icon}
-        text="Тут ещё нет картинок. Пора бы их добавить"
-      />
-    );
+  // Вывод в консоль только после загрузки данных
+useEffect(() => {
+  // if (images.length > 0) {
+  //   console.log("IMAGES IN MAIN PAGE", images);
+  // }
+  console.log("IMAGES IN MAIN PAGE", images);
+}, [images]);
+  
+
+  // if (images.length === 0)
+  //   return (
+  //     <EmptyTextComponent
+  //       image={empty_icon}
+  //       text="Тут ещё нет картинок. Пора бы их добавить"
+  //     />
+  //   );
   return (
     <section className="wrapper_layout">
-        {images.map((image) => (
-          <ImageCard key={image.key} {...image} 
-          //favorites={favorites} setFavorites={setFavorites} 
-          //addToFavorite={addToFavorite} 
-          // inFavorite={inFavorite} 
-          // setInFavorite={setInFavorite}
-          />
-        ))}
+      {/* {images.map(image => (
+  <ImageCard
+    key={image._id}
+    name={image.imageOrgName}
+    tags={image.imageTags}
+    image={image.imageHash}
+    idImage={image._id}
+  />
+))} */}
+
+      
+        {/* {images.map((image) => {(
+          
+          // <ImageCard key={image.imageHash}
+          // name={image.imageSetName}
+          // tags={image.imageTags}
+          // image={image.imageHash}
+          // idImage = {image.imageHash}
+          // />
+          console.log("image in image map: name", image, image.imageSetName, "tags: ", image.imageTags, "image: ", image.imageHash)
+
+        )})} */}
+{/* {images} */}
+            {/* console.log("image in image map", image)
+          console.log("image in image map: name", image, image.imageSetName, "tags: ", image.imageTags, "image: ", image.imageHash) */}
+
+
     </section>
   );
 }

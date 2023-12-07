@@ -9,7 +9,13 @@ export const getImages = createAsyncThunk(
       try {
         console.log('payload', payload);
         const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}});
-        console.log("GET IMAGES DATA", res.data);
+        //const allImages = res.data.images; 
+        console.log("GET DATA", res.data.images);
+        //console.log("GET IMAGES DATA", allImages);
+        thunkAPI.dispatch(addImageToPage(res.data.images));
+
+        //state.images([...allImages]);
+       // thunkAPI.dispatch(addImageToPage(allImages));
         return res.data;
       } catch (error) {
         console.log(error);
@@ -220,9 +226,15 @@ const userSlise = createSlice({
             }
           },
           addImageToPage: (state, action) => {
-            const img = action.payload;
-            state.images.push(img);
-            console.log("yooooooo images", img)
+            state.images = action.payload;
+            //const imageState = state.images;
+            //state.images = Object.values(img);
+            // state.images([img]);
+            console.log("IMAGE IN ADDIMAGETOPAGE FUNC",  
+            //'STATE ', imageState
+            );
+            
+            // state.images.push({img});
           },
           deleteImagefromPage: (state, action) => {
             const image = action.payload;
