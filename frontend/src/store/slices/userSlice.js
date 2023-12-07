@@ -7,9 +7,9 @@ export const getImages = createAsyncThunk(
     "user/getImages",
     async (payload, thunkAPI) => {
       try {
-        const { id, token } = payload;
-        console.log('payload', token);
-        const res = await axios.get(`http://95.31.50.131/api/user/${id}/image`, {headers:{Authorization: `Bearer ${token}`}});
+        console.log('payload', payload);
+        const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}});
+        console.log("GET IMAGES DATA", res.data);
         return res.data;
       } catch (error) {
         console.log(error);
@@ -142,22 +142,22 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (payload, thunkAPI) => {
     try {
-      console.log('login p', payload);
+      //console.log('login p', payload);
       const res = await axios.post('http://95.31.50.131/api/auth/login', payload);
       /* получаю токен юзера и сохраняю его глобально */
-      const userTokenLogin = res.data.token;
-      console.log("userToken", userTokenLogin);
-      thunkAPI.dispatch(setUserToken(userTokenLogin));
+      const userToken = res.data.token;
+      console.log("userToken IN USERSLICE", userToken);
+      thunkAPI.dispatch(setUserToken(userToken));
 
       /* получаю ID юзера и сохраняю его глобально */
       const userIdLogin = res.data.userId;
-      console.log("userToken", userIdLogin);
+      console.log("userIdLogin IN USERSLICE", userIdLogin);
       thunkAPI.dispatch(setUserID(userIdLogin));
 
-        const userEmailLogin = res.data.userEmail;
-              console.log("userEmailLogin login", userEmailLogin);
-             /* добавление эмейла в текущего юзера */
-              thunkAPI.dispatch(setCurrentUser(userEmailLogin));
+        // const userEmailLogin = res.data.userEmail;
+        //       console.log("userEmailLogin login", userEmailLogin);
+        //      /* добавление эмейла в текущего юзера */
+        //       thunkAPI.dispatch(setCurrentUser(userEmailLogin));
       return res.data;
       
     } catch (error) {
