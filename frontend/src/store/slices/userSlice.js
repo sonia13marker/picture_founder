@@ -230,7 +230,7 @@ const userSlise = createSlice({
             //const imageState = state.images;
             //state.images = Object.values(img);
             // state.images([img]);
-            console.log("IMAGE IN ADDIMAGETOPAGE FUNC",  
+            console.log("IMAGE IN ADDIMAGETOPAGE FUNC",  state.images
             //'STATE ', imageState
             );
             
@@ -304,6 +304,8 @@ const userSlise = createSlice({
 
 
 export const selectUserID = (state) => state.user.userID;
+
+
 
 export const { toggleFavorites, addImageToPage, createUserAction, setUserID, setCurrentUser, deleteImagefromPage, setUserToken } = userSlise.actions;
 

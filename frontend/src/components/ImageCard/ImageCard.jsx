@@ -9,8 +9,7 @@ import FavorOutlineIcon from "../FavorOutlineIcon";
 
 export default function ImageCard({ idImage, name, tags, image, 
 }) {
-console.log("data of image in image card: ", name, tags, image);
-  // console.log(currentUserId, name, tags, image);
+console.log("data of image in image card: ", idImage, name, tags, image);
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
   // let newTagList = tags
@@ -69,6 +68,7 @@ console.log("data of image in image card: ", name, tags, image);
         <img src={image} alt={tags} className="layout__card__image" />
         <p className="layout__card__tagList">
           {/* {newTagList} */}
+          {tags}
           </p>
       </div>
     </span>
