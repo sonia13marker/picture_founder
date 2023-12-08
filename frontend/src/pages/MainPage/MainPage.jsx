@@ -25,18 +25,31 @@ export default function MainPage() {
 
   //useEffect при помощи promise then
   useEffect(() => {
-    dispatch(getImages({ id: id, token: userToken }))
-    .then(unwrapResult)
-    .then((result) => {
-      setImagesFromServ(result);
-      console.log("originalPromiseResult", result.images);
-    })
-  }, [dispatch, id, userToken]);
+  //   dispatch(getImages({ id: id, token: userToken }))
+  //   .then(unwrapResult)
+  //   .then((result) => {
+  //     setImagesFromServ(result);
+  //     console.log("originalPromiseResult", result.images);
+  //   })
+  // }, [dispatch, id, userToken]);
+  const fetchData = async () => {
+    try {
+      const resultAction = await dispatch(getImages({ id: id, token: userToken }));
+      const originalPromiseResult = unwrapResult(resultAction);
+      setImagesFromServ(originalPromiseResult);
+      console.log("originalPromiseResult", originalPromiseResult.images);
+    } catch (rejectedValueOrSerializedError) {
+      console.error(rejectedValueOrSerializedError);
+    }
+  };
+
+  fetchData();
+}, [dispatch]);
   console.log( "imagesFromServ", imagesFromServ)
 
   return (
     <section className="wrapper_layout">
-      {imagesFromServ.length !== 0 ? imagesFromServ?.images.map((image) =>  <ImageCard key={image._id} name={image.imageSetName} tags={image.imageTags} image={image.imageHash} idImage={image._id} />
+      {imagesFromServ.length !== 0 ? imagesFromServ?.images.map((image) =>  <ImageCard key={image._id} name={image.imageSetName} tags={image.imageTags} image={image.imageHash} idImage={image._id} UserId={id} token={userToken}/>
       ) : <EmptyTextComponent
       image={empty_icon}
       text="Тут ещё нет картинок. Пора бы их добавить"

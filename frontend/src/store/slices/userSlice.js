@@ -2,6 +2,24 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setAuthStatus } from './authSlice';
 import axios from "axios";
 
+/* получение src картинки */
+export const getSrcImage = createAsyncThunk(
+  "user/getImages/getSrcImage",
+  async (payload, thunkAPI) => {
+    try {
+      console.log('payload', payload);
+      const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image/${payload.imageId}`, {headers:{Authorization: `Bearer ${payload.token}`}});
+      console.log("res from get src data", res);
+
+
+    } catch (err) {
+      console.log(err);
+        const serializedError = err.toJSON();
+        return thunkAPI.rejectWithValue(serializedError);
+    }
+  }
+)
+
 /* получение картинок */
 export const getImages = createAsyncThunk(
     "user/getImages",

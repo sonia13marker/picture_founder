@@ -1,26 +1,28 @@
 import "./ImageCard.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ActionCircle from "../ActionCircle/ActionCircle";
 import {useDispatch, useSelector} from "react-redux";
-import {toggleFavorites} from "../../store/slices/userSlice";
+import {getSrcImage, toggleFavorites} from "../../store/slices/userSlice";
 import FavorFillIcon from "../FavorFillIcon";
 import FavorOutlineIcon from "../FavorOutlineIcon";
+import { unwrapResult } from "@reduxjs/toolkit";
 // import { addImageToFavorite } from "../../store/slices/userSlice";
 
 export default function ImageCard({ idImage, name, tags, image, 
+  UserId, token
 }) {
-console.log("data of image in image card: ", idImage, name, tags, image);
+console.log("data of image in image card: ", tags );
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
-  // let newTagList = tags
-  //   .split(",")
-  //   .map((tag) => {
-  //     tag = tag.trim();
-  //     tag = "#" + tag;
-  //     tag = tag.replaceAll(" ", "_");
-  //     tag = tag + " ";
-  //     return tag;
-  //   })
+  let newTagList = tags
+    // .split(",")
+    .map((tag) => {
+      tag = tag.trim();
+      tag = "#" + tag;
+      tag = tag.replaceAll(" ", "_");
+      tag = tag + " ";
+      return tag;
+    })
 
   /*для проверки наведения на карточку */
   const [isHover, setIsHover] = useState(false);
@@ -32,16 +34,35 @@ console.log("data of image in image card: ", idImage, name, tags, image);
     setIsHover(false);
   };
 
-  //  const itemData = { currentUserId, name, tags, image };
-  // const dispatch = useDispatch();
-  // const favorite = useSelector((state) => state.user.favorite);
+   const itemData = { idImage, name, tags, image };
+  const dispatch = useDispatch();
+  const favorite = useSelector((state) => state.user.favorite);
 
-  // const inFavorite = favorite.some((item) => item.id === currentUserId);
+  const inFavorite = favorite.some((item) => item.id === idImage);
 
 
-  // const addToFavorite = () => {
-  //   dispatch(toggleFavorites({...itemData}));
-  // }
+  const addToFavorite = () => {
+    dispatch(toggleFavorites({...itemData}));
+  }
+  const [imageSRC, setImageSRC]  = useState("");
+  useEffect(() => {
+    const fetchImageSRC = async () => {
+      try {
+      const resultAction = await dispatch(getSrcImage({id: UserId, imageId: idImage, token: token}));
+      const originalPromiseResult = unwrapResult(resultAction);
+      console.log("result src image\e", originalPromiseResult);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchImageSRC();
+    //dispatch(getSrcImage({id: UserId, imageId: idImage, token: token}))
+    // .then(unwrapResult)
+    // .then((result) => {
+    //   console.log("result src image", result);
+    // })
+  },[UserId, dispatch, idImage, token]);
+  
   return (
     <span
       className="layout__card__wrapper"
@@ -56,19 +77,18 @@ console.log("data of image in image card: ", idImage, name, tags, image);
       <div className="layout__card">
         <span className="layout__card__titleWrap">
           <h3 className="layout__card__titleWrap__title">{name}</h3>
-          {/* <span 
+          <span 
           onClick={() => addToFavorite(itemData)} 
           className="layout__card__titleWrap__icon">
             {
               inFavorite ? <FavorFillIcon /> : <FavorOutlineIcon />
             }
-          </span> */}
+          </span>
         </span>
 
         <img src={image} alt={tags} className="layout__card__image" />
         <p className="layout__card__tagList">
-          {/* {newTagList} */}
-          {tags}
+          {newTagList}
           </p>
       </div>
     </span>
