@@ -11,7 +11,6 @@ import { unwrapResult } from "@reduxjs/toolkit";
 export default function ImageCard({ idImage, name, tags, image, 
   UserId, token
 }) {
-console.log("data of image in image card: ", tags );
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
   let newTagList = tags
@@ -44,6 +43,8 @@ console.log("data of image in image card: ", tags );
   const addToFavorite = () => {
     dispatch(toggleFavorites({...itemData}));
   }
+
+  //const hello = useSelector(())
   const [imageSRC, setImageSRC]  = useState("");
   useEffect(() => {
     const fetchImageSRC = async () => {

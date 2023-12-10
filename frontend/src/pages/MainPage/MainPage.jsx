@@ -4,9 +4,8 @@ import EmptyTextComponent from "../../components/EmptyTextComponent/EmptyTextCom
 import ImageCard from "../../components/ImageCard/ImageCard";
 import { useDispatch } from "react-redux";
 import { getImages } from "../../store/slices/userSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from 'react-redux';
-import { unwrapResult } from "@reduxjs/toolkit";
 
 export default function MainPage() {
 
@@ -16,44 +15,40 @@ export default function MainPage() {
 
   const userToken = useSelector(state => state.user.userToken);
   console.log("TOKEN IN MAIN PAGE", userToken); 
+  const imagesStatus = useSelector(state => state.user.status);
+
+  const images = useSelector(state => state.user.images);
 
   const dispatch = useDispatch();
 
- // const images = useSelector((state) => state.user.images);
+  const error = useSelector(state => state.user.error);
 
-  const [imagesFromServ, setImagesFromServ] = useState([]);
-
-  //useEffect при помощи promise then
   useEffect(() => {
-  //   dispatch(getImages({ id: id, token: userToken }))
-  //   .then(unwrapResult)
-  //   .then((result) => {
-  //     setImagesFromServ(result);
-  //     console.log("originalPromiseResult", result.images);
-  //   })
-  // }, [dispatch, id, userToken]);
-  const fetchData = async () => {
-    try {
-      const resultAction = await dispatch(getImages({ id: id, token: userToken }));
-      const originalPromiseResult = unwrapResult(resultAction);
-      setImagesFromServ(originalPromiseResult);
-      console.log("originalPromiseResult", originalPromiseResult.images);
-    } catch (rejectedValueOrSerializedError) {
-      console.error(rejectedValueOrSerializedError);
-    }
-  };
+      if ((id && userToken) && imagesStatus === 'idle') {
+     dispatch(getImages({ id: id, token: userToken })) 
+     }
+  }, [id, userToken]);
 
-  fetchData();
-}, [dispatch]);
-  console.log( "imagesFromServ", imagesFromServ)
+  let content;
 
+  if (imagesStatus === 'loading') {
+    content = <h1 style={{color: "red"}}>"Loading..."</h1>
+  } else if (imagesStatus === 'succeeded') {
+   
+    content = (images && images?.length !== 0) ? images.map(
+      (image) =>  <ImageCard key={image._id} name={image.imageSetName} tags={image.imageTags} image={image.imageHash} idImage={image._id} UserId={id} token={userToken}/>
+    ) : <EmptyTextComponent
+    image={empty_icon}
+    text="Тут ещё нет картинок. Пора бы их добавить"
+  />
+  } else if (imagesStatus === 'failed') {
+    content = <p>Кажется, что-то пошло не так... {error}</p>
+  }
+ 
   return (
     <section className="wrapper_layout">
-      {imagesFromServ.length !== 0 ? imagesFromServ?.images.map((image) =>  <ImageCard key={image._id} name={image.imageSetName} tags={image.imageTags} image={image.imageHash} idImage={image._id} UserId={id} token={userToken}/>
-      ) : <EmptyTextComponent
-      image={empty_icon}
-      text="Тут ещё нет картинок. Пора бы их добавить"
-    /> }
+    
+    {content}
       
     </section>
   );

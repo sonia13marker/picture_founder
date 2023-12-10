@@ -25,20 +25,22 @@ export const getImages = createAsyncThunk(
     "user/getImages",
     async (payload, thunkAPI) => {
       try {
-        console.log('payload', payload);
+        console.log('payload from main page', payload);
         const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}});
         //const allImages = res.data.images; 
         console.log("GET DATA", res.data.images);
         //console.log("GET IMAGES DATA", allImages);
-        thunkAPI.dispatch(addImageToPage(res.data.images));
+        
+        
+        //thunkAPI.dispatch(addImageToPage(res.data.images));
 
         //state.images([...allImages]);
        // thunkAPI.dispatch(addImageToPage(allImages));
-        return res.data;
+        return res.data.images;
       } catch (error) {
         console.log(error);
-        const serializedError = error.toJSON();
-        return thunkAPI.rejectWithValue(serializedError);
+       // const serializedError = error.toJSON();
+       // return thunkAPI.rejectWithValue(serializedError);
       }
     }
   );
@@ -229,6 +231,8 @@ const userSlise = createSlice({
         currentUser: [],
         favorite: [],
         isLoading: false,
+        status: 'idle',
+        error: null,
         images: [],
         UserId: null,
         userToken: null,
@@ -244,7 +248,14 @@ const userSlise = createSlice({
             }
           },
           addImageToPage: (state, action) => {
-            state.images = action.payload;
+            //state.images = action.payload;
+            state.images.push(action.payload);
+            
+            // const addImage = action.payload;
+            // state.images = {
+            //   ...state,
+            //   addImage
+            // }
             //const imageState = state.images;
             //state.images = Object.values(img);
             // state.images([img]);
@@ -259,6 +270,14 @@ const userSlise = createSlice({
             const deleteImage = state.images.findIndex((delImage) => delImage === image.id);
             if (deleteImage !== -1) {
               state.images.splice(image.id);
+            }
+          },
+          updateImageInfo: (state, action) => {
+            const { id, name, tags } = action.payload;
+            const existingImage = state.images.find(image => image.id === id);
+            if (existingImage) {
+              existingImage.name = name;
+              existingImage.tags = tags;
             }
           },
           // changeDataOfImage: (state, action) => {
@@ -282,6 +301,20 @@ const userSlise = createSlice({
           }
     },
     extraReducers: (builder) => {
+      builder 
+      .addCase(getImages.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(getImages.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        // Add any fetched posts to the array
+        state.images = action.payload; 
+        //state.images = state.images.concat(action.payload)
+      })
+      .addCase(getImages.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      });
        builder
        .addCase(createUser.fulfilled, (state, { payload }) => {
         addCurrentUser(state, { payload });
@@ -294,17 +327,17 @@ const userSlise = createSlice({
     });
         builder
         .addCase(updatePasswordUser.fulfilled, addCurrentUser);
-        builder
-      .addCase(getImages.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getImages.fulfilled, (state, action) => {
-        state.images = action.payload; 
-        state.isLoading = false;
-      })
-      .addCase(getImages.rejected, (state) => {
-        state.isLoading = false;
-      });
+      //   builder
+      // .addCase(getImages.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(getImages.fulfilled, (state, action) => {
+      //   state.images = action.payload; 
+      //   state.isLoading = false;
+      // })
+      // .addCase(getImages.rejected, (state) => {
+      //   state.isLoading = false;
+      // });
 
       builder
       .addCase(addUserImage.pending, (state) => {
@@ -324,7 +357,6 @@ const userSlise = createSlice({
 export const selectUserID = (state) => state.user.userID;
 
 
-
-export const { toggleFavorites, addImageToPage, createUserAction, setUserID, setCurrentUser, deleteImagefromPage, setUserToken } = userSlise.actions;
+export const { toggleFavorites, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setCurrentUser, setUserToken } = userSlise.actions;
 
 export default userSlise.reducer;
