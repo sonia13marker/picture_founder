@@ -5,23 +5,23 @@ import {useDispatch, useSelector} from "react-redux";
 import {getSrcImage, toggleFavorites} from "../../store/slices/userSlice";
 import FavorFillIcon from "../FavorFillIcon";
 import FavorOutlineIcon from "../FavorOutlineIcon";
-import { unwrapResult } from "@reduxjs/toolkit";
 // import { addImageToFavorite } from "../../store/slices/userSlice";
 
-export default function ImageCard({ idImage, name, tags, image, 
+export default function ImageCard({ idImage, name, imageTags, image, 
   UserId, token
 }) {
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
-  let newTagList = tags
+  console.log("tags from new add??", imageTags);
+  let newTagList = imageTags
     // .split(",")
-    .map((tag) => {
-      tag = tag.trim();
-      tag = "#" + tag;
-      tag = tag.replaceAll(" ", "_");
-      tag = tag + " ";
-      return tag;
-    })
+    // .map((tag) => {
+    //   tag = tag.trim();
+    //   tag = "#" + tag;
+    //   tag = tag.replaceAll(" ", "_");
+    //   tag = tag + " ";
+    //   return tag;
+    // })
 
   /*для проверки наведения на карточку */
   const [isHover, setIsHover] = useState(false);
@@ -33,36 +33,26 @@ export default function ImageCard({ idImage, name, tags, image,
     setIsHover(false);
   };
 
-   const itemData = { idImage, name, tags, image };
+   const itemData = { idImage, name, imageTags, image };
   const dispatch = useDispatch();
   const favorite = useSelector((state) => state.user.favorite);
 
   const inFavorite = favorite.some((item) => item.id === idImage);
 
+  const imageSRC = useSelector(state => state.user.imageSRC.data);
+  //console.log("imageSRC", imageSRC);
 
   const addToFavorite = () => {
     dispatch(toggleFavorites({...itemData}));
   }
 
-  //const hello = useSelector(())
-  const [imageSRC, setImageSRC]  = useState("");
+
   useEffect(() => {
-    const fetchImageSRC = async () => {
-      try {
-      const resultAction = await dispatch(getSrcImage({id: UserId, imageId: idImage, token: token}));
-      const originalPromiseResult = unwrapResult(resultAction);
-      console.log("result src image\e", originalPromiseResult);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetchImageSRC();
-    //dispatch(getSrcImage({id: UserId, imageId: idImage, token: token}))
-    // .then(unwrapResult)
-    // .then((result) => {
-    //   console.log("result src image", result);
-    // })
-  },[UserId, dispatch, idImage, token]);
+    if (UserId && idImage && token) {
+   dispatch(getSrcImage({id: UserId, imageId: idImage, token: token})); 
+   }
+}, [dispatch, UserId, idImage, token]);
+
   
   return (
     <span
@@ -72,7 +62,7 @@ export default function ImageCard({ idImage, name, tags, image,
     >
       <div className="layout__card__wrapper__actions">
         <ActionCircle 
-        id={idImage} name={name} tags={tags} image={image}
+        id={idImage} name={name} tags={imageTags} image={image}
         isHover={isHover}/>
       </div>
       <div className="layout__card">
@@ -87,7 +77,7 @@ export default function ImageCard({ idImage, name, tags, image,
           </span>
         </span>
 
-        <img src={image} alt={tags} className="layout__card__image" />
+        <img src={imageSRC} alt={name} className="layout__card__image" />
         <p className="layout__card__tagList">
           {newTagList}
           </p>

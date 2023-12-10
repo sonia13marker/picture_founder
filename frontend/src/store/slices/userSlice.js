@@ -2,20 +2,20 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setAuthStatus } from './authSlice';
 import axios from "axios";
 
+
 /* получение src картинки */
 export const getSrcImage = createAsyncThunk(
   "user/getImages/getSrcImage",
   async (payload, thunkAPI) => {
     try {
-      console.log('payload', payload);
       const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image/${payload.imageId}`, {headers:{Authorization: `Bearer ${payload.token}`}});
       console.log("res from get src data", res);
-
+      thunkAPI.dispatch(setImageSRC(res));
+      return res;
+     
 
     } catch (err) {
       console.log(err);
-        const serializedError = err.toJSON();
-        return thunkAPI.rejectWithValue(serializedError);
     }
   }
 )
@@ -27,57 +27,26 @@ export const getImages = createAsyncThunk(
       try {
         console.log('payload from main page', payload);
         const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}});
-        //const allImages = res.data.images; 
         console.log("GET DATA", res.data.images);
-        //console.log("GET IMAGES DATA", allImages);
-        
-        
-        //thunkAPI.dispatch(addImageToPage(res.data.images));
-
-        //state.images([...allImages]);
-       // thunkAPI.dispatch(addImageToPage(allImages));
         return res.data.images;
       } catch (error) {
         console.log(error);
-       // const serializedError = error.toJSON();
-       // return thunkAPI.rejectWithValue(serializedError);
       }
     }
   );
     /* добавление картинки, когда юзер уже в своем акке */
-//  export const addUserImage = createAsyncThunk(
-//     "user/addImage",
-//     async (payload, thunkAPI) => {
-//         try {
-//             const dataOfImage = payload.data;
-//             const res = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}}, payload);
-//             console.log("res data in addImage", dataOfImage);
-//             thunkAPI.dispatch(addImageToPage(dataOfImage));
-//             return res.data;
-//         } catch (err) {
-//             console.log(err);
-//             const serializedError = err.toJSON();
-//             return thunkAPI.rejectWithValue(serializedError);
-//         }
-//     }
-//   )
-
 export const addUserImage = createAsyncThunk(
   "user/addImage",
-  async (payload, thunkAPI) => {
+  async (payload) => {
       try {
-        const { id, token, data } = payload;
-        console.log("res data in addImage", data);
+        console.log("res data in addImage", payload.id, payload.token, payload.image, payload.imageName, payload.imageTags);
 
-        const res = await axios.post(`http://95.31.50.131/api/user/${id}/image`, {
-          headers: { Authorization: `Bearer ${token}` }
-        }, data);
-          //thunkAPI.dispatch(addImageToPage(data));
-        return res.data;
+        const res = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`,
+          {headers:{Authorization: `Bearer ${payload.token}`}
+        }, payload.image, payload.imageName, payload.imageTags);
+        return res;
       } catch (err) {
           console.log(err);
-          const serializedError = err.toJSON();
-          return thunkAPI.rejectWithValue(serializedError);
       }
   }
 )
@@ -234,13 +203,15 @@ const userSlise = createSlice({
         status: 'idle',
         error: null,
         images: [],
+        imageSRC: '',
         UserId: null,
         userToken: null,
     },
     reducers: {
         toggleFavorites: (state, action) => {
             const item = action.payload;
-            const index = state.favorite.findIndex((favoriteItem) => favoriteItem.id === item.id);
+            console.log(item)
+            const index = state.favorite.findIndex((favoriteItem) => favoriteItem.id === item.idImage);
             if (index === -1) {
               state.favorite.push(item);
             } else {
@@ -298,6 +269,9 @@ const userSlise = createSlice({
           setUserToken: (state, action) => {
             state.userToken = action.payload;
             console.log("userToken success", state.userToken)
+          },
+          setImageSRC: (state, action) => {
+            state.imageSRC = action.payload;
           }
     },
     extraReducers: (builder) => {
@@ -315,6 +289,19 @@ const userSlise = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       });
+      // builder 
+      // .addCase(getSrcImage.pending, (state, action) => {
+      //   state.status = 'loading'
+      // })
+      // .addCase(getSrcImage.fulfilled, (state, action) => {
+      //   state.status = 'succeeded'
+      //   // Add any fetched posts to the array
+      //   state.imageSRC = action.payload; 
+      // })
+      // .addCase(getSrcImage.rejected, (state, action) => {
+      //   state.status = 'failed'
+      //   state.error = action.error.message
+      // });
        builder
        .addCase(createUser.fulfilled, (state, { payload }) => {
         addCurrentUser(state, { payload });
@@ -340,16 +327,17 @@ const userSlise = createSlice({
       // });
 
       builder
-      .addCase(addUserImage.pending, (state) => {
-        state.isLoading = true;
-      })
+      // .addCase(addUserImage.pending, (state) => {
+      //   state.isLoading = true;
+      // })
       .addCase(addUserImage.fulfilled, (state, action) => {
-        state.images = action.payload;
-        state.isLoading = false;
+        //state.images = action.payload;
+        state.images.push(action.payload);
+        // state.isLoading = false;
       })
-      .addCase(addUserImage.rejected, (state) => {
-        state.isLoading = false;
-      })
+      // .addCase(addUserImage.rejected, (state) => {
+      //   state.isLoading = false;
+      // })
 
 }})
 
@@ -357,6 +345,6 @@ const userSlise = createSlice({
 export const selectUserID = (state) => state.user.userID;
 
 
-export const { toggleFavorites, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setCurrentUser, setUserToken } = userSlise.actions;
+export const { toggleFavorites, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setCurrentUser, setUserToken, setImageSRC } = userSlise.actions;
 
 export default userSlise.reducer;

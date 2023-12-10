@@ -3,9 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { addImageToPage } from "../../store/slices/userSlice";
-import {addUserImage} from '../../store/slices/userSlice';
-import axios from "axios";
+import { addUserImage } from '../../store/slices/userSlice';
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 
 
@@ -53,31 +51,26 @@ export default function AddImageModal({
   /* для отправки картинки на сервер */
 
   const dispatch = useDispatch();
-  const images = useSelector(state => state.user.images);
+  // const images = useSelector(state => state.user.images);
   const id = useSelector(state => state.user.UserId);
   const userToken = useSelector(state => state.user.userToken);
 
-  let c = 0;
-  const addToPage = (dataOfImage) => {
-    if (dataOfImage) {
-      console.log(c, 'id: ', id, 'token: ', userToken, 'data: ', dataOfImage);
-      c++;
-      dispatch(addUserImage({id: id, token: userToken, data: {dataOfImage}}));
+  const addToPage = ({id, userToken, image, imageName, imageTags}) => {
+    if (id && userToken && image && imageName && imageTags) {
+      console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
+      dispatch(addUserImage({id: id, token: userToken, image: image, imageName:imageName, imageTags: imageTags}));
     }
   }
   const submitInfoImage = (e) => {
     e.preventDefault();
     const imageName = nameImage.current.value;
     const tags = tagsImage.current.value;
+    const image = {file};
 
     //преобразование строки в массив строк  
-    let imageTegs = [tags.split(",").map((tg) => tg.trim())];
+    let imageTags = [tags.split(",").map((tg) => tg.trim())];
 
-    const image = {file};
-    const key = Math.random();
-
-
-    const dataOfImage = {image, imageName, imageTegs};
+    const dataOfImage = {image, imageName, imageTags};
 
     // //функция проверки на все заполненные поля
     // const checkTheInputsValue = () => {
@@ -89,10 +82,7 @@ export default function AddImageModal({
     // } 
 
     //функция добавления картинки на страницу 
-    addToPage(dataOfImage);
-    console.log("dataOfImage", dataOfImage);
-    // // dispatch(addImageToPage(dataOfImage));
-
+    addToPage({id, userToken, image, imageName, imageTags});
 
     nameImage.current.value = "";
     tagsImage.current.value = "";
@@ -102,8 +92,8 @@ export default function AddImageModal({
       return;
     }
     setActive(!active);
-    
   };
+
   const checkTheFileFunc = () => {
     if (file || nameImage.current.value || tagsImage.current.value) {
       setConfirmModalActive(!confirmModalActive)
@@ -119,7 +109,6 @@ export default function AddImageModal({
       <div className={active ? "modal activeModal" : "modal"}>
         <div
           className="modal__content"
-          // onClick={(e) => e.stopPropagation()}
         >
           <span className="modal__content__head">
             <h3 className="modal__content__head__h3">Добавить картинку</h3>
@@ -146,7 +135,7 @@ export default function AddImageModal({
                     плюс кнопки действия */}
             <div
               className="modal__content__body__infoBlock"
-              onSubmit={submitInfoImage}
+              //onSubmit={submitInfoImage}
             >
               {/* отображения инпута с названием картинки */}
               <span className="input__wrapper">
@@ -199,6 +188,7 @@ export default function AddImageModal({
         leftBtnName="Отмена изменений"
         rightBtnName="Сохранить изменения"
         leftBtnAction={cancelBtnClick}
+        rightBtnAction={submitInfoImage}
         // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
       /> 
       </div>
