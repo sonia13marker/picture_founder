@@ -51,16 +51,10 @@ export default function AddImageModal({
   /* для отправки картинки на сервер */
 
   const dispatch = useDispatch();
-  // const images = useSelector(state => state.user.images);
   const id = useSelector(state => state.user.UserId);
   const userToken = useSelector(state => state.user.userToken);
 
-  // const addToPage = ({id, userToken, image, imageName, imageTags}) => {
-  //   if (id && userToken && image && imageName && imageTags) {
-  //     console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
-  //     dispatch(addUserImage({id: id, token: userToken, image: image, imageName:imageName, imageTags: imageTags}));
-  //   }
-  // }
+
   const submitInfoImage = (e) => {
     e.preventDefault();
     const imageName = nameImage.current.value;
@@ -82,7 +76,6 @@ export default function AddImageModal({
     // } 
 
     //функция добавления картинки на страницу 
-    // addToPage({id, userToken, image, imageName, imageTags});
     if (id && userToken && image && imageName && imageTags) {
            console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
            dispatch(addUserImage({id: id, token: userToken, image: image, imageName:imageName, imageTags: imageTags}));
@@ -97,6 +90,20 @@ export default function AddImageModal({
     }
     setActive(!active);
   };
+
+  const saveTheChanges = (e) => {
+
+    checkTheFileFunc();
+
+    if ((file && nameImage.current.value) || (file && tagsImage.current.value) || (nameImage.current.value && tagsImage.current.value)) {
+      checkTheFileFunc();
+    }; 
+    
+    if (file && nameImage.current.value && tagsImage.current.value) {
+      submitInfoImage(e);
+      
+    };
+  }
 
   const checkTheFileFunc = () => {
     if (file || nameImage.current.value || tagsImage.current.value) {
@@ -192,7 +199,7 @@ export default function AddImageModal({
         leftBtnName="Отмена изменений"
         rightBtnName="Сохранить изменения"
         leftBtnAction={cancelBtnClick}
-        rightBtnAction={submitInfoImage}
+        rightBtnAction={saveTheChanges}
         // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
       /> 
       </div>
