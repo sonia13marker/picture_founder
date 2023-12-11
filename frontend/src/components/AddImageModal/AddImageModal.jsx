@@ -55,12 +55,12 @@ export default function AddImageModal({
   const id = useSelector(state => state.user.UserId);
   const userToken = useSelector(state => state.user.userToken);
 
-  const addToPage = ({id, userToken, image, imageName, imageTags}) => {
-    if (id && userToken && image && imageName && imageTags) {
-      console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
-      dispatch(addUserImage({id: id, token: userToken, image: image, imageName:imageName, imageTags: imageTags}));
-    }
-  }
+  // const addToPage = ({id, userToken, image, imageName, imageTags}) => {
+  //   if (id && userToken && image && imageName && imageTags) {
+  //     console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
+  //     dispatch(addUserImage({id: id, token: userToken, image: image, imageName:imageName, imageTags: imageTags}));
+  //   }
+  // }
   const submitInfoImage = (e) => {
     e.preventDefault();
     const imageName = nameImage.current.value;
@@ -70,7 +70,7 @@ export default function AddImageModal({
     //преобразование строки в массив строк  
     let imageTags = [tags.split(",").map((tg) => tg.trim())];
 
-    const dataOfImage = {image, imageName, imageTags};
+    //const dataOfImage = {image, imageName, imageTags};
 
     // //функция проверки на все заполненные поля
     // const checkTheInputsValue = () => {
@@ -82,7 +82,11 @@ export default function AddImageModal({
     // } 
 
     //функция добавления картинки на страницу 
-    addToPage({id, userToken, image, imageName, imageTags});
+    // addToPage({id, userToken, image, imageName, imageTags});
+    if (id && userToken && image && imageName && imageTags) {
+           console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
+           dispatch(addUserImage({id: id, token: userToken, image: image, imageName:imageName, imageTags: imageTags}));
+         }
 
     nameImage.current.value = "";
     tagsImage.current.value = "";

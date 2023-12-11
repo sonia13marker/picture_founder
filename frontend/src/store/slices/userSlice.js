@@ -37,16 +37,42 @@ export const getImages = createAsyncThunk(
     /* добавление картинки, когда юзер уже в своем акке */
 export const addUserImage = createAsyncThunk(
   "user/addImage",
-  async (payload) => {
+  async ({ token, id, image, imageName, imageTags }, { rejectWithValue }) => {
       try {
-        console.log("res data in addImage", payload.id, payload.token, payload.image, payload.imageName, payload.imageTags);
 
-        const res = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`,
-          {headers:{Authorization: `Bearer ${payload.token}`}
-        }, payload.image, payload.imageName, payload.imageTags);
-        return res;
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        console.log("res data in addImage", id, token, image, imageName, imageTags);
+
+        const formData = {image, imageName, imageTags };
+
+      //   const formData = new FormData();
+      // formData.append('image', image);
+      // formData.append('imageName', imageName);
+      // formData.append('imageTags', imageTags);
+
+      // console.log(formData);
+
+      const response = await axios.post(`http://95.31.50.131/api/user/${id}/image`, formData, { headers }, );
+       // const {id, token, image, imageName, imageTags} = payload;
+        //console.log("res data in addImage", id, token, image, imageName, imageTags);
+        // console.log("payload.id", JSON.stringify(payload.id));
+        // console.log("payload.token", JSON.stringify(payload.token));
+        // console.log("payload.image", JSON.stringify(payload.image));
+        // console.log("payload.imageName", JSON.stringify(payload.imageName));
+        // console.log("payload.imageTags", JSON.stringify(payload.imageTags));
+
+
+// const res2 = await axios({ method: 'post', url: `http://95.31.50.131/api/user/${id}/image`, image, imageName, imageTags, headers: { Authorization: `Bearer ${token}` } });
+        // const res = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`,
+        //   {headers:{Authorization: `Bearer ${payload.token}`}
+        // }, payload.image, payload.imageName, payload.imageTags);
+        // console.log(res);
+        return response.data;
       } catch (err) {
-          console.log(err);
+        return rejectWithValue(err.response.data);
       }
   }
 )
@@ -331,8 +357,9 @@ const userSlise = createSlice({
       //   state.isLoading = true;
       // })
       .addCase(addUserImage.fulfilled, (state, action) => {
-        //state.images = action.payload;
-        state.images.push(action.payload);
+        let image = action.payload;
+        console.log("IMAGE IN addUserImage.fulfilled",image)
+        //state.images.push({image});
         // state.isLoading = false;
       })
       // .addCase(addUserImage.rejected, (state) => {
