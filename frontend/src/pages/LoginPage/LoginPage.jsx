@@ -12,6 +12,10 @@ export default function LoginPage () {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const id = useSelector(state => state.user.UserId);
+
+  console.log("ID from login page", id);
+
     // const UserPassword = useSelector(state => state.user.)
 
 

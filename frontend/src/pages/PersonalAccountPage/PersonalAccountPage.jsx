@@ -1,14 +1,11 @@
 import "./PersonalAccountPage.scss";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {useNavigate, Link, NavLink} from "react-router-dom";
-import Header from "../../components/Header/Header";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
-import HeaderMobile from "../../components/HeaderMobile/HeaderMobile";
-import Footer from "../../components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { updatePasswordUser } from "../../store/slices/userSlice";
+import { setUserID, updatePasswordUser } from "../../store/slices/userSlice";
 
 export default function PersonalAccountPage() {
 
@@ -106,50 +103,19 @@ export default function PersonalAccountPage() {
     setLogOutModalActive(!logOutModalActive);
   };
 
-  // сделать действие выхода из акка
+  const id = useSelector(state => state.user.UserId);
+  console.log("ID FROM PERSONAL ACC PAGE", id);
+
+  // действие выхода из акка
   const navigate = useNavigate();
   const goToLogin = () => {
+    dispatch(setUserID(null));
     navigate("/login", { replace: true });
   };
 
-  /* проверка на отображение разных хедеров */
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   return (
     <>
-      {windowWidth <= 768 ? (
-        <>
-          <div className='header'>
-            <Link to={"/main"} className='header__link'>
-            <span className='header__logo'>
-                Pic
-                <p className='header__logo__p'>
-                    2
-                </p>
-            </span>
-            </Link>
-
-            <NavLink to="/login"
-                //className='header__btns__login'
-                     className={({isActive}) => isActive ? "loginBtnActive": "header__btns__login"}
-            ></NavLink>
-          </div>
-
-          <HeaderMobile />
-        </>
-      ) : (
-        <Header />
-      )}
-
       <section className="account">
         <h2 className="account__title">Аккаунт</h2>
         <div className="account__wrapper">
@@ -285,7 +251,6 @@ export default function PersonalAccountPage() {
         </button>
       </section>
 
-      <Footer />
 
       <ConfirmModalComponent
         confirmModalActive={changePassModalActive}

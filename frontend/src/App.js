@@ -38,7 +38,15 @@ function App() {
         <Routes>
           {
             id  ? (
-              <Route path="/" element={<MainPage />} />
+              <Route element={<Layout />}>
+            {/*ссылаюсь на уже существующую страницу  */}
+          <Route path="/" element={<Navigate to="/main" replace />} />
+              <Route path="/main" index element={<MainPage />} />
+              <Route path="/favorite" element={<FavoritePage />} />
+              <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
+              <Route path='/account' element={<PersonalAccountPage />} />
+              
+          </Route>
             ) : (
               <Route path="/" element={<Navigate to="/login" />}/> 
             )
@@ -47,16 +55,9 @@ function App() {
           <Route path="/login" element={<LoginPage />}/> 
           <Route path='/forgot_password' element={<ForgotPasswordPage />} />
           <Route path='/forgot_password-success' element={<ForgotPasswordSuccessPage />} />
-          <Route path='/account' element={<PersonalAccountPage />} />
+          
 
-          <Route element={<Layout />}>
-            {/*ссылаюсь на уже существующую страницу  */}
-          <Route path="/" element={<Navigate to="/main" replace />} />
-              <Route path="/main" index element={<MainPage />} />
-              <Route path="/favorite" element={<FavoritePage />} />
-              <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
-              
-          </Route>
+          
   </Routes>
       </BrowserRouter>
     </div>
