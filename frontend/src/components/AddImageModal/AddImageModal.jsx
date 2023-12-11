@@ -200,7 +200,6 @@ export default function AddImageModal({
         rightBtnName="Сохранить изменения"
         leftBtnAction={cancelBtnClick}
         rightBtnAction={saveTheChanges}
-        // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
       /> 
       </div>
     </>
