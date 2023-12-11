@@ -39,7 +39,7 @@ export default function ImageCard({ idImage, name, imageTags, image,
 
   const inFavorite = favorite.some((item) => item.id === idImage);
 
-  const imageSRC = useSelector(state => state.user.imageSRC.data);
+  //const imageSRC = useSelector(state => state.user.imageSRC.data);
   //console.log("imageSRC", imageSRC);
 
   const addToFavorite = () => {
@@ -47,11 +47,11 @@ export default function ImageCard({ idImage, name, imageTags, image,
   }
 
 
-  useEffect(() => {
-    if (UserId && idImage && token) {
-   dispatch(getSrcImage({id: UserId, imageId: idImage, token: token})); 
-   }
-}, [dispatch, UserId, idImage, token]);
+//   useEffect(() => {
+//     if (UserId && idImage && token) {
+//    dispatch(getSrcImage({id: UserId, imageId: idImage, token: token})); 
+//    }
+// }, [dispatch, UserId, idImage, token]);
 
   
   return (
@@ -77,7 +77,7 @@ export default function ImageCard({ idImage, name, imageTags, image,
           </span>
         </span>
 
-        <img src={imageSRC} alt={name} className="layout__card__image" />
+        <img src={image} alt={name} className="layout__card__image" />
         <p className="layout__card__tagList">
           {newTagList}
           </p>
