@@ -7,17 +7,20 @@ export default async function authUser( req: Request, resp: Response, next: Next
     
     const authData = req.headers
 
+    console.log(`some try connect \n ${authData.authorization}`)
+
     if ( !authData.authorization ){
-        resp.json({message:"non autorizate"})
+        resp.json({message:"non autorizate. Empty token"})
         return
     }
     
     verify(authData.authorization.split(' ')[1], env.TOKEN_SECRET, (err, decode)=>{
         if ( err ) {
-            resp.json({message:"non autorizate"})
+            resp.json({message:"non autorizate. None valide token"})
             return
         }
 		console.log("user is autentificate")
         next()
     })
+    return
 }

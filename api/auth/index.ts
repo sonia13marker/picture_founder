@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express"
 import { sign } from "jsonwebtoken"
 import { db_models } from "../../db"
 import { env } from "../../env"
-import Joi from "joi"
+import * as Joi from "joi"
 import cry from "crypto"
 import fs from "fs"
 
@@ -28,26 +28,13 @@ route.post("/login", async (req: Request, resp: Response): Promise<void> => {
 
   }
 
-  try {
+   const hasUser = await db_models.UserModel.exists({ UserEmail: userReq.value.UserEmail })
 
-    const hasUser = db_models.UserModel.exists({ UserEmail: userReq.value.UserEmail })
-
-    if (!hasUser) {
-      resp.status(404);
-      resp.json({ message: "user not found" })
-      return
-    }
-
-  } catch (error) {
-    resp.json({message: "some error"}).status(404);
-  }
-  const hasUser = db_models.UserModel.exists({ UserEmail: userReq.value.UserEmail })
-
-  if (!hasUser) {
-    resp.status(404);
-    resp.json({ message: "user not found" })
-    return
-  }
+   if (!hasUser) {
+     resp.status(404);
+     resp.json({ message: "user not found" })
+     return
+   }
 
   const userDb = await db_models.UserModel.find({ UserEmail: userReq.value.UserEmail });
   const passHash = cry.createHash("sha256").update(userReq.value.UserPassword).digest("hex");

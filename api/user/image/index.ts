@@ -19,7 +19,7 @@ const imagesGetScheme = Joi.object({
 
 const ImageScheme = Joi.object({
     imageName: Joi.string().min(2),
-    imageTags: Joi.array().items(Joi.string()).required(),
+    imageTags: Joi.array().items(Joi.string()),
     isFavorite: Joi.boolean().default(false)
 })
 
@@ -137,7 +137,14 @@ async function imageDelete(req: Request, resp: Response) {
     const imageData = await db_models.ImageModel.findByIdAndDelete({ _id: imageId, ownerId: userId })
     await db_models.UserModel.updateOne({ _id: userId }, { $pull: { UserImages: imageData?.id } })
 
-    await fs.rm(`${tmpFiles}/save/${userId}/${imageData?.imageHash}`)
+	try {
+		
+    	await fs.rm(`${tmpFiles}/save/${userId}/${imageData?.imageHash}`)
+    }
+    catch ( e ){
+    	resp.json({message:"error on delete image"});
+    	console.error(`[ERR] error on delete image file`);
+    }
 
     resp.json({
         message: "remove image", data: {
