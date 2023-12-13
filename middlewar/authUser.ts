@@ -5,17 +5,18 @@ import { env } from "../env";
 
 export default async function authUser( req: Request, resp: Response, next: NextFunction): Promise<void> {
     
-    const authData = req.headers
+    const authData = req.cookies?.token    
+    const authHeader = req.headers;
 
-    console.log("%c"+`[AUTH LOG]csome try connect \n ${authData.authorization}`, 'background-color: red')
-    console.log("%c"+`[AUTH LOG]${JSON.stringify(authData)}\n\n${JSON.stringify(req.body)}`, 'background-color: red')
-
-    if ( !authData.authorization ){
-        resp.json({message:"non autorizate. Empty token", detail: `${JSON.stringify(authData)}\n\n${JSON.stringify(req.body)}`}).status(401)
+    console.log(`[HEADERS LOG]csome try connect \n ${JSON.stringify(authHeader)}\n`)
+    console.log(`[HEADERS LOG]${JSON.stringify(authData)}\n\n${JSON.stringify(req.body)}\n`)
+    
+    if ( !authData ){
+        resp.json({message:"non autorizate. Empty token", detail: `${JSON.stringify(authHeader)}${JSON.stringify(req.body)}`}).status(401)
         return
     }
     
-    verify(authData.authorization.split(' ')[1], env.TOKEN_SECRET, (err, decode)=>{
+    verify(authData, env.TOKEN_SECRET, (err: any)=>{
         if ( err ) {
             resp.json({message:"non autorizate. None valide token", detail: `${JSON.stringify(authData)}\n\n${JSON.stringify(req.body)}`}).status(403)
             return

@@ -5,6 +5,7 @@ import { env } from "../../env"
 import * as Joi from "joi"
 import cry from "crypto"
 import fs from "fs"
+import cookieParser from "cookie-parser"
 
 const route = Router()
 
@@ -13,7 +14,7 @@ const UserInScheme = Joi.object({
   UserPassword: Joi.string().min(8).required()
 })
 
-route.post("/login", async (req: Request, resp: Response): Promise<void> => {
+route.post("/login", cookieParser(), async (req: Request, resp: Response): Promise<void> => {
 
   console.log(req.body);
 
@@ -46,10 +47,13 @@ route.post("/login", async (req: Request, resp: Response): Promise<void> => {
   }
 
   const token = sign({ id: userDb[0]._id, email: userDb[0].UserEmail }, env.TOKEN_SECRET, { expiresIn: "1d" });
+  resp.cookie("token", token, {
+    httpOnly: true
+  });
   resp.status(200).json({
     message: "login success",
-    token: token,
-    userId: userDb[0]._id
+    userId: userDb[0]._id,
+    UserEmail: userDb[0].UserEmail
   });
   console.log(`[LOG] user ${userDb[0].id} is login`);
 

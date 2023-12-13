@@ -1,12 +1,9 @@
 import { Request, Response } from "express"
-import * as exp from "express"
 import { db_models } from "../../../db"
 import Joi from "joi"
 import cry from "crypto"
 import fs from "fs/promises"
 import path from "path"
-
-"use strict";
 
 enum filter {
     "NONE",
