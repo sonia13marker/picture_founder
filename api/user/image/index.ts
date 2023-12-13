@@ -1,8 +1,12 @@
-import { Router, Request, Response } from "express"
+import { Request, Response } from "express"
+import * as exp from "express"
 import { db_models } from "../../../db"
 import Joi from "joi"
 import cry from "crypto"
 import fs from "fs/promises"
+import path from "path"
+
+"use strict";
 
 enum filter {
     "NONE",
@@ -220,7 +224,7 @@ async function imageEdit(req: Request, resp: Response) {
 
 
 async function getImageFile( req: Request, resp: Response ) {
-    const path = require("path");
+
 
     const imageId = req.params.imgId;
     const imageDB = await db_models.ImageModel.findById(imageId);
@@ -239,7 +243,8 @@ async function getImageFile( req: Request, resp: Response ) {
     console.log(`[LOG] send image for user ${imageDB?.ownerId}`);
     
 	console.log(`get image[file] ${imageDB?.imageOrgName}`)
-    resp.sendFile(`${tmpPath}/${imageDB?.imageOrgName}`)
+    const file = await fs.readFile(`${tmpPath}/${imageDB?.imageOrgName}`)
+    resp.setHeader("Content-Type", `image/${imageDB?.extend}`).end(file)
     fs.rm(`${tmpPath}/${imageDB?.imageOrgName}`)
 
 }
