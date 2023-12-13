@@ -1,7 +1,6 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https://WaterMelonyOcO.github.io/picture_founder",
   "private": true,
   "dependencies": {
     "@babel/preset-react": "^7.23.3",
@@ -23,8 +22,6 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -50,7 +47,6 @@
   },
   "devDependencies": {
     "css-loader": "^6.8.1",
-    "gh-pages": "^6.0.0",
     "html-webpack-plugin": "^5.5.3",
     "image-minimizer-webpack-plugin": "^3.8.3",
     "imagemin": "^8.0.1",

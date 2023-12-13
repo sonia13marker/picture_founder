@@ -23,7 +23,7 @@ export default function Layout() {
 { windowWidth <= 768 ? <>
 
     <div className='header'>
-      <Link to={"/main"} className='header__link'>
+      <Link to={"/"} className='header__link'>
             <span className='header__logo'>
                 Pic
                 <p className='header__logo__p'>

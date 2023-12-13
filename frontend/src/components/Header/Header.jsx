@@ -7,7 +7,7 @@ export default function Header () {
 
     return (
         <div className='header'>
-            <Link to={"/main"} className='header__link'>
+            <Link to={"/"} className='header__link'>
             <span className='header__logo'>
                 Pic
                 <p className='header__logo__p'>
@@ -19,7 +19,7 @@ export default function Header () {
             <nav className='header__nav'>
                 <ul className='header__nav__ul'>
                     <li className='header__nav__ul__li'>
-                        <NavLink to="/main" className="header__nav__ul__li__link">
+                        <NavLink to="/" className="header__nav__ul__li__link">
                         Главная
                         </NavLink>
                         </li>
