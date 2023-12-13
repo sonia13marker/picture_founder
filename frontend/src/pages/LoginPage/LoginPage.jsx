@@ -16,11 +16,9 @@ export default function LoginPage () {
 
   console.log("ID from login page", id);
 
-    // const UserPassword = useSelector(state => state.user.)
 
 
     const dispatch = useDispatch();
-    // const [rememberMe, setRememberMe] = useReducer(rememberMe => !rememberMe, false);
 
 
     const handleSubmit = (event) => {

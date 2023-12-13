@@ -150,9 +150,10 @@ export const createUser = createAsyncThunk(
             return res.data; 
             
             
-        } catch (error) {
-            console.log(error);
-            const serializedError = error.toJSON();
+        } catch (err) {
+            const errCode = err.response.status;
+            thunkAPI.dispatch(setErrorRegis(errCode));
+            const serializedError = err.toJSON();
             return thunkAPI.rejectWithValue(serializedError);
         }
     },
@@ -292,6 +293,10 @@ const userSlise = createSlice({
             // state.currentUser.push(state.UserId);
             // console.log("CurrentUser + UserId", currentUser);
           },
+          setErrorRegis: (state, action) => {
+            state.error = action.payload;
+            console.log("err in state", state.error);
+          },
           setUserToken: (state, action) => {
             state.userToken = action.payload;
             console.log("userToken success", state.userToken)
@@ -372,6 +377,6 @@ const userSlise = createSlice({
 export const selectUserID = (state) => state.user.userID;
 
 
-export const { toggleFavorites, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setCurrentUser, setUserToken, setImageSRC } = userSlise.actions;
+export const { toggleFavorites, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setErrorRegis, setCurrentUser, setUserToken, setImageSRC } = userSlise.actions;
 
 export default userSlise.reducer;
