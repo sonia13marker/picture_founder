@@ -76,10 +76,16 @@ body {
   padding: 15px;
   height: -moz-max-content;
   height: max-content;
+  width: auto;
+  max-width: 300px;
 }
 .layout__card__titleWrap__title {
   font-size: 18px;
   font-weight: 400;
+  word-break: break-all;
+}
+.layout__card__titleWrap__icon {
+  padding-left: 5px;
 }
 .layout__card__titleWrap__icon:hover {
   cursor: pointer;

@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { getImages } from "../../store/slices/userSlice";
 import { useEffect } from "react";
 import { useSelector } from 'react-redux';
+import Loader from "../../components/Loader/Loader";
 
 export default function MainPage() {
 
@@ -32,7 +33,7 @@ export default function MainPage() {
   let content;
 
   if (imagesStatus === 'loading') {
-    content = <h1 style={{color: "red"}}>"Loading..."</h1>
+    content = <Loader />
   } else if (imagesStatus === 'succeeded') {
    
     content = (images && images?.length !== 0) ? images.map(
@@ -42,7 +43,9 @@ export default function MainPage() {
     text="Тут ещё нет картинок. Пора бы их добавить"
   />
   } else if (imagesStatus === 'failed') {
-    content = <p>Кажется, что-то пошло не так... {error}</p>
+    content = <p>Кажется, что-то пошло не так... Перезагрузите страницу.
+      <br />
+      {error}</p>
   }
  
   return (

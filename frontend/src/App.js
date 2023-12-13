@@ -38,15 +38,7 @@ function App() {
         <Routes>
           {
             id  ? (
-              <Route element={<Layout />}>
-            {/*ссылаюсь на уже существующую страницу  */}
-          <Route path="/" element={<Navigate to="/main" replace />} />
-              <Route path="/main" index element={<MainPage />} />
-              <Route path="/favorite" element={<FavoritePage />} />
-              <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
-              <Route path='/account' element={<PersonalAccountPage />} />
-              
-          </Route>
+              <Route path="/" element={<MainPage />} />
             ) : (
               <Route path="/" element={<Navigate to="/login" />}/> 
             )
@@ -57,7 +49,15 @@ function App() {
           <Route path='/forgot_password-success' element={<ForgotPasswordSuccessPage />} />
           
 
-          
+          <Route element={<Layout />}>
+            {/*ссылаюсь на уже существующую страницу  */}
+          <Route path="/" element={<Navigate to="/main" replace />} />
+              <Route path="/main" index element={<MainPage />} />
+              <Route path="/favorite" element={<FavoritePage />} />
+              <Route path="/developers" element={<DevelopersPage numberVersion={data.version} />} />
+              <Route path='/account' element={<PersonalAccountPage />} />
+              
+          </Route>
   </Routes>
       </BrowserRouter>
     </div>
