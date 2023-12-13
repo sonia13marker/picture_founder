@@ -20,10 +20,26 @@ export default function LoginPage () {
 
 
     const dispatch = useDispatch();
+    // const [rememberMe, setRememberMe] = useReducer(rememberMe => !rememberMe, false);
+
 
     const handleSubmit = (event) => {
         /* чтобы форма не отправлялась */
         event.preventDefault();
+
+        /* for local storage */
+      if (checked) { 
+        localStorage.setItem("username", UserEmail);
+        localStorage.setItem("password", UserPassword);
+
+        const username = localStorage.getItem("username");
+           const password = localStorage.getItem("password");
+
+        if (username && password) {
+          
+          console.log("Данные пользователя найдены:", username, password);
+        } else console.log("Данные пользователя не найдены");
+      }
 
         if (UserEmail && UserPassword && errorMessageEmail === "" && errorMessagePassword === "") {
           goToMainPage();
