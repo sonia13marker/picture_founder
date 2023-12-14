@@ -89,7 +89,7 @@ export const addUserImage = createAsyncThunk(
         //исправила тут await axios.delete на await axios.get
         const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image/${imageID}`);
         console.log("data about deleted image", res);
-        thunkAPI.dispatch(deleteImagefromPage(res));
+        //thunkAPI.dispatch(deleteImagefromPage(res));
         return res;
       } catch (err) {
           console.log(err);
@@ -105,14 +105,36 @@ export const addUserImage = createAsyncThunk(
     async (payload, thunkAPI) => {
 
       try {
-      const imageID = payload.id;
-      //тут только получаем данные о картинке
-      // const dataOfImage = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image/${imageID}`);
-      // console.log("data about changed image", dataOfImage);
-      const changedData = payload;
-      const res = await axios.put(`http://95.31.50.131/api/user/${payload.id}/image/${imageID}`, changedData);
-      console.log("changed data about image", res)
-      //thunkAPI.dispatch(deleteImagefromPage(res));
+
+        const { userId, imageId, userToken, imageName, imageTags} = payload;
+      
+
+        // let changedDataImage = new FormData();
+        // changedDataImage.append("imageId", imageId);
+        // changedDataImage.append("imageName", imageName);
+        // changedDataImage.append("imageTags", imageTags);
+
+        // const res = await axios({
+        //   method: 'put',
+        //   url: `http://95.31.50.131/api/user/${userId}/image/${imageId}`,
+        //   data: changedDataImage,
+        //   headers: {Authorization: `Bearer ${userToken}`, "Content-Type": "application/x-www-form-urlencoded" }
+        // })
+        const res = await axios.put(`http://95.31.50.131/api/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: [imageTags]}, {
+          headers: {
+            Authorization: 'Bearer ' + userToken,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+        );
+
+
+      //console.log("changedDataImage", changedDataImage);
+      //console.log(userId, imageId, userToken, imageName, imageTags);
+      // const res = await axios.put(`http://95.31.50.131/api/user/${userId}/image/${imageId}`, {headers:{Authorization: `Bearer ${userToken}`}, 'Content-Type': "x-www-form-urlencoded"}, imageName, imageTags);
+      
+      console.log("changed data about image", res);
+      thunkAPI.dispatch(updateImageInfo({imageId: imageId, imageName: imageName, imageTags: imageTags}));
       return res;
     } catch (err) {
       console.log(err);
@@ -123,20 +145,20 @@ export const addUserImage = createAsyncThunk(
   )
 
   /* получение пользователя по ID */
-export const getUser =  createAsyncThunk(
-  "user/getUser",
-  async (payload, thunkAPI) => {
-    try {
-      const userData = await axios.get(`http://95.31.50.131/api/user/${payload.id}`);
-      return userData;
+// export const getUser =  createAsyncThunk(
+//   "user/getUser",
+//   async (payload, thunkAPI) => {
+//     try {
+//       const userData = await axios.get(`http://95.31.50.131/api/user/${payload.id}`);
+//       return userData;
 
-    } catch (err) {
-      console.log(err);
-      const serializedError = err.toJSON();
-      return thunkAPI.rejectWithValue(serializedError);
-    }
-  } 
-)
+//     } catch (err) {
+//       console.log(err);
+//       const serializedError = err.toJSON();
+//       return thunkAPI.rejectWithValue(serializedError);
+//     }
+//   } 
+// )
 
   /* создание (регистрация) */
 export const createUser = createAsyncThunk(
@@ -152,8 +174,6 @@ export const createUser = createAsyncThunk(
             /* добавление id текущего юзера */
             thunkAPI.dispatch(setUserID(UserID));
             console.log(res);
-            // const errorCode = res.status;
-            // thunkAPI.dispatch(setErrorRegis(errorCode));
             return res; 
             
             
@@ -171,7 +191,6 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (payload, thunkAPI) => {
     try {
-      //console.log('login p', payload);
       const res = await axios.post('http://95.31.50.131/api/auth/login', payload);
       /* получаю токен юзера и сохраняю его глобально */
       const userToken = res.data.token;
@@ -277,14 +296,23 @@ const userSlise = createSlice({
               state.images.splice(image.id);
             }
           },
-          updateImageInfo: (state, action) => {
-            const { id, name, tags } = action.payload;
-            const existingImage = state.images.find(image => image.id === id);
-            if (existingImage) {
-              existingImage.name = name;
-              existingImage.tags = tags;
-            }
-          },
+          // updateImageInfo: (state, action) => {
+          //   //const { id, name, tags } = action.payload;
+          //   //console.log(id, name, tags);
+          //   const { imageId, imageName, imageTags} = action.payload;
+          //   console.log(imageId, imageName, imageTags);
+          //   const existingImage = state.images.find(image => image.id === imageId);
+          //   console.log(existingImage);
+          //   if (existingImage) {
+          //      existingImage.imageName = imageName;
+          //      existingImage.imageTags = imageTags;
+
+          //      state.images = {
+          //       ...state,
+          //       existingImage
+          //      }
+          //   }
+          // },
           // changeDataOfImage: (state, action) => {
           //   const currentImage = action.payload;
 
@@ -373,7 +401,13 @@ const userSlise = createSlice({
         console.log("IMAGE IN addUserImage.fulfilled",image)
         //state.images.push({image});
         // state.isLoading = false;
-      })
+      });
+      builder
+      .addCase(changeUserImage.fulfilled, (state, action) => {
+        let updImage = action.payload;
+        console.log("IMAGE IN updateImageInfo.fulfilled", updImage);
+        // state.images.push({updImage})
+      } )
       // .addCase(addUserImage.rejected, (state) => {
       //   state.isLoading = false;
       // })

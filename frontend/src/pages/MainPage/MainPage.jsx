@@ -28,7 +28,7 @@ export default function MainPage() {
       if ((id && userToken) && imagesStatus === 'idle') {
      dispatch(getImages({ id: id, token: userToken })) 
      }
-  }, [id, userToken]);
+  }, [id, userToken, dispatch, imagesStatus, images]);
 
   let content;
 
