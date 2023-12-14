@@ -76,7 +76,7 @@ const imageId = id;
 
             <div className='modal__content__body__wrapper'>
             <span className='modal__content__body__imgBlock'>
-                <img className='modal__content__body__imgBlock__img' src={image} alt={name} />
+                <img className='modal__content__body__imgBlock__img' src={`http://95.31.50.131/api/user/${userId}/image/${imageId}`} alt={name} />
             </span>
             </div>
 

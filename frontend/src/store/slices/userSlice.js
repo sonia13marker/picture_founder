@@ -3,25 +3,6 @@ import { setAuthStatus } from './authSlice';
 import axios from "axios";
 
 
-const FormData = require('form-data');
-
-/* получение src картинки */
-export const getSrcImage = createAsyncThunk(
-  "user/getImages/getSrcImage",
-  async (payload, thunkAPI) => {
-    try {
-      const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image/${payload.imageId}`, {headers:{Authorization: `Bearer ${payload.token}`}});
-      console.log("res from get src data", res);
-      thunkAPI.dispatch(setImageSRC(res));
-      return res;
-     
-
-    } catch (err) {
-      console.log(err);
-    }
-  }
-)
-
 /* получение картинок */
 export const getImages = createAsyncThunk(
     "user/getImages",
@@ -39,26 +20,45 @@ export const getImages = createAsyncThunk(
     /* добавление картинки, когда юзер уже в своем акке */
 export const addUserImage = createAsyncThunk(
   "user/addImage",
-  async ({ token, id, image, imageName, imageTags }) => {
+  async (payload, thunkAPI) => {
       try {
 
-        const headers = {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        };
+        const { id, token, image, imageName, imageTags } = payload;
+
+      //     const formData = new FormData();
+      // formData.append('image', image);
+      // formData.append('imageName', imageName);
+      // formData.append('imageTags', imageTags);
 
         console.log("res data in addImage", id, token, image, imageName, imageTags);
+        const res = await axios.post(`http://95.31.50.131/api/user/${id}/image`, { image, imageName: imageName, imageTags: imageTags}, {
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+        );
+      
+      console.log("data about image", res);
+      return res;
+
+        // const headers = {
+        //   Authorization: `Bearer ${token}`,
+        //   'Content-Type': 'multipart/form-data'
+        // };
+
+
 
         // const formData = {image, imageName, imageTags };
 
-        const formData = new FormData();
-      formData.append('image', image);
-      formData.append('imageName', imageName);
-      formData.append('imageTags', imageTags);
+      //   const formData = new FormData();
+      // formData.append('image', image);
+      // formData.append('imageName', imageName);
+      // formData.append('imageTags', imageTags);
 
-      console.log(formData);
+      // console.log(formData);
 
-      const response = await axios.post(`http://95.31.50.131/api/user/${id}/image`, formData, { headers }, );
+      // const response = await axios.post(`http://95.31.50.131/api/user/${id}/image`, formData, { headers }, );
        // const {id, token, image, imageName, imageTags} = payload;
         //console.log("res data in addImage", id, token, image, imageName, imageTags);
         // console.log("payload.id", JSON.stringify(payload.id));
@@ -73,7 +73,7 @@ export const addUserImage = createAsyncThunk(
         //   {headers:{Authorization: `Bearer ${payload.token}`}
         // }, payload.image, payload.imageName, payload.imageTags);
         // console.log(res);
-        return response.data;
+        // return response.data;
       } catch (err) {
         // return rejectWithValue(err.response.data);
         console.error(err);
@@ -107,19 +107,6 @@ export const addUserImage = createAsyncThunk(
       try {
 
         const { userId, imageId, userToken, imageName, imageTags} = payload;
-      
-
-        // let changedDataImage = new FormData();
-        // changedDataImage.append("imageId", imageId);
-        // changedDataImage.append("imageName", imageName);
-        // changedDataImage.append("imageTags", imageTags);
-
-        // const res = await axios({
-        //   method: 'put',
-        //   url: `http://95.31.50.131/api/user/${userId}/image/${imageId}`,
-        //   data: changedDataImage,
-        //   headers: {Authorization: `Bearer ${userToken}`, "Content-Type": "application/x-www-form-urlencoded" }
-        // })
         const res = await axios.put(`http://95.31.50.131/api/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: [imageTags]}, {
           headers: {
             Authorization: 'Bearer ' + userToken,
@@ -127,14 +114,8 @@ export const addUserImage = createAsyncThunk(
           }
         }
         );
-
-
-      //console.log("changedDataImage", changedDataImage);
-      //console.log(userId, imageId, userToken, imageName, imageTags);
-      // const res = await axios.put(`http://95.31.50.131/api/user/${userId}/image/${imageId}`, {headers:{Authorization: `Bearer ${userToken}`}, 'Content-Type': "x-www-form-urlencoded"}, imageName, imageTags);
       
       console.log("changed data about image", res);
-      thunkAPI.dispatch(updateImageInfo({imageId: imageId, imageName: imageName, imageTags: imageTags}));
       return res;
     } catch (err) {
       console.log(err);
@@ -256,7 +237,6 @@ const userSlise = createSlice({
         status: 'idle',
         error: null,
         images: [],
-        imageSRC: '',
         UserId: null,
         userToken: null,
     },
@@ -335,9 +315,6 @@ const userSlise = createSlice({
           setUserToken: (state, action) => {
             state.userToken = action.payload;
             console.log("userToken success", state.userToken)
-          },
-          setImageSRC: (state, action) => {
-            state.imageSRC = action.payload;
           }
     },
     extraReducers: (builder) => {
@@ -418,6 +395,6 @@ const userSlise = createSlice({
 export const selectUserID = (state) => state.user.userID;
 
 
-export const { toggleFavorites, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setErrorRegis, setCurrentUser, setUserToken, setImageSRC } = userSlise.actions;
+export const { toggleFavorites, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setErrorRegis, setCurrentUser, setUserToken } = userSlise.actions;
 
 export default userSlise.reducer;

@@ -2,7 +2,7 @@ import "./ImageCard.scss";
 import { useEffect, useState } from "react";
 import ActionCircle from "../ActionCircle/ActionCircle";
 import {useDispatch, useSelector} from "react-redux";
-import {getSrcImage, toggleFavorites} from "../../store/slices/userSlice";
+import {toggleFavorites} from "../../store/slices/userSlice";
 import FavorFillIcon from "../FavorFillIcon";
 import FavorOutlineIcon from "../FavorOutlineIcon";
 // import { addImageToFavorite } from "../../store/slices/userSlice";
@@ -15,13 +15,13 @@ export default function ImageCard({ idImage, name, imageTags, image,
  // console.log("tags from new add??", imageTags);
   let newTagList = imageTags
     // .split(",")
-    // .map((tag) => {
-    //   tag = tag.trim();
-    //   tag = "#" + tag;
-    //   tag = tag.replaceAll(" ", "_");
-    //   tag = tag + " ";
-    //   return tag;
-    // })
+    .map((tag) => {
+      tag = tag.trim();
+      tag = "#" + tag;
+      tag = tag.replaceAll(" ", "_");
+      tag = tag + " ";
+      return tag;
+    })
 
   /*для проверки наведения на карточку */
   const [isHover, setIsHover] = useState(false);
@@ -39,19 +39,10 @@ export default function ImageCard({ idImage, name, imageTags, image,
 
   const inFavorite = favorite.some((item) => item.id === idImage);
 
-  //const imageSRC = useSelector(state => state.user.imageSRC.data);
-  //console.log("imageSRC", imageSRC);
-
   const addToFavorite = () => {
     dispatch(toggleFavorites({...itemData}));
   }
 
-
-//   useEffect(() => {
-//     if (UserId && idImage && token) {
-//    dispatch(getSrcImage({id: UserId, imageId: idImage, token: token})); 
-//    }
-// }, [dispatch, UserId, idImage, token]);
 
   
   return (
@@ -77,7 +68,7 @@ export default function ImageCard({ idImage, name, imageTags, image,
           </span>
         </span>
 
-        <img src={image} alt={name} className="layout__card__image" />
+        <img src={`http://95.31.50.131/api/user/${UserId}/image/${idImage}`} alt={name} className="layout__card__image" />
         <p className="layout__card__tagList">
           {newTagList}
           </p>

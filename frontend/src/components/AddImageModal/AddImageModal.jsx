@@ -62,7 +62,7 @@ export default function AddImageModal({
     const image = {file};
 
     //преобразование строки в массив строк  
-    let imageTags = [tags.split(",").map((tg) => tg.trim())];
+    let imageTags = tags.split(",").map((tg) => tg.trim());
 
     //const dataOfImage = {image, imageName, imageTags};
 
