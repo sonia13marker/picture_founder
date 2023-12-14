@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import ConfirmModalComponent from '../ConfirmModalComponent/ConfirmModalComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeUserImage, getImages } from '../../store/slices/userSlice';
+import { PATH_TO_SERVER_GETimg } from '../../data/constants';
 
 export default function EditImageModal ({active, setActive, id, name, tags, image}) {
       /* для модальных окон-подтверждений */
@@ -76,7 +77,7 @@ const imageId = id;
 
             <div className='modal__content__body__wrapper'>
             <span className='modal__content__body__imgBlock'>
-                <img className='modal__content__body__imgBlock__img' src={`http://95.31.50.131/api/user/${userId}/image/${imageId}`} alt={name} />
+                <img className='modal__content__body__imgBlock__img' src={`${PATH_TO_SERVER_GETimg}/${userId}/image/${imageId}`} alt={name} />
             </span>
             </div>
 

@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {toggleFavorites} from "../../store/slices/userSlice";
 import FavorFillIcon from "../FavorFillIcon";
 import FavorOutlineIcon from "../FavorOutlineIcon";
+import { PATH_TO_SERVER_GETimg } from "../../data/constants";
 // import { addImageToFavorite } from "../../store/slices/userSlice";
 
 export default function ImageCard({ idImage, name, imageTags, image, 
@@ -68,7 +69,7 @@ export default function ImageCard({ idImage, name, imageTags, image,
           </span>
         </span>
 
-        <img src={`http://95.31.50.131/api/user/${UserId}/image/${idImage}`} alt={name} className="layout__card__image" />
+        <img src={`${PATH_TO_SERVER_GETimg}/${UserId}/image/${idImage}`} alt={name} className="layout__card__image" />
         <p className="layout__card__tagList">
           {newTagList}
           </p>

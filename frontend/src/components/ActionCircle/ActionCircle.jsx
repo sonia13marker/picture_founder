@@ -7,6 +7,8 @@ import "./ActionCircle.scss";
 import EditImageModal from "../EditImageModal/EditImageModal";
 import ShareImageModal from "../ShareImageModal/ShareImageModal";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
+import { useSelector } from "react-redux";
+import { PATH_TO_SERVER_GETimg, PATH_TO_SERVER_getImg } from "../../data/constants";
 
 export default function ActionCircle({ isHover, id, name, tags, image }) {
   // console.log(dataOfImage);
@@ -17,6 +19,9 @@ export default function ActionCircle({ isHover, id, name, tags, image }) {
   const closeDelModal = () => {
     setActiveDelModal(!activeDelModal);
   }
+
+  const userId = useSelector(state => state.user.UserId);
+
   return (
     <>
       <span className={isHover ? "wrapper active" : "wrapper"}>
@@ -53,6 +58,7 @@ export default function ActionCircle({ isHover, id, name, tags, image }) {
         setActive={setActiveEditModal}
       />
       <ShareImageModal 
+      imageLink={`${PATH_TO_SERVER_GETimg}/${userId}/image/${id}`}
       active={activeShareModal}
       setActive={setActiveShareModal}/>
 

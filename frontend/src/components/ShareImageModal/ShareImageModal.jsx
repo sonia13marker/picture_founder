@@ -18,17 +18,18 @@ import {
 } from "react-share";
 import Clipboard from "clipboard";
 
-export default function ShareImageModal({ active, setActive }) {
+export default function ShareImageModal({ active, setActive, imageLink }) {
   /* сменить на приходящий уровень для каждой картинки */
   // let shareUrl = "https://memozg.ru/img/posts/298_62d5a8b22c104.jpg";
 
   /* constants for values to icons */
   const defaultSize = 45;
   const defaultBR = 20;
+  console.log(imageLink);
 
   /* for copy icon */
   const [copied, setCopied] = useState(false);
-  const linkRef = useRef(null);
+  const linkRef = useRef();
   const clipboard = useRef(null);
 
   useEffect(() => {
@@ -46,8 +47,10 @@ export default function ShareImageModal({ active, setActive }) {
     };
   }, [])
 
-  const getCopyLink = () => {
-    clipboard.current.onClick(linkRef.current);
+  const getCopyLink = (imageLink) => {
+    // console.log(linkRef.current);
+    clipboard.current.onClick(imageLink);
+
   };
   return (
     <div className={active ? "shareModal activeModal" : "shareModal"}>
@@ -69,7 +72,7 @@ export default function ShareImageModal({ active, setActive }) {
                 className="input__auth password shareModal__content__body__input"
                 type="text"
                 id="urlInput"
-                // value={shareUrl}
+                value={imageLink}
                 readOnly
               />
               {copied ? (
@@ -80,8 +83,8 @@ export default function ShareImageModal({ active, setActive }) {
                 <span
                   className="iconOpen"
                   ref={linkRef}
-                  onClick={getCopyLink}
-                  // data-clipboard-text={shareUrl}
+                  onClick={() => clipboard.current.onClick(imageLink)}
+                  data-clipboard-text={imageLink}
                 >
                   <CopyIcon />
                 </span>
@@ -97,7 +100,7 @@ export default function ShareImageModal({ active, setActive }) {
             </VKShareButton>
 
             <TelegramShareButton 
-            //url={shareUrl}
+            //url={imageLink}
             >
               <TelegramIcon size={defaultSize} borderRadius={defaultBR} />
             </TelegramShareButton>
