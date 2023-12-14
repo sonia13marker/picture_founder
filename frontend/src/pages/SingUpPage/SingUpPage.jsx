@@ -74,18 +74,18 @@ const [errorVerMessage, setErrorVerMessage] = useState("");
 /* for submit button */
 const dispatch = useDispatch();
 //const currentUser = useSelector(state => state.user.currentUser);
-
 const getError = useSelector(state => state.user.error);
-console.log("getError", getError);
 
-const handleSubmit = (event) => {
+
+console.log("getError", getError);
+const handleSubmit = async (event) => {
   event.preventDefault();
 
-
   if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && UserPassword && passwordVerValue) {
-    dispatch(createUser({UserEmail, UserPassword}));
-
-    if (getError !== null) {
+    await dispatch(createUser({UserEmail, UserPassword}));
+    //console.log("fuch", getError)
+    if ((getError !== 200) && (getError === null)) {
+      // console.log("chto", getError !== 200, getError)
       setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
     } else {
       nextPage();

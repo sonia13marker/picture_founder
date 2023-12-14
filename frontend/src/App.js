@@ -12,6 +12,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage/ForgotPasswordPage";
 import ForgotPasswordSuccessPage from "./pages/ForgotPasswordSuccessPage/ForgotPasswordSuccessPage";
 import PersonalAccountPage from "./pages/PersonalAccountPage/PersonalAccountPage";
 import { useSelector } from "react-redux";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 function App() {
   const id = useSelector((state) => state.user.UserId);
@@ -51,6 +52,7 @@ function App() {
             path="/forgot_password-success"
             element={<ForgotPasswordSuccessPage />}
           />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </div>

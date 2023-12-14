@@ -3,6 +3,8 @@ import { setAuthStatus } from './authSlice';
 import axios from "axios";
 
 
+const FormData = require('form-data');
+
 /* получение src картинки */
 export const getSrcImage = createAsyncThunk(
   "user/getImages/getSrcImage",
@@ -37,23 +39,24 @@ export const getImages = createAsyncThunk(
     /* добавление картинки, когда юзер уже в своем акке */
 export const addUserImage = createAsyncThunk(
   "user/addImage",
-  async ({ token, id, image, imageName, imageTags }, { rejectWithValue }) => {
+  async ({ token, id, image, imageName, imageTags }) => {
       try {
 
         const headers = {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         };
 
         console.log("res data in addImage", id, token, image, imageName, imageTags);
 
-        const formData = {image, imageName, imageTags };
+        // const formData = {image, imageName, imageTags };
 
-      //   const formData = new FormData();
-      // formData.append('image', image);
-      // formData.append('imageName', imageName);
-      // formData.append('imageTags', imageTags);
+        const formData = new FormData();
+      formData.append('image', image);
+      formData.append('imageName', imageName);
+      formData.append('imageTags', imageTags);
 
-      // console.log(formData);
+      console.log(formData);
 
       const response = await axios.post(`http://95.31.50.131/api/user/${id}/image`, formData, { headers }, );
        // const {id, token, image, imageName, imageTags} = payload;
@@ -72,7 +75,8 @@ export const addUserImage = createAsyncThunk(
         // console.log(res);
         return response.data;
       } catch (err) {
-        return rejectWithValue(err.response.data);
+        // return rejectWithValue(err.response.data);
+        console.error(err);
       }
   }
 )
@@ -147,7 +151,10 @@ export const createUser = createAsyncThunk(
              console.log("UserID", UserID);
             /* добавление id текущего юзера */
             thunkAPI.dispatch(setUserID(UserID));
-            return res.data; 
+            console.log(res);
+            // const errorCode = res.status;
+            // thunkAPI.dispatch(setErrorRegis(errorCode));
+            return res; 
             
             
         } catch (err) {
