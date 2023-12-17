@@ -3,12 +3,12 @@ import {Schema, model} from "mongoose"
 
 const ImageSchema = new Schema({
     imageOrgName: String,
-    imageSetName: String,
+    imageName: String,
     imageSize: Number,
     imageHash: String,
     ownerId: {type: Schema.ObjectId, ref: "User"},
     imageTags: [String],
-    isFavotite: Boolean,
+    isFavorite: Boolean,
     extend: String
 }, {timestamps: true})
 

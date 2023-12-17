@@ -24,6 +24,12 @@ const ImageScheme = Joi.object({
     isFavorite: Joi.boolean().default(false)
 })
 
+const ImageSchemeEdit = Joi.object({
+    imageName: Joi.string().min(2),
+    imageTags: Joi.array().items(Joi.string()),
+    isFavorite: Joi.boolean()
+})
+
 
 async function imageGet(req: Request, resp: Response) {
 
@@ -91,7 +97,7 @@ async function imagePost(req: Request, resp: Response) {
     console.log("add new image data");
     const createdImage = await db_models.ImageModel.create({
         imageOrgName: imageData.originalname,
-        imageSetName: (reqData.value.imageName || imageData.originalname),
+        imageName: (reqData.value.imageName || imageData.originalname),
         ownerId: userId,
         imageHash: hashedFile,
         imageSize: imageData.size,
@@ -110,7 +116,7 @@ async function imagePost(req: Request, resp: Response) {
     resp.json({
         message: "image uploaded", data: {
             imageId: createdImage.id,
-            imageName: createdImage.imageSetName,
+            imageName: createdImage.imageName,
             imageTags: createdImage.imageTags
         }
     })
@@ -149,7 +155,7 @@ async function imageDelete(req: Request, resp: Response) {
 
     resp.json({
         message: "remove image", data: {
-            imageName: imageData?.imageSetName
+            imageName: imageData?.imageName
         }
     })
 }
@@ -184,9 +190,9 @@ async function fullImageGet(req: Request, resp: Response) {
 async function imageEdit(req: Request, resp: Response) {
 
     const imageId = req.params.imgId
-    const valData = ImageScheme.validate(req.body)
+    const valData = Object.assign(ImageSchemeEdit.validate(req.body))
 
-    console.log(req.body);
+    console.log(valData);
     
 
     if (valData.error) {
@@ -197,25 +203,24 @@ async function imageEdit(req: Request, resp: Response) {
     }
 
     const hasImage = await db_models.ImageModel.exists({ _id: imageId });
-
+    
     if (!hasImage) {
         resp.status(400)
         resp.json({ message: "image not found" })
         return
     }
 
+    const updatedData = Object.keys(valData.value).filter(el => valData.value[el]).reduce((s, a) => ({...s, [a]: valData.value[a],}), {});
+    console.log(updatedData);
+
     await db_models.ImageModel.findByIdAndUpdate(imageId, {
-        $set: {
-            imageSetName: valData.value.imageName,
-            imageTags: valData.value.imageTags,
-            isFavotite: valData.value.isFavorite
-        }
+        $set: updatedData
     })
 	console.log(`edit image ${valData.value.imageName}`)
     resp.json({
         message: "update image data",
         data: {
-            imageSetName: valData.value.imageName,
+            imageName: valData.value.imageName,
             imageTags: valData.value.imageTags,
             isFavotite: valData.value.isFavorite
         }
