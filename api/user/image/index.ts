@@ -186,6 +186,9 @@ async function imageEdit(req: Request, resp: Response) {
     const imageId = req.params.imgId
     const valData = ImageScheme.validate(req.body)
 
+    console.log(req.body);
+    
+
     if (valData.error) {
         resp.status(400);
         console.log(`[ERR] on edit image data \n ${valData.error.message}`);
@@ -225,6 +228,9 @@ async function getImageFile( req: Request, resp: Response ) {
 
     const imageId = req.params.imgId;
     const imageDB = await db_models.ImageModel.findById(imageId);
+
+    console.log(req.body);
+    
     
     const imagePath = path.resolve(`uploads/save/${imageDB?.ownerId}/${imageDB?.imageHash}`)
     const tmpPath = path.resolve(`uploads/tmp`)
@@ -240,8 +246,7 @@ async function getImageFile( req: Request, resp: Response ) {
     console.log(`[LOG] send image for user ${imageDB?.ownerId}`);
     
 	console.log(`get image[file] ${imageDB?.imageOrgName}`)
-    const file = await fs.readFile(`${tmpPath}/${imageDB?.imageOrgName}`)
-    resp.setHeader("Content-Type", `image/${imageDB?.extend}`).end(file)
+    resp.sendFile(`${tmpPath}/${imageDB?.imageOrgName}`)
     fs.rm(`${tmpPath}/${imageDB?.imageOrgName}`)
 
 }
