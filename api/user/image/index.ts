@@ -102,7 +102,7 @@ async function imagePost(req: Request, resp: Response) {
         imageHash: hashedFile,
         imageSize: imageData.size,
         imageTags: reqData.value.imageTags,
-        isFavotite: reqData.value.isFavorite,
+        isFavorite: reqData.value.isFavorite,
         extend: imageData.mimetype.split("/")[1]
     })
 
@@ -232,7 +232,9 @@ async function getImageFile( req: Request, resp: Response ) {
 
 
     const imageId = req.params.imgId;
-    const imageDB = await db_models.ImageModel.findById(imageId);
+    const imageDB = await db_models.ImageModel.findById(imageId).catch(err => {
+        resp.json({message: "image not found"}).status(404)
+    });
 
     console.log(req.body);
     
