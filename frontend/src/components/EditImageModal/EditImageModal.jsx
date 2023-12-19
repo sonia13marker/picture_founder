@@ -35,20 +35,13 @@ const imageId = id;
 
     // let imageTags = tags2.split(",").map((tg) => tg.trim());
 
-
-
-    // const imageName = nameImage.target.value;
-    //const imageTags = tagsImage.target.value;
-    // const dataAboutChange = {
-    //   userId, imageId, userToken, imageName, imageTags
-    // }
     console.log("userId", userId, 'imageid', imageId, "userToken", userToken, "imageName", imageName, "imageTags", imageTags);
-    if (imageName && imageTags) {
+    if (imageName || imageTags) {
       dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: imageName, imageTags: imageTags}));
       setActive(!active);
       dispatch(getImages({ id: userId, token: userToken }));
     } else {
-      console.log("no");
+      console.log("no changes");
     }
 
   }

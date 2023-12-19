@@ -52,7 +52,7 @@ function App() {
             path="/forgot_password-success"
             element={<ForgotPasswordSuccessPage />}
           />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </div>

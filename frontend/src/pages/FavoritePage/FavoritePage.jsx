@@ -5,7 +5,8 @@ import ImageCard from '../../components/ImageCard/ImageCard';
 import { useSelector } from 'react-redux';
 
 export default function FavoritePage () {
-  const favoriteImages = useSelector(state => state.user.favorite); 
+  const favoriteImages = useSelector(state => state.user.favorite);
+  console.log(favoriteImages); 
 
   if (!favoriteImages.length)
     return (
@@ -17,7 +18,7 @@ export default function FavoritePage () {
     return ( 
     <section className="wrapper_layout">
     {favoriteImages.map((item) => (
-        <ImageCard key={item.id} {...item} />
+        <ImageCard key={item.imageId} {...item} />
       ))}
       </section>)
 }

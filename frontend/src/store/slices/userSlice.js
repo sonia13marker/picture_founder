@@ -9,11 +9,15 @@ export const getImages = createAsyncThunk(
     async (payload, thunkAPI) => {
       try {
         console.log('payload from main page', payload);
-        const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`, {headers:{Authorization: `Bearer ${payload.token}`}});
+        const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`, {
+          headers: {
+            Authorization: 'Bearer ' + payload.token,
+            'X-Content-Type-Options' : 'nosniff'
+          }  });
         console.log("GET DATA", res.data.images);
         return res.data.images;
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   );
@@ -99,21 +103,32 @@ export const addUserImage = createAsyncThunk(
     }
   )
 
-  /* изменение данных о картинке */
+  /* изменение данных о картинке - добавление в избранное и смена самих данных*/
   export const changeUserImage = createAsyncThunk(
     "user/changeImage",
     async (payload, thunkAPI) => {
 
       try {
 
-        const { userId, imageId, userToken, imageName, imageTags} = payload;
-        const res = await axios.put(`http://95.31.50.131/api/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: [imageTags]}, {
+        const { userId, imageId, userToken, imageName, imageTags, image, isFavotite} = payload;
+        console.log("change img", payload);
+        const res = await axios.put(`http://95.31.50.131/api/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: imageTags, isFavorite: isFavotite}, {
           headers: {
             Authorization: 'Bearer ' + userToken,
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         }
         );
+
+        // if (isFavotite === true) {
+          // console.log(isFavotite, payload)
+          thunkAPI.dispatch(addToFavorite(payload));
+        //}
+
+        //  if (res.config.data.isFavorite === true) {
+        //   console.log(res.config.data.isFavorite, payload)
+        //   thunkAPI.dispatch(addToFavorite(payload));
+        // }
       
       console.log("changed data about image", res);
       return res;
@@ -241,19 +256,50 @@ const userSlise = createSlice({
         userToken: null,
     },
     reducers: {
-        toggleFavorites: (state, action) => {
-            const item = action.payload;
-            console.log(item)
-            const index = state.favorite.findIndex((favoriteItem) => favoriteItem.id === item.idImage);
-            if (index === -1) {
-              state.favorite.push(item);
-            } else {
-              state.favorite.splice(index, 1);
-            }
+        // toggleFavorites: (state, action) => {
+        //     const item = action.payload;
+        //     console.log(item)
+        //     const index = state.favorite.findIndex((favoriteItem) => favoriteItem.id === item.idImage);
+        //     if (index === -1) {
+        //       state.favorite.push(item);
+        //     } else {
+        //       state.favorite.splice(index, 1);
+        //     }
+        //   },
+          addToFavorite: (state, action) => {
+            console.log("aaaaaaaaaaaaaa", action.payload);
+//const existImageIndex = state?.favorite?.find(item => `${item.imageId}` === action.payload.imageId);
+//const existImageIndex = state.user?.favorite?.includes(action.payload.imageId);
+//console.log( existImageIndex, action.payload.imageId);
+            // if (existImageIndex) {
+            //   alert("no");
+            // } else {
+            //   const imageData = { ...action.payload };
+            //   console.log("imageData", imageData)
+            //   state.favorite.push(imageData);
+            // }
+            
+  //           const fav = imageData.isFavotite;
+  //           console.log("fav", fav)
+  //             const imageId = imageData.imageId;
+  //           console.log("imageId", imageId)
+  //           let isImageInFavorite = false;
+
+  // for (const item of state.user?.favorite || []) {
+  //   if (item.imageId === imageId) {
+  //     isImageInFavorite = true;
+  //     break;
+  //   }
+  // }
+            
           },
+          // addAllImages: (state, action) => {
+          //   console.log(action.payload);
+          //   state.user.images = action.payload;
+          // },
           addImageToPage: (state, action) => {
             //state.images = action.payload;
-            state.images.push(action.payload);
+            //state.images.push(action.payload);
             
             // const addImage = action.payload;
             // state.images = {
@@ -276,27 +322,6 @@ const userSlise = createSlice({
               state.images.splice(image.id);
             }
           },
-          // updateImageInfo: (state, action) => {
-          //   //const { id, name, tags } = action.payload;
-          //   //console.log(id, name, tags);
-          //   const { imageId, imageName, imageTags} = action.payload;
-          //   console.log(imageId, imageName, imageTags);
-          //   const existingImage = state.images.find(image => image.id === imageId);
-          //   console.log(existingImage);
-          //   if (existingImage) {
-          //      existingImage.imageName = imageName;
-          //      existingImage.imageTags = imageTags;
-
-          //      state.images = {
-          //       ...state,
-          //       existingImage
-          //      }
-          //   }
-          // },
-          // changeDataOfImage: (state, action) => {
-          //   const currentImage = action.payload;
-
-          // },
             setCurrentUser: (state, action) => {
                 const UserEmail = action.payload;
                 state.currentUser.push(UserEmail);
@@ -304,9 +329,6 @@ const userSlise = createSlice({
             },
             setUserID: (state, action) => {
             state.UserId = action.payload;
-            console.log("UserId success", state.UserId);
-            // state.currentUser.push(state.UserId);
-            // console.log("CurrentUser + UserId", currentUser);
           },
           setErrorRegis: (state, action) => {
             state.error = action.payload;
@@ -314,7 +336,6 @@ const userSlise = createSlice({
           },
           setUserToken: (state, action) => {
             state.userToken = action.payload;
-            console.log("userToken success", state.userToken)
           }
     },
     extraReducers: (builder) => {
@@ -324,27 +345,12 @@ const userSlise = createSlice({
       })
       .addCase(getImages.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        // Add any fetched posts to the array
         state.images = action.payload; 
-        //state.images = state.images.concat(action.payload)
       })
       .addCase(getImages.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       });
-      // builder 
-      // .addCase(getSrcImage.pending, (state, action) => {
-      //   state.status = 'loading'
-      // })
-      // .addCase(getSrcImage.fulfilled, (state, action) => {
-      //   state.status = 'succeeded'
-      //   // Add any fetched posts to the array
-      //   state.imageSRC = action.payload; 
-      // })
-      // .addCase(getSrcImage.rejected, (state, action) => {
-      //   state.status = 'failed'
-      //   state.error = action.error.message
-      // });
        builder
        .addCase(createUser.fulfilled, (state, { payload }) => {
         addCurrentUser(state, { payload });
@@ -357,28 +363,13 @@ const userSlise = createSlice({
     });
         builder
         .addCase(updatePasswordUser.fulfilled, addCurrentUser);
-      //   builder
-      // .addCase(getImages.pending, (state) => {
-      //   state.isLoading = true;
-      // })
-      // .addCase(getImages.fulfilled, (state, action) => {
-      //   state.images = action.payload; 
-      //   state.isLoading = false;
-      // })
-      // .addCase(getImages.rejected, (state) => {
-      //   state.isLoading = false;
-      // });
 
       builder
-      // .addCase(addUserImage.pending, (state) => {
-      //   state.isLoading = true;
-      // })
       .addCase(addUserImage.fulfilled, (state, action) => {
         let image = action.payload;
         console.log("IMAGE IN addUserImage.fulfilled",image)
-        //state.images.push({image});
-        // state.isLoading = false;
       });
+
       builder
       .addCase(changeUserImage.fulfilled, (state, action) => {
         let updImage = action.payload;
@@ -395,6 +386,6 @@ const userSlise = createSlice({
 export const selectUserID = (state) => state.user.userID;
 
 
-export const { toggleFavorites, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setErrorRegis, setCurrentUser, setUserToken } = userSlise.actions;
+export const { addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setErrorRegis, setCurrentUser, setUserToken } = userSlise.actions;
 
 export default userSlise.reducer;

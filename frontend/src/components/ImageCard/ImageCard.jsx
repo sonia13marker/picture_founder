@@ -2,14 +2,17 @@ import "./ImageCard.scss";
 import { useEffect, useState } from "react";
 import ActionCircle from "../ActionCircle/ActionCircle";
 import {useDispatch, useSelector} from "react-redux";
-import {toggleFavorites} from "../../store/slices/userSlice";
+import {addToFavorite, changeUserImage, getImages, toggleFavorite2, toggleFavorites} from "../../store/slices/userSlice";
 import FavorFillIcon from "../FavorFillIcon";
 import FavorOutlineIcon from "../FavorOutlineIcon";
 import { PATH_TO_SERVER_GETimg } from "../../data/constants";
+import fav__fill from '../../images/favfill.svg';
+import fav__out from '../../images/favoutline.svg';
+import axios from 'axios';
 // import { addImageToFavorite } from "../../store/slices/userSlice";
 
-export default function ImageCard({ idImage, name, imageTags, image, 
-  UserId, token
+export default function ImageCard({ imageId, imageName, imageTags, image, 
+  userId, userToken, isFavotite
 }) {
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
@@ -34,18 +37,23 @@ export default function ImageCard({ idImage, name, imageTags, image,
     setIsHover(false);
   };
 
-   const itemData = { idImage, name, imageTags, image };
+   const itemData = { userId, imageId, userToken, imageName, imageTags, image };
   const dispatch = useDispatch();
-  const favorite = useSelector((state) => state.user.favorite);
+  // const favorite = useSelector((state) => state.user.favorite);
 
-  const inFavorite = favorite.some((item) => item.id === idImage);
+  // const inFavorite = favorite.some((item) => item.id === idImage);
 
-  const addToFavorite = () => {
-    dispatch(toggleFavorites({...itemData}));
-  }
+  // const addToFavorite = () => {
+  //   dispatch(toggleFavorites({...itemData}));
+  // }
 
 
-  
+      /* add to favorite */
+      const handleToggleFavorite = (itemData) => {
+        // dispatch(toggleFavorite2(itemData));
+        dispatch(changeUserImage({ ...itemData, isFavotite: false }));
+         dispatch(getImages({ id: userId, token: userToken }));
+      };
   return (
     <span
       className="layout__card__wrapper"
@@ -54,22 +62,23 @@ export default function ImageCard({ idImage, name, imageTags, image,
     >
       <div className="layout__card__wrapper__actions">
         <ActionCircle 
-        id={idImage} name={name} tags={imageTags} image={image}
+        id={imageId} name={imageName} tags={imageTags} image={image}
         isHover={isHover}/>
       </div>
       <div className="layout__card">
         <span className="layout__card__titleWrap">
-          <h3 className="layout__card__titleWrap__title">{name}</h3>
+          <h3 className="layout__card__titleWrap__title">{imageName}</h3>
           <span 
-          onClick={() => addToFavorite(itemData)} 
+          onClick={() => handleToggleFavorite(itemData)} 
           className="layout__card__titleWrap__icon">
             {
-              inFavorite ? <FavorFillIcon /> : <FavorOutlineIcon />
+              isFavotite ? <FavorFillIcon /> : <FavorOutlineIcon />
+              //isFavotite ? <img src={fav__fill} alt="" /> : <img src={fav__out} alt="" />
             }
           </span>
         </span>
 
-        <img src={`${PATH_TO_SERVER_GETimg}/${UserId}/image/${idImage}`} alt={name} className="layout__card__image" />
+        <img src={`${PATH_TO_SERVER_GETimg}/${userId}/image/${imageId}`} alt={imageName} className="layout__card__image" />
         <p className="layout__card__tagList">
           {newTagList}
           </p>

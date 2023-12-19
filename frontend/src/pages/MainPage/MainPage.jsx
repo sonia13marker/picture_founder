@@ -37,7 +37,7 @@ export default function MainPage() {
   } else if (imagesStatus === 'succeeded') {
    
     content = (images && images?.length !== 0) ? images.map(
-      (image) =>  <ImageCard key={image._id} name={image.imageSetName} imageTags={image.imageTags} image={image.imageHash} idImage={image._id} UserId={id} token={userToken} isFavor={image.isFavotite}/>
+      (image) =>  <ImageCard key={image._id} imageName={image.imageSetName} imageTags={image.imageTags} image={image.imageHash} imageId={image._id} userId={id} userToken={userToken} isFavotite={image.isFavotite}/>
     ) : <EmptyTextComponent
     image={empty_icon}
     text="Тут ещё нет картинок. Пора бы их добавить"

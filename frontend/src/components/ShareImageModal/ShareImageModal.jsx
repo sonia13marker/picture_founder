@@ -25,7 +25,7 @@ export default function ShareImageModal({ active, setActive, imageLink }) {
   /* constants for values to icons */
   const defaultSize = 45;
   const defaultBR = 20;
-  console.log(imageLink);
+  // console.log(imageLink);
 
   /* for copy icon */
   const [copied, setCopied] = useState(false);
