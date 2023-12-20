@@ -142,11 +142,11 @@ async function imageDelete(req: Request, resp: Response) {
     }
 
     const imageData = await db_models.ImageModel.findByIdAndDelete({ _id: imageId, ownerId: userId })
-    await db_models.UserModel.updateOne({ _id: userId }, { $pull: { UserImages: imageData?.id } })
+    await db_models.UserModel.updateOne({ _id: userId }, { $pull: { UserImages: imageData.value?.id } })
 
 	try {
 		
-    	await fs.rm(`${tmpFiles}/save/${userId}/${imageData?.imageHash}`)
+    	await fs.rm(`${tmpFiles}/save/${userId}/${imageData.value?.imageHash}`)
     }
     catch ( e ){
     	resp.json({message:"error on delete image"});
@@ -155,7 +155,7 @@ async function imageDelete(req: Request, resp: Response) {
 
     resp.json({
         message: "remove image", data: {
-            imageName: imageData?.imageName
+            imageName: imageData.value?.imageName
         }
     })
 }
