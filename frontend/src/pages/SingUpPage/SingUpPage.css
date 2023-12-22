@@ -283,16 +283,8 @@ body {
   justify-content: center;
   align-items: center;
   justify-content: center;
+  gap: 1.5vh;
   margin-bottom: 5vh;
-}
-.singup__section__header__logo {
-  font-family: "Ubuntu", sans-serif;
-  font-size: 55px;
-  font-weight: 500;
-  font-size: clamp(45px, 2vw, 55px);
-}
-.singup__section__header__logo__span {
-  color: #9E76E9;
 }
 .singup__section__header__text {
   font-family: "Ubuntu", sans-serif;

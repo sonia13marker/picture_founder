@@ -7,6 +7,7 @@ import CloseEyeIcon from '../../components/CloseEyeIcon';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../store/slices/userSlice';
+import Logo from '../../components/Logo';
 
 export default function LoginPage () {
     const navigate = useNavigate();
@@ -100,12 +101,27 @@ const goToSingupPage = () => {
   navigate('/singup');
 }
 
+/* for small width to logo */
+const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+useEffect(() => {
+  const handleResize = () => setWindowWidth(window.innerWidth);
+  window.addEventListener('resize', handleResize);
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+}, []);
+
+
     return (
       <div className="singup__section">
         <span className="singup__section__header">
-        <h1 className="singup__section__header__logo">
-          Pic<span className="singup__section__header__logo__span">2</span>
-        </h1>
+          {
+            windowWidth <= 768 ? <Logo newWidth="156" newHeight="59"/> :
+            <Logo newWidth="220" newHeight="84"/>
+          }
+          
         <h2 className="singup__section__header__text">Вход в аккаунт</h2>
       </span>
 

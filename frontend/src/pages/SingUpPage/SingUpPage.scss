@@ -10,15 +10,8 @@
     &__header {
         @include flexColumn;
         justify-content: center;
+        gap: 1.5vh;
         margin-bottom: 5vh;
-
-        &__logo {
-            @include h1Style;
-            font-size: clamp(45px, 2vw, 55px);
-            &__span {
-                color: $main-purple;
-            }
-        }
 
         &__text {
             @include h2Style;
