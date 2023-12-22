@@ -8,7 +8,6 @@ import FavorOutlineIcon from "../FavorOutlineIcon";
 import { PATH_TO_SERVER_GETimg } from "../../data/constants";
 import fav__fill from '../../images/favfill.svg';
 import fav__out from '../../images/favoutline.svg';
-import axios from 'axios';
 // import { addImageToFavorite } from "../../store/slices/userSlice";
 
 export default function ImageCard({ imageId, imageName, imageTags, image, 
@@ -16,7 +15,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
 }) {
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
- // console.log("tags from new add??", imageTags);
+ console.log("tags from new add??", imageTags);
   let newTagList = imageTags
     // .split(",")
     .map((tag) => {
@@ -26,7 +25,6 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       tag = tag + " ";
       return tag;
     })
-
   /*для проверки наведения на карточку */
   const [isHover, setIsHover] = useState(false);
 
@@ -46,7 +44,6 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
   // const addToFavorite = () => {
   //   dispatch(toggleFavorites({...itemData}));
   // }
-
 
       /* add to favorite */
       const handleToggleFavorite = (itemData) => {

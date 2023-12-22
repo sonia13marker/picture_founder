@@ -12,7 +12,6 @@ export const getImages = createAsyncThunk(
         const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`, {
           headers: {
             Authorization: 'Bearer ' + payload.token,
-            'X-Content-Type-Options' : 'nosniff'
           }  });
         console.log("GET DATA", res.data.images);
         return res.data.images;
@@ -169,6 +168,7 @@ export const createUser = createAsyncThunk(
              console.log("UserID", UserID);
             /* добавление id текущего юзера */
             thunkAPI.dispatch(setUserID(UserID));
+            thunkAPI.dispatch(setErrorRegis(null));
             console.log(res);
             return res; 
             
@@ -176,8 +176,9 @@ export const createUser = createAsyncThunk(
         } catch (err) {
             const errCode = err.response.status;
             thunkAPI.dispatch(setErrorRegis(errCode));
-            const serializedError = err.toJSON();
-            return thunkAPI.rejectWithValue(serializedError);
+            console.log(err);
+            // const serializedError = err.toJSON();
+            // return thunkAPI.rejectWithValue(serializedError);
         }
     },
 );

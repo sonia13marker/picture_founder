@@ -18,9 +18,6 @@ export default function MainPage() {
   console.log("TOKEN IN MAIN PAGE", userToken); 
   const imagesStatus = useSelector(state => state.user.status);
 
-  const email = useSelector(state => state.user.currentUser.UserEmail);
-  console.log("EMAIL FROM MAIN PAGE", email);
-
   const images = useSelector(state => state.user.images);
 
   const dispatch = useDispatch();
@@ -28,10 +25,10 @@ export default function MainPage() {
   const error = useSelector(state => state.user.error);
 
   useEffect(() => {
-      if ((id ) && imagesStatus === 'idle') {
-     dispatch(getImages({ id: id})) 
+      if ((id && userToken) && imagesStatus === 'idle') {
+     dispatch(getImages({ id: id, token: userToken })) 
      }
-  }, [id, dispatch, imagesStatus, images]);
+  }, [id, userToken, dispatch, imagesStatus, images]);
 
   let content;
 
@@ -40,7 +37,7 @@ export default function MainPage() {
   } else if (imagesStatus === 'succeeded') {
    
     content = (images && images?.length !== 0) ? images.map(
-      (image) =>  <ImageCard key={image._id} imageName={image.imageSetName} imageTags={image.imageTags} image={image.imageHash} imageId={image._id} userId={id} userToken={userToken} isFavotite={image.isFavotite}/>
+      (image) =>  <ImageCard key={image._id} imageName={image.imageName} imageTags={image.imageTags} image={image.imageHash} imageId={image._id} userId={id} userToken={userToken} isFavotite={image.isFavotite}/>
     ) : <EmptyTextComponent
     image={empty_icon}
     text="Тут ещё нет картинок. Пора бы их добавить"
