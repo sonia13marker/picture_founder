@@ -198,10 +198,10 @@ export const loginUser = createAsyncThunk(
       console.log("userIdLogin IN USERSLICE", userIdLogin);
       thunkAPI.dispatch(setUserID(userIdLogin));
 
-        // const userEmailLogin = res.data.userEmail;
-        //       console.log("userEmailLogin login", userEmailLogin);
-        //      /* добавление эмейла в текущего юзера */
-        //       thunkAPI.dispatch(setCurrentUser(userEmailLogin));
+        const userEmailLogin = res.data.UserEmail;
+              console.log("userEmailLogin login", userEmailLogin);
+             /* добавление эмейла в текущего юзера */
+              thunkAPI.dispatch(setCurrentUser(userEmailLogin));
       return res.data;
       
     } catch (error) {
@@ -324,8 +324,8 @@ const userSlise = createSlice({
           },
             setCurrentUser: (state, action) => {
                 const UserEmail = action.payload;
-                state.currentUser.push(UserEmail);
                 console.log("current user email", UserEmail);
+                state.currentUser.push(UserEmail);
             },
             setUserID: (state, action) => {
             state.UserId = action.payload;

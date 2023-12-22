@@ -18,6 +18,9 @@ export default function MainPage() {
   console.log("TOKEN IN MAIN PAGE", userToken); 
   const imagesStatus = useSelector(state => state.user.status);
 
+  const email = useSelector(state => state.user.currentUser.UserEmail);
+  console.log("EMAIL FROM MAIN PAGE", email);
+
   const images = useSelector(state => state.user.images);
 
   const dispatch = useDispatch();
@@ -25,10 +28,10 @@ export default function MainPage() {
   const error = useSelector(state => state.user.error);
 
   useEffect(() => {
-      if ((id && userToken) && imagesStatus === 'idle') {
-     dispatch(getImages({ id: id, token: userToken })) 
+      if ((id ) && imagesStatus === 'idle') {
+     dispatch(getImages({ id: id})) 
      }
-  }, [id, userToken, dispatch, imagesStatus, images]);
+  }, [id, dispatch, imagesStatus, images]);
 
   let content;
 
