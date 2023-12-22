@@ -43,7 +43,6 @@ export default function HeaderMobile() {
     <AddImageModal 
         active={modalActive} 
         setActive={setModalActive}
-        // addImage={(name, tags, image) => }
         />
         </>  );
 }

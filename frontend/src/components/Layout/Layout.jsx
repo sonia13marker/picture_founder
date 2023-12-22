@@ -5,6 +5,7 @@ import SortDropdown from "../SortDropdown/SortDropdown";
 import Footer from "../Footer/Footer";
 import { useEffect, useState } from 'react';
 import HeaderMobile from '../HeaderMobile/HeaderMobile';
+import Logo from '../Logo.jsx';
 
 export default function Layout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -24,12 +25,7 @@ export default function Layout() {
 
     <div className='header'>
       <Link to={"/"} className='header__link'>
-            <span className='header__logo'>
-                Pic
-                <p className='header__logo__p'>
-                    2
-                </p>
-            </span>
+            <Logo />
       </Link>
 
       <NavLink to="/account"

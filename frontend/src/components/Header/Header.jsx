@@ -1,6 +1,7 @@
 import './Header.scss';
 import { Link, NavLink } from 'react-router-dom';
 import AddImgBtn from '../AddImgBtn/AddImgBtn';
+import Logo from '../Logo';
 
 
 export default function Header () {
@@ -8,12 +9,7 @@ export default function Header () {
     return (
         <div className='header'>
             <Link to={"/"} className='header__link'>
-            <span className='header__logo'>
-                Pic
-                <p className='header__logo__p'>
-                    2
-                </p>
-            </span>
+                <Logo />
             </Link>
 
             <nav className='header__nav'>
@@ -38,13 +34,7 @@ export default function Header () {
 
             <span className='header__btns'>
                     <AddImgBtn></AddImgBtn>
-{/* потом сделать проверку на авторизацию,
-если юзер уже заходил в акк, то
-перенаправить на стр. ЛК 
-
-если NavLink to="/account", то срабатывают стили на fill иконки*/}
                     <NavLink to="/account" 
-                    //className='header__btns__login'
                     className={({isActive}) => isActive ? "loginBtnActive": "header__btns__login"}
                     ></NavLink>
                 </span>
