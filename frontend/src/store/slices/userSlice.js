@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setAuthStatus } from './authSlice';
 import axios from "axios";
+import { PATH_TO_SERVER } from "../../data/constants";
 
 
 /* получение картинок */
@@ -9,7 +10,7 @@ export const getImages = createAsyncThunk(
     async (payload, thunkAPI) => {
       try {
         console.log('payload from main page', payload);
-        const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image`, {
+        const res = await axios.get(`${PATH_TO_SERVER}/user/${payload.id}/image`, {
           headers: {
             Authorization: 'Bearer ' + payload.token,
           }  });
@@ -34,7 +35,7 @@ export const addUserImage = createAsyncThunk(
       // formData.append('imageTags', imageTags);
 
         console.log("res data in addImage", id, token, image, imageName, imageTags);
-        const res = await axios.post(`http://95.31.50.131/api/user/${id}/image`, { image, imageName: imageName, imageTags: imageTags}, {
+        const res = await axios.post(`${PATH_TO_SERVER}/user/${id}/image`, { image, imageName: imageName, imageTags: imageTags}, {
           headers: {
             Authorization: 'Bearer ' + token,
             'Content-Type': 'multipart/form-data'
@@ -90,7 +91,7 @@ export const addUserImage = createAsyncThunk(
       try {
         const imageID = payload.id;
         //исправила тут await axios.delete на await axios.get
-        const res = await axios.get(`http://95.31.50.131/api/user/${payload.id}/image/${imageID}`);
+        const res = await axios.get(`${PATH_TO_SERVER}/user/${payload.id}/image/${imageID}`);
         console.log("data about deleted image", res);
         //thunkAPI.dispatch(deleteImagefromPage(res));
         return res;
@@ -111,10 +112,14 @@ export const addUserImage = createAsyncThunk(
 
         const { userId, imageId, userToken, imageName, imageTags, image, isFavotite} = payload;
         console.log("change img", payload);
-        const res = await axios.put(`http://95.31.50.131/api/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: imageTags, isFavorite: isFavotite}, {
+
+        // let imageTags = tags2.split(",");
+         console.log("imageTags", imageTags)
+        
+        const res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: imageTags, isFavorite: isFavotite}, {
           headers: {
             Authorization: 'Bearer ' + userToken,
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json'
           }
         }
         );
@@ -132,7 +137,7 @@ export const addUserImage = createAsyncThunk(
       console.log("changed data about image", res);
       return res;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       const serializedError = err.toJSON();
       return thunkAPI.rejectWithValue(serializedError);
   } 
@@ -160,7 +165,7 @@ export const createUser = createAsyncThunk(
     "user/createUser",
     async (payload, thunkAPI) => {
         try {
-            const res = await axios.post('http://95.31.50.131/api/auth/regis', payload);
+            const res = await axios.post(`${PATH_TO_SERVER}/auth/regis`, payload);
             /* после отправки запроса я получаю данные: email & id,
             записываю их в переменные и передаю текущему юзеру */
 
@@ -188,7 +193,7 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.post('http://95.31.50.131/api/auth/login', payload);
+      const res = await axios.post(`${PATH_TO_SERVER}/auth/login`, payload);
       /* получаю токен юзера и сохраняю его глобально */
       const userToken = res.data.token;
       console.log("userToken IN USERSLICE", userToken);
@@ -231,7 +236,7 @@ export const updatePasswordUser = createAsyncThunk(
   "user/updatePasswordUser",
   async (payload, thunkAPI) => {
       try {
-          const res = await axios.put(`http://95.31.50.131/api/user/${payload.id}`);
+          const res = await axios.put(`${PATH_TO_SERVER}/user/${payload.id}`);
           return res.data;
       } catch (error) {
           console.log(error);
@@ -373,8 +378,8 @@ const userSlise = createSlice({
 
       builder
       .addCase(changeUserImage.fulfilled, (state, action) => {
-        let updImage = action.payload;
-        console.log("IMAGE IN updateImageInfo.fulfilled", updImage);
+        //let updImage = action.payload;
+        //console.log("IMAGE IN updateImageInfo.fulfilled", updImage);
         // state.images.push({updImage})
       } )
       // .addCase(addUserImage.rejected, (state) => {

@@ -17,14 +17,15 @@ export default function EditImageModal ({active, setActive, id, name, tags, imag
   let tagsImage = useRef();
 
    const [imageName, setImageName] = useState("");
-   const [imageTags, setImageTags] = useState("");
+   const [tags2, setImageTags] = useState("");
 
 const handleChangeName = (event) => {
   setImageName(event.target.value);
 }
 
 const handleChangeTags = (e) => {
-  setImageTags(e.target.value)
+  const data = e.target.value;
+  setImageTags(data.split(",").map( tg => tg.trim()));
 }
 
 const imageId = id;
@@ -33,11 +34,15 @@ const imageId = id;
   const saveTheDataImage = (e) => {
     e.preventDefault();
 
-    // let imageTags = tags2.split(",").map((tg) => tg.trim());
+    //console.log("tags NO CHANGE", typeof(tags2));
 
-    console.log("userId", userId, 'imageid', imageId, "userToken", userToken, "imageName", imageName, "imageTags", imageTags);
-    if (imageName || imageTags) {
-      dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: imageName, imageTags: imageTags}));
+    //let imageTags =  tags2.split(",");
+     console.log("tags2", tags2);
+     
+
+    console.log("userId", userId, 'imageid', imageId, "userToken", userToken, "imageName", imageName, "imageTags", tags2);
+    if (imageName || tags2) {
+      dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: imageName, imageTags: tags2}));
       setActive(!active);
       dispatch(getImages({ id: userId, token: userToken }));
     } else {
