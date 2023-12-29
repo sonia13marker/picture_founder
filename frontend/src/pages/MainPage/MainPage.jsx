@@ -11,8 +11,8 @@ import Loader from "../../components/Loader/Loader";
 export default function MainPage() {
 
 
-  const id = useSelector(state => state.user.UserId);
-  console.log("ID IN MAIN PAGE", id);
+  const userId = useSelector(state => state.user.UserId);
+  console.log("ID IN MAIN PAGE", userId);
 
   const userToken = useSelector(state => state.user.userToken);
   console.log("TOKEN IN MAIN PAGE", userToken); 
@@ -25,10 +25,10 @@ export default function MainPage() {
   const error = useSelector(state => state.user.error);
 
   useEffect(() => {
-      if ((id && userToken) && imagesStatus === 'idle') {
-     dispatch(getImages({ id: id, token: userToken })) 
+      if ((userId && userToken) && imagesStatus === 'idle') {
+     dispatch(getImages({ userId: userId, userToken: userToken })) 
      }
-  }, [id, userToken, dispatch, imagesStatus, images]);
+  }, [userId, userToken, dispatch, imagesStatus, images]);
 
   let content;
 
@@ -37,7 +37,7 @@ export default function MainPage() {
   } else if (imagesStatus === 'succeeded') {
    
     content = (images && images?.length !== 0) ? images.map(
-      (image) =>  <ImageCard key={image._id} imageName={image.imageName} imageTags={image.imageTags} image={image.imageHash} imageId={image._id} userId={id} userToken={userToken} isFavotite={image.isFavotite}/>
+      (image) =>  <ImageCard key={image._id} imageName={image.imageName} imageTags={image.imageTags} image={image.imageHash} imageId={image._id} userId={userId} userToken={userToken} isFavotite={image.isFavotite}/>
     ) : <EmptyTextComponent
     image={empty_icon}
     text="Тут ещё нет картинок. Пора бы их добавить"

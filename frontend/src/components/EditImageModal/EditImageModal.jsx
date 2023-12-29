@@ -55,7 +55,6 @@ const imageId = id;
       }
       setActive(!active);
       // showNotification();
-      dispatch(getImages({ id: userId, token: userToken }));
 
        
       //<CustomNotifications title="Изменения сохранены" show={() => setShow(!show)} />

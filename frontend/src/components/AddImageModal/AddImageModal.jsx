@@ -89,7 +89,6 @@ export default function AddImageModal({
       return;
     }
     setActive(!active); 
-    //await dispatch(getImages({ id, token: userToken }));
   };
 
   const saveTheChanges = (e) => {

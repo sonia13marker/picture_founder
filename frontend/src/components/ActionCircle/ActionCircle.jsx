@@ -7,20 +7,30 @@ import "./ActionCircle.scss";
 import EditImageModal from "../EditImageModal/EditImageModal";
 import ShareImageModal from "../ShareImageModal/ShareImageModal";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PATH_TO_SERVER_GETimg, PATH_TO_SERVER_getImg } from "../../data/constants";
+import { deleteUserImage } from "../../store/slices/userSlice";
 
-export default function ActionCircle({ isHover, id, name, tags, image }) {
+export default function ActionCircle({ isHover, id, name, tags, image, userToken }) {
   // console.log(dataOfImage);
   const [activeEditModal, setActiveEditModal] = useState(false);
   const [activeShareModal, setActiveShareModal] = useState(false);
   const [activeDelModal, setActiveDelModal] = useState(false);
 
+  const userId = useSelector(state => state.user.UserId);
+
   const closeDelModal = () => {
     setActiveDelModal(!activeDelModal);
   }
+  const dispatch = useDispatch();
 
-  const userId = useSelector(state => state.user.UserId);
+  const deleteImage = () => {
+    console.log("userId:", userId, "imageId:", id, "userToken:", userToken)
+    dispatch(deleteUserImage({userId: userId, imageId: id, userToken: userToken}));
+    setActiveDelModal(!activeDelModal);
+  }
+
+  
 
   return (
     <>
@@ -71,8 +81,8 @@ export default function ActionCircle({ isHover, id, name, tags, image }) {
       leftBtnName="Отмена"
       rightBtnName="Удалить навсегда"
       leftBtnAction={closeDelModal}
-      /*действие для удаления картинки 
-      rightBtnAction={}*/
+      /*действие для удаления картинки */
+      rightBtnAction={deleteImage}
       
       />
     </>

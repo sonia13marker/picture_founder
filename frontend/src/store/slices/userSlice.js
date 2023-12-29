@@ -9,10 +9,11 @@ export const getImages = createAsyncThunk(
     "user/getImages",
     async (payload, thunkAPI) => {
       try {
+        const { userId, userToken } = payload; 
         console.log('payload from main page', payload);
-        const res = await axios.get(`${PATH_TO_SERVER}/user/${payload.id}/image`, {
+        const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image`, {
           headers: {
-            Authorization: 'Bearer ' + payload.token,
+            Authorization: 'Bearer ' + userToken,
           }  });
         console.log("GET DATA", res.data.images);
         return res.data.images;
@@ -59,11 +60,13 @@ export const addUserImage = createAsyncThunk(
     "user/deleteImage",
     async (payload, thunkAPI) => {
       try {
-        const imageID = payload.id;
-        //исправила тут await axios.delete на await axios.get
-        const res = await axios.get(`${PATH_TO_SERVER}/user/${payload.id}/image/${imageID}`);
-        console.log("data about deleted image", res);
-        //thunkAPI.dispatch(deleteImagefromPage(res));
+        const { userId, imageId, userToken } = payload;
+        // const id = userId;
+        // const token = userToken;
+        console.log(userId, imageId, userToken);
+        const res = await axios.delete(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`);
+         console.log("SUCCESS deleted image", res);
+        thunkAPI.dispatch(getImages({userId}, {userToken}));
         return res;
       } catch (err) {
           console.log(err);
@@ -79,7 +82,7 @@ export const addUserImage = createAsyncThunk(
     async (payload, thunkAPI) => {
 
       try {
-
+//change  userId to id, userToken to token
         const { userId, imageId, userToken, imageName, imageTags, image, isFavotite} = payload;
         console.log("change img", payload);
 
@@ -97,6 +100,7 @@ export const addUserImage = createAsyncThunk(
         // if (isFavotite === true) {
           // console.log(isFavotite, payload)
           //thunkAPI.dispatch(setStatusMessage('update'));
+          thunkAPI.dispatch(getImages({userId}, {userToken}));
           thunkAPI.dispatch(addToFavorite(payload));
         //}
 

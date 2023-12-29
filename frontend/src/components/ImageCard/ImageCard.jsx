@@ -60,7 +60,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       <div className="layout__card__wrapper__actions">
         <ActionCircle 
         id={imageId} name={imageName} tags={imageTags} image={image}
-        isHover={isHover}/>
+        isHover={isHover} userToken={userToken}/>
       </div>
       <div className="layout__card">
         <span className="layout__card__titleWrap">
