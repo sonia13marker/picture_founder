@@ -5,7 +5,7 @@ import { env } from "../env";
 
 export default async function authUser( req: Request, resp: Response, next: NextFunction): Promise<void> {
     
-    const authData = req.cookies?.token    
+    const authData = req.headers.authorization 
     const authHeader = req.headers;
 
     console.log(`[HEADERS LOG]csome try connect \n ${JSON.stringify(authHeader)}\n`)
@@ -16,7 +16,7 @@ export default async function authUser( req: Request, resp: Response, next: Next
         return
     }
     
-    verify(authData, env.TOKEN_SECRET, (err: any)=>{
+    verify(authData.split(" ")[1], env.TOKEN_SECRET, (err: any)=>{
         if ( err ) {
             resp.json({message:"non autorizate. None valide token", detail: `${JSON.stringify(authData)}\n\n${JSON.stringify(req.body)}`}).status(403)
             return

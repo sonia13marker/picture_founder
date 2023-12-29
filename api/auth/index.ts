@@ -47,13 +47,12 @@ route.post("/login", cookieParser(), async (req: Request, resp: Response): Promi
   }
 
   const token = sign({ id: userDb[0]._id, email: userDb[0].UserEmail }, env.TOKEN_SECRET, { expiresIn: "1d" });
-  resp.cookie("token", token, {
-    httpOnly: true
-  });
+
   resp.status(200).json({
     message: "login success",
     userId: userDb[0]._id,
-    UserEmail: userDb[0].UserEmail
+    UserEmail: userDb[0].UserEmail,
+    token: token
   });
   console.log(`[LOG] user ${userDb[0].id} is login`);
 
