@@ -15,7 +15,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
 }) {
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
- console.log("tags from new add??", imageTags);
+ //console.log("tags from new add??", imageTags);
   let newTagList = imageTags
     // .split(",")
     .map((tag) => {

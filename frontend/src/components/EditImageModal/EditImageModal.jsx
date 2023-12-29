@@ -4,6 +4,7 @@ import ConfirmModalComponent from '../ConfirmModalComponent/ConfirmModalComponen
 import { useDispatch, useSelector } from 'react-redux';
 import { changeUserImage, getImages } from '../../store/slices/userSlice';
 import { PATH_TO_SERVER_GETimg } from '../../data/constants';
+import CustomNotifications from '../CustomNotifications/CustomNotifications';
 
 export default function EditImageModal ({active, setActive, id, name, tags, image}) {
       /* для модальных окон-подтверждений */
@@ -28,23 +29,36 @@ const handleChangeTags = (e) => {
   setImageTags(data.split(",").map( tg => tg.trim()));
 }
 
+const [show, setShow] = useState(false);
+
+const showNotification = () => {
+  // console.log("SAT");
+  setShow(true);
+  // return <CustomNotifications title="Изменения сохранены" show="true" />
+}
+
 const imageId = id;
 
   /*for submit */
   const saveTheDataImage = (e) => {
     e.preventDefault();
-
-    //console.log("tags NO CHANGE", typeof(tags2));
-
-    //let imageTags =  tags2.split(",");
      console.log("tags2", tags2);
-     
-
-    console.log("userId", userId, 'imageid', imageId, "userToken", userToken, "imageName", imageName, "imageTags", tags2);
+    // console.log("userId", userId, 'imageid', imageId, "userToken", userToken, "imageName", imageName, "imageTags", tags2);
     if (imageName || tags2) {
-      dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: imageName, imageTags: tags2}));
+      if (imageName) {
+        console.log('fucj', tags)
+        dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: imageName, imageTags: tags}));
+      } else if (tags2) {
+        dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: name, imageTags: tags2}));
+      } else if (imageName && tags2) {
+        dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: imageName, imageTags: tags2}));
+      }
       setActive(!active);
+      // showNotification();
       dispatch(getImages({ id: userId, token: userToken }));
+
+       
+      //<CustomNotifications title="Изменения сохранены" show={() => setShow(!show)} />
     } else {
       console.log("no changes");
     }
@@ -143,6 +157,8 @@ const imageId = id;
         // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
       />
       </div>
+
+      <CustomNotifications title="Изменения сохранены" show={show}/>
 
       </>)
 }

@@ -38,7 +38,7 @@ export const addUserImage = createAsyncThunk(
         const res = await axios.post(`${PATH_TO_SERVER}/user/${id}/image`, { image, imageName: imageName, imageTags: imageTags}, {
           headers: {
             Authorization: 'Bearer ' + token,
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'application/json'
           }
         }
         );
@@ -126,6 +126,7 @@ export const addUserImage = createAsyncThunk(
 
         // if (isFavotite === true) {
           // console.log(isFavotite, payload)
+          //thunkAPI.dispatch(setStatusMessage('update'));
           thunkAPI.dispatch(addToFavorite(payload));
         //}
 
@@ -135,10 +136,14 @@ export const addUserImage = createAsyncThunk(
         // }
       
       console.log("changed data about image", res);
+      // const succeededCode = res.status;
+      // thunkAPI.dispatch(setErrorRegis(succeededCode));
       return res;
     } catch (err) {
       console.error(err);
       const serializedError = err.toJSON();
+      // const error = err.response.status;
+      // thunkAPI.dispatch(setErrorRegis(error));
       return thunkAPI.rejectWithValue(serializedError);
   } 
   }
@@ -260,6 +265,7 @@ const userSlise = createSlice({
         images: [],
         UserId: null,
         userToken: null,
+
     },
     reducers: {
         // toggleFavorites: (state, action) => {
@@ -342,7 +348,12 @@ const userSlise = createSlice({
           },
           setUserToken: (state, action) => {
             state.userToken = action.payload;
-          }
+          },
+          // setStatusMessage: (state, action) => {
+          //   console.log('SET STATUS', action.payload);
+          //   state.status = action.payload;
+          //   console.log("status in state", state.status);
+          // }
     },
     extraReducers: (builder) => {
       builder 
@@ -377,11 +388,18 @@ const userSlise = createSlice({
       });
 
       builder
+      .addCase(changeUserImage.pending, (state, action) => {
+        state.status = 'loading'
+      })
       .addCase(changeUserImage.fulfilled, (state, action) => {
+        // state.status = 'succeeded';
         //let updImage = action.payload;
         //console.log("IMAGE IN updateImageInfo.fulfilled", updImage);
         // state.images.push({updImage})
       } )
+      .addCase(changeUserImage.rejected, (state, action) => {
+        state.status = 'failed'
+      })
       // .addCase(addUserImage.rejected, (state) => {
       //   state.isLoading = false;
       // })
@@ -392,6 +410,6 @@ const userSlise = createSlice({
 export const selectUserID = (state) => state.user.userID;
 
 
-export const { addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setErrorRegis, setCurrentUser, setUserToken } = userSlise.actions;
+export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setErrorRegis, setCurrentUser, setUserToken } = userSlise.actions;
 
 export default userSlise.reducer;
