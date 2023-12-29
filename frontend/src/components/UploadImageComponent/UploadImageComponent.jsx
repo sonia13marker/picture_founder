@@ -8,28 +8,29 @@ export default function UploadImageComponent({ file,
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    handleImageUpload(file);
+    //handleImageUpload(file);
   };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    handleImageUpload(file);
+    //handleImageUpload(file);
+    setFile(file);
   };
 
-  const handleImageUpload = (file) => {
-    const reader = new FileReader();
+  // const handleImageUpload = (file) => {
+  //   const reader = new FileReader();
 
-    reader.onload = () => {
-      setFile(reader.result);
-    };
+  //   reader.onload = () => {
+  //     setFile(reader.result);
+  //   };
 
-    reader.readAsDataURL(file);
-    const fileSize = file.size;
-    const fileType = file.type;
-    setSize(fileSize);
-    setFileType (fileType);
-    console.log("Размер файла:", fileType, fileSize);
-  };
+  //   reader.readAsDataURL(file);
+  //   const fileSize = file.size;
+  //   const fileType = file.type;
+  //   setSize(fileSize);
+  //   setFileType (fileType);
+  //   console.log("Размер файла:", fileType, fileSize);
+  // };
 
   const handleDragOver = (e) => {
     e.preventDefault();

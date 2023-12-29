@@ -21,7 +21,7 @@ export const getImages = createAsyncThunk(
       }
     }
   );
-    /* добавление картинки, когда юзер уже в своем акке */
+    /* добавление картинки */
 export const addUserImage = createAsyncThunk(
   "user/addImage",
   async (payload, thunkAPI) => {
@@ -29,57 +29,27 @@ export const addUserImage = createAsyncThunk(
 
         const { id, token, image, imageName, imageTags } = payload;
 
-      //     const formData = new FormData();
-      // formData.append('image', image);
-      // formData.append('imageName', imageName);
-      // formData.append('imageTags', imageTags);
+          const formData = new FormData();
+          formData.append('image', image.file);
+          formData.append('imageName', imageName);
+          imageTags.forEach((value) => {
+            formData.append('imageTags', value);
+          });
 
-        console.log("res data in addImage", id, token, image, imageName, imageTags);
-        const res = await axios.post(`${PATH_TO_SERVER}/user/${id}/image`, { image, imageName: imageName, imageTags: imageTags}, {
+        // console.log("res data in addImage", id, token, image, imageName, imageTags);
+        const res = await axios.post(`${PATH_TO_SERVER}/user/${id}/image`,  formData , {
           headers: {
             Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json'
+            'Content-Type': 'multipart/form-data'
           }
         }
-        );
+        ); 
       
       console.log("data about image", res);
+      thunkAPI.dispatch(getImages({id}, {token}));
       return res;
 
-        // const headers = {
-        //   Authorization: `Bearer ${token}`,
-        //   'Content-Type': 'multipart/form-data'
-        // };
-
-
-
-        // const formData = {image, imageName, imageTags };
-
-      //   const formData = new FormData();
-      // formData.append('image', image);
-      // formData.append('imageName', imageName);
-      // formData.append('imageTags', imageTags);
-
-      // console.log(formData);
-
-      // const response = await axios.post(`http://95.31.50.131/api/user/${id}/image`, formData, { headers }, );
-       // const {id, token, image, imageName, imageTags} = payload;
-        //console.log("res data in addImage", id, token, image, imageName, imageTags);
-        // console.log("payload.id", JSON.stringify(payload.id));
-        // console.log("payload.token", JSON.stringify(payload.token));
-        // console.log("payload.image", JSON.stringify(payload.image));
-        // console.log("payload.imageName", JSON.stringify(payload.imageName));
-        // console.log("payload.imageTags", JSON.stringify(payload.imageTags));
-
-
-// const res2 = await axios({ method: 'post', url: `http://95.31.50.131/api/user/${id}/image`, image, imageName, imageTags, headers: { Authorization: `Bearer ${token}` } });
-        // const res = await axios.post(`http://95.31.50.131/api/user/${payload.id}/image`,
-        //   {headers:{Authorization: `Bearer ${payload.token}`}
-        // }, payload.image, payload.imageName, payload.imageTags);
-        // console.log(res);
-        // return response.data;
       } catch (err) {
-        // return rejectWithValue(err.response.data);
         console.error(err);
       }
   }

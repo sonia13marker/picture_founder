@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserImage } from '../../store/slices/userSlice';
+import { addUserImage, getImages } from '../../store/slices/userSlice';
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 
 
@@ -55,7 +55,7 @@ export default function AddImageModal({
   const userToken = useSelector(state => state.user.userToken);
 
 
-  const submitInfoImage = (e) => {
+  const submitInfoImage = async (e) => {
     e.preventDefault();
     const imageName = nameImage.current.value;
     const tags = tagsImage.current.value;
@@ -88,7 +88,8 @@ export default function AddImageModal({
     } else {
       return;
     }
-    setActive(!active);
+    setActive(!active); 
+    //await dispatch(getImages({ id, token: userToken }));
   };
 
   const saveTheChanges = (e) => {
@@ -101,7 +102,6 @@ export default function AddImageModal({
     
     if (file && nameImage.current.value && tagsImage.current.value) {
       submitInfoImage(e);
-      
     };
   }
 
