@@ -25,7 +25,7 @@ const ImageScheme = Joi.object({
 })
 
 const ImageSchemeEdit = Joi.object({
-    imageName: Joi.string().min(2),
+    imageName: Joi.string(),
     imageTags: Joi.array().items(Joi.string()),
     isFavorite: Joi.boolean()
 })
@@ -198,7 +198,7 @@ async function imageEdit(req: Request, resp: Response) {
     if (valData.error) {
         resp.status(400);
         console.log(`[ERR] on edit image data \n ${valData.error.message}`);
-        resp.json({ message: "error on edit image" });
+        resp.json({ message: "error on edit image", detail: valData.error.message });
         return
     }
 
@@ -210,7 +210,7 @@ async function imageEdit(req: Request, resp: Response) {
         return
     }
 
-    const updatedData = Object.keys(valData.value).filter(el => valData.value[el]).reduce((s, a) => ({...s, [a]: valData.value[a],}), {});
+    const updatedData = Object.keys(valData.value).filter(el => valData.value).reduce((s, a) => ({...s, [a]: valData.value[a],}), {});
     console.log(updatedData);
 
     await db_models.ImageModel.findByIdAndUpdate(imageId, {
@@ -219,11 +219,7 @@ async function imageEdit(req: Request, resp: Response) {
 	console.log(`edit image ${valData.value.imageName}`)
     resp.json({
         message: "update image data",
-        data: {
-            imageName: valData.value.imageName,
-            imageTags: valData.value.imageTags,
-            isFavotite: valData.value.isFavorite
-        }
+        data: updatedData
     })
 }
 
