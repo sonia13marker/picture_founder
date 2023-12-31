@@ -9,7 +9,6 @@ app.use(express.json())
 
 app.use(cors());
 
-
 app.use("/api", api)
 
 app.listen( env.PORT, env.HOST_IP, async ()=>{

@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser"
 
 const route = Router()
 
-route.use("/user", cookieParser(), authUser, userRoute)
+route.use("/user", cookieParser(), /*authUser,*/ userRoute)
 route.use("/auth", cookieParser(), urlencoded({ extended: false }) ,authRoute)
 
 

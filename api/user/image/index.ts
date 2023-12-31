@@ -66,9 +66,9 @@ async function imagePost(req: Request, resp: Response) {
 
     // проверяю есть ли ошибки при валидации данных
     if (reqData.error) {
-        console.error(`[ERROR] error on upload new image \n ${reqData.error.name}`);
-        resp.status(400);
-        resp.json({ message: `[ERROR] error on upload new image \n ${reqData.error.name}` })
+        console.error(`[ERROR] error on upload new image \n ${reqData.error}`);
+        resp.status(404);
+        resp.json({ message: `[ERROR] error on upload new image \n ${reqData.error}` })
         return
     }
 
@@ -109,10 +109,16 @@ async function imagePost(req: Request, resp: Response) {
     //обновляю пользовательские данные
     console.log("update user data");
     await db_models.UserModel.updateOne({ _id: userId }, { $push: { UserImages: createdImage._id } })
-
-    //переношу изображение из временного хранилише в пользовательское
-    fs.rename(`${tmpFiles}/tmp/${imageData.originalname}`, `${tmpFiles}/save/${userId}/${hashedFile}`)
-
+    
+	try{
+    	//переношу изображение из временного хранилише в пользовательское
+    	await fs.rename(`${tmpFiles}/tmp/${imageData.originalname}`, `${tmpFiles}/save/${userId}/${hashedFile}`)
+	}
+	catch ( e ){
+		resp.json({message: "error on upload image"}).status(500)
+		console.log("error on upload image" + `\n${e}`)
+		return 
+	}
     resp.json({
         message: "image uploaded", data: {
             imageId: createdImage.id,
@@ -127,35 +133,30 @@ async function imageDelete(req: Request, resp: Response) {
     const userId = req.params.id;
     const imageId = req.params.imgId;
 
-    let hasImage;
-    try {
-        hasImage = await db_models.ImageModel.exists({ _id: imageId, ownerId: userId })
-        console.log(hasImage);
-    } catch (error) {
-        resp.json({ message: "image not found" })
-        return
-    }
-
+    let hasImage = await db_models.ImageModel.exists({ _id: imageId, ownerId: userId })
+    console.log(hasImage);
+  
     if (!hasImage) {
-        resp.json({ message: "image not found" })
+        resp.json({ message: "image not found" }).status(404)
         return
     }
 
-    const imageData = await db_models.ImageModel.findByIdAndDelete({ _id: imageId, ownerId: userId })
-    await db_models.UserModel.updateOne({ _id: userId }, { $pull: { UserImages: imageData.value?.id } })
+    const imageData = await db_models.ImageModel.findOneAndDelete({ _id: imageId, ownerId: userId })
+    await db_models.UserModel.updateOne({ _id: userId }, { $pull: { UserImages: imageData?.id } })
 
 	try {
 		
-    	await fs.rm(`${tmpFiles}/save/${userId}/${imageData.value?.imageHash}`)
+    	await fs.rm(`${tmpFiles}/save/${userId}/${imageData?.imageHash}`)
     }
     catch ( e ){
-    	resp.json({message:"error on delete image"});
-    	console.error(`[ERR] error on delete image file`);
+    	resp.json({message:"error on delete image"}).status(400);
+    	console.error(`[ERR] error on delete image file \n${e}`);
+    	return;
     }
 
     resp.json({
         message: "remove image", data: {
-            imageName: imageData.value?.imageName
+            imageName: imageData?.imageName
         }
     })
 }

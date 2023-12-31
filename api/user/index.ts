@@ -121,7 +121,7 @@ route.get("/:id/stat", hasUser, async (req: Request, resp: Response): Promise<vo
 })
 
 route.get("/:id/image", hasUser, imageRoute.imageGet)
-route.post("/:id/image", hasUser, urlencoded({ extended: false }), multer({ storage: stConf }).single("image"), imageRoute.imagePost)
+route.post("/:id/image", hasUser, urlencoded({ extended: false }), multer({ storage: stConf, limits: { fieldSize: 1000000000} }).single("image"), imageRoute.imagePost)
 route.delete("/:id/image/:imgId", hasUser, imageRoute.imageDelete)
 route.get("/:id/image/:imgId", hasUser, imageRoute.getImageFile)
 route.get("/:id/image/data/:imgId/", hasUser, imageRoute.fullImageGet)
