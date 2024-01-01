@@ -28,26 +28,28 @@ export const addUserImage = createAsyncThunk(
   async (payload, thunkAPI) => {
       try {
 
-        const { id, token, image, imageName, imageTags } = payload;
+        const { userId, userToken, image, imageName, imageTags } = payload;
 
           const formData = new FormData();
           formData.append('image', image.file);
           formData.append('imageName', imageName);
           imageTags.forEach((value) => {
-            formData.append('imageTags', value);
+            if (value.length !== 0) {
+              formData.append('imageTags', value);
+            }
           });
 
-        // console.log("res data in addImage", id, token, image, imageName, imageTags);
-        const res = await axios.post(`${PATH_TO_SERVER}/user/${id}/image`,  formData , {
+         //console.log("res data in addImage", userId, userToken, image, imageName, imageTags);
+        const res = await axios.post(`${PATH_TO_SERVER}/user/${userId}/image`,  formData , {
           headers: {
-            Authorization: 'Bearer ' + token,
+            Authorization: 'Bearer ' + userToken,
             'Content-Type': 'multipart/form-data'
           }
         }
         ); 
       
       console.log("data about image", res);
-      thunkAPI.dispatch(getImages({id}, {token}));
+      thunkAPI.dispatch(getImages({userId}, {userToken}));
       return res;
 
       } catch (err) {
@@ -61,8 +63,6 @@ export const addUserImage = createAsyncThunk(
     async (payload, thunkAPI) => {
       try {
         const { userId, imageId, userToken } = payload;
-        // const id = userId;
-        // const token = userToken;
         console.log(userId, imageId, userToken);
         const res = await axios.delete(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`);
          console.log("SUCCESS deleted image", res);
@@ -122,22 +122,6 @@ export const addUserImage = createAsyncThunk(
   } 
   }
   )
-
-  /* получение пользователя по ID */
-// export const getUser =  createAsyncThunk(
-//   "user/getUser",
-//   async (payload, thunkAPI) => {
-//     try {
-//       const userData = await axios.get(`http://95.31.50.131/api/user/${payload.id}`);
-//       return userData;
-
-//     } catch (err) {
-//       console.log(err);
-//       const serializedError = err.toJSON();
-//       return thunkAPI.rejectWithValue(serializedError);
-//     }
-//   } 
-// )
 
   /* создание (регистрация) */
 export const createUser = createAsyncThunk(

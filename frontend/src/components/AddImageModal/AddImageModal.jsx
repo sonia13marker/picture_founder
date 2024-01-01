@@ -7,17 +7,19 @@ import { addUserImage, getImages } from '../../store/slices/userSlice';
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 
 
-export default function AddImageModal({
-  active,
-  setActive,
-}) {
+export default function AddImageModal({ active, setActive }) {
   /*------работа с изображениями-----------*/
   const [file, setFile] = useState(null);
   const [size, setSize] = useState(null);
   const [fileType, setFileType] = useState(null);
   const [fileError, setFileError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [imageName, setImageName] = useState("");
   /*-------------------------*/
 
+  const handleChangeNameImage = (e) => {
+    setImageName(e.target.value);
+  }
   //отслеживание ошибок, связанных с изображениями
   useEffect(() => {
     if (size > MAX_SIZE_OF_FILE) {
@@ -35,53 +37,56 @@ export default function AddImageModal({
     }
   }, [fileType]);
 
+    /* для тегов */
+    let tagsImage = useRef();
+
   /* for cancel btn */
   const cancelBtnClick = (e) => {
-    nameImage.current.value = "";
+    setImageName("");
     tagsImage.current.value = "";
     setFile(null);
     setActive(!active);
     setConfirmModalActive(!confirmModalActive);
   };
 
-  /* для текстовых блоков */
-  let nameImage = useRef();
-  let tagsImage = useRef();
-
   /* для отправки картинки на сервер */
-
   const dispatch = useDispatch();
   const id = useSelector(state => state.user.UserId);
   const userToken = useSelector(state => state.user.userToken);
 
+  //проверка наличия имени
+  useEffect(() => {
+    if (imageName === "") {
+      setNameError("Имя является обязательным!");
+    } else {
+      setNameError("");
+    };
+  }, [imageName]);
 
+  //проверка наличия изображения
+  useEffect(() => {
+    if (!file){
+      setFileError("Изображение является обязательным!");
+    } else {
+      setFileError("");
+    };
+  },[file]);
+
+// функция добавления на страницу
   const submitInfoImage = async (e) => {
     e.preventDefault();
-    const imageName = nameImage.current.value;
     const tags = tagsImage.current.value;
     const image = {file};
 
     //преобразование строки в массив строк  
     let imageTags = tags.split(",").map((tg) => tg.trim());
-
-    //const dataOfImage = {image, imageName, imageTags};
-
-    // //функция проверки на все заполненные поля
-    // const checkTheInputsValue = () => {
-    //   if (!file && !imageName && !imageTegs) {
-    //     setFileError("Не все поля заполнены!");
-    //   } else {
-    //     setFileError("");
-    //   }
-    // } 
-
-    //функция добавления картинки на страницу 
-    if (id && userToken && image && imageName && imageTags) {
+    if (id && userToken && image && imageName && imageTags && !fileError && !nameError) {
            console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
-           dispatch(addUserImage({id: id, token: userToken, image: image, imageName:imageName, imageTags: imageTags}));
-         }
+           dispatch(addUserImage({userId: id, userToken: userToken, image: image, imageName:imageName, imageTags: imageTags}));
+         } 
 
-    nameImage.current.value = "";
+    //обнуление имеющихся значений
+    setImageName("");
     tagsImage.current.value = "";
     if (file) {
       setFile(null);
@@ -91,26 +96,28 @@ export default function AddImageModal({
     setActive(!active); 
   };
 
-  const saveTheChanges = (e) => {
-
-    checkTheFileFunc();
-
-    if ((file && nameImage.current.value) || (file && tagsImage.current.value) || (nameImage.current.value && tagsImage.current.value)) {
-      checkTheFileFunc();
-    }; 
-    
-    if (file && nameImage.current.value && tagsImage.current.value) {
-      submitInfoImage(e);
-    };
-  }
-
   const checkTheFileFunc = () => {
-    if (file || nameImage.current.value || tagsImage.current.value) {
+    if (file || imageName || tagsImage.current.value) {
       setConfirmModalActive(!confirmModalActive)
     } else {
       setActive(!active);
     }
   }
+
+  //проверка на сохранение значений для кнопки "rightBtnAction"
+  const saveTheChanges = (e) => {
+
+    checkTheFileFunc();
+
+    if ((file && imageName) || (file && tagsImage.current.value) || (imageName && tagsImage.current.value)) {
+      checkTheFileFunc();
+    }; 
+    
+    if (file && imageName && tagsImage.current.value) {
+      submitInfoImage(e);
+    };
+  }
+
   /* для модальных окон-подтверждений */
   const [confirmModalActive, setConfirmModalActive] = useState(false);
 
@@ -135,7 +142,7 @@ export default function AddImageModal({
             <UploadImageComponent
               file={file}
               setFile={setFile}
-              name={nameImage}
+              name={imageName}
               setSize={setSize}
               fileError={fileError}
               setFileError={setFileError}
@@ -155,11 +162,16 @@ export default function AddImageModal({
                     className="input modalInput"
                     type="text"
                     id="nameImg"
-                    ref={nameImage}
+                    value={imageName}
+                    onChange={handleChangeNameImage}
                     placeholder="Введите название картинки"
                     required
                   />
                 </label>
+
+                <p className='input__error'>
+                {nameError}
+            </p>
               </span>
 
               {/* отображения инпута textarea с тегами картинки */}
