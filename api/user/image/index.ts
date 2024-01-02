@@ -5,10 +5,11 @@ import cry from "crypto"
 import fs from "fs/promises"
 import path from "path"
 
+
 enum filter {
-    "NONE",
-    "UP",
-    "DOWN"
+    "NONE" = 1,
+    "UP" = 1,
+    "DOWN" = -1
 }
 
 const tmpFiles = "uploads"
@@ -40,15 +41,30 @@ async function imageGet(req: Request, resp: Response) {
         resp.json({ message: "invalid data" })
         return
     }
+    //пока по умолчанию сортировка будет по возрастанию
+    //позже будет 2 метода для просто получения и для получения с фильтром
+    const userImages = await db_models.UserModel
+        .findById(userId)
+        .populate({
+            path: "UserImages",
+            options: {
+                skip: needData.value.offset,
+                limit: 20,
+                sort: {
+                    createdAt: filter[needData.value.filter]
+                }
+            }
+        })
+        .exec()
+        .catch( ( err ) => {
+            console.log(`[ERR] error on get image\nerror detail:\n${err}`);
+            resp.setHeader('Content-Type', "application/problem+json")
+            resp.json({message: "error on get user images"}).status(500)
+        })
 
-
-
-    const userImages = await db_models.UserModel.findById(userId).populate({
-        path: "UserImages",
-        options: { skip: needData.value.offset }
-    }).exec()
     const userImagesArray = userImages?.UserImages
-	console.log(`get images from user ${userId}`)
+    if ( !userImagesArray ) return
+    console.log(`get images from user ${userId}`)
     resp.json({
         filter: needData.value.filter,
         offset: needData.value.offset,
@@ -67,7 +83,7 @@ async function imagePost(req: Request, resp: Response) {
     // проверяю есть ли ошибки при валидации данных
     if (reqData.error) {
         console.error(`[ERROR] error on upload new image \n ${reqData.error}`);
-        resp.status(404);
+        resp.status(400);
         resp.json({ message: `[ERROR] error on upload new image \n ${reqData.error}` })
         return
     }
@@ -109,16 +125,10 @@ async function imagePost(req: Request, resp: Response) {
     //обновляю пользовательские данные
     console.log("update user data");
     await db_models.UserModel.updateOne({ _id: userId }, { $push: { UserImages: createdImage._id } })
-    
-	try{
-    	//переношу изображение из временного хранилише в пользовательское
-    	await fs.rename(`${tmpFiles}/tmp/${imageData.originalname}`, `${tmpFiles}/save/${userId}/${hashedFile}`)
-	}
-	catch ( e ){
-		resp.json({message: "error on upload image"}).status(500)
-		console.log("error on upload image" + `\n${e}`)
-		return 
-	}
+
+    //переношу изображение из временного хранилише в пользовательское
+    fs.rename(`${tmpFiles}/tmp/${imageData.originalname}`, `${tmpFiles}/save/${userId}/${hashedFile}`)
+
     resp.json({
         message: "image uploaded", data: {
             imageId: createdImage.id,
@@ -133,30 +143,35 @@ async function imageDelete(req: Request, resp: Response) {
     const userId = req.params.id;
     const imageId = req.params.imgId;
 
-    let hasImage = await db_models.ImageModel.exists({ _id: imageId, ownerId: userId })
-    console.log(hasImage);
-  
-    if (!hasImage) {
-        resp.json({ message: "image not found" }).status(404)
+    let hasImage;
+    try {
+        hasImage = await db_models.ImageModel.exists({ _id: imageId, ownerId: userId })
+        console.log(hasImage);
+    } catch (error) {
+        resp.json({ message: "image not found" })
         return
     }
 
-    const imageData = await db_models.ImageModel.findOneAndDelete({ _id: imageId, ownerId: userId })
-    await db_models.UserModel.updateOne({ _id: userId }, { $pull: { UserImages: imageData?.id } })
-
-	try {
-		
-    	await fs.rm(`${tmpFiles}/save/${userId}/${imageData?.imageHash}`)
+    if (!hasImage) {
+        resp.json({ message: "image not found" })
+        return
     }
-    catch ( e ){
-    	resp.json({message:"error on delete image"}).status(400);
-    	console.error(`[ERR] error on delete image file \n${e}`);
-    	return;
+
+    const imageData = await db_models.ImageModel.findByIdAndDelete({ _id: imageId, ownerId: userId })
+    await db_models.UserModel.updateOne({ _id: userId }, { $pull: { UserImages: imageData.value?.id } })
+
+    try {
+
+        await fs.rm(`${tmpFiles}/save/${userId}/${imageData.value?.imageHash}`)
+    }
+    catch (e) {
+        resp.json({ message: "error on delete image" });
+        console.error(`[ERR] error on delete image file`);
     }
 
     resp.json({
         message: "remove image", data: {
-            imageName: imageData?.imageName
+            imageName: imageData.value?.imageName
         }
     })
 }
@@ -181,7 +196,7 @@ async function fullImageGet(req: Request, resp: Response) {
     }
 
     const imageData = await db_models.ImageModel.find({ _id: imageId, ownerId: userId })
-	console.log(`get full image data. image ${imageData[0]?.imageOrgName}`)
+    console.log(`get full image data. image ${imageData[0]?.imageOrgName}`)
 
     resp.json({
         ...imageData
@@ -194,7 +209,7 @@ async function imageEdit(req: Request, resp: Response) {
     const valData = Object.assign(ImageSchemeEdit.validate(req.body))
 
     console.log(valData);
-    
+
 
     if (valData.error) {
         resp.status(400);
@@ -204,20 +219,20 @@ async function imageEdit(req: Request, resp: Response) {
     }
 
     const hasImage = await db_models.ImageModel.exists({ _id: imageId });
-    
+
     if (!hasImage) {
         resp.status(400)
         resp.json({ message: "image not found" })
         return
     }
 
-    const updatedData = Object.keys(valData.value).filter(el => valData.value).reduce((s, a) => ({...s, [a]: valData.value[a],}), {});
+    const updatedData = Object.keys(valData.value).filter(el => valData.value).reduce((s, a) => ({ ...s, [a]: valData.value[a], }), {});
     console.log(updatedData);
 
     await db_models.ImageModel.findByIdAndUpdate(imageId, {
         $set: updatedData
     })
-	console.log(`edit image ${valData.value.imageName}`)
+    console.log(`edit image ${valData.value.imageName}`)
     resp.json({
         message: "update image data",
         data: updatedData
@@ -225,34 +240,34 @@ async function imageEdit(req: Request, resp: Response) {
 }
 
 
-async function getImageFile( req: Request, resp: Response ) {
+async function getImageFile(req: Request, resp: Response) {
 
 
     const imageId = req.params.imgId;
     const imageDB = await db_models.ImageModel.findById(imageId).catch(err => {
-        resp.json({message: "image not found"}).status(404)
+        resp.json({ message: "image not found" }).status(404)
     });
 
     console.log(req.body);
-    
-    
+
+
     const imagePath = path.resolve(`uploads/save/${imageDB?.ownerId}/${imageDB?.imageHash}`)
     const tmpPath = path.resolve(`uploads/tmp`)
 
     try {
-    	await fs.copyFile(imagePath, `${tmpPath}/${imageDB?.imageOrgName}`)
+        await fs.copyFile(imagePath, `${tmpPath}/${imageDB?.imageOrgName}`)
     }
-    catch(e){
-    	resp.json({message: "error on download image"}).status(505)
-    	return
+    catch (e) {
+        resp.json({ message: "error on download image" }).status(505)
+        return
     }
 
     console.log(`[LOG] send image for user ${imageDB?.ownerId}`);
-    
-	console.log(`get image[file] ${imageDB?.imageOrgName}`)
+
+    console.log(`get image[file] ${imageDB?.imageOrgName}`)
     resp.sendFile(`${tmpPath}/${imageDB?.imageOrgName}`)
     fs.rm(`${tmpPath}/${imageDB?.imageOrgName}`)
 
 }
 
-export { imageGet, imagePost, imageDelete, fullImageGet, imageEdit, getImageFile}
+export { imageGet, imagePost, imageDelete, fullImageGet, imageEdit, getImageFile }
