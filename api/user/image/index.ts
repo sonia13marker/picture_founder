@@ -16,7 +16,8 @@ const tmpFiles = "uploads"
 
 const imagesGetScheme = Joi.object({
     filter: Joi.string().valid(...Object.values(filter)).default("NONE"),
-    offset: Joi.number().default(0)
+    offset: Joi.number().default(0),
+    favorite: Joi.boolean().default(null)
 })
 
 const ImageScheme = Joi.object({
@@ -41,9 +42,60 @@ async function imageGet(req: Request, resp: Response) {
         resp.json({ message: "invalid data" })
         return
     }
+    console.log(needData.value);
+    
     //пока по умолчанию сортировка будет по возрастанию
     //позже будет 2 метода для просто получения и для получения с фильтром
-    const userImages = await db_models.UserModel
+    let userImages;
+    //максимально ужасная вещь
+    if ( needData.value.favorite === false ){
+        userImages = await db_models.UserModel
+        .findById(userId)
+        .populate({
+            path: "UserImages",
+            options: {
+                skip: needData.value.offset,
+                limit: 20,
+                sort: {
+                    createdAt: filter[needData.value.filter]
+                }
+            },
+            match: {
+                isFavorite: false
+            }
+        })
+        .exec()
+        .catch((err) => {
+            console.log(`[ERR] error on get image\nerror detail:\n${err}`);
+            resp.setHeader('Content-Type', "application/problem+json")
+            resp.json({ message: "error on get user images" }).status(500)
+        })
+    }
+    else if ( needData.value.favorite === true ){
+        userImages = await db_models.UserModel
+        .findOne({_id: userId})
+        .populate({
+            path: "UserImages",
+            options: {
+                skip: needData.value.offset,
+                limit: 20,
+                sort: {
+                    createdAt: filter[needData.value.filter]
+                }
+            },
+            match: {
+                isFavorite: true
+            }
+        })
+        .exec()
+        .catch((err) => {
+            console.log(`[ERR] error on get image\nerror detail:\n${err}`);
+            resp.setHeader('Content-Type', "application/problem+json")
+            resp.json({ message: "error on get user images" }).status(500)
+        })
+    }
+    else {
+        userImages = await db_models.UserModel
         .findById(userId)
         .populate({
             path: "UserImages",
@@ -56,14 +108,15 @@ async function imageGet(req: Request, resp: Response) {
             }
         })
         .exec()
-        .catch( ( err ) => {
+        .catch((err) => {
             console.log(`[ERR] error on get image\nerror detail:\n${err}`);
             resp.setHeader('Content-Type', "application/problem+json")
-            resp.json({message: "error on get user images"}).status(500)
+            resp.json({ message: "error on get user images" }).status(500)
         })
+    }
 
     const userImagesArray = userImages?.UserImages
-    if ( !userImagesArray ) return
+    if (!userImagesArray) return
     console.log(`get images from user ${userId}`)
     resp.json({
         filter: needData.value.filter,
