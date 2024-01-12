@@ -78,8 +78,22 @@ export default function AddImageModal({ active, setActive }) {
     const tags = tagsImage.current.value;
     const image = {file};
 
+   // let imageTags = [];
+
+    // if (tags.length === 1) {
+    //   console.log("EWADSDCSDDS")
+    //   imageTags = [tags];  
+    // }  else {
+    //   imageTags = tags.split(",").map((tg) => tg.trim());
+    // } 
+  //  if (tags.includes(",")) {
+     let imageTags = tags.split(",").map((tg) => tg.trim());
+    // } else {
+    //   imageTags.push(tags.trim());
+    // }
+
     //преобразование строки в массив строк  
-    let imageTags = tags.split(",").map((tg) => tg.trim());
+    
     if (id && userToken && image && imageName && imageTags && !fileError && !nameError) {
            console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
            dispatch(addUserImage({userId: id, userToken: userToken, image: image, imageName:imageName, imageTags: imageTags}));

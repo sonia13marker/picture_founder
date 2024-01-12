@@ -1,45 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import "./UploadImageComponent.scss";
 import add_img from "../../images/add_img.svg";
 import { ACCEPT_FILE_TYPE } from "../../data/constants";
 
 export default function UploadImageComponent({ file,
     setFile, name, setSize, fileError, setFileError, setFileType }) {
+
+      /*for preview file */
+      const [previewFile, setPreviewFile] = useState(null);
+
+      /*for classnames */
+      const [isDragOver, setIsDragOver] = useState(false);
+
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    //handleImageUpload(file);
+    handleImageUpload(file);
   };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    //handleImageUpload(file);
-    setFile(file);
+    handleImageUpload(file);
   };
 
-  // const handleImageUpload = (file) => {
-  //   const reader = new FileReader();
+  const handleImageUpload = (file) => {
+    const reader = new FileReader();
 
-  //   reader.onload = () => {
-  //     setFile(reader.result);
-  //   };
+    reader.onload = () => {
+      setPreviewFile(reader.result)
+      setFile(file);
+    };
 
-  //   reader.readAsDataURL(file);
-  //   const fileSize = file.size;
-  //   const fileType = file.type;
-  //   setSize(fileSize);
-  //   setFileType (fileType);
-  //   console.log("Размер файла:", fileType, fileSize);
-  // };
+    reader.readAsDataURL(file);
+    const fileSize = file.size;
+    const fileType = file.type;
+    setSize(fileSize);
+    setFileType (fileType);
+  };
 
   const handleDragOver = (e) => {
     e.preventDefault();
+    setIsDragOver(true);
   };
 
   /* for delete btn on hovered image */
   const deleteBtnClick = () => {
     setFile(null);
     setFileError("");
+    setIsDragOver(false);
   };
 
   return (
@@ -49,9 +57,10 @@ export default function UploadImageComponent({ file,
         {/*блок с добавлением картинки drag&drop */}
 
         <div
-          className="addBlock"
+          className={ isDragOver ? "addBlock active" : "addBlock no_active"}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
+          draggable="true"
         >
           {file ? (
             <>
@@ -64,7 +73,7 @@ export default function UploadImageComponent({ file,
                 </button>
                 <img
                   className="addBlock__wrapper__image"
-                  src={file}
+                  src={previewFile}
                   alt={name}
                 />
               </div>
