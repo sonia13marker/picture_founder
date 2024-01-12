@@ -33,26 +33,11 @@ export const addUserImage = createAsyncThunk(
           const formData = new FormData();
           formData.append('image', image.file);
           formData.append('imageName', imageName);
-          // imageTags.forEach((value) => {
-          //   if (value.length !== 0) {
-          //     formData.append('imageTags', value);
-          //   } 
-          //   // else if (value.length === 1) {
-          //   //   console.log("HELL")
-          //   //   formData.append('imageTags', JSON.stringify(value));
-          //   // }
-          // });
-          if (imageTags.length === 1) {
-            formData.append("imageTags", imageTags[0]);
-          } else {
-            imageTags.forEach((value) => {
-              if (value.length !== 0) {
-                formData.append("imageTags", value);
-              }
-            });
-          }
-
-         //console.log("res data in addImage", userId, userToken, image, imageName, imageTags);
+          imageTags.forEach((value) => {
+            if (value.length !== 0) {
+              formData.append('imageTags', value);
+            } 
+          });
         const res = await axios.post(`${PATH_TO_SERVER}/user/${userId}/image`,  formData , {
           headers: {
             Authorization: 'Bearer ' + userToken,

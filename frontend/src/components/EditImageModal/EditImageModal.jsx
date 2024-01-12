@@ -42,8 +42,8 @@ const imageId = id;
   /*for submit */
   const saveTheDataImage = (e) => {
     e.preventDefault();
-     console.log("tags2", tags2);
-    // console.log("userId", userId, 'imageid', imageId, "userToken", userToken, "imageName", imageName, "imageTags", tags2);
+    //тут идет проверка на изменяемое значение, и в зависимости от его кол-ва
+    //отправляется соответствующий запрос
     if (imageName || tags2) {
       if (imageName) {
         console.log('fucj', tags)
@@ -53,19 +53,35 @@ const imageId = id;
       } else if (imageName && tags2) {
         dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: imageName, imageTags: tags2}));
       }
-      setActive(!active);
-      // showNotification();
+      //setActive(!active);
 
-       
-      //<CustomNotifications title="Изменения сохранены" show={() => setShow(!show)} />
     } else {
       console.log("no changes");
     }
 
   }
 
+  //проверка на сохранение значений для кнопки "rightBtnAction"
+  const saveTheChanges = (e) => {
+    saveTheDataImage(e);
+  }
+
+  const showConfirmModal = () => {
+    console.log(imageName === "", tags2 === "", name, imageName, tags, tags2);
+    if (imageName === "" && tags2 === "") {
+      setActive(!active);
+    }
+    else 
+    {
+      setConfirmModalActive(!confirmModalActive);
+    }
+  }
+
   /* for cancel btn */
   const cancelBtnClick = () => {
+    //при отмене изменений отправляем запрос на изменние с тегами, которые были до этого
+    //setImageTags(tags);
+    dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: name, imageTags: tags}));
     setActive(!active);
     setConfirmModalActive(!confirmModalActive);
   }
@@ -76,7 +92,7 @@ const imageId = id;
         >
           <span className="modal__content__head">
             <h3 className="modal__content__head__h3">Редактировать картинку</h3>
-            {/* тут идет обычкновенное закрытие текущего окна
+            {/* тут идет обыкновенное закрытие текущего окна
           с сохранением картинки*/}
             <span
               className="modal__content__head__img"
@@ -91,14 +107,11 @@ const imageId = id;
                 <img className='modal__content__body__imgBlock__img' src={`${PATH_TO_SERVER_GETimg}/${userId}/image/${imageId}`} alt={name} />
             </span>
             </div>
-
-            
-
             {/*блок с инфой о картинке - название и теги,
                     плюс кнопки действия */}
-            <form
+            <div
               className="modal__content__body__infoBlock"
-              onSubmit={saveTheDataImage}
+              //onSubmit={saveTheDataImage}
             >
               {/* отображения инпута с названием картинки */}
               <span className="input__wrapper">
@@ -132,17 +145,18 @@ const imageId = id;
                 <button
                   className="modal__content__body__infoBlock__wrapper__outlineBtn"
                   // onClick={cancelBtnClick}
-                  onClick={() => setConfirmModalActive(!confirmModalActive)}
+                  onClick={showConfirmModal}
                 >
                   Отмена
                 </button>
 
                 <button type='submit'
-                className="modal__content__body__infoBlock__wrapper__fillBtn">
+                className="modal__content__body__infoBlock__wrapper__fillBtn"
+                onClick={saveTheDataImage}>
                 Сохранить
                 </button>
               </span>
-            </form>
+            </div>
           </span>
         </div>
         <ConfirmModalComponent
@@ -153,7 +167,7 @@ const imageId = id;
         leftBtnName="Отмена изменений"
         rightBtnName="Сохранить изменения"
         leftBtnAction={cancelBtnClick}
-        // будущее сохранение картинки, которое переходит к закрыванию окна?? rightBtnAction={""}
+        rightBtnAction={saveTheChanges}
       />
       </div>
 

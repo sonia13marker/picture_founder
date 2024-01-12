@@ -5,7 +5,7 @@ export default function CustomNotifications ({title, show}) {
 
     const suc = useSelector(state => state.user.error);
     
-    console.log("title", title, "status state", suc);
+   // console.log("title", title, "status state", suc);
     let content;
 
     if (suc === 200) {
