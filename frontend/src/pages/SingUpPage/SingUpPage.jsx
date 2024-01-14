@@ -5,7 +5,7 @@ import { useEffect, useState, useReducer } from "react";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser, createUserAction } from "../../store/slices/userSlice";
+import { createUser, createUserAction, setError } from "../../store/slices/userSlice";
 import Logo from "../../components/Logo";
 import Loader from "../../components/Loader/Loader";
 
@@ -77,24 +77,65 @@ const [errorVerMessage, setErrorVerMessage] = useState("");
 /* for submit button */
 const dispatch = useDispatch();
 const getError = useSelector(state => state.user.error);
+const currentUserId = useSelector(state => state.user.UserId)
 
 
 console.log("getError", getError);
-const handleSubmit = (event) => {
+const handleSubmit = async (event) => {
   event.preventDefault();
 
-  if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && SingupPassword && SingUppasswordVerValue) {
-     dispatch(createUser({SingupEmail, SingupPassword}));
-    console.log("chto", getError !== 200, getError)
-    if ((getError !== 200) && (getError === null)) {
-      setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
-    } else {
-      nextPage();
+   //checkTheUser();
 
-    }
+  if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && SingupPassword && SingUppasswordVerValue && getError === null) {
+    await dispatch(createUser({SingupEmail, SingupPassword}));
+
+     if (getError === null) {
+      nextPage();
+     }
+    // console.log("chto", getError !== 200, getError)
+    // if ((getError !== 200) && (getError === null)) {
+    //   setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
+    // } else {
+    //   nextPage();
+
+    // }
   }
 
 }
+
+//новая проверка на зареганного юзера
+// const checkTheUser = () => {
+//   console.log("error in singup page", getError);
+//   if ((getError !== null) && (getError !== 200)) {
+//     console.log("verification for user");
+//     setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
+//     dispatch(setError(null));
+//   } 
+  // else if (currentUserId === null) {
+  //   console.log("stop! it's nothing")
+  // }
+  // else {
+  //   nextPage();
+  // }
+//}
+
+// useEffect(() => {
+//   console.log("error in singup page", getError);
+//   if ((getError !== null) && (getError !== 200)) {
+//     console.log("verification for user");
+//     setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
+//     //console.log(errorMessageEmail);
+//    // dispatch(setError(null)); 
+//   }
+// }, [getError])
+
+useEffect(() => {
+  console.log("error in signup page", getError);
+  if (getError === 400) {
+    setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
+  }
+  //dispatch(setError(null)); 
+}, [getError, errorMessageEmail]);
 
 const checkTheButton = () => {
   setChecked(!checked);
@@ -107,7 +148,7 @@ const checkTheButton = () => {
 
 // useEffect(() => {
 //   if ((getError !== 200) && (getError === null) && checked === true) {
-//     setChecked(!checked);
+//     setChecked(false);
 //   }
 // }, [checked, getError])
 

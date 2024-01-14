@@ -144,7 +144,7 @@ export const createUser = createAsyncThunk(
         } catch (err) {
             const errCode = err.response.status;
             thunkAPI.dispatch(setError(errCode));
-            console.log(err);
+            console.error(err);
             // const serializedError = err.toJSON();
             // return thunkAPI.rejectWithValue(serializedError);
         }
@@ -312,8 +312,14 @@ const userSlise = createSlice({
             state.UserId = action.payload;
           },
           setError: (state, action) => {
-            state.error = action.payload;
-            console.log("err in state", state.error);
+            const currError = action.payload;
+
+            if (currError !== 200 || currError !== null) {
+              state.error = currError;
+            }
+            //state.error = action.payload;
+            //setStatus("failed");
+            console.log("err in state", currError);
           },
           setUserToken: (state, action) => {
             state.userToken = action.payload;
