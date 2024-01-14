@@ -28,8 +28,8 @@ export default function LoginPage () {
 
         /* for local storage */
       if (checked) { 
-        localStorage.setItem("username", UserEmail);
-        localStorage.setItem("password", UserPassword);
+        localStorage.setItem("username", LoginEmail);
+        localStorage.setItem("password", LoginPassword);
 
         const username = localStorage.getItem("username");
            const password = localStorage.getItem("password");
@@ -40,35 +40,35 @@ export default function LoginPage () {
         } else console.log("Данные пользователя не найдены");
       }
 
-        if (UserEmail && UserPassword && errorMessageEmail === "" && errorMessagePassword === "") {
+        if (LoginEmail && LoginPassword && errorMessageEmail === "" && errorMessagePassword === "") {
           goToMainPage();
         }
 
-        dispatch(loginUser({UserEmail, UserPassword}));
-        console.log("DATA FROM LOGIN PAGE:", UserEmail, UserPassword)
+        dispatch(loginUser({LoginEmail, LoginPassword}));
+        console.log("DATA FROM LOGIN PAGE:", LoginEmail, LoginPassword)
     }
 const goToMainPage = () => {
   navigate('/main');
 }
     /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
-const [UserEmail, setLoginEmail] = useState("");
+const [LoginEmail, setLoginEmail] = useState("");
 const handleChangeEmail = (event) => {
   setLoginEmail(event.target.value);
 }
 useEffect(() => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  if (UserEmail.match(emailRegex)) {
+  if (LoginEmail.match(emailRegex)) {
     setErrorMessageEmail("");
   } else {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     console.log("invalid email");
   };
-}, [UserEmail]);
+}, [LoginEmail]);
 
 /*for password input */
-const [UserPassword, setPassword] = useState("");
+const [LoginPassword, setPassword] = useState("");
 const [errorMessagePassword, setErrorMessagePassword] = useState("");
 const handleChangePassword = (event) => {
   setPassword(event.target.value);
@@ -76,17 +76,17 @@ const handleChangePassword = (event) => {
 useEffect(() => {
   //сделать проверку на пароль, чтобы он совпадал с тем, 
   //который был записан при регистрации
-  // if (UserPassword !== UserPassword) {
+  // if (LoginPassword !== LoginPassword) {
   //   setErrorMessagePassword("Введён неверный пароль!")
   // }
 
   //проверка на наличие пароля
-  if (UserPassword === "") {
+  if (LoginPassword === "") {
     setErrorMessagePassword("Пароль не введён!")
   } else {
     setErrorMessagePassword("")
   }
-}, [UserPassword])
+}, [LoginPassword])
 const [open, setOpen] = useState(true);
 const [hidden, setHidden] = useState(true);
 const selectIcon = () => {
@@ -134,8 +134,9 @@ useEffect(() => {
           className="input__auth"
           type="email"
           id="login_email"
+          name='login_email'
           placeholder="Введите электронную почту"
-          value={UserEmail}
+          value={LoginEmail}
           onChange={handleChangeEmail}
         />
       </label>
@@ -154,9 +155,11 @@ useEffect(() => {
           className="input__auth password"
           type={hidden ? "password" : "text"}
           id="login_password"
+          name='login_password'
           onChange={handleChangePassword}
           placeholder="Введите пароль"
-          value={UserPassword}
+          value={LoginPassword}
+          spellCheck="false"
         />
         {/*пока открыт глаз - пароль не видно */}
        {
@@ -182,6 +185,7 @@ useEffect(() => {
         <input type="checkbox" 
         onChange={checkedFunc}
         id="login_checkbox"
+        name="login_checkbox"
        />
           <label
             htmlFor="login_checkbox"

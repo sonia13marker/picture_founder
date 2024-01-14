@@ -5,7 +5,7 @@ import { useState } from "react";
 import {useNavigate, Link, NavLink} from "react-router-dom";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserID, updatePasswordUser } from "../../store/slices/userSlice";
+import { setCurrentUser, setStatus, setUserID, updatePasswordUser } from "../../store/slices/userSlice";
 
 export default function PersonalAccountPage() {
 
@@ -15,7 +15,7 @@ export default function PersonalAccountPage() {
   const currentUserEmail = useSelector(state => state.user.currentUser.UserEmail);
   
   /*for password inputs */
-  const [passwordValue, setPasswordValue] = useState("");
+  const [PerAccPasswordValue, setPasswordValue] = useState("");
   const handleChangePassword = (event) => {
     setPasswordValue(event.target.value);
   };
@@ -26,7 +26,7 @@ export default function PersonalAccountPage() {
     setHidden(!hidden);
   };
   /*88888888888888888888888*/
-  const [passwordVerValue, setPasswordVerValue] = useState("");
+  const [PerAccPasswordVerValue, setPasswordVerValue] = useState("");
   const handleChangeVerPassword = (event) => {
     setPasswordVerValue(event.target.value);
   };
@@ -68,20 +68,20 @@ export default function PersonalAccountPage() {
     if (
       errorMessage === "" &&
       errorVerMessage === "" &&
-      passwordValue &&
-      passwordVerValue
+      PerAccPasswordValue &&
+      PerAccPasswordVerValue
     ) {
-      console.log("success NEW password ", passwordValue);
-      console.log("success NEW verify password ", passwordVerValue);
+      console.log("success NEW password ", PerAccPasswordValue);
+      console.log("success NEW verify password ", PerAccPasswordVerValue);
       console.log("success change password");
-      dispatch(updatePasswordUser(passwordValue));
+      dispatch(updatePasswordUser(PerAccPasswordValue));
     }
   };
 
   const checkTheChangePassword =
     errorMessage !== "" ||
     errorVerMessage !== "" ||
-    (passwordValue === "" && passwordVerValue === "");
+    (PerAccPasswordValue === "" && PerAccPasswordVerValue === "");
 
   /* for confirm modals */
   const [changePassModalActive, setChangePassModalActive] = useState(false);
@@ -103,6 +103,8 @@ export default function PersonalAccountPage() {
   const navigate = useNavigate();
   const goToLogin = () => {
     dispatch(setUserID(null));
+    dispatch(setCurrentUser(null));
+    dispatch(setStatus('idle'));
     navigate("/login", { replace: true });
   };
 
@@ -124,6 +126,7 @@ export default function PersonalAccountPage() {
                   className="input__auth"
                   type="email"
                   id="personalAcc_email"
+                  name="personalAcc_email"
                   defaultValue={currentUserEmail || ""}
                   readOnly
                 />
@@ -170,9 +173,10 @@ export default function PersonalAccountPage() {
                     className="input__auth password"
                     type={hidden ? "password" : "text"}
                     id="personalAcc_password"
+                    name="personalAcc_password"
                     onChange={handleChangePassword}
                     placeholder="Введите новый пароль"
-                    value={passwordValue}
+                    value={PerAccPasswordValue}
                   />
                   {/*пока открыт глаз - пароль не видно */}
                   {open ? (
@@ -200,9 +204,10 @@ export default function PersonalAccountPage() {
                     className="input__auth password"
                     type={isHidden ? "password" : "text"}
                     id="personalAcc_passwordVerify"
+                    name="personalAcc_passwordVerify"
                     onChange={handleChangeVerPassword}
                     placeholder="Введите новый пароль ещё раз"
-                    value={passwordVerValue}
+                    value={PerAccPasswordVerValue}
                   />
                   {/*пока открыт глаз - пароль не видно */}
                   {isClose ? (

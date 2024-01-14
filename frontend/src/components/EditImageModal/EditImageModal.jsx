@@ -4,7 +4,6 @@ import ConfirmModalComponent from '../ConfirmModalComponent/ConfirmModalComponen
 import { useDispatch, useSelector } from 'react-redux';
 import { changeUserImage, getImages, showNotification } from '../../store/slices/userSlice';
 import { PATH_TO_SERVER_GETimg } from '../../data/constants';
-import CustomNotifications from '../CustomNotifications/CustomNotifications';
 
 export default function EditImageModal ({active, setActive, id, name, tags, image}) {
       /* для модальных окон-подтверждений */
@@ -29,13 +28,6 @@ const handleChangeTags = (e) => {
   setImageTags(data.split(",").map( tg => tg.trim()));
 }
 
-const [show, setShow] = useState(false);
-
-// const showNotification = () => {
-//   // console.log("SAT");
-//   setShow(true);
-//   // return <CustomNotifications title="Изменения сохранены" show="true" />
-// }
 
 const imageId = id;
 
@@ -176,8 +168,6 @@ const imageId = id;
         rightBtnAction={saveTheChanges}
       />
       </div>
-
-      <CustomNotifications title="Изменения сохранены" show={show}/>
 
       </>)
 }

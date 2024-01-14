@@ -138,14 +138,12 @@ export const createUser = createAsyncThunk(
              console.log("UserID", UserID);
             /* добавление id текущего юзера */
             thunkAPI.dispatch(setUserID(UserID));
-            thunkAPI.dispatch(setErrorRegis(null));
+            thunkAPI.dispatch(setError(null));
             console.log(res);
             return res; 
-            
-            
         } catch (err) {
             const errCode = err.response.status;
-            thunkAPI.dispatch(setErrorRegis(errCode));
+            thunkAPI.dispatch(setError(errCode));
             console.log(err);
             // const serializedError = err.toJSON();
             // return thunkAPI.rejectWithValue(serializedError);
@@ -176,7 +174,8 @@ export const loginUser = createAsyncThunk(
       return res.data;
       
     } catch (error) {
-      console.log(error)
+      console.error(error)
+      //const serializedError = error.toJSON();
       const serializedError = error.toJSON();
       return thunkAPI.rejectWithValue(serializedError);
     }
@@ -295,19 +294,32 @@ const userSlise = createSlice({
             }
           },
             setCurrentUser: (state, action) => {
-                const UserEmail = action.payload;
-                console.log("current user email", UserEmail);
-                state.currentUser.push(UserEmail);
+                //const UserEmail = action.payload;
+                const userData = action.payload;
+                console.log("USER DATA IN ACTION", userData);
+                console.log("NOW CURRENT USER EMPTY", userData === null)
+                //console.log("current user email", UserEmail);
+                
+
+                if (userData === null) {
+                 
+                  state.currentUser = [];
+                } else {
+                  state.currentUser.push(userData);
+                }
             },
             setUserID: (state, action) => {
             state.UserId = action.payload;
           },
-          setErrorRegis: (state, action) => {
+          setError: (state, action) => {
             state.error = action.payload;
             console.log("err in state", state.error);
           },
           setUserToken: (state, action) => {
             state.userToken = action.payload;
+          },
+          setStatus: (state, action) => {
+            state.status = action.payload;
           },
           showNotification: (state, action) => {
             let newStirng = action.payload;
@@ -328,6 +340,7 @@ const userSlise = createSlice({
           // }
     },
     extraReducers: (builder) => {
+      //получение изображений - getImages
       builder 
       .addCase(getImages.pending, (state, action) => {
         state.status = 'loading'
@@ -340,11 +353,13 @@ const userSlise = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       });
+      //регистрация - createUser
        builder
        .addCase(createUser.pending, (state, action) => {
         state.status = 'loading'
       })
        .addCase(createUser.fulfilled, (state, { payload }) => {
+        state.status = 'succeeded'
         addCurrentUser(state, { payload });
         setAuthStatus(true);
       })
@@ -352,20 +367,30 @@ const userSlise = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       });
+      //вход в акк - loginUser
         builder
+        .addCase(loginUser.pending, (state, action) => {
+          //state.status = 'loading'
+        })
         .addCase(loginUser.fulfilled, (state, { payload }) => {
+           //state.status = 'succeeded'
             addCurrentUser(state, { payload });
             setAuthStatus(true); 
-    });
+    })
+    .addCase(loginUser.rejected, (state, action) => {
+      state.status = 'failed'
+        state.error = action.error.message
+});
+//обновление пароля - updatePasswordUser
         builder
         .addCase(updatePasswordUser.fulfilled, addCurrentUser);
-
+//добавление картинки - addUserImage
       builder
       .addCase(addUserImage.fulfilled, (state, action) => {
         let image = action.payload;
         console.log("IMAGE IN addUserImage.fulfilled",image)
       });
-
+// изменение картинки - changeUserImage
       builder
       .addCase(changeUserImage.pending, (state, action) => {
         state.status = 'loading'
@@ -389,6 +414,6 @@ const userSlise = createSlice({
 export const selectUserID = (state) => state.user.userID;
 
 
-export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setErrorRegis, setCurrentUser, setUserToken, showNotification } = userSlise.actions;
+export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setError, setCurrentUser, setUserToken, showNotification, setStatus } = userSlise.actions;
 
 export default userSlise.reducer;

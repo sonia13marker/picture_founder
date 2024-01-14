@@ -7,10 +7,12 @@ import CloseEyeIcon from "../../components/CloseEyeIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser, createUserAction } from "../../store/slices/userSlice";
 import Logo from "../../components/Logo";
+import Loader from "../../components/Loader/Loader";
 
 export default function SingUpPage() {
 
-const [checked, checkedFunc] = useReducer(checked => !checked, false);
+//const [checked, checkedFunc] = useReducer(checked => !checked, false);
+const [checked, setChecked] = useState(false);
 
 let navigate = useNavigate();
 const nextPage = () => {
@@ -19,23 +21,23 @@ const nextPage = () => {
 
 /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
-const [UserEmail, setEmail] = useState("");
+const [SingupEmail, setEmail] = useState("");
 const handleChangeEmail = (event) => {
   setEmail(event.target.value);
 }
 useEffect(() => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  if (UserEmail.match(emailRegex)) {
+  if (SingupEmail.match(emailRegex)) {
     setErrorMessageEmail("");
   } else {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     // console.log("invalid email");
   };
-}, [UserEmail]);
+}, [SingupEmail]);
 
 /*for first password input */
-const [UserPassword, setPasswordValue] = useState("");
+const [SingupPassword, setPasswordValue] = useState("");
 const handleChangePassword = (event) => {
   setPasswordValue(event.target.value);
 }
@@ -47,7 +49,7 @@ const selectIcon = () => {
 }
 
 /*for second password input - verify*/
-const [passwordVerValue, setPasswordVerValue] = useState("");
+const [SingUppasswordVerValue, setPasswordVerValue] = useState("");
 const handleChangeVerPassword = (event) => {
   setPasswordVerValue(event.target.value);
 }
@@ -58,16 +60,16 @@ const selectIconTwo = () => {
   setIsHidden(!isHidden);
 }
 useEffect(() => {
-  if (passwordVerValue !== UserPassword) {
+  if (SingUppasswordVerValue !== SingupPassword) {
     setErrorVerMessage("Пароли не равны!");
-  } else if (passwordVerValue === UserPassword) {
+  } else if (SingUppasswordVerValue === SingupPassword) {
     setErrorVerMessage("");
     // console.log("success singup");
   };
-  if (UserPassword.length < 8) {
+  if (SingupPassword.length < 8) {
     setErrorMessage("Минимальная длиная пароля - 8 символов!");
   } else setErrorMessage("");
-}, [UserPassword, passwordVerValue])
+}, [SingupPassword, SingUppasswordVerValue])
 const [errorMessage, setErrorMessage] = useState("");
 const [errorVerMessage, setErrorVerMessage] = useState("");
 
@@ -81,8 +83,8 @@ console.log("getError", getError);
 const handleSubmit = (event) => {
   event.preventDefault();
 
-  if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && UserPassword && passwordVerValue) {
-     dispatch(createUser({UserEmail, UserPassword}));
+  if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && SingupPassword && SingUppasswordVerValue) {
+     dispatch(createUser({SingupEmail, SingupPassword}));
     console.log("chto", getError !== 200, getError)
     if ((getError !== 200) && (getError === null)) {
       setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
@@ -93,6 +95,21 @@ const handleSubmit = (event) => {
   }
 
 }
+
+const checkTheButton = () => {
+  setChecked(!checked);
+  console.log("GET ERROR CHECKED", (getError !== 200) && (getError === null) && checked === true)
+
+  // if ((getError !== 200) && (getError === null) && checked === true) {
+  //   setChecked(false);
+  // }
+}
+
+// useEffect(() => {
+//   if ((getError !== 200) && (getError === null) && checked === true) {
+//     setChecked(!checked);
+//   }
+// }, [checked, getError])
 
 /* for small width to logo */
 const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -106,8 +123,17 @@ useEffect(() => {
   };
 }, []);
 
-  return (
-    <div className="singup__section">
+//----------------------------
+//для отображения загрузки или контента
+
+let content;
+const currStatus = useSelector(state => state.user.status);
+
+if (currStatus === "loading") {
+  content = <Loader />
+} else if (currStatus === 'succeeded' || currStatus === 'idle') {
+  content = <>
+  <div className="singup__section">
       <span className="singup__section__header">
       {
             windowWidth <= 768 ? <Logo newWidth="156" newHeight="59"/> :
@@ -128,8 +154,9 @@ useEffect(() => {
           className="input__auth"
           type="email"
           id="singUp_email"
+          name="singUp_email"
           placeholder="Введите эл. почту"
-          value={UserEmail}
+          value={SingupEmail}
           onChange={handleChangeEmail}
           required
         />
@@ -149,10 +176,12 @@ useEffect(() => {
           className="input__auth password"
           type={hidden ? "password" : "text"}
           id="singUp_password"
+          name="singUp_password"
           onChange={handleChangePassword}
           placeholder="Введите пароль"
-          value={UserPassword}
+          value={SingupPassword}
           required
+          spellCheck="false"
         />
         {/*пока открыт глаз - пароль не видно */}
        {
@@ -181,10 +210,12 @@ useEffect(() => {
           className="input__auth password"
           type={isHidden ? "password" : "text"}
           id="singUp_passwordVerify"
+          name="singUp_passwordVerify"
           onChange={handleChangeVerPassword}
           placeholder="Введите пароль ещё раз"
-          value={passwordVerValue}
+          value={SingUppasswordVerValue}
           required
+          spellCheck="false"
         />
         {/*пока открыт глаз - пароль не видно */}
        {
@@ -207,7 +238,9 @@ useEffect(() => {
 
         <span className="singup__section__body__checkboxWrapper">
         <input type="checkbox" 
-        onChange={checkedFunc}
+        //onChange={checkedFunc}
+        onClick={checkTheButton}
+        //onClick={() => setChecked(!checked)}
         id="singUp_checkbox"
        />
           <label
@@ -225,5 +258,11 @@ useEffect(() => {
         </button>
       </form>
     </div>
+  </>
+}
+
+
+  return (
+    content
   );
 }
