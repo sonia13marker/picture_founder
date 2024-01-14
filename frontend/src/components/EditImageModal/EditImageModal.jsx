@@ -2,7 +2,7 @@ import './EditImageModal.scss';
 import { useState, useRef } from 'react';
 import ConfirmModalComponent from '../ConfirmModalComponent/ConfirmModalComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeUserImage, getImages } from '../../store/slices/userSlice';
+import { changeUserImage, getImages, showNotification } from '../../store/slices/userSlice';
 import { PATH_TO_SERVER_GETimg } from '../../data/constants';
 import CustomNotifications from '../CustomNotifications/CustomNotifications';
 
@@ -31,16 +31,16 @@ const handleChangeTags = (e) => {
 
 const [show, setShow] = useState(false);
 
-const showNotification = () => {
-  // console.log("SAT");
-  setShow(true);
-  // return <CustomNotifications title="Изменения сохранены" show="true" />
-}
+// const showNotification = () => {
+//   // console.log("SAT");
+//   setShow(true);
+//   // return <CustomNotifications title="Изменения сохранены" show="true" />
+// }
 
 const imageId = id;
 
   /*for submit */
-  const saveTheDataImage = (e) => {
+  const saveTheDataImage = async (e) => {
     e.preventDefault();
     //тут идет проверка на изменяемое значение, и в зависимости от его кол-ва
     //отправляется соответствующий запрос
@@ -58,6 +58,12 @@ const imageId = id;
     } else {
       console.log("no changes");
     }
+
+    //появление уведомлений
+    dispatch(showNotification("Изменения сохранены"));
+    setTimeout(() => {
+      dispatch(showNotification(""));
+     }, 4000)
 
   }
 

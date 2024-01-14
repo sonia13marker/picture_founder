@@ -7,32 +7,52 @@
         border-radius: 20px;
         background-color: $main-black;
         color: $main-white;
-        box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.70);
+        //box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.04);
         @include flexRow;
         justify-content: flex-start;
         position: fixed;
+        right: 55px;
         z-index: 15;
+        bottom: 20px;
         transition: $transitionToNotif;
 }
        
 
 .notif__wrapper {
+    animation: notifanimation 0.7s ease;
 
         @include notif;
-        bottom: 0;
-        right: 55px;
-        opacity: 0;
+        // bottom: 0;
+        // right: 55px;
+        // opacity: 0;
 
-    &-show {
-        @include notif;
-        // position: fixed;
-        bottom: 20px;
-        right: 55px;
-        opacity: 1;
-    }
+    // &-show {
+    //     @include notif;
+    //     // position: fixed;
+    //     // bottom: 20px;
+    //     // right: 55px;
+    //     // opacity: 1;
+    // }
     
 
     &__title {
         @include h3Style;
     }
+}
+
+@keyframes notifanimation {
+   0% {
+            bottom: 0;
+        
+        opacity: 0;
+    }
+    100% {
+            bottom: 20px;
+
+            opacity: 1;
+    }
+    // 100% {
+    //     opacity: 0;
+    // }
 }

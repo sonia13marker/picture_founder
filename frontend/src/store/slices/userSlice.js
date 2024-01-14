@@ -45,8 +45,12 @@ export const addUserImage = createAsyncThunk(
           }
         }
         ); 
+        // для сообщения о добавлении картинки
+        //сейчас смс появляется даже при удалении картинки
+        //thunkAPI.dispatch(showNotification("Картинка добавлена"));
       
       console.log("data about image", res);
+      //обновление страницы сразу после добавления
       thunkAPI.dispatch(getImages({userId}, {userToken}));
       return res;
 
@@ -221,7 +225,7 @@ const userSlise = createSlice({
         images: [],
         UserId: null,
         userToken: null,
-
+        notificationName: ""
     },
     reducers: {
         // toggleFavorites: (state, action) => {
@@ -305,6 +309,18 @@ const userSlise = createSlice({
           setUserToken: (state, action) => {
             state.userToken = action.payload;
           },
+          showNotification: (state, action) => {
+            let newStirng = action.payload;
+            console.log("newStirng", newStirng);
+            if (newStirng !== "") {
+              state.notificationName = newStirng;
+            } else {
+              state.notificationName = ""
+            }
+           
+            // setTimeout(() => state.notificationName = "", 10000)
+            
+          }
           // setStatusMessage: (state, action) => {
           //   console.log('SET STATUS', action.payload);
           //   state.status = action.payload;
@@ -325,9 +341,16 @@ const userSlise = createSlice({
         state.error = action.error.message
       });
        builder
+       .addCase(createUser.pending, (state, action) => {
+        state.status = 'loading'
+      })
        .addCase(createUser.fulfilled, (state, { payload }) => {
         addCurrentUser(state, { payload });
         setAuthStatus(true);
+      })
+      .addCase(createUser.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
       });
         builder
         .addCase(loginUser.fulfilled, (state, { payload }) => {
@@ -366,6 +389,6 @@ const userSlise = createSlice({
 export const selectUserID = (state) => state.user.userID;
 
 
-export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setErrorRegis, setCurrentUser, setUserToken } = userSlise.actions;
+export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setErrorRegis, setCurrentUser, setUserToken, showNotification } = userSlise.actions;
 
 export default userSlise.reducer;

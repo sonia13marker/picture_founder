@@ -17,6 +17,8 @@ import {
   WhatsappIcon,
 } from "react-share";
 import Clipboard from "clipboard";
+import { useDispatch } from "react-redux";
+import { showNotification } from "../../store/slices/userSlice";
 
 export default function ShareImageModal({ active, setActive, imageLink }) {
   /* сменить на приходящий уровень для каждой картинки */
@@ -27,8 +29,11 @@ export default function ShareImageModal({ active, setActive, imageLink }) {
   const defaultBR = 20;
   // console.log(imageLink);
 
+  const dispatch = useDispatch();
+
   /* for copy icon */
   const [copied, setCopied] = useState(false);
+  const [showNotif, setShowNotif] = useState(false);
   const linkRef = useRef();
   const clipboard = useRef(null);
 
@@ -39,19 +44,37 @@ export default function ShareImageModal({ active, setActive, imageLink }) {
     clipboard.current = new Clipboard(linkRef.current);
     clipboard.current.on("success", (e) => {
       setCopied(true);
-      console.log("Copied to clipboard:", e.text);
-    });return () => {
+      setShowNotif(true);
+  console.log("Copied to clipboard:", e.text);
+    });
+    return () => {
       if (clipboard.current) {
         clipboard.current.destroy();
       }
     };
   }, [])
 
-  const getCopyLink = (imageLink) => {
-    // console.log(linkRef.current);
-    clipboard.current.onClick(imageLink);
+  useEffect(() => {
+    console.log("showNotif", showNotif)
+    if (showNotif === true) {
+      //появление уведомлений
+     dispatch(showNotification("Ссылка скопирована"));
+     setTimeout(() => {
+      dispatch(showNotification(""));
+      setShowNotif(false);
+     }, 4000)
 
-  };
+//     setTimeout(() => {
+      // setShowNotif(false)
+    //  }, 4000)
+    }
+  }, [showNotif, dispatch])
+
+
+  // const getCopyLink = (imageLink) => {
+  //   // console.log(linkRef.current);
+  //   clipboard.current.onClick(imageLink);
+  // };
   return (
     <div className={active ? "shareModal activeModal" : "shareModal"}>
       <div className="shareModal__content">

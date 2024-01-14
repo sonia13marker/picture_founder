@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserImage, getImages } from '../../store/slices/userSlice';
+import { addUserImage, getImages, showNotification } from '../../store/slices/userSlice';
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 
 
@@ -78,26 +78,19 @@ export default function AddImageModal({ active, setActive }) {
     const tags = tagsImage.current.value;
     const image = {file};
 
-   // let imageTags = [];
-
-    // if (tags.length === 1) {
-    //   console.log("EWADSDCSDDS")
-    //   imageTags = [tags];  
-    // }  else {
-    //   imageTags = tags.split(",").map((tg) => tg.trim());
-    // } 
-  //  if (tags.includes(",")) {
      let imageTags = tags.split(",").map((tg) => tg.trim());
-    // } else {
-    //   imageTags.push(tags.trim());
-    // }
 
     //преобразование строки в массив строк  
-    
     if (id && userToken && image && imageName && imageTags && !fileError && !nameError) {
            console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
            dispatch(addUserImage({userId: id, userToken: userToken, image: image, imageName:imageName, imageTags: imageTags}));
          } 
+
+         //появление уведомлений
+         dispatch(showNotification("Изображение добавлено"));
+         setTimeout(() => {
+          dispatch(showNotification(""));
+         }, 4000)
 
     //обнуление имеющихся значений
     setImageName("");
