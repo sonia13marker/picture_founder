@@ -139,7 +139,7 @@ export const createUser = createAsyncThunk(
              console.log("UserID", UserID);
             /* добавление id текущего юзера */
             thunkAPI.dispatch(setUserID(UserID));
-            //thunkAPI.dispatch(setError(null));
+            thunkAPI.dispatch(setError(null));
             console.log(res);
             return res; 
         } catch (err) {
