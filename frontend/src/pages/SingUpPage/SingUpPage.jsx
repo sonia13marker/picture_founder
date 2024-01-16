@@ -86,17 +86,13 @@ console.log("status in singup", currentStatus);
 
 console.log("getError", getError);
 
-const [currentExistEmal, setCurrentExistEmal] = useState(false);
 
 //отправка запроса на сервер
-const handleSubmit = async (getError, existEmail, currentExistEmal, SingupEmail, SingupPassword) => {
+const handleSubmit = async () => {
   //event.preventDefault();
-  //dispatch(setStatus("loading"));
 
-  console.log("currentExistEmal in SUBMIT func", currentExistEmal)
       console.log("getError in SUBMIT", getError);
  console.log("existEmail in in SUBMIT", existEmail);
- console.log("currentExistEmal in SUBMIT", currentExistEmal)
  
   
 
@@ -106,16 +102,8 @@ const handleSubmit = async (getError, existEmail, currentExistEmal, SingupEmail,
     dispatch(createUser({SingupEmail, SingupPassword}));
   
   }
-  // await new Promise((resolve) => {
-  //   setTimeout(resolve, 6000);
-
-  // });
-  //setInterval(() => checkTheUser(getError, currentExistEmal), 1000);
-  
-      // checkTheUser();
-      
-
 }
+
 const  checkTheUser = () => {
   if (existEmail !== "") {
     if (getError === 400) {
@@ -123,7 +111,6 @@ const  checkTheUser = () => {
       setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
       console.log("getError in function in red", getError);
       console.log("existEmail in  function in red", existEmail);
-      console.log("currentExistEmal in function in red", currentExistEmal)
     } 
   } else {
     nextPage();
@@ -138,9 +125,6 @@ useEffect(() => {
     setErrorMessageEmail("");
     dispatch(setError(null));
     dispatch(setExistEmail(null));
-    // nextPage();
-    // checkTheUser();
-    //navigate('/login', {replace: true});
   }
   if (userIDInRegis !== null) {
     nextPage();
@@ -156,39 +140,11 @@ useEffect(()=> {
   console.log("getError in useEffect", getError);
   console.log("existEmail in in useEffect", existEmail);
   
-}, [currentExistEmal, getError, existEmail]);
+}, [getError, existEmail]);
  
 
 //новая проверка на зареганного юзера
-// const checkTheUser = async (getError, currentExistEmal) => {
-//   await new Promise((resolve) => {
-//     setTimeout(resolve, 6000);
 
-//   });
-
-//  console.log("error in singup page", getError);
-
-//   if ((getError === 400) && existEmail !== "") {
-//     console.log("verification for user");
-//     setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
-//     console.log("getError in function", getError);
-//     console.log("existEmail in in function", existEmail);
-//     console.log("currentExistEmal in function", currentExistEmal)
-//   }
-
-//   else {
-//     // dispatch(setError(null));
-//     // setErrorMessageEmail("");
-//     //setTimeout(() =>  nextPage(), 6000)
-
-//     await new Promise((resolve) => {
-//       setTimeout(resolve, 6000);
-//     });
-    
-//     nextPage();
-//     // nextPage();
-//   }
-// }
 
 //для чекбокса
 const checkTheButton = () => {
@@ -340,7 +296,7 @@ if (currStatus === "loading") {
         </span>
 
         <button type="submit" className={checked ? "singup__section__body__submitBtn" : "singup__section__body__submitBtn unactive"}
-         onClick={() => handleSubmit(getError, existEmail, currentExistEmal, SingupEmail, SingupPassword)}>
+         onClick={() => handleSubmit()}>
           Зарегистрироваться
         </button>
       </div>
