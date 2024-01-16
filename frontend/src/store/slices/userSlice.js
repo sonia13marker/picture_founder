@@ -129,6 +129,7 @@ export const addUserImage = createAsyncThunk(
 export const createUser = createAsyncThunk(
     "user/createUser",
     async (payload, thunkAPI) => {
+      console.log("ПЕРЕД ЗАПРОСОМ")
         try {
             const res = await axios.post(`${PATH_TO_SERVER}/auth/regis`, payload);
             /* после отправки запроса я получаю данные: email & id,
@@ -138,13 +139,17 @@ export const createUser = createAsyncThunk(
              console.log("UserID", UserID);
             /* добавление id текущего юзера */
             thunkAPI.dispatch(setUserID(UserID));
-            thunkAPI.dispatch(setError(null));
+            //thunkAPI.dispatch(setError(null));
             console.log(res);
             return res; 
         } catch (err) {
             const errCode = err.response.status;
+            const existEmail = err.response.data.detail.ExistEmail;
+            console.log("EXIST EMAIL ERROR", existEmail);
+            thunkAPI.dispatch(setExistEmail(existEmail));
             thunkAPI.dispatch(setError(errCode));
             console.error(err);
+            return err;
             // const serializedError = err.toJSON();
             // return thunkAPI.rejectWithValue(serializedError);
         }
@@ -167,6 +172,7 @@ export const loginUser = createAsyncThunk(
       console.log("userIdLogin IN USERSLICE", userIdLogin);
       thunkAPI.dispatch(setUserID(userIdLogin));
 
+        //const userEmailLogin = res.data.UserEmail;
         const userEmailLogin = res.data.UserEmail;
               console.log("userEmailLogin login", userEmailLogin);
              /* добавление эмейла в текущего юзера */
@@ -176,8 +182,8 @@ export const loginUser = createAsyncThunk(
     } catch (error) {
       console.error(error)
       //const serializedError = error.toJSON();
-      const serializedError = error.toJSON();
-      return thunkAPI.rejectWithValue(serializedError);
+      // const serializedError = error.toJSON();
+      // return thunkAPI.rejectWithValue(serializedError);
     }
   }
 
@@ -224,7 +230,8 @@ const userSlise = createSlice({
         images: [],
         UserId: null,
         userToken: null,
-        notificationName: ""
+        notificationName: "", 
+        existEmail: ""
     },
     reducers: {
         // toggleFavorites: (state, action) => {
@@ -327,6 +334,10 @@ const userSlise = createSlice({
           setStatus: (state, action) => {
             state.status = action.payload;
           },
+          setExistEmail: (state, action) => {
+            console.log("this exist email in state", action.payload);
+            state.existEmail = action.payload;
+          },
           showNotification: (state, action) => {
             let newStirng = action.payload;
             console.log("newStirng", newStirng);
@@ -420,6 +431,6 @@ const userSlise = createSlice({
 export const selectUserID = (state) => state.user.userID;
 
 
-export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setError, setCurrentUser, setUserToken, showNotification, setStatus } = userSlise.actions;
+export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setError, setCurrentUser, setUserToken, showNotification, setStatus, setExistEmail } = userSlise.actions;
 
 export default userSlise.reducer;

@@ -5,7 +5,7 @@ import { useEffect, useState, useReducer } from "react";
 import OpenEyeIcon from "../../components/OpenEyeIcon";
 import CloseEyeIcon from "../../components/CloseEyeIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser, createUserAction, setError } from "../../store/slices/userSlice";
+import { createUser, createUserAction, setError, setExistEmail, setStatus } from "../../store/slices/userSlice";
 import Logo from "../../components/Logo";
 import Loader from "../../components/Loader/Loader";
 
@@ -77,80 +77,126 @@ const [errorVerMessage, setErrorVerMessage] = useState("");
 /* for submit button */
 const dispatch = useDispatch();
 const getError = useSelector(state => state.user.error);
-const currentUserId = useSelector(state => state.user.UserId)
-
+const currentStatus = useSelector(state => state.user.status);
+const existEmail = useSelector(state => state.user.existEmail);
+const userIDInRegis = useSelector(state => state.user.UserId);
+console.log("userID In Regis", userIDInRegis)
+console.log("existEmail in singup page", existEmail);
+console.log("status in singup", currentStatus);
 
 console.log("getError", getError);
-const handleSubmit = async (event) => {
-  event.preventDefault();
 
-   //checkTheUser();
+const [currentExistEmal, setCurrentExistEmal] = useState(false);
 
-  if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && SingupPassword && SingUppasswordVerValue && getError === null) {
-    await dispatch(createUser({SingupEmail, SingupPassword}));
+//отправка запроса на сервер
+const handleSubmit = async (getError, existEmail, currentExistEmal, SingupEmail, SingupPassword) => {
+  //event.preventDefault();
+  //dispatch(setStatus("loading"));
 
-     if (getError === null) {
-      nextPage();
-     }
-    // console.log("chto", getError !== 200, getError)
-    // if ((getError !== 200) && (getError === null)) {
-    //   setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
-    // } else {
-    //   nextPage();
+  console.log("currentExistEmal in SUBMIT func", currentExistEmal)
+      console.log("getError in SUBMIT", getError);
+ console.log("existEmail in in SUBMIT", existEmail);
+ console.log("currentExistEmal in SUBMIT", currentExistEmal)
+ 
+  
 
-    // }
+  //внутренние проверки на заполнение значений 
+  //и отсутствие ошибок
+  if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && SingupEmail && SingupPassword && SingUppasswordVerValue && getError === null) {
+    dispatch(createUser({SingupEmail, SingupPassword}));
+  
+  }
+  // await new Promise((resolve) => {
+  //   setTimeout(resolve, 6000);
+
+  // });
+  //setInterval(() => checkTheUser(getError, currentExistEmal), 1000);
+  
+      // checkTheUser();
+      
+
+}
+const  checkTheUser = () => {
+  if (existEmail !== "") {
+    if (getError === 400) {
+      console.log("verification for user");
+      setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
+      console.log("getError in function in red", getError);
+      console.log("existEmail in  function in red", existEmail);
+      console.log("currentExistEmal in function in red", currentExistEmal)
+    } 
+  } else {
+    nextPage();
   }
 
 }
 
-//новая проверка на зареганного юзера
-// const checkTheUser = () => {
-//   console.log("error in singup page", getError);
-//   if ((getError !== null) && (getError !== 200)) {
-//     console.log("verification for user");
-//     setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
-//     dispatch(setError(null));
-//   } 
-  // else if (currentUserId === null) {
-  //   console.log("stop! it's nothing")
-  // }
-  // else {
-  //   nextPage();
-  // }
-//}
-
-// useEffect(() => {
-//   console.log("error in singup page", getError);
-//   if ((getError !== null) && (getError !== 200)) {
-//     console.log("verification for user");
-//     setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
-//     //console.log(errorMessageEmail);
-//    // dispatch(setError(null)); 
-//   }
-// }, [getError])
-
 useEffect(() => {
-  console.log("error in signup page", getError);
-  if (getError === 400) {
+  if (existEmail === SingupEmail) {
     setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
+  } else {
+    setErrorMessageEmail("");
+    dispatch(setError(null));
+    dispatch(setExistEmail(null));
+    // nextPage();
+    // checkTheUser();
+    //navigate('/login', {replace: true});
   }
-  //dispatch(setError(null)); 
-}, [getError, errorMessageEmail]);
+  if (userIDInRegis !== null) {
+    nextPage();
+  }
+}, [SingupEmail, dispatch, existEmail, userIDInRegis])
 
+//проверка на ответ от сервера: ошибку и 
+//запись о существующем эмейле
+useEffect(()=> {
+  if ((getError === 400) && existEmail !== "") {
+    checkTheUser();
+  }
+  console.log("getError in useEffect", getError);
+  console.log("existEmail in in useEffect", existEmail);
+  
+}, [currentExistEmal, getError, existEmail]);
+ 
+
+//новая проверка на зареганного юзера
+// const checkTheUser = async (getError, currentExistEmal) => {
+//   await new Promise((resolve) => {
+//     setTimeout(resolve, 6000);
+
+//   });
+
+//  console.log("error in singup page", getError);
+
+//   if ((getError === 400) && existEmail !== "") {
+//     console.log("verification for user");
+//     setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
+//     console.log("getError in function", getError);
+//     console.log("existEmail in in function", existEmail);
+//     console.log("currentExistEmal in function", currentExistEmal)
+//   }
+
+//   else {
+//     // dispatch(setError(null));
+//     // setErrorMessageEmail("");
+//     //setTimeout(() =>  nextPage(), 6000)
+
+//     await new Promise((resolve) => {
+//       setTimeout(resolve, 6000);
+//     });
+    
+//     nextPage();
+//     // nextPage();
+//   }
+// }
+
+//для чекбокса
 const checkTheButton = () => {
   setChecked(!checked);
   console.log("GET ERROR CHECKED", (getError !== 200) && (getError === null) && checked === true)
 
-  // if ((getError !== 200) && (getError === null) && checked === true) {
-  //   setChecked(false);
-  // }
 }
 
-// useEffect(() => {
-//   if ((getError !== 200) && (getError === null) && checked === true) {
-//     setChecked(false);
-//   }
-// }, [checked, getError])
 
 /* for small width to logo */
 const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -183,9 +229,9 @@ if (currStatus === "loading") {
         <h2 className="singup__section__header__text">Регистрация</h2>
       </span>
 
-      <form id="signupForm" className="singup__section__body"
+      <div id="signupForm" className="singup__section__body"
       // autoComplete="off"
-      onSubmit={handleSubmit}
+      //onSubmit={handleSubmit}
       >
   {/* email input */}
   <span className="input__wrapper">
@@ -294,10 +340,10 @@ if (currStatus === "loading") {
         </span>
 
         <button type="submit" className={checked ? "singup__section__body__submitBtn" : "singup__section__body__submitBtn unactive"}
-         >
+         onClick={() => handleSubmit(getError, existEmail, currentExistEmal, SingupEmail, SingupPassword)}>
           Зарегистрироваться
         </button>
-      </form>
+      </div>
     </div>
   </>
 }
