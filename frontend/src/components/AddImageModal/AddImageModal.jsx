@@ -3,9 +3,10 @@ import React, { useState, useRef, useEffect } from "react";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserImage, getImages, showNotification } from '../../store/slices/userSlice';
+import { addUserImage } from '../../store/slices/userSlice';
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 import CustomNotifications from "../CustomNotifications/CustomNotifications";
+import { useNotification } from "../../hooks/useNotification";
 
 
 export default function AddImageModal({ active, setActive }) {
@@ -74,6 +75,9 @@ export default function AddImageModal({ active, setActive }) {
     };
   },[file]);
 
+  //вызов для использования кастомного хука
+  const { showNotify } = useNotification();
+
 // функция добавления на страницу
   const submitInfoImage = (e) => {
     e.preventDefault();
@@ -104,11 +108,10 @@ export default function AddImageModal({ active, setActive }) {
     //добавление статуса, чтобы уведомления добавлялись после загрузки страницы, 
     //а не во время
     if (loadingStatus === "succeeded") {
-      dispatch(showNotification("Изображение добавлено"));
-    setTimeout(() => {
-      dispatch(showNotification(""));
-    }, 6000);
+      showNotify("Изображение добавлено", 6);
     }
+
+    
   };
 
   const checkTheFileFunc = () => {

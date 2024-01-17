@@ -2,9 +2,10 @@ import './EditImageModal.scss';
 import { useState, useRef } from 'react';
 import ConfirmModalComponent from '../ConfirmModalComponent/ConfirmModalComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeUserImage, getImages, showNotification } from '../../store/slices/userSlice';
+import { changeUserImage } from '../../store/slices/userSlice';
 import { PATH_TO_SERVER_GETimg } from '../../data/constants';
 import CustomNotifications from '../CustomNotifications/CustomNotifications';
+import { useNotification } from '../../hooks/useNotification';
 
 export default function EditImageModal ({active, setActive, id, name, tags, image}) {
       /* для модальных окон-подтверждений */
@@ -31,6 +32,7 @@ const handleChangeTags = (e) => {
 
 
 const imageId = id;
+const { showNotify } = useNotification();
 
   /*for submit */
   const saveTheDataImage = async (e) => {
@@ -53,10 +55,7 @@ const imageId = id;
     }
 
     //появление уведомлений
-    dispatch(showNotification("Изменения сохранены"));
-    setTimeout(() => {
-      dispatch(showNotification(""));
-     }, 4000)
+     showNotify("Изменения сохранены");
 
   }
 

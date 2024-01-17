@@ -9,7 +9,8 @@ import ShareImageModal from "../ShareImageModal/ShareImageModal";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { PATH_TO_SERVER_GETimg, PATH_TO_SERVER_getImg } from "../../data/constants";
-import { deleteUserImage, showNotification } from "../../store/slices/userSlice";
+import { deleteUserImage } from "../../store/slices/userSlice";
+import { useNotification } from "../../hooks/useNotification";
 
 export default function ActionCircle({ isHover, id, name, tags, image, userToken }) {
   // console.log(dataOfImage);
@@ -24,6 +25,8 @@ export default function ActionCircle({ isHover, id, name, tags, image, userToken
   }
   const dispatch = useDispatch();
 
+  const { showNotify } = useNotification();
+
   const deleteImage = () => {
     //отправка запроса на сервер про удаление
     console.log("userId:", userId, "imageId:", id, "userToken:", userToken)
@@ -31,10 +34,7 @@ export default function ActionCircle({ isHover, id, name, tags, image, userToken
     setActiveDelModal(!activeDelModal);
 
     //появление уведомлений
-    dispatch(showNotification("Успешно удалено"));
-    setTimeout(() => {
-      dispatch(showNotification(""));
-     }, 4000)
+    showNotify("Успешно удалено");
   }
 
   
