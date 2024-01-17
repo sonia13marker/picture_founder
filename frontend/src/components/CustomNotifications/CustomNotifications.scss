@@ -1,47 +1,79 @@
 @import '../../style.scss';
 
-@mixin notif {
-        width: 20vw;
-        height: auto;
-        padding: 22px 25px;
-        border-radius: 20px;
-        background-color: $main-black;
-        color: $main-white;
-        //box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
-        box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.04);
-        @include flexRow;
-        justify-content: flex-start;
-        position: fixed;
-        right: 55px;
-        z-index: 15;
-        bottom: 20px;
-        transition: $transitionToNotif;
-}
-       
-
 .notif__wrapper {
-    animation: notifanimation 0.7s ease;
-    @include notif;
+    animation: notifanimation 0.7s ease-in-out;
+    width: auto;
+    height: auto;
+    padding: 22px 25px;
+    border-radius: 20px;
+    background-color: $main-black;
+    color: $main-white;
+    //box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.04);
+    @include flexRow;
+    justify-content: flex-start;
+    position: fixed;
+    right: 55px;
+    z-index: 15;
+    bottom: 20px;
+    transition: $transitionToNotif;
 
     &__title {
         @include h3Style;
-    }
-
-    &.noShow {
-        animation: notifanimation 0.7s ease;
+        margin-right: 30px;
     }
 }
 
 
 @keyframes notifanimation {
    0% {
-            bottom: 0;
-        
+        bottom: 0;
         opacity: 0;
     }
     100% {
-            bottom: 20px;
-
-            opacity: 1;
+        bottom: 20px;
+        opacity: 1;
     }
+}
+
+@media screen and (max-width: 880px) {
+    .notif__wrapper__title {
+        font-size: 16px;
+    }
+    .notif__wrapper {
+        right: 35px;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    @keyframes notifanimation-small {
+        0% {
+            bottom: 0;
+            opacity: 0;
+        }
+        100% {
+            bottom: 85px;
+            opacity: 1;
+        }
+}
+    .notif__wrapper {
+        animation: notifanimation-small 0.7s ease-in-out;
+        bottom: 85px;
+    }
+}
+
+@media screen and (max-width: 580px) {
+   
+    .notif__wrapper__title {
+        font-size: 14px;
+    }
+    .notif__wrapper {
+        max-width: 75vw;
+        width: -moz-max-content;
+        width: max-content;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 85px;
+    }
+
 }

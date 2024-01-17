@@ -43,8 +43,8 @@ body {
 }
 
 .notif__wrapper {
-  animation: notifanimation 0.7s ease;
-  width: 20vw;
+  animation: notifanimation 0.7s ease-in-out;
+  width: auto;
   height: auto;
   padding: 22px 25px;
   border-radius: 20px;
@@ -66,9 +66,7 @@ body {
   font-family: "Ubuntu", sans-serif;
   font-size: 18px;
   font-weight: 400;
-}
-.notif__wrapper.noShow {
-  animation: notifanimation 0.7s ease;
+  margin-right: 30px;
 }
 
 @keyframes notifanimation {
@@ -79,5 +77,42 @@ body {
   100% {
     bottom: 20px;
     opacity: 1;
+  }
+}
+@media screen and (max-width: 880px) {
+  .notif__wrapper__title {
+    font-size: 16px;
+  }
+  .notif__wrapper {
+    right: 35px;
+  }
+}
+@media screen and (max-width: 720px) {
+  @keyframes notifanimation-small {
+    0% {
+      bottom: 0;
+      opacity: 0;
+    }
+    100% {
+      bottom: 85px;
+      opacity: 1;
+    }
+  }
+  .notif__wrapper {
+    animation: notifanimation-small 0.7s ease-in-out;
+    bottom: 85px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .notif__wrapper__title {
+    font-size: 14px;
+  }
+  .notif__wrapper {
+    max-width: 75vw;
+    width: -moz-max-content;
+    width: max-content;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 85px;
   }
 }/*# sourceMappingURL=CustomNotifications.css.map */

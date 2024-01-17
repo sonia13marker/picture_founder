@@ -22,7 +22,7 @@ export default function Footer() {
             <span className='footer__bg'>
                 <span className='footer__fg'>
                 <p className='footer__fg__text'>
-                &copy; pic2, {date} г.
+                &copy; Pic2re, {date} г.
                 </p>
                 <Link to="#" className='footer__fg__text__link'>
                 Политика конфиденциальности

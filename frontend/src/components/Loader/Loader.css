@@ -55,6 +55,7 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 80;
+  transition: all 2s ease-in-out;
 }
 
 .pl1 {

@@ -10,6 +10,7 @@
     background-color: $black-for-bg;
     @include flexColumn;
     z-index: 80;
+	transition: all 2s ease-in-out;
 }
 
 .pl1 {
