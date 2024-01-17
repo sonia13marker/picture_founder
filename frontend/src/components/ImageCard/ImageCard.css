@@ -97,7 +97,7 @@ body {
   min-height: 200px;
   height: -moz-max-content;
   height: max-content;
-  max-height: 280px;
+  max-height: 380px;
   -o-object-fit: fill;
      object-fit: fill;
 }

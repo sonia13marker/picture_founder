@@ -5,6 +5,7 @@ import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserImage, getImages, showNotification } from '../../store/slices/userSlice';
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
+import CustomNotifications from "../CustomNotifications/CustomNotifications";
 
 
 export default function AddImageModal({ active, setActive }) {
@@ -53,6 +54,7 @@ export default function AddImageModal({ active, setActive }) {
   const dispatch = useDispatch();
   const id = useSelector(state => state.user.UserId);
   const userToken = useSelector(state => state.user.userToken);
+  const loadingStatus = useSelector(state => state.user.status);
 
   //проверка наличия имени
   useEffect(() => {
@@ -73,25 +75,21 @@ export default function AddImageModal({ active, setActive }) {
   },[file]);
 
 // функция добавления на страницу
-  const submitInfoImage = async (e) => {
+  const submitInfoImage = (e) => {
     e.preventDefault();
     const tags = tagsImage.current.value;
     const image = {file};
 
      let imageTags = tags.split(",").map((tg) => tg.trim());
 
+     
+
     //преобразование строки в массив строк  
     if (id && userToken && image && imageName && imageTags && !fileError && !nameError) {
            console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
            dispatch(addUserImage({userId: id, userToken: userToken, image: image, imageName:imageName, imageTags: imageTags}));
          } 
-
-         //появление уведомлений
-         dispatch(showNotification("Изображение добавлено"));
-         setTimeout(() => {
-          dispatch(showNotification(""));
-         }, 4000)
-
+         
     //обнуление имеющихся значений
     setImageName("");
     tagsImage.current.value = "";
@@ -101,6 +99,16 @@ export default function AddImageModal({ active, setActive }) {
       return;
     }
     setActive(!active); 
+
+    //добавление уведомления 
+    //добавление статуса, чтобы уведомления добавлялись после загрузки страницы, 
+    //а не во время
+    if (loadingStatus === "succeeded") {
+      dispatch(showNotification("Изображение добавлено"));
+    setTimeout(() => {
+      dispatch(showNotification(""));
+    }, 6000);
+    }
   };
 
   const checkTheFileFunc = () => {
@@ -219,6 +227,7 @@ export default function AddImageModal({ active, setActive }) {
         leftBtnAction={cancelBtnClick}
         rightBtnAction={saveTheChanges}
       /> 
+      <CustomNotifications />
       </div>
     </>
   );

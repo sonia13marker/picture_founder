@@ -4,6 +4,7 @@ import ConfirmModalComponent from '../ConfirmModalComponent/ConfirmModalComponen
 import { useDispatch, useSelector } from 'react-redux';
 import { changeUserImage, getImages, showNotification } from '../../store/slices/userSlice';
 import { PATH_TO_SERVER_GETimg } from '../../data/constants';
+import CustomNotifications from '../CustomNotifications/CustomNotifications';
 
 export default function EditImageModal ({active, setActive, id, name, tags, image}) {
       /* для модальных окон-подтверждений */
@@ -168,6 +169,6 @@ const imageId = id;
         rightBtnAction={saveTheChanges}
       />
       </div>
-
+      <CustomNotifications />
       </>)
 }

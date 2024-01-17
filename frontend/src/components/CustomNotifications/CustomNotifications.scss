@@ -21,25 +21,17 @@
 
 .notif__wrapper {
     animation: notifanimation 0.7s ease;
-
-        @include notif;
-        // bottom: 0;
-        // right: 55px;
-        // opacity: 0;
-
-    // &-show {
-    //     @include notif;
-    //     // position: fixed;
-    //     // bottom: 20px;
-    //     // right: 55px;
-    //     // opacity: 1;
-    // }
-    
+    @include notif;
 
     &__title {
         @include h3Style;
     }
+
+    &.noShow {
+        animation: notifanimation 0.7s ease;
+    }
 }
+
 
 @keyframes notifanimation {
    0% {
@@ -52,7 +44,4 @@
 
             opacity: 1;
     }
-    // 100% {
-    //     opacity: 0;
-    // }
 }

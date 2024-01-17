@@ -129,7 +129,6 @@ export const addUserImage = createAsyncThunk(
 export const createUser = createAsyncThunk(
     "user/createUser",
     async (payload, thunkAPI) => {
-      console.log("ПЕРЕД ЗАПРОСОМ")
         try {
             const res = await axios.post(`${PATH_TO_SERVER}/auth/regis`, payload);
             /* после отправки запроса я получаю данные: email & id,
@@ -345,7 +344,7 @@ const userSlise = createSlice({
               state.notificationName = newStirng;
             } else {
               state.notificationName = ""
-            }
+            };
            
             // setTimeout(() => state.notificationName = "", 10000)
             
@@ -385,17 +384,15 @@ const userSlise = createSlice({
         state.error = action.error.message
       });
       //вход в акк - loginUser
+      //не ставить статусы и забыть про loginUser.pending, я это не поставила, потому что оно
+      //мешает загрузке картинок на главной после входа
         builder
-        .addCase(loginUser.pending, (state, action) => {
-          //state.status = 'loading'
-        })
         .addCase(loginUser.fulfilled, (state, { payload }) => {
-           //state.status = 'succeeded'
             addCurrentUser(state, { payload });
             setAuthStatus(true); 
-    })
-    .addCase(loginUser.rejected, (state, action) => {
-      state.status = 'failed'
+      })
+        .addCase(loginUser.rejected, (state, action) => {
+        state.status = 'failed'
         state.error = action.error.message
 });
 //обновление пароля - updatePasswordUser
@@ -403,9 +400,17 @@ const userSlise = createSlice({
         .addCase(updatePasswordUser.fulfilled, addCurrentUser);
 //добавление картинки - addUserImage
       builder
+      .addCase(addUserImage.pending, (state, action) => {
+        state.status = 'loading'
+      })
       .addCase(addUserImage.fulfilled, (state, action) => {
+        state.status = 'succeeded'
         let image = action.payload;
         console.log("IMAGE IN addUserImage.fulfilled",image)
+      })
+      .addCase(addUserImage.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
       });
 // изменение картинки - changeUserImage
       builder
@@ -421,14 +426,23 @@ const userSlise = createSlice({
       .addCase(changeUserImage.rejected, (state, action) => {
         state.status = 'failed'
       })
-      // .addCase(addUserImage.rejected, (state) => {
-      //   state.isLoading = false;
-      // })
+// удаление картинки - deleteUserImage
+      builder
+      .addCase(deleteUserImage.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(deleteUserImage.fulfilled, (state, action) => {
+       // state.status = 'succeeded'
+      })
+      .addCase(deleteUserImage.rejected, (state, action) => {
+        state.status = 'failed'
+      })
 
 }})
 
 
 export const selectUserID = (state) => state.user.userID;
+export const notificationNmae = (state) => state.user.notificationName;
 
 
 export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setError, setCurrentUser, setUserToken, showNotification, setStatus, setExistEmail } = userSlise.actions;

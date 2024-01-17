@@ -43,47 +43,41 @@ body {
 }
 
 .notif__wrapper {
+  animation: notifanimation 0.7s ease;
   width: 20vw;
   height: auto;
   padding: 22px 25px;
   border-radius: 20px;
   background-color: #1D1D1D;
   color: #FAFAFA;
-  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   justify-content: flex-start;
   position: fixed;
-  z-index: 15;
-  transition: all 0.5s;
-  bottom: 0;
   right: 55px;
-  opacity: 0;
-}
-.notif__wrapper-show {
-  width: 20vw;
-  height: auto;
-  padding: 22px 25px;
-  border-radius: 20px;
-  background-color: #1D1D1D;
-  color: #FAFAFA;
-  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  justify-content: flex-start;
-  position: fixed;
   z-index: 15;
-  transition: all 0.5s;
   bottom: 20px;
-  right: 55px;
-  opacity: 1;
+  transition: all 0.7s;
 }
 .notif__wrapper__title {
   font-family: "Ubuntu", sans-serif;
   font-size: 18px;
   font-weight: 400;
+}
+.notif__wrapper.noShow {
+  animation: notifanimation 0.7s ease;
+}
+
+@keyframes notifanimation {
+  0% {
+    bottom: 0;
+    opacity: 0;
+  }
+  100% {
+    bottom: 20px;
+    opacity: 1;
+  }
 }/*# sourceMappingURL=CustomNotifications.css.map */
