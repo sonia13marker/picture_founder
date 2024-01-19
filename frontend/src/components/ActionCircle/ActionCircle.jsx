@@ -1,8 +1,8 @@
 import { useState } from "react";
-import DeleteIcon from "../DeleteIcon";
-import DownloadIcon from "../DownloadIcon";
-import EditIcon from "../EditIcon";
-import ShareIcon from "../ShareIcon";
+import DeleteIcon from "../../icons/DeleteIcon";
+import DownloadIcon from "../../icons/DownloadIcon";
+import EditIcon from "../../icons/EditIcon";
+import ShareIcon from "../../icons/ShareIcon";
 import "./ActionCircle.scss";
 import EditImageModal from "../EditImageModal/EditImageModal";
 import ShareImageModal from "../ShareImageModal/ShareImageModal";

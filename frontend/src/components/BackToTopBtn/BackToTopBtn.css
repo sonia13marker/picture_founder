@@ -1,0 +1,78 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+body {
+  overscroll-behavior-y: contain;
+  overflow-y: auto;
+  scrollbar-gutter: auto;
+}
+
+.button {
+  width: 80px;
+  height: 80px;
+  display: block;
+  visibility: hidden;
+  position: fixed;
+  right: 55px;
+  bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #9E76E9;
+  border: none;
+  border-radius: 50%;
+}
+.button:hover {
+  background-color: #765bab;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.button.active {
+  visibility: visible;
+}
+
+@media screen and (max-width: 768px) {
+  .button {
+    width: 60px;
+    height: 60px;
+    right: 10px;
+    bottom: 80px;
+    z-index: 2;
+  }
+}/*# sourceMappingURL=BackToTopBtn.css.map */

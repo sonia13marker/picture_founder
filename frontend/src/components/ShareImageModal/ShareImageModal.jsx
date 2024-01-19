@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import CopyIcon from "../CopyIcon";
-import SuccessCopyIcon from "../SuccessCopyIcon";
+import CopyIcon from "../../icons/CopyIcon";
+import SuccessCopyIcon from "../../icons/SuccessCopyIcon";
 import "./ShareImageModal.scss";
 import {
   EmailShareButton,

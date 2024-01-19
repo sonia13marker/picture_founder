@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import './ForgotComponent.scss';
-import Logo from "../Logo";
+import Logo from "../../icons/Logo";
 
 export default function ForgotComponent ({isLogo, title, text, input, buttonName}) {
     /*for email */

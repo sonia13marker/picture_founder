@@ -50,7 +50,6 @@ export default function MainPage() {
  
   return (
     <section className="wrapper_layout">
-    
     {content}
       
     </section>

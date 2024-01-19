@@ -1,7 +1,7 @@
 import './Header.scss';
 import { Link, NavLink } from 'react-router-dom';
 import AddImgBtn from '../AddImgBtn/AddImgBtn';
-import Logo from '../Logo';
+import Logo from '../../icons/Logo';
 
 
 export default function Header () {

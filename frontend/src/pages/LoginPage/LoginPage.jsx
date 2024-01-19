@@ -2,12 +2,12 @@ import './LoginPage.scss';
 // import useAuth from '../hooks/useAuth';
 import { useState, useEffect, useReducer } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import OpenEyeIcon from '../../components/OpenEyeIcon';
-import CloseEyeIcon from '../../components/CloseEyeIcon';
+import OpenEyeIcon from '../../icons/OpenEyeIcon';
+import CloseEyeIcon from '../../icons/CloseEyeIcon';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../store/slices/userSlice';
-import Logo from '../../components/Logo';
+import Logo from '../../icons/Logo';
 
 export default function LoginPage () {
     const navigate = useNavigate();

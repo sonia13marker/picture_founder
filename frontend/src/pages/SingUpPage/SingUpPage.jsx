@@ -2,11 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import "./SingUpPage.scss";
 import { useEffect, useState, useReducer } from "react";
 // import "../../components/CustomInput/CustomInput.scss";
-import OpenEyeIcon from "../../components/OpenEyeIcon";
-import CloseEyeIcon from "../../components/CloseEyeIcon";
+import OpenEyeIcon from "../../icons/OpenEyeIcon";
+import CloseEyeIcon from "../../icons/CloseEyeIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser, createUserAction, setError, setExistEmail, setStatus } from "../../store/slices/userSlice";
-import Logo from "../../components/Logo";
+import Logo from "../../icons/Logo";
 import Loader from "../../components/Loader/Loader";
 
 export default function SingUpPage() {

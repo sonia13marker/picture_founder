@@ -1,6 +1,6 @@
 import "./PersonalAccountPage.scss";
-import OpenEyeIcon from "../../components/OpenEyeIcon";
-import CloseEyeIcon from "../../components/CloseEyeIcon";
+import OpenEyeIcon from "../../icons/OpenEyeIcon";
+import CloseEyeIcon from "../../icons/CloseEyeIcon";
 import { useState } from "react";
 import {useNavigate, Link, NavLink} from "react-router-dom";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";

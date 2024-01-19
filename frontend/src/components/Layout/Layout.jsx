@@ -5,7 +5,8 @@ import SortDropdown from "../SortDropdown/SortDropdown";
 import Footer from "../Footer/Footer";
 import { useEffect, useState } from 'react';
 import HeaderMobile from '../HeaderMobile/HeaderMobile';
-import Logo from '../Logo.jsx';
+import Logo from '../../icons/Logo.jsx';
+import BackToTopBtn from '../BackToTopBtn/BackToTopBtn.jsx';
 
 export default function Layout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -56,6 +57,10 @@ export default function Layout() {
         {/* вот тут находится все содержимое роутов,
         а вокруг них будут шапка и подвал */}
         <Outlet />
+        { windowWidth <= 768 ? 
+        <BackToTopBtn sizeOfBtn="mobile"/>
+        : <BackToTopBtn sizeOfBtn="computer"/>
+        }
       </div>
       <Footer />
     </>

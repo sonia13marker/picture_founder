@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 import "./HeaderMobile.scss";
-import HomeIcon from "../HomeIcon";
-import FavoriteIcon from "../FavoriteIcon";
-import AddIcon from "../AddIcon";
+import HomeIcon from "../../icons/HomeIcon";
+import FavoriteIcon from "../../icons/FavoriteIcon";
+import AddIcon from "../../icons/AddIcon";
 import { useState } from "react";
 import AddImageModal from "../AddImageModal/AddImageModal";
 

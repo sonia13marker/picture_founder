@@ -1,0 +1,36 @@
+@import '../../style.scss';
+
+.button {
+    width: 80px;
+    height: 80px;
+    display: block;
+    visibility: hidden;
+    position: fixed;
+    right: 55px;
+    bottom: 30px;
+    @include flexColumn;
+    background-color: $main-purple;
+    border: none;
+    border-radius: 50%;
+
+    &:hover {
+        background-color: $hover-purple;
+        cursor: pointer;
+        transition: $transition;
+    }
+
+    &.active {
+        visibility: visible;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .button {
+        width: 60px;
+        height: 60px;
+        right: 10px;
+        bottom: 80px;
+        z-index: 2;
+    }
+    
+}
