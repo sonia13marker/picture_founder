@@ -49,7 +49,7 @@ body {
   visibility: hidden;
   position: fixed;
   right: 55px;
-  bottom: 30px;
+  bottom: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;

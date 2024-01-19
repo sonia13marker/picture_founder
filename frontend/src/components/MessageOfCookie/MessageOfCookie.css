@@ -1,0 +1,123 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  color: #FAFAFA;
+}
+
+body {
+  background-color: #060606;
+}
+
+.forgotPassWrapper {
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: #765bab #141414;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #141414;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #765bab;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.42);
+}
+
+body {
+  overscroll-behavior-y: contain;
+  overflow-y: auto;
+  scrollbar-gutter: auto;
+}
+
+.message {
+  width: 100%;
+  height: 70px;
+  background-color: #9E76E9;
+  padding: 0 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  transition: all 0.18s;
+}
+.message__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.message__wrapper__img {
+  width: 23px;
+  height: 25px;
+  display: block;
+  fill: black;
+  background: url("../../images/cookie_pic.png") center center no-repeat;
+  margin-right: 8px;
+}
+.message__wrapper__text {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #1D1D1D;
+}
+.message__close {
+  width: 24px;
+  height: 24px;
+  background: url("./images/black_close.svg") center center no-repeat;
+  cursor: pointer;
+}
+.message__close:hover {
+  background: url("./images/close_hover.svg") center center no-repeat;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.message__close:active {
+  background: url("./images/close_active.svg") center center no-repeat;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.message.close {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .message {
+    z-index: 3;
+    bottom: 100px;
+  }
+  .message__wrapper__text {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .message {
+    padding: 0 15px;
+  }
+  .message__wrapper__text {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 350px) {
+  .message {
+    padding: 0 10px;
+  }
+  .message__wrapper__text {
+    font-size: 12px;
+  }
+}/*# sourceMappingURL=MessageOfCookie.css.map */

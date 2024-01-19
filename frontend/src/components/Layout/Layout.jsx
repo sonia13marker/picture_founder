@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import HeaderMobile from '../HeaderMobile/HeaderMobile';
 import Logo from '../../icons/Logo.jsx';
 import BackToTopBtn from '../BackToTopBtn/BackToTopBtn.jsx';
+import MessageOfCookie from '../MessageOfCookie/MessageOfCookie.jsx';
 
 export default function Layout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -62,6 +63,7 @@ export default function Layout() {
         : <BackToTopBtn sizeOfBtn="computer"/>
         }
       </div>
+      <MessageOfCookie />
       <Footer />
     </>
   );
