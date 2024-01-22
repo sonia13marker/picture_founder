@@ -1,0 +1,571 @@
+openapi: 3.0.0
+info:
+  title: "picture fouder api"
+  version: 0.1.1
+
+tags:
+  - name: Image
+  - name: User
+  - name: Auth
+security:
+  - headerToken: []
+  - cookieToken: []
+
+paths:
+  #route для пользователя
+  /api/user/{userId}:
+    get:
+      tags:
+        - User
+      summary: "получение данных о пользователе"
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/UserParam"
+          name: userId
+          in: path
+          example: "89-d9f7-df97"
+          required: true
+      responses:
+        "200":
+          description: "успешное получение данных о пользователе"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: "пользователь не найден"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      tags:
+        - User
+      summary: "изменение данных пользователя"
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/UserParam"
+          name: userId
+          in: path
+          example: "89-d9f7-df97"
+          required: true
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/UserEdit"
+      responses:
+        "204":
+          description: "успешное обновление данных пользователя"
+        "404":
+          description: "пользователь не найден"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: "введены не верные данные"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoneValideDateError"
+    delete:
+      tags:
+        - User
+      summary: "изменение данных пользователя"
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/UserParam"
+          name: userId
+          in: path
+          example: "89-d9f7-df97"
+          required: true
+      responses:
+        "204":
+          description: "пользователь успешно удалён"
+        "404":
+          description: "пользователь не найден"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  #route для изображений пользователя
+  /api/user/{userId}/image:
+    get:
+      tags:
+        - Image
+      summary: "возвращает все изображения пользователя"
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/UserParam"
+          in: path
+          name: userId
+          required: true
+        - schema:
+            $ref: "#/components/schemas/UserImageGetParam"
+          in: query
+          name: offset
+          required: false
+          example: 0
+          description: "параметр сдвига. Определяет сколько след. изображений вернуть"
+        - schema:
+            $ref: "#/components/schemas/UserImageGetParam"
+          in: query
+          name: filter
+          required: false
+          example: NONE
+          description: "фильтр изобрнажений"
+      responses:
+        "200":
+          description: "возвращается массив со всеми изображениями пользователя"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserImageArr"
+        "404":
+          description: "пользователь не найден"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: "введены не верные данные"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoneValideDateError"
+    post:
+      tags:
+        - Image
+      summary: "добавляет изображение к пользователю"
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/UserParam"
+          in: path
+          name: userId
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UserImageAdd"
+      responses:
+        "200":
+          description: "возвращаеются данные об изображении"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserImage"
+        "404":
+          description: "пользователь не найден"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: "введены не верные данные"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoneValideDateError"
+
+    #route для изображений пользователя
+  /api/user/{userId}/image/{imageId}:
+    get:
+      tags:
+        - Image
+      summary: "получение изображения по id"
+      description: "метод возвращает изображение по его id. Возвращает именно файл"
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/UserGetImageParam"
+          in: path
+          required: true
+          name: userId
+        - schema:
+            $ref: "#/components/schemas/UserGetImageParam"
+          in: path
+          required: true
+          name: imageId
+      responses:
+        "200":
+          description: "возвращается изображение"
+        "404":
+          description: "пользователь не найден"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: "введены не верные данные"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoneValideDateError"
+    put:
+      tags:
+        - Image
+      summary: "изменение данных изображения"
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/UserGetImageParam"
+          in: path
+          required: true
+          name: userId
+        - schema:
+            $ref: "#/components/schemas/UserGetImageParam"
+          in: path
+          required: true
+          name: imageId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserImageEdit"
+      responses:
+        "200":
+          description: "возвращается изменённое изображение"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserImageEditReturn"
+        "404":
+          description: "пользователь не найден"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: "введены не верные данные"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoneValideDateError"
+
+  /api/user/{userId}/image/data/{imageId}:
+    summary: "полуцение данных об изображении по id"
+    get:
+      tags:
+        - Image
+      summary: "получение данных об изображении"
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/UserGetImageParam"
+          in: path
+          required: true
+          name: userId
+        - schema:
+            $ref: "#/components/schemas/UserGetImageParam"
+          in: path
+          required: true
+          name: imageId
+      responses:
+        "200":
+          description: "возвращаются данные об изображении"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserImage"
+        "404":
+          description: "пользователь или изображение не найдены"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          description: "введены не верные данные"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoneValideDateError"
+
+
+  /api/auth/regis:
+    post:
+      security: []      
+      tags:
+        - Auth
+      summary: "регистрация пользователя"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/UserAuth"
+      responses:
+        "204":
+          description: "успешная регитсрация пользователя"
+        "400":
+          description: "не правильные данные"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoneValideDateError"
+  /api/auth/login:
+    post:
+      security: []
+      tags: 
+        - Auth
+      summary: "вход в аккаунт пользователя"
+      requestBody:  
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAuth"
+      responses:
+        "200":
+          description: "успешное получение данных о пользователе"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAuthLogin"
+        "400":
+          description: "не правильные данные"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoneValideDateError"
+components:
+
+  headers:
+    headerToken:
+      deprecated: true
+      content:
+        token:
+          schema:
+            type: string
+
+  responses:
+    AuthHeaderTokenLogin:
+      description: "актентификация через токен в заголовках"
+      headers:
+        token:
+          deprecated: true
+          schema:
+            $ref: "#/components/headers/headerToken"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/UserAuth"
+
+  securitySchemes:
+    headerToken:
+      type: apiKey
+      name: token
+      in: header
+    cookieToken:
+      type: apiKey
+      name: token
+      in: cookie
+              
+  schemas:
+    # схема пользователя
+    User:
+      type: object
+      required:
+        - userId
+        - UserEmail
+      properties:
+        userId:
+          type: string
+          description: "уникальный идентифиуатор пользователя"
+          example: "89df9j-d8df-d89"
+        UserEmail:
+          type: string
+          example: "testuser@mail.ru"
+        userImages:
+          type: array
+          description: "хранит id изображений пользователя"
+          items:
+            allOf:
+              - $ref: "#/components/schemas/UserImage"
+        userStat:
+          type: object
+          description: "различная статистика пользователя"
+    
+    UserAuth:
+      type: object
+      required:
+        - UserEmail
+        - UserPasswordуспешное получение данных о пользователе
+      properties:
+        UserEmail:
+          type: string
+          example: "testuser@mail.ru"
+        UserPassword:
+          type: string
+          example: "kjdf783k"
+    
+    UserAuthLogin:
+      type:  object
+      properties:
+        userId:
+          type: string
+        UserEmail:
+          type: string
+        token:
+          type: string
+          allOf:
+            - $ref: "#/components/headers/headerToken"
+
+    #схемы для пользовательских параметров
+    #схема для передаваемых параметров пользователя(его id)
+    UserParam:
+      type: string
+      properties:
+        userId:
+          type: string
+          example: "js978ds0-s89vjd-8dxds"
+
+    UserEdit:
+      type: object
+      properties:
+        UserPassword:
+          type: string
+          description: "новый пароль пользователя"
+
+    #схема сохранённого изображения
+    UserImage:
+      type: object
+      required:
+        - imageId
+      properties:
+        imageId:
+          type: string
+        imageName:
+          type: string
+        ownerId:
+          type: string
+        uploadDate:
+          type: string
+        imageTags:
+          type: array
+          items:
+            type: string
+            example: ["тег1", "тег2"]
+        isFavorite:
+          type: boolean
+          description: "указывает является ли изображение избранным"
+
+    UserImageAdd:
+      required:
+        - image
+      properties:
+        imageName:
+          type: string
+          example: "new name"
+        imageTags:
+          type: array
+          items:
+            type: string
+            example: ["тег1", "тег2"]
+        image:
+          type: string
+          description: "файл для загрузки"
+          format: binary
+        isFavorite:
+          type: boolean
+          description: "указывает является ли изображение избранным"
+          example: false
+    
+    UserImageEdit:
+      properties:
+        imageName:
+          type: string
+          example: "new name"
+        imageTags:
+          type: array
+          items:
+            type: string
+            example: ["тег1", "тег2"]
+        isFavorite:
+          type: boolean
+          description: "указывает является ли изображение избранным"
+          example: false
+    
+    UserImageEditReturn:
+      properties:
+        imageId: 
+          type: string
+          example: "lsd7skj99-d9j"
+        imageName:
+          type: string
+          example: "new name"
+        imageTags:
+          type: array
+          items:
+            type: string
+            example: ["тег1", "тег2"]
+        isFavorite:
+          type: boolean
+          description: "указывает является ли изображение избранным"
+          example: false
+
+    UserGetImageParam:
+      allOf:
+        - $ref: "#/components/schemas/UserParam"
+      properties:
+        imageId:
+          type: string
+          example: "8s9d8-sd9-sdf897"
+
+    #query параметры схемы для получения изображения
+    UserImageGetParam:
+      properties:
+        offset:
+          type: integer
+          description: "параметр сдвига. Определяет сколько след. изображений вернуть"
+          default: 0
+          example: 0
+        filter:
+          type: string
+          description: "фильтр для изображений"
+          enum:
+            - NONE
+            - UP
+            - DOWN
+          default: NONE
+
+    #параметры схемы для получения изображения(массив)
+    UserImageArr:
+      type: array
+      items:
+        $ref: "#/components/schemas/UserImage"
+    
+    accessData:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type:  string
+          uniqueItems: true
+          description: "jwt токен для доступа к функциям сайта"
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+          description: "краткое описание ошибки"
+          example: "user not found"
+        detail:
+          type: string
+          description: "более полное описание ошибки"
+          example: "user with name {name} not found error on {action}"
+    NoneValideDateError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+          description: "краткое описание ошибки"
+          example: "None valid data"
+        detail:
+          type: string
+          description: "более полное описание ошибки"
+          example: "None valide data in field {field} on try {action}"
