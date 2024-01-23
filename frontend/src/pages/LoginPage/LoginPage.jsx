@@ -11,7 +11,6 @@ import Logo from '../../icons/Logo';
 
 export default function LoginPage () {
     const navigate = useNavigate();
-    const location = useLocation();
 
     const id = useSelector(state => state.user.UserId);
 
@@ -28,11 +27,16 @@ export default function LoginPage () {
 
         /* for local storage */
       if (checked) { 
+        // setChecked(true);
         localStorage.setItem("username", LoginEmail);
         localStorage.setItem("password", LoginPassword);
+        localStorage.setItem("is checked", checked);
 
         const username = localStorage.getItem("username");
-           const password = localStorage.getItem("password");
+        const password = localStorage.getItem("password");
+        const isChecked = localStorage.getItem("is checked");
+
+        console.log("data from local storage", username, password, isChecked);
 
         if (username && password) {
           
@@ -94,8 +98,17 @@ const selectIcon = () => {
     setHidden(!hidden);
 }
 /* for checkbox */
-const [checked, checkedFunc] = useReducer(checked => !checked, false);
-
+//const [checked, checkedFunc] = useReducer(checked => !checked, false);
+const [checked, setChecked] = useState(false);
+const checkedFunc = () => {
+  // const isChecked = localStorage.getItem("is checked");
+  // console.log("isChecked FROM LOCAL STORAGE", isChecked);
+  // if (isChecked === true) {
+  //   setChecked(true)
+  // } else {
+    setChecked(!checked)
+  //}
+}
 /*go to singup page */
 const goToSingupPage = () => {
   navigate('/singup');
@@ -183,7 +196,9 @@ useEffect(() => {
     <span className='login__lineWrapper'>
     <span className="singup__section__body__checkboxWrapper login__wrapper gap">
         <input type="checkbox" 
-        onChange={checkedFunc}
+        // onChange={checkedFunc}
+        // onClick={() => setChecked(!checked)}
+        onClick={checkedFunc}
         id="login_checkbox"
         name="login_checkbox"
        />
