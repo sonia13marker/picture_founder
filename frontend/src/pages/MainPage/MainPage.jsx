@@ -7,12 +7,22 @@ import { getImages } from "../../store/slices/userSlice";
 import { useEffect } from "react";
 import { useSelector } from 'react-redux';
 import Loader from "../../components/Loader/Loader";
+import { useCookies } from "react-cookie";
 
 export default function MainPage() {
 
 
   const userId = useSelector(state => state.user.UserId);
   console.log("ID IN MAIN PAGE", userId);
+
+     //запись в куки
+     const [cookies, setCookie] = useCookies(["idFromMainPage"]);
+
+    //получение и запись ID в куки
+     useEffect(() => {
+      setCookie("idFromMainPage", userId);
+      // console.log("ID USER IN COOKIE", cookies.idFromMainPage )
+     }, [userId, cookies.idFromMainPage, setCookie])
 
   const userToken = useSelector(state => state.user.userToken);
   console.log("TOKEN IN MAIN PAGE", userToken); 

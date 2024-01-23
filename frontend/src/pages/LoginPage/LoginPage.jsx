@@ -1,48 +1,24 @@
 import './LoginPage.scss';
-// import useAuth from '../hooks/useAuth';
-import { useState, useEffect, useReducer } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import OpenEyeIcon from '../../icons/OpenEyeIcon';
 import CloseEyeIcon from '../../icons/CloseEyeIcon';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../store/slices/userSlice';
 import Logo from '../../icons/Logo';
+import { useCookies } from 'react-cookie';
 
 export default function LoginPage () {
     const navigate = useNavigate();
-
     const id = useSelector(state => state.user.UserId);
-
-  console.log("ID from login page", id);
-
-
+    console.log("ID from login page", id);
 
     const dispatch = useDispatch();
 
-
     const handleSubmit = (event) => {
-        /* чтобы форма не отправлялась */
+      
         event.preventDefault();
-
-        /* for local storage */
-      if (checked) { 
-        // setChecked(true);
-        localStorage.setItem("username", LoginEmail);
-        localStorage.setItem("password", LoginPassword);
-        localStorage.setItem("is checked", checked);
-
-        const username = localStorage.getItem("username");
-        const password = localStorage.getItem("password");
-        const isChecked = localStorage.getItem("is checked");
-
-        console.log("data from local storage", username, password, isChecked);
-
-        if (username && password) {
-          
-          console.log("Данные пользователя найдены:", username, password);
-        } else console.log("Данные пользователя не найдены");
-      }
 
         if (LoginEmail && LoginPassword && errorMessageEmail === "" && errorMessagePassword === "") {
           goToMainPage();
@@ -54,6 +30,7 @@ export default function LoginPage () {
 const goToMainPage = () => {
   navigate('/main');
 }
+
     /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
 const [LoginEmail, setLoginEmail] = useState("");
@@ -70,6 +47,31 @@ useEffect(() => {
     console.log("invalid email");
   };
 }, [LoginEmail]);
+
+//for checkbox
+const [checked, setChecked] = useState(false);
+
+    //запись в куки
+    const [cookies, setCookie] = useCookies(["chekedFromLoginPage"]);
+
+    //получаем id, который уже был записан в куки из MainPage
+    const cookieID = cookies.idFromMainPage;
+    console.log("cookieID", cookieID);
+
+    //проверяем - если галочка стоит, то добавляем в куки
+    useEffect(() => {
+      if (checked) {
+        setCookie("chekedFromLoginPage", checked);
+      }
+    },[checked, setCookie]);
+
+    //если в куки есть значения, то ставим галочку в true
+    useEffect(() => {
+        if (cookies.chekedFromLoginPage === true && cookieID) { 
+          setChecked(true);
+          console.log("checked from loginPage", checked);
+        }
+    }, [checked, cookieID, cookies.chekedFromLoginPage]);
 
 /*for password input */
 const [LoginPassword, setPassword] = useState("");
@@ -97,18 +99,7 @@ const selectIcon = () => {
     setOpen(!open);
     setHidden(!hidden);
 }
-/* for checkbox */
-//const [checked, checkedFunc] = useReducer(checked => !checked, false);
-const [checked, setChecked] = useState(false);
-const checkedFunc = () => {
-  // const isChecked = localStorage.getItem("is checked");
-  // console.log("isChecked FROM LOCAL STORAGE", isChecked);
-  // if (isChecked === true) {
-  //   setChecked(true)
-  // } else {
-    setChecked(!checked)
-  //}
-}
+
 /*go to singup page */
 const goToSingupPage = () => {
   navigate('/singup');
@@ -196,11 +187,10 @@ useEffect(() => {
     <span className='login__lineWrapper'>
     <span className="singup__section__body__checkboxWrapper login__wrapper gap">
         <input type="checkbox" 
-        // onChange={checkedFunc}
-        // onClick={() => setChecked(!checked)}
-        onClick={checkedFunc}
+        onClick={() => setChecked(!checked)}
         id="login_checkbox"
         name="login_checkbox"
+        checked={checked}
        />
           <label
             htmlFor="login_checkbox"
@@ -215,9 +205,6 @@ useEffect(() => {
         </Link>
     </span>
 
-{/* <button onClick={() => singOut(() => navigate('/', {replace: true}))} >
-Logout
-</button> */}
 <span className='login__button'>
     <button type="submit" className="singup__section__body__submitBtn"
     onClick={handleSubmit}
