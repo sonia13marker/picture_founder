@@ -97,7 +97,7 @@ const handleSubmit = async () => {
   }
 }
 
-//проверка на ответ от сервераб если ошибка, то записать ее под инпутом
+//проверка на ответ от сервера, если ошибка, то записать ее под инпутом
 useEffect(()=> {
   if (getError && (getError === 400) && existEmail !== "") {
     console.log("verification for user");
@@ -110,15 +110,13 @@ useEffect(()=> {
   
 }, [getError, existEmail]);
 
-
+//очистка ошибки под инпутом, если он не совпадает с введенным ранее
 useEffect(() => {
-  if (existEmail === SingupEmail) {
-    setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
-  } else {
+  if (existEmail !== SingupEmail) {
     setErrorMessageEmail("");
     dispatch(setError(null));
     dispatch(setExistEmail(null));
-  }
+   }
   if (userIDInRegis !== null) {
     nextPage();
   }

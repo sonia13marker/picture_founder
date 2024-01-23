@@ -5,7 +5,7 @@ import OpenEyeIcon from '../../icons/OpenEyeIcon';
 import CloseEyeIcon from '../../icons/CloseEyeIcon';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../store/slices/userSlice';
+import { loginUser, setCurrentUser, setError } from '../../store/slices/userSlice';
 import Logo from '../../icons/Logo';
 import { useCookies } from 'react-cookie';
 
@@ -14,17 +14,25 @@ export default function LoginPage () {
     const id = useSelector(state => state.user.UserId);
     console.log("ID from login page", id);
 
+    const getError = useSelector(state => state.user.error);
+
+    // useEffect(() => {
+
+    // }, [])
+
     const dispatch = useDispatch();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
+      // console.log("get error from login page", getError);
       
         event.preventDefault();
 
-        if (LoginEmail && LoginPassword && errorMessageEmail === "" && errorMessagePassword === "") {
-          goToMainPage();
+        //внутренние проверки на заполнение значений и отсутствие ошибок
+        if (LoginEmail && LoginPassword && errorMessageEmail === "" && errorMessagePassword === "" && getError === null) {
+          dispatch(loginUser({LoginEmail, LoginPassword}));
         }
 
-        dispatch(loginUser({LoginEmail, LoginPassword}));
+        // dispatch(loginUser({LoginEmail, LoginPassword}));
         console.log("DATA FROM LOGIN PAGE:", LoginEmail, LoginPassword)
     }
 const goToMainPage = () => {
@@ -34,6 +42,7 @@ const goToMainPage = () => {
     /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
 const [LoginEmail, setLoginEmail] = useState("");
+const [nonExistEmail, setNonExistEmail] = useState("");
 const handleChangeEmail = (event) => {
   setLoginEmail(event.target.value);
 }
@@ -47,6 +56,33 @@ useEffect(() => {
     console.log("invalid email");
   };
 }, [LoginEmail]);
+
+//проверка на ответ от сервера, если ошибка, то записать ее под инпутом
+//и также запись в новую переменную текущего эмейла
+useEffect(() => {
+  if (getError && (getError === 404)) {
+    setErrorMessageEmail("Вы еще не зарегистрированы!");
+    setNonExistEmail(LoginEmail);
+    console.log("getError in red", getError);
+  } 
+  console.log("404 exist email", nonExistEmail);
+  console.log("404 email", LoginEmail)
+}, [getError, LoginEmail, nonExistEmail])
+
+//очистка ошибок и переход на страницу
+useEffect(() => {
+  if (LoginEmail !== nonExistEmail) {
+    console.log(LoginEmail, nonExistEmail, LoginEmail !== nonExistEmail)
+    setErrorMessageEmail("");
+    dispatch(setError(null));
+    dispatch(setCurrentUser(null));
+    setNonExistEmail("");
+  }
+  if (id !== null) {
+    goToMainPage();
+  }
+
+}, [LoginEmail, dispatch, nonExistEmail, id]);
 
 //for checkbox
 const [checked, setChecked] = useState(false);

@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { setAuthStatus } from './authSlice';
 import axios from "axios";
 import { PATH_TO_SERVER } from "../../data/constants";
 
@@ -179,7 +178,10 @@ export const loginUser = createAsyncThunk(
       return res.data;
       
     } catch (error) {
+      const errCode = error.response.status;
+      thunkAPI.dispatch(setError(errCode));
       console.error(error)
+      return error;
       //const serializedError = error.toJSON();
       // const serializedError = error.toJSON();
       // return thunkAPI.rejectWithValue(serializedError);
@@ -377,7 +379,6 @@ const userSlise = createSlice({
        .addCase(createUser.fulfilled, (state, { payload }) => {
         state.status = 'succeeded'
         addCurrentUser(state, { payload });
-        setAuthStatus(true);
       })
       .addCase(createUser.rejected, (state, action) => {
         state.status = 'failed'
@@ -389,8 +390,8 @@ const userSlise = createSlice({
         builder
         .addCase(loginUser.fulfilled, (state, { payload }) => {
             addCurrentUser(state, { payload });
-            setAuthStatus(true); 
       })
+      builder
         .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
