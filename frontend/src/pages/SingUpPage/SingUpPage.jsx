@@ -89,34 +89,31 @@ console.log("getError", getError);
 
 //отправка запроса на сервер
 const handleSubmit = async () => {
-  //event.preventDefault();
+  // event.preventDefault();
 
       console.log("getError in SUBMIT", getError);
- console.log("existEmail in in SUBMIT", existEmail);
+      console.log("existEmail in in SUBMIT", existEmail);
  
-  
-
   //внутренние проверки на заполнение значений 
   //и отсутствие ошибок
   if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && SingupEmail && SingupPassword && SingUppasswordVerValue && getError === null) {
     dispatch(createUser({SingupEmail, SingupPassword}));
-  
   }
 }
 
-const  checkTheUser = () => {
-  if (existEmail !== "") {
-    if (getError === 400) {
-      console.log("verification for user");
+//проверка на ответ от сервераб если ошибка, то записать ее под инпутом
+useEffect(()=> {
+  if (getError && (getError === 400) && existEmail !== "") {
+    console.log("verification for user");
       setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
       console.log("getError in function in red", getError);
       console.log("existEmail in  function in red", existEmail);
-    } 
-  } else {
-    nextPage();
-  }
+  } 
+  console.log("getError in useEffect", getError);
+  console.log("existEmail in in useEffect", existEmail);
+  
+}, [getError, existEmail]);
 
-}
 
 useEffect(() => {
   if (existEmail === SingupEmail) {
@@ -131,19 +128,6 @@ useEffect(() => {
   }
 }, [SingupEmail, dispatch, existEmail, userIDInRegis])
 
-//проверка на ответ от сервера: ошибку и 
-//запись о существующем эмейле
-useEffect(()=> {
-  if ((getError === 400) && existEmail !== "") {
-    checkTheUser();
-  }
-  console.log("getError in useEffect", getError);
-  console.log("existEmail in in useEffect", existEmail);
-  
-}, [getError, existEmail]);
- 
-
-//новая проверка на зареганного юзера
 
 
 //для чекбокса
