@@ -13,9 +13,14 @@ import ForgotPasswordSuccessPage from "./pages/ForgotPasswordSuccessPage/ForgotP
 import PersonalAccountPage from "./pages/PersonalAccountPage/PersonalAccountPage";
 import { useSelector } from "react-redux";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import { useCookies } from "react-cookie";
 
 function App() {
   const id = useSelector((state) => state.user.UserId);
+
+  const [cookies, setCookie] = useCookies(["idFromMainPage"]);
+  const cookieId = cookies.idFromMainPage;
+  console.log("MAIN PAGE idFromMainPage", cookieId);
 
   return (
     <div className="App">
