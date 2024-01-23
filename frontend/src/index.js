@@ -7,12 +7,16 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './store/index';
 
+import { CookiesProvider } from 'react-cookie';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
+  <CookiesProvider defaultSetOptions={{ path: '/' }}>
       <Provider store={store}>
         <App />
       </Provider>
+      </CookiesProvider>
    /* </React.StrictMode> */
 );
 
