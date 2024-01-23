@@ -1,18 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./SingUpPage.scss";
-import { useEffect, useState, useReducer } from "react";
-// import "../../components/CustomInput/CustomInput.scss";
+import { useEffect, useState } from "react";
 import OpenEyeIcon from "../../icons/OpenEyeIcon";
 import CloseEyeIcon from "../../icons/CloseEyeIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser, createUserAction, setError, setExistEmail, setStatus } from "../../store/slices/userSlice";
+import { createUser, setError, setExistEmail } from "../../store/slices/userSlice";
 import Logo from "../../icons/Logo";
 import Loader from "../../components/Loader/Loader";
 
 export default function SingUpPage() {
-
-//const [checked, checkedFunc] = useReducer(checked => !checked, false);
-const [checked, setChecked] = useState(false);
 
 let navigate = useNavigate();
 const nextPage = () => {
@@ -126,16 +122,18 @@ useEffect(() => {
   if (userIDInRegis !== null) {
     nextPage();
   }
-}, [SingupEmail, dispatch, existEmail, userIDInRegis])
+}, [SingupEmail, dispatch, existEmail, userIDInRegis]);
 
+// for checkbox
+const [checked, setChecked] = useState(false);
 
+//проверка на отображение чекбокса
+useEffect(() => {
+  if (checked === true && getError !== null) {
+    setChecked(true);
+  }
+}, [checked, getError])
 
-//для чекбокса
-const checkTheButton = () => {
-  setChecked(!checked);
-  console.log("GET ERROR CHECKED", (getError !== 200) && (getError === null) && checked === true)
-
-}
 
 
 /* for small width to logo */
@@ -265,9 +263,8 @@ if (currStatus === "loading") {
 
         <span className="singup__section__body__checkboxWrapper">
         <input type="checkbox" 
-        //onChange={checkedFunc}
-        onClick={checkTheButton}
-        //onClick={() => setChecked(!checked)}
+        onClick={() => setChecked(!checked)}
+        checked={checked}
         id="singUp_checkbox"
        />
           <label
