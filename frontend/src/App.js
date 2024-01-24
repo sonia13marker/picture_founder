@@ -17,17 +17,25 @@ import { useCookies } from "react-cookie";
 
 function App() {
   const id = useSelector((state) => state.user.UserId);
+  const email = useSelector(state => state.user.currentUser.UserEmail);
+  console.log("APP USER ID", id, email);
 
-  const [cookies, setCookie] = useCookies(["idFromMainPage"]);
-  const cookieId = cookies.idFromMainPage;
-  console.log("MAIN PAGE idFromMainPage", cookieId);
+  // const [cookies, setCookie] = useCookies(["idFromMainPage"]);
+  // const cookieId = cookies.idFromMainPage;
+  // console.log("MAIN PAGE idFromMainPage", cookieId);
+
+  function PrivateOutlet() {
+    // const [cookies, setCookie] = useCookies(["idFromMainPage"]);
+    // const cookieId = cookies.idFromMainPage;
+    return id && email ? <Layout><Outlet /></Layout> : <Navigate to="/login" />;
+  }
 
   return (
     <div className="App">
       <BrowserRouter>
         {/* ссылки на страницы */}
         <Routes>
-          {id ? (
+          {/* {id ? (
             <Route element={<Layout />}>
               <Route path="/main" element={<Navigate to="/" replace />} />
               <Route path="/" index element={<MainPage />} />
@@ -58,6 +66,28 @@ function App() {
             element={<ForgotPasswordSuccessPage />}
           />
           <Route path="/*" element={<NotFoundPage />} />
+        </Routes> */}
+            
+              {/* {
+                cookieId !== null || id ? <Route element={<Layout />}> <Route path="/" index element={<MainPage />} /> </Route> : 
+                <Route path="/login" element={<LoginPage />} />
+              } */}
+
+              {/* <Route element={<Layout />}> */}
+              <Route path="/" element={<PrivateOutlet />}>
+                <Route index element={<MainPage />} />
+                <Route path="favorite" element={<FavoritePage />} />
+                <Route path="developers" element={<DevelopersPage numberVersion={data.version} />} />
+                <Route path="account" element={<PersonalAccountPage />} />
+              </Route>
+              
+             {/* </Route> */}
+             <Route path="/login" element={<LoginPage />} />
+          <Route path="/singup" element={<SingUpPage />} />
+          <Route path="/forgot_password" element={<ForgotPasswordPage />} />
+          <Route path="/forgot_password-success" element={<ForgotPasswordSuccessPage />} />
+          <Route path="/*" element={<NotFoundPage />} />
+          
         </Routes>
       </BrowserRouter>
     </div>

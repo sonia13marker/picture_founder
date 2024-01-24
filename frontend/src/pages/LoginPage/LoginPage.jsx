@@ -16,14 +16,9 @@ export default function LoginPage () {
 
     const getError = useSelector(state => state.user.error);
 
-    // useEffect(() => {
-
-    // }, [])
-
     const dispatch = useDispatch();
 
     const handleSubmit = async (event) => {
-      // console.log("get error from login page", getError);
       
         event.preventDefault();
 
@@ -36,7 +31,7 @@ export default function LoginPage () {
         console.log("DATA FROM LOGIN PAGE:", LoginEmail, LoginPassword)
     }
 const goToMainPage = () => {
-  navigate('/main');
+  navigate('/');
 }
 
     /*for email */

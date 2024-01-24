@@ -216,10 +216,6 @@ export const updatePasswordUser = createAsyncThunk(
   }
 );
 
-const addCurrentUser = (state, { payload }) => {
-    state.currentUser = payload; 
-};
-
 const userSlise = createSlice({
     name: 'user',
     initialState: {
@@ -378,7 +374,7 @@ const userSlise = createSlice({
       })
        .addCase(createUser.fulfilled, (state, { payload }) => {
         state.status = 'succeeded'
-        addCurrentUser(state, { payload });
+         addCurrentUser(state, { payload });
       })
       .addCase(createUser.rejected, (state, action) => {
         state.status = 'failed'
@@ -441,6 +437,9 @@ const userSlise = createSlice({
 
 }})
 
+const addCurrentUser = (state, { payload }) => {
+  state.currentUser = payload; 
+};
 
 export const selectUserID = (state) => state.user.userID;
 export const notificationNmae = (state) => state.user.notificationName;
