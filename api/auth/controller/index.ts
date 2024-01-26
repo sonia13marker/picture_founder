@@ -1,12 +1,14 @@
 import { Router, Request, Response } from "express"
-import { UserScheme } from "../../../dto/loginDto"
-import { UserAuth } from "../model"
-import { customError, errorType } from "../../exceptions/authExceptions"
+import { UserScheme } from "../dto/loginDto"
+import { LoginUser, regisUser } from "../service"
+import { AuthCustomError } from "../../../exceptions/AuthExceptions"
 import { successLoginData } from "../../../dto/userDataDto"
 // import cookieParser from "cookie-parser"
 
 const route = Router()
 
+//логин пользователя
+//при логине выдаётся jwt токен
 route.post("/login", /*cookieParser(),*/ async (req: Request, resp: Response): Promise<void> => {
 
   const userReq = UserScheme.validate(req.body);
@@ -21,18 +23,18 @@ route.post("/login", /*cookieParser(),*/ async (req: Request, resp: Response): P
 
   }
 
-  UserAuth.LoginUser(userData.userEmail, userData.userPassword)
+  LoginUser(userData.userEmail, userData.userPassword)
   .then( (val: successLoginData) => {
     resp.json(val).status(200);
   })
-  .catch( ( err: customError ) => {
-    if ( err.errCode === errorType.USER_NOT_FOUND ){
-      resp.json({code: 404, message: err.message, detail: ""})
-    }
+  .catch( ( err: AuthCustomError ) => {
+      resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
   })
 
 })
 
+
+//регистрация
 route.post("/regis", async (req: Request, resp: Response): Promise<void> => {
   console.log("Try create user");
 
@@ -41,23 +43,18 @@ route.post("/regis", async (req: Request, resp: Response): Promise<void> => {
 
   if (ValidateData.error) {
     resp.status(400);
-    resp.json({ message: "non valide data", detail: ValidateData.error.message });
+    resp.json({ code: 400, message: "non valide data", detail: ValidateData.error.message });
     console.log("[ERR] error on login. Invalide data: \n", ValidateData.error.message);
     return
   }
 
-  UserAuth.regisUser(userData!.userEmail, userData!.userPassword)
+  regisUser(userData!.userEmail, userData!.userPassword)
     .then(() => {
       resp.json({ code: 204, message: "complete user create" })
     })
-    .catch((err: customError) => {
+    .catch((err: AuthCustomError) => {
       console.log("[ERR] error on registered user:\n", err);
-      if (err.errCode === errorType.USER_IS_EXIST) {
-        resp.json({ code: 409, message: err.message, detail: "try create user what already exist" }).status(409);
-        return
-      }
-
-      resp.json({ code: 501, message: err.message, detail: "tyr create user what already exist" }).status(409);
+      resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode);
 
     })
 

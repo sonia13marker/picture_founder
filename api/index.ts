@@ -1,5 +1,5 @@
 import { Router, urlencoded } from "express"
-import userRoute from "./user"
+import userRoute from "./user/contoller"
 import authRoute from "./auth/controller"
 import authUser from "../middlewar/authUser"
 // import cookieParser from "cookie-parser"
