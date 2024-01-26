@@ -1,6 +1,6 @@
 import './LoginPage.scss';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import OpenEyeIcon from '../../icons/OpenEyeIcon';
 import CloseEyeIcon from '../../icons/CloseEyeIcon';
 import { Link } from 'react-router-dom';
@@ -9,10 +9,45 @@ import { loginUser, setCurrentUser, setError } from '../../store/slices/userSlic
 import Logo from '../../icons/Logo';
 import { useCookies } from 'react-cookie';
 
-export default function LoginPage () {
+export default function LoginPage ({ checkAuth }) {
     const navigate = useNavigate();
     const id = useSelector(state => state.user.UserId);
     console.log("ID from login page", id);
+
+    const currMes = useSelector(state=> state.user.currentUser.message);
+    console.log("HAPPY", currMes, currMes === "login success");
+
+    
+
+    let location = useLocation();
+
+    console.log(location);
+
+    const token = useSelector(state => state.user.userToken);
+    console.log("TOKEN from login page", token);
+     const [fff, setFFF] = useState(false);
+
+    useEffect(() => {
+      if (token !== null && id !== null) {
+        console.log("red", token, fff);
+      }
+    }, [token, fff, id])
+
+        //запись в куки
+        const [cookies2, setCookie2] = useCookies(["token"]);
+        const [cookies3, setCookie3] = useCookies(["idFromLogin"]);
+
+        useEffect(() => {
+          if (id !== null) {
+            setCookie2("idFromLogin", id);
+          }
+        }, [id, setCookie2]);
+        
+        useEffect(() => {
+          if (token !== null) {
+            setCookie2("token", token);
+          }
+        }, [token, setCookie2]);
 
     const getError = useSelector(state => state.user.error);
 
@@ -24,7 +59,21 @@ export default function LoginPage () {
 
         //внутренние проверки на заполнение значений и отсутствие ошибок
         if (LoginEmail && LoginPassword && errorMessageEmail === "" && errorMessagePassword === "" && getError === null) {
-          dispatch(loginUser({LoginEmail, LoginPassword}));
+          const res = dispatch(loginUser({LoginEmail, LoginPassword}));
+
+          console.log("res", res, res.arg.LoginPassword, res.arg.LoginEmail);
+          // if (res && res.arg.LoginEmail
+          //   !== null && res.arg.userId !== null && res.arg.token !== null) {
+          //   goToMainPage();
+          // }
+          // if (!res.arg.LoginPassword && !res.arg.LoginEmail) {
+          //   goToMainPage();
+          // }
+          console.log("token, id", token, id);
+          if (currMes === "login success") {
+            
+            goToMainPage();
+          }
         }
 
         // dispatch(loginUser({LoginEmail, LoginPassword}));
@@ -58,8 +107,15 @@ useEffect(() => {
   if (getError && (getError === 404)) {
     setErrorMessageEmail("Вы еще не зарегистрированы!");
     setNonExistEmail(LoginEmail);
-    console.log("getError in red", getError);
+    console.log("getError in red", getError, nonExistEmail, LoginEmail);
   } 
+  // if (LoginEmail !== nonExistEmail) {
+  //   console.log(LoginEmail, nonExistEmail, LoginEmail !== nonExistEmail)
+  //   setErrorMessageEmail("");
+  //   dispatch(setError(null));
+  //   dispatch(setCurrentUser(null));
+  //   setNonExistEmail("");
+  // }
   console.log("404 exist email", nonExistEmail);
   console.log("404 email", LoginEmail)
 }, [getError, LoginEmail, nonExistEmail])
@@ -73,11 +129,18 @@ useEffect(() => {
     dispatch(setCurrentUser(null));
     setNonExistEmail("");
   }
-  if (id !== null) {
+  // if (id !== null) {
+  //   console.log("fuch", id);
+  //   goToMainPage();
+  // }
+
+}, [LoginEmail, dispatch, nonExistEmail]);
+
+useEffect(() => {
+  if (currMes === "login success") {     
     goToMainPage();
   }
-
-}, [LoginEmail, dispatch, nonExistEmail, id]);
+}, [currMes])
 
 //for checkbox
 const [checked, setChecked] = useState(false);
@@ -86,8 +149,8 @@ const [checked, setChecked] = useState(false);
     const [cookies, setCookie] = useCookies(["chekedFromLoginPage"]);
 
     //получаем id, который уже был записан в куки из MainPage
-    const cookieID = cookies.idFromMainPage;
-    console.log("cookieID", cookieID);
+    //const cookieID = cookies.idFromMainPage;
+    //console.log("cookieID", cookieID);
 
     //проверяем - если галочка стоит, то добавляем в куки
     useEffect(() => {
@@ -97,12 +160,12 @@ const [checked, setChecked] = useState(false);
     },[checked, setCookie]);
 
     //если в куки есть значения, то ставим галочку в true
-    useEffect(() => {
-        if (cookies.chekedFromLoginPage === true && cookieID) { 
-          setChecked(true);
-          console.log("checked from loginPage", checked);
-        }
-    }, [checked, cookieID, cookies.chekedFromLoginPage]);
+    // useEffect(() => {
+    //     if (cookies.chekedFromLoginPage === true && cookieID) { 
+    //       setChecked(true);
+    //       console.log("checked from loginPage", checked);
+    //     }
+    // }, [checked, cookieID, cookies.chekedFromLoginPage]);
 
 /*for password input */
 const [LoginPassword, setPassword] = useState("");

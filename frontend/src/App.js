@@ -14,20 +14,22 @@ import PersonalAccountPage from "./pages/PersonalAccountPage/PersonalAccountPage
 import { useSelector } from "react-redux";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import { useCookies } from "react-cookie";
+import { useEffect } from "react";
 
 function App() {
   const id = useSelector((state) => state.user.UserId);
-  const email = useSelector(state => state.user.currentUser.UserEmail);
-  console.log("APP USER ID", id, email);
+  console.log("APP USER ID", id);
 
-  // const [cookies, setCookie] = useCookies(["idFromMainPage"]);
-  // const cookieId = cookies.idFromMainPage;
-  // console.log("MAIN PAGE idFromMainPage", cookieId);
+  const [cookies, setCookie] = useCookies(["token"]);
+  const [cookies3, setCookie3] = useCookies(["idFromLogin"]);
+  const cookieId = cookies3.idFromLogin;
+
+  //получаем token, который уже был записан в куки из LoginPage
+  const cookieToken = cookies.token;
+  console.log("cookieToken", cookieToken, cookieId);
 
   function PrivateOutlet() {
-    // const [cookies, setCookie] = useCookies(["idFromMainPage"]);
-    // const cookieId = cookies.idFromMainPage;
-    return id && email ? <Layout><Outlet /></Layout> : <Navigate to="/login" />;
+    return (cookieToken !== null) && cookieId ? <Layout><Outlet /></Layout> : <Navigate to="/login" />;
   }
 
   return (
@@ -82,6 +84,7 @@ function App() {
               </Route>
               
              {/* </Route> */}
+             <Route path="/login-auth" element={<Navigate to="/login" replace />} />
              <Route path="/login" element={<LoginPage />} />
           <Route path="/singup" element={<SingUpPage />} />
           <Route path="/forgot_password" element={<ForgotPasswordPage />} />

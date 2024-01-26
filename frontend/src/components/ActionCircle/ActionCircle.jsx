@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PATH_TO_SERVER_GETimg, PATH_TO_SERVER_getImg } from "../../data/constants";
 import { deleteUserImage } from "../../store/slices/userSlice";
 import { useNotification } from "../../hooks/useNotification";
+import { useCookies } from "react-cookie";
 
 export default function ActionCircle({ isHover, id, name, tags, image, userToken }) {
   // console.log(dataOfImage);
@@ -27,10 +28,15 @@ export default function ActionCircle({ isHover, id, name, tags, image, userToken
 
   const { showNotify } = useNotification();
 
+  const [cookies2, ] = useCookies(["token"]);
+  const cookieToken = cookies2.token;
+  const [cookies3, ] = useCookies(["idFromLogin"]);
+  const cookieId = cookies3.idFromLogin;
+
   const deleteImage = () => {
     //отправка запроса на сервер про удаление
-    console.log("userId:", userId, "imageId:", id, "userToken:", userToken)
-    dispatch(deleteUserImage({userId: userId, imageId: id, userToken: userToken}));
+    console.log("userId:", cookieId, "imageId:", id, "userToken:", cookieToken)
+    dispatch(deleteUserImage({userId: cookieId, imageId: id, userToken: cookieToken}));
     setActiveDelModal(!activeDelModal);
 
     //появление уведомлений
@@ -75,7 +81,7 @@ export default function ActionCircle({ isHover, id, name, tags, image, userToken
         setActive={setActiveEditModal}
       />
       <ShareImageModal 
-      imageLink={`${PATH_TO_SERVER_GETimg}/${userId}/image/${id}`}
+      imageLink={`${PATH_TO_SERVER_GETimg}/${cookieId}/image/${id}`}
       active={activeShareModal}
       setActive={setActiveShareModal}/>
 

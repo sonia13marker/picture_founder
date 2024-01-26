@@ -6,6 +6,7 @@ import {useNavigate, Link, NavLink} from "react-router-dom";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUser, setStatus, setUserID, updatePasswordUser } from "../../store/slices/userSlice";
+import { useCookies } from "react-cookie";
 
 export default function PersonalAccountPage() {
 
@@ -13,6 +14,11 @@ export default function PersonalAccountPage() {
 
   /* get email of current user */
   const currentUserEmail = useSelector(state => state.user.currentUser.UserEmail);
+
+  const [cookies2, setCookies2, removeCookie2] = useCookies(["token"]);
+  const cookieToken = cookies2.token;
+  const [cookies3, setCookies3, removeCookie3] = useCookies(["idFromLogin"]);
+  const cookieId = cookies3.idFromLogin;
   
   /*for password inputs */
   const [PerAccPasswordValue, setPasswordValue] = useState("");
@@ -105,6 +111,9 @@ export default function PersonalAccountPage() {
     dispatch(setUserID(null));
     dispatch(setCurrentUser(null));
     dispatch(setStatus('idle'));
+    //доделать для обнуления куки
+    removeCookie2("token");
+    removeCookie3("idFromLogin");
     navigate("/login", { replace: true });
   };
 

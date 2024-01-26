@@ -7,6 +7,7 @@ import { addUserImage } from '../../store/slices/userSlice';
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 import CustomNotifications from "../CustomNotifications/CustomNotifications";
 import { useNotification } from "../../hooks/useNotification";
+import { useCookies } from "react-cookie";
 
 
 export default function AddImageModal({ active, setActive }) {
@@ -18,6 +19,11 @@ export default function AddImageModal({ active, setActive }) {
   const [nameError, setNameError] = useState("");
   const [imageName, setImageName] = useState("");
   /*-------------------------*/
+
+  const [cookies2, ] = useCookies(["token"]);
+  const cookieToken = cookies2.token;
+  const [cookies3, ] = useCookies(["idFromLogin"]);
+  const cookieId = cookies3.idFromLogin;
 
   const handleChangeNameImage = (e) => {
     setImageName(e.target.value);
@@ -89,9 +95,9 @@ export default function AddImageModal({ active, setActive }) {
      
 
     //преобразование строки в массив строк  
-    if (id && userToken && image && imageName && imageTags && !fileError && !nameError) {
-           console.log('id: ', id, 'token: ', userToken, 'data: ', image, imageName, imageTags);
-           dispatch(addUserImage({userId: id, userToken: userToken, image: image, imageName:imageName, imageTags: imageTags}));
+    if (cookieId && cookieToken && image && imageName && imageTags && !fileError && !nameError) {
+           console.log('cookieId: ', cookieId, 'token: ', cookieToken, 'data: ', image, imageName, imageTags);
+           dispatch(addUserImage({userId: cookieId, userToken: cookieToken, image: image, imageName:imageName, imageTags: imageTags}));
          } 
          
     //обнуление имеющихся значений

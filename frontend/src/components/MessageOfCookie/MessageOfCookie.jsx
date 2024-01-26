@@ -18,7 +18,7 @@ export default function MessageOfCookie() {
     console.log("isShow", isShow);
   };
 
-  //добавление переменной в локальное хранилище
+  //добавление переменной, сообщающей о закрытии окна в локальное хранилище
   useEffect(() => {
     if (isShow === false) {
       //ставим true, так как окно было закрыто

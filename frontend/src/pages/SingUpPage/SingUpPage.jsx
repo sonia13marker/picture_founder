@@ -7,13 +7,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { createUser, setError, setExistEmail } from "../../store/slices/userSlice";
 import Logo from "../../icons/Logo";
 import Loader from "../../components/Loader/Loader";
+import { useCookies } from "react-cookie";
 
 export default function SingUpPage() {
 
 let navigate = useNavigate();
 const nextPage = () => {
-  navigate('/login', {replace: true});
+  navigate('/login', {replace: true, state: "from Singup Page"} );
 }
+
+const currCode = useSelector(state => state.user.currentUser?.data?.message);
+console.log("HAPPY 2", currCode, currCode === "complete user create" );
 
 /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
@@ -93,9 +97,16 @@ const handleSubmit = async () => {
   //внутренние проверки на заполнение значений 
   //и отсутствие ошибок
   if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && SingupEmail && SingupPassword && SingUppasswordVerValue && getError === null) {
-    dispatch(createUser({SingupEmail, SingupPassword}));
+    const response = await dispatch(createUser({SingupEmail, SingupPassword}));
+
+    // console.log("response", response, response?.arg?.SingupEmail, "lalalla",  response?.arg?.SingupEmail !== existEmail, existEmail);
+
+    // if (response && response?.arg?.SingupEmail !== existEmail) {
+    //   nextPage();
+    // }
   }
 }
+
 
 //проверка на ответ от сервера, если ошибка, то записать ее под инпутом
 useEffect(()=> {
@@ -104,24 +115,51 @@ useEffect(()=> {
       setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
       console.log("getError in function in red", getError);
       console.log("existEmail in  function in red", existEmail);
-  } 
-  console.log("getError in useEffect", getError);
-  console.log("existEmail in in useEffect", existEmail);
-  
-}, [getError, existEmail]);
-
-//очистка ошибки под инпутом, если он не совпадает с введенным ранее
-useEffect(() => {
-  if (existEmail !== SingupEmail) {
+  }; 
+  if (existEmail && SingupEmail && existEmail !== SingupEmail) {
     setErrorMessageEmail("");
     dispatch(setError(null));
     dispatch(setExistEmail(null));
-   }
-  if (userIDInRegis !== null) {
+    // nextPage();
+  }
+  console.log("getError in useEffect", getError);
+  console.log("existEmail in in useEffect", existEmail);
+  
+}, [getError, existEmail, SingupEmail, dispatch]);
+
+const [cookies2, ] = useCookies(["token"]);
+const cookieToken = cookies2.token;
+
+useEffect(() => {
+  if (currCode && currCode !== "Request failed with status code 400") {     
     nextPage();
   }
-}, [SingupEmail, dispatch, existEmail, userIDInRegis]);
+}, [currCode])
+//очистка ошибки под инпутом, если он не совпадает с введенным ранее
+// useEffect(() => {
+//   if (existEmail && SingupEmail && existEmail !== SingupEmail) {
+//     setErrorMessageEmail("");
+//     dispatch(setError(null));
+//     dispatch(setExistEmail(null));
+//     //  setYes(true);
+//    }
+//   //  if (cookieToken !== null) {
+//   //       nextPage();
+//   //    }
+// }, [SingupEmail, existEmail, dispatch]);
 
+// useEffect(() => {
+//   if (yes) {
+//     nextPage();
+//   }
+// }, [yes])
+//на этом моменте он успешно регается и надо дальше сделать переход на стр. login
+
+// useEffect(() => {
+//    if (cookieToken !== null && currentStatus === "succeeded") {
+//         nextPage();
+//      }
+// }, [cookieToken, currentStatus])
 // for checkbox
 const [checked, setChecked] = useState(false);
 

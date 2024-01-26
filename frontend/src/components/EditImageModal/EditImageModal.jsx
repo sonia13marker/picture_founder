@@ -6,6 +6,7 @@ import { changeUserImage } from '../../store/slices/userSlice';
 import { PATH_TO_SERVER_GETimg } from '../../data/constants';
 import CustomNotifications from '../CustomNotifications/CustomNotifications';
 import { useNotification } from '../../hooks/useNotification';
+import { useCookies } from 'react-cookie';
 
 export default function EditImageModal ({active, setActive, id, name, tags, image}) {
       /* для модальных окон-подтверждений */
@@ -14,6 +15,11 @@ export default function EditImageModal ({active, setActive, id, name, tags, imag
   const dispatch = useDispatch();
   const userId = useSelector(state => state.user.UserId);
   const userToken = useSelector(state => state.user.userToken);
+
+  const [cookies2, ] = useCookies(["token"]);
+  const cookieToken = cookies2.token;
+  const [cookies3, ] = useCookies(["idFromLogin"]);
+  const cookieId = cookies3.idFromLogin;
   /* для текстовых блоков */
   let nameImage = useRef();
   let tagsImage = useRef();
@@ -42,11 +48,11 @@ const { showNotify } = useNotification();
     if (imageName || tags2) {
       if (imageName) {
         console.log('fucj', tags)
-        dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: imageName, imageTags: tags}));
+        dispatch(changeUserImage({userId: cookieId, imageId: imageId, userToken: cookieToken, imageName: imageName, imageTags: tags}));
       } else if (tags2) {
-        dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: name, imageTags: tags2}));
+        dispatch(changeUserImage({userId: cookieId, imageId: imageId, userToken: cookieToken, imageName: name, imageTags: tags2}));
       } else if (imageName && tags2) {
-        dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: imageName, imageTags: tags2}));
+        dispatch(changeUserImage({userId: cookieId, imageId: imageId, userToken: cookieToken, imageName: imageName, imageTags: tags2}));
       }
       //setActive(!active);
 
@@ -79,7 +85,7 @@ const { showNotify } = useNotification();
   const cancelBtnClick = () => {
     //при отмене изменений отправляем запрос на изменние с тегами, которые были до этого
     //setImageTags(tags);
-    dispatch(changeUserImage({userId: userId, imageId: imageId, userToken: userToken, imageName: name, imageTags: tags}));
+    dispatch(changeUserImage({userId: cookieId, imageId: imageId, userToken: cookieToken, imageName: name, imageTags: tags}));
     setActive(!active);
     setConfirmModalActive(!confirmModalActive);
   }
@@ -102,7 +108,7 @@ const { showNotify } = useNotification();
 
             <div className='modal__content__body__wrapper'>
             <span className='modal__content__body__imgBlock'>
-                <img className='modal__content__body__imgBlock__img' src={`${PATH_TO_SERVER_GETimg}/${userId}/image/${imageId}`} alt={name} />
+                <img className='modal__content__body__imgBlock__img' src={`${PATH_TO_SERVER_GETimg}/${cookieId}/image/${imageId}`} alt={name} />
             </span>
             </div>
             {/*блок с инфой о картинке - название и теги,

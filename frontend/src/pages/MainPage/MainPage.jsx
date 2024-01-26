@@ -15,18 +15,16 @@ export default function MainPage() {
   const userId = useSelector(state => state.user.UserId);
   console.log("ID IN MAIN PAGE", userId);
 
-     //запись в куки
-     const [cookies, setCookie] = useCookies(["idFromMainPage"]);
-
-    //получение и запись ID в куки
-     useEffect(() => {
-      setCookie("idFromMainPage", userId);
-      // console.log("ID USER IN COOKIE", cookies.idFromMainPage )
-     }, [userId, cookies.idFromMainPage, setCookie])
-
   const userToken = useSelector(state => state.user.userToken);
   console.log("TOKEN IN MAIN PAGE", userToken); 
   const imagesStatus = useSelector(state => state.user.status);
+
+  const [cookies2, ] = useCookies(["token"]);
+  const cookieToken = cookies2.token;
+  const [cookies3, ] = useCookies(["idFromLogin"]);
+  const cookieId = cookies3.idFromLogin;
+
+  console.log("COOKIES token FROM MAIN PAGE", cookieToken, cookieId)
 
   const images = useSelector(state => state.user.images);
 
@@ -35,10 +33,11 @@ export default function MainPage() {
   const error = useSelector(state => state.user.error);
 
   useEffect(() => {
-      if ((userId && userToken) && imagesStatus === 'idle') {
-     dispatch(getImages({ userId: userId, userToken: userToken })) 
+      if (imagesStatus === 'idle' && (cookieId && cookieToken)) {
+        console.log("await data", cookieId, cookieToken)
+     dispatch(getImages({ userId: cookieId, userToken: cookieToken })) 
      }
-  }, [userId, userToken, dispatch, imagesStatus, images]);
+  }, [dispatch, imagesStatus, images, cookieId, cookieToken]);
 
   let content;
 
@@ -47,7 +46,7 @@ export default function MainPage() {
   } else if (imagesStatus === 'succeeded') {
    
     content = (images && images?.length !== 0) ? images.map(
-      (image) =>  <ImageCard key={image._id} imageName={image.imageName} imageTags={image.imageTags} image={image.imageHash} imageId={image._id} userId={userId} userToken={userToken} isFavotite={image.isFavotite}/>
+      (image) =>  <ImageCard key={image._id} imageName={image.imageName} imageTags={image.imageTags} image={image.imageHash} imageId={image._id} userId={cookieId} userToken={cookieToken} isFavotite={image.isFavotite}/>
     ) : <EmptyTextComponent
     image={empty_icon}
     text="Тут ещё нет картинок. Пора бы их добавить"

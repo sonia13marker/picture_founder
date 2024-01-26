@@ -146,6 +146,7 @@ export const createUser = createAsyncThunk(
             console.log("EXIST EMAIL ERROR", existEmail);
             thunkAPI.dispatch(setExistEmail(existEmail));
             thunkAPI.dispatch(setError(errCode));
+            thunkAPI.dispatch(setStatus("failed"));
             console.error(err);
             return err;
             // const serializedError = err.toJSON();
@@ -170,7 +171,6 @@ export const loginUser = createAsyncThunk(
       console.log("userIdLogin IN USERSLICE", userIdLogin);
       thunkAPI.dispatch(setUserID(userIdLogin));
 
-        //const userEmailLogin = res.data.UserEmail;
         const userEmailLogin = res.data.UserEmail;
               console.log("userEmailLogin login", userEmailLogin);
              /* добавление эмейла в текущего юзера */
