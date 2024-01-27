@@ -12,11 +12,11 @@ import { useCookies } from "react-cookie";
 export default function MainPage() {
 
 
-  const userId = useSelector(state => state.user.UserId);
-  console.log("ID IN MAIN PAGE", userId);
+  // const userId = useSelector(state => state.user.UserId);
+  // console.log("ID IN MAIN PAGE", userId);
 
-  const userToken = useSelector(state => state.user.userToken);
-  console.log("TOKEN IN MAIN PAGE", userToken); 
+  // const userToken = useSelector(state => state.user.userToken);
+  // console.log("TOKEN IN MAIN PAGE", userToken); 
   const imagesStatus = useSelector(state => state.user.status);
 
   const [cookies2, ] = useCookies(["token"]);

@@ -44,9 +44,6 @@ export const addUserImage = createAsyncThunk(
           }
         }
         ); 
-        // для сообщения о добавлении картинки
-        //сейчас смс появляется даже при удалении картинки
-        //thunkAPI.dispatch(showNotification("Картинка добавлена"));
       
       console.log("data about image", res);
       //обновление страницы сразу после добавления
@@ -130,14 +127,10 @@ export const createUser = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const res = await axios.post(`${PATH_TO_SERVER}/auth/regis`, payload);
-            /* после отправки запроса я получаю данные: email & id,
-            записываю их в переменные и передаю текущему юзеру */
-
-             const UserID = res.data.data.UserID;
-             console.log("UserID", UserID);
-            /* добавление id текущего юзера */
-            thunkAPI.dispatch(setUserID(UserID));
-            thunkAPI.dispatch(setError(null));
+            /*записываю успешный ответ от сервера */
+            const singUpMessage = res.data.message;
+            console.log("singUpMessage", singUpMessage)
+            thunkAPI.dispatch(setMessage(singUpMessage));
             console.log(res);
             return res; 
         } catch (err) {
@@ -149,8 +142,6 @@ export const createUser = createAsyncThunk(
             thunkAPI.dispatch(setStatus("failed"));
             console.error(err);
             return err;
-            // const serializedError = err.toJSON();
-            // return thunkAPI.rejectWithValue(serializedError);
         }
     },
 );
@@ -171,10 +162,11 @@ export const loginUser = createAsyncThunk(
       console.log("userIdLogin IN USERSLICE", userIdLogin);
       thunkAPI.dispatch(setUserID(userIdLogin));
 
-        const userEmailLogin = res.data.UserEmail;
-              console.log("userEmailLogin login", userEmailLogin);
-             /* добавление эмейла в текущего юзера */
-              thunkAPI.dispatch(setCurrentUser(userEmailLogin));
+      /* записываю успешный ответ от сервера */
+      const loginMessage = res.data.message;
+      console.log("loginMessage", loginMessage)
+      thunkAPI.dispatch(setMessage(loginMessage));
+      console.log("res data from login userslice", res.data)
       return res.data;
       
     } catch (error) {
@@ -182,12 +174,35 @@ export const loginUser = createAsyncThunk(
       thunkAPI.dispatch(setError(errCode));
       console.error(error)
       return error;
-      //const serializedError = error.toJSON();
-      // const serializedError = error.toJSON();
-      // return thunkAPI.rejectWithValue(serializedError);
     }
   }
 
+)
+
+/* получение инфы о юзере */
+export const getInfoAboutUser = createAsyncThunk(
+  "user/getInfoAboutUser",
+  async (payload, thunkAPI) => {
+    try {
+      const { userId, userToken } = payload; 
+      console.log('payload from acc page', payload);
+      const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}`, 
+      {
+           headers: {
+             Authorization: 'Bearer ' + userToken,
+           }} );
+           console.log("res data from userslice", res.data)
+           /* записываю все данные о юзере, в том числе и эмейл,
+           чтобы получить его на странице PersonalAccountPage */
+           const userData = res.data;
+           thunkAPI.dispatch(setAllUserData(userData))
+           
+           return res.data;
+    } catch (err) {
+      console.error(err)
+      return err;
+  }
+}
 )
 
 /* обновление пароля */
@@ -219,14 +234,14 @@ export const updatePasswordUser = createAsyncThunk(
 const userSlise = createSlice({
     name: 'user',
     initialState: {
-        currentUser: [],
         favorite: [],
-        isLoading: false,
         status: 'idle',
         error: null,
+        message: null,
         images: [],
         UserId: null,
         userToken: null,
+        allUserData: [],
         notificationName: "", 
         existEmail: ""
     },
@@ -297,20 +312,23 @@ const userSlise = createSlice({
               state.images.splice(image.id);
             }
           },
-            setCurrentUser: (state, action) => {
-                //const UserEmail = action.payload;
-                const userData = action.payload;
-                console.log("USER DATA IN ACTION", userData);
-                console.log("NOW CURRENT USER EMPTY", userData === null)
-                //console.log("current user email", UserEmail);
+            // setCurrentUser: (state, action) => {
+            //     //const UserEmail = action.payload;
+            //     const userData = action.payload;
+            //     console.log("USER DATA IN ACTION", userData);
+            //     console.log("NOW CURRENT USER EMPTY", userData === null)
+            //     //console.log("current user email", UserEmail);
                 
 
-                if (userData === null) {
+            //     if (userData === null) {
                  
-                  state.currentUser = [];
-                } else {
-                  state.currentUser.push(userData);
-                }
+            //       state.currentUser = [];
+            //     } else {
+            //       state.currentUser.push(userData);
+            //     }
+            // },
+            setAllUserData: (state, action) => {
+              state.allUserData = action.payload;
             },
             setUserID: (state, action) => {
             state.UserId = action.payload;
@@ -331,6 +349,10 @@ const userSlise = createSlice({
           setStatus: (state, action) => {
             state.status = action.payload;
           },
+          setMessage: (state, action) => {
+            console.log("message in state");
+            state.message = action.payload;
+          },
           setExistEmail: (state, action) => {
             console.log("this exist email in state", action.payload);
             state.existEmail = action.payload;
@@ -344,14 +366,7 @@ const userSlise = createSlice({
               state.notificationName = ""
             };
            
-            // setTimeout(() => state.notificationName = "", 10000)
-            
           }
-          // setStatusMessage: (state, action) => {
-          //   console.log('SET STATUS', action.payload);
-          //   state.status = action.payload;
-          //   console.log("status in state", state.status);
-          // }
     },
     extraReducers: (builder) => {
       //получение изображений - getImages
@@ -374,7 +389,6 @@ const userSlise = createSlice({
       })
        .addCase(createUser.fulfilled, (state, { payload }) => {
         state.status = 'succeeded'
-         addCurrentUser(state, { payload });
       })
       .addCase(createUser.rejected, (state, action) => {
         state.status = 'failed'
@@ -385,7 +399,6 @@ const userSlise = createSlice({
       //мешает загрузке картинок на главной после входа
         builder
         .addCase(loginUser.fulfilled, (state, { payload }) => {
-            addCurrentUser(state, { payload });
       })
       builder
         .addCase(loginUser.rejected, (state, action) => {
@@ -393,8 +406,8 @@ const userSlise = createSlice({
         state.error = action.error.message
 });
 //обновление пароля - updatePasswordUser
-        builder
-        .addCase(updatePasswordUser.fulfilled, addCurrentUser);
+        // builder
+        // .addCase(updatePasswordUser.fulfilled, addCurrentUser);
 //добавление картинки - addUserImage
       builder
       .addCase(addUserImage.pending, (state, action) => {
@@ -437,14 +450,10 @@ const userSlise = createSlice({
 
 }})
 
-const addCurrentUser = (state, { payload }) => {
-  state.currentUser = payload; 
-};
-
 export const selectUserID = (state) => state.user.userID;
 export const notificationNmae = (state) => state.user.notificationName;
 
 
-export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setError, setCurrentUser, setUserToken, showNotification, setStatus, setExistEmail } = userSlise.actions;
+export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setError, setUserToken, setUserEmail, setAllUserData, showNotification, setStatus, setMessage, setExistEmail } = userSlise.actions;
 
 export default userSlise.reducer;

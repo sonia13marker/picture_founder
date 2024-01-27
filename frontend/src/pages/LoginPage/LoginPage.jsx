@@ -5,7 +5,7 @@ import OpenEyeIcon from '../../icons/OpenEyeIcon';
 import CloseEyeIcon from '../../icons/CloseEyeIcon';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, setCurrentUser, setError } from '../../store/slices/userSlice';
+import { loginUser, setError, setMessage } from '../../store/slices/userSlice';
 import Logo from '../../icons/Logo';
 import { useCookies } from 'react-cookie';
 
@@ -14,14 +14,11 @@ export default function LoginPage ({ checkAuth }) {
     const id = useSelector(state => state.user.UserId);
     console.log("ID from login page", id);
 
-    const currMes = useSelector(state=> state.user.currentUser.message);
-    console.log("HAPPY", currMes, currMes === "login success");
+    // const currMes = useSelector(state=> state.user.currentUser.message);
+    // console.log("HAPPY", currMes, currMes === "login success");
+    const message = useSelector(state => state.user.message);
+    console.log("HAPPY", message, message === "login success");
 
-    
-
-    let location = useLocation();
-
-    console.log(location);
 
     const token = useSelector(state => state.user.userToken);
     console.log("TOKEN from login page", token);
@@ -70,7 +67,7 @@ export default function LoginPage ({ checkAuth }) {
           //   goToMainPage();
           // }
           console.log("token, id", token, id);
-          if (currMes === "login success") {
+          if (message === "login success") {
             
             goToMainPage();
           }
@@ -126,7 +123,7 @@ useEffect(() => {
     console.log(LoginEmail, nonExistEmail, LoginEmail !== nonExistEmail)
     setErrorMessageEmail("");
     dispatch(setError(null));
-    dispatch(setCurrentUser(null));
+    // dispatch(setCurrentUser(null));
     setNonExistEmail("");
   }
   // if (id !== null) {
@@ -137,10 +134,11 @@ useEffect(() => {
 }, [LoginEmail, dispatch, nonExistEmail]);
 
 useEffect(() => {
-  if (currMes === "login success") {     
+  if (message === "login success") {     
     goToMainPage();
+    dispatch(setMessage(null));
   }
-}, [currMes])
+}, [message])
 
 //for checkbox
 const [checked, setChecked] = useState(false);

@@ -17,8 +17,8 @@ import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 
 function App() {
-  const id = useSelector((state) => state.user.UserId);
-  console.log("APP USER ID", id);
+  // const id = useSelector((state) => state.user.UserId);
+  // console.log("APP USER ID", id);
 
   const [cookies, setCookie] = useCookies(["token"]);
   const [cookies3, setCookie3] = useCookies(["idFromLogin"]);

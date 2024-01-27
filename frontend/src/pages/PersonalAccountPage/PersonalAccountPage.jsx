@@ -1,24 +1,37 @@
 import "./PersonalAccountPage.scss";
 import OpenEyeIcon from "../../icons/OpenEyeIcon";
 import CloseEyeIcon from "../../icons/CloseEyeIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {useNavigate, Link, NavLink} from "react-router-dom";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentUser, setStatus, setUserID, updatePasswordUser } from "../../store/slices/userSlice";
+import { getInfoAboutUser, setAllUserData, setStatus, setUserID, setUserToken, updatePasswordUser } from "../../store/slices/userSlice";
 import { useCookies } from "react-cookie";
 
 export default function PersonalAccountPage() {
 
   const dispatch = useDispatch();
 
-  /* get email of current user */
-  const currentUserEmail = useSelector(state => state.user.currentUser.UserEmail);
+  /* get info of current user */
+  //const currentUserEmail = useSelector(state => state.user.userEmal);
+  const allUserData = useSelector(state => state.user.allUserData);
+  const userEmal = allUserData.UserEmail;
+  const imageCounter = allUserData.ImageCount;
+  //const tagsCounter = allUserData.TagCount;
+  console.log("allUserData", allUserData);
+
+  const userId = useSelector(state => state.user.UserId);
+  const userToken = useSelector(state => state.user.userToken);
 
   const [cookies2, setCookies2, removeCookie2] = useCookies(["token"]);
   const cookieToken = cookies2.token;
   const [cookies3, setCookies3, removeCookie3] = useCookies(["idFromLogin"]);
   const cookieId = cookies3.idFromLogin;
+
+  useEffect(() => {
+    dispatch(getInfoAboutUser({ userId: cookieId, userToken: cookieToken}));
+    
+  }, [dispatch, cookieId, cookieToken])
   
   /*for password inputs */
   const [PerAccPasswordValue, setPasswordValue] = useState("");
@@ -108,9 +121,15 @@ export default function PersonalAccountPage() {
   // действие выхода из акка
   const navigate = useNavigate();
   const goToLogin = () => {
-    dispatch(setUserID(null));
-    dispatch(setCurrentUser(null));
+    if (userId !== null) {
+      dispatch(setUserID(null));
+    }
+    if (userToken !== null) {
+      dispatch(setUserToken(null));
+    }
+    // dispatch(setCurrentUser(null));
     dispatch(setStatus('idle'));
+    dispatch(setAllUserData([]));
     //доделать для обнуления куки
     removeCookie2("token");
     removeCookie3("idFromLogin");
@@ -136,7 +155,7 @@ export default function PersonalAccountPage() {
                   type="email"
                   id="personalAcc_email"
                   name="personalAcc_email"
-                  defaultValue={currentUserEmail || ""}
+                  defaultValue={ userEmal || ""}
                   readOnly
                 />
               </label>
@@ -149,8 +168,7 @@ export default function PersonalAccountPage() {
             <h4 className="account__wrapper__leftSide__text">
               Общее количество картинок:{" "}
               <span className="fontWeight">
-                0
-                {/* {imageCounter ? imageCounter : 0} */}
+                {imageCounter ? imageCounter : 0}
               </span>
             </h4>
 

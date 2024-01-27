@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import OpenEyeIcon from "../../icons/OpenEyeIcon";
 import CloseEyeIcon from "../../icons/CloseEyeIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser, setError, setExistEmail } from "../../store/slices/userSlice";
+import { createUser, setError, setExistEmail, setMessage } from "../../store/slices/userSlice";
 import Logo from "../../icons/Logo";
 import Loader from "../../components/Loader/Loader";
 import { useCookies } from "react-cookie";
@@ -13,11 +13,14 @@ export default function SingUpPage() {
 
 let navigate = useNavigate();
 const nextPage = () => {
-  navigate('/login', {replace: true, state: "from Singup Page"} );
+  navigate('/login', {replace: true} );
 }
 
 const currCode = useSelector(state => state.user.currentUser?.data?.message);
 console.log("HAPPY 2", currCode, currCode === "complete user create" );
+
+const message = useSelector(state => state.user.message);
+console.log("HAPPY", message, message === "complete user create" );
 
 /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
@@ -79,8 +82,8 @@ const dispatch = useDispatch();
 const getError = useSelector(state => state.user.error);
 const currentStatus = useSelector(state => state.user.status);
 const existEmail = useSelector(state => state.user.existEmail);
-const userIDInRegis = useSelector(state => state.user.UserId);
-console.log("userID In Regis", userIDInRegis)
+// const userIDInRegis = useSelector(state => state.user.UserId);
+// console.log("userID In Regis", userIDInRegis)
 console.log("existEmail in singup page", existEmail);
 console.log("status in singup", currentStatus);
 
@@ -97,7 +100,7 @@ const handleSubmit = async () => {
   //внутренние проверки на заполнение значений 
   //и отсутствие ошибок
   if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && SingupEmail && SingupPassword && SingUppasswordVerValue && getError === null) {
-    const response = await dispatch(createUser({SingupEmail, SingupPassword}));
+    dispatch(createUser({SingupEmail, SingupPassword}));
 
     // console.log("response", response, response?.arg?.SingupEmail, "lalalla",  response?.arg?.SingupEmail !== existEmail, existEmail);
 
@@ -127,14 +130,15 @@ useEffect(()=> {
   
 }, [getError, existEmail, SingupEmail, dispatch]);
 
-const [cookies2, ] = useCookies(["token"]);
-const cookieToken = cookies2.token;
+// const [cookies2, ] = useCookies(["token"]);
+// const cookieToken = cookies2.token;
 
 useEffect(() => {
-  if (currCode && currCode !== "Request failed with status code 400") {     
+  if (message === "complete user create") {     
     nextPage();
+    dispatch(setMessage(null));
   }
-}, [currCode])
+}, [message])
 //очистка ошибки под инпутом, если он не совпадает с введенным ранее
 // useEffect(() => {
 //   if (existEmail && SingupEmail && existEmail !== SingupEmail) {
