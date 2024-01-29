@@ -22,13 +22,12 @@ export default function LoginPage ({ checkAuth }) {
 
     const token = useSelector(state => state.user.userToken);
     console.log("TOKEN from login page", token);
-     const [fff, setFFF] = useState(false);
 
     useEffect(() => {
       if (token !== null && id !== null) {
-        console.log("red", token, fff);
+        console.log("red", token);
       }
-    }, [token, fff, id])
+    }, [token, id])
 
         //запись в куки
         const [cookies2, setCookie2] = useCookies(["token"]);
@@ -36,9 +35,9 @@ export default function LoginPage ({ checkAuth }) {
 
         useEffect(() => {
           if (id !== null) {
-            setCookie2("idFromLogin", id);
+            setCookie3("idFromLogin", id);
           }
-        }, [id, setCookie2]);
+        }, [id, setCookie3]);
         
         useEffect(() => {
           if (token !== null) {
@@ -56,24 +55,13 @@ export default function LoginPage ({ checkAuth }) {
 
         //внутренние проверки на заполнение значений и отсутствие ошибок
         if (LoginEmail && LoginPassword && errorMessageEmail === "" && errorMessagePassword === "" && getError === null) {
-          const res = dispatch(loginUser({LoginEmail, LoginPassword}));
+          dispatch(loginUser({LoginEmail, LoginPassword}));
 
-          console.log("res", res, res.arg.LoginPassword, res.arg.LoginEmail);
-          // if (res && res.arg.LoginEmail
-          //   !== null && res.arg.userId !== null && res.arg.token !== null) {
-          //   goToMainPage();
-          // }
-          // if (!res.arg.LoginPassword && !res.arg.LoginEmail) {
-          //   goToMainPage();
-          // }
           console.log("token, id", token, id);
           if (message === "login success") {
-            
             goToMainPage();
           }
         }
-
-        // dispatch(loginUser({LoginEmail, LoginPassword}));
         console.log("DATA FROM LOGIN PAGE:", LoginEmail, LoginPassword)
     }
 const goToMainPage = () => {
@@ -106,13 +94,6 @@ useEffect(() => {
     setNonExistEmail(LoginEmail);
     console.log("getError in red", getError, nonExistEmail, LoginEmail);
   } 
-  // if (LoginEmail !== nonExistEmail) {
-  //   console.log(LoginEmail, nonExistEmail, LoginEmail !== nonExistEmail)
-  //   setErrorMessageEmail("");
-  //   dispatch(setError(null));
-  //   dispatch(setCurrentUser(null));
-  //   setNonExistEmail("");
-  // }
   console.log("404 exist email", nonExistEmail);
   console.log("404 email", LoginEmail)
 }, [getError, LoginEmail, nonExistEmail])
@@ -123,7 +104,6 @@ useEffect(() => {
     console.log(LoginEmail, nonExistEmail, LoginEmail !== nonExistEmail)
     setErrorMessageEmail("");
     dispatch(setError(null));
-    // dispatch(setCurrentUser(null));
     setNonExistEmail("");
   }
   // if (id !== null) {
@@ -146,24 +126,33 @@ const [checked, setChecked] = useState(false);
     //запись в куки
     const [cookies, setCookie] = useCookies(["chekedFromLoginPage"]);
 
-    //получаем id, который уже был записан в куки из MainPage
-    //const cookieID = cookies.idFromMainPage;
-    //console.log("cookieID", cookieID);
+    //проверка на нажатие и запись значения в куки
+    const toggleChecked = () => {
+      const newValue = !checked;
+      setChecked(newValue);
+      setCookie("chekedFromLoginPage", newValue);
 
-    //проверяем - если галочка стоит, то добавляем в куки
+    };
+
     useEffect(() => {
-      if (checked) {
-        setCookie("chekedFromLoginPage", checked);
-      }
-    },[checked, setCookie]);
+      // Проверка значения из куки
+      const cookieValue = cookies.chekedFromLoginPage;
+      if (cookieValue !== false) {
+        setChecked(true);
 
-    //если в куки есть значения, то ставим галочку в true
-    // useEffect(() => {
-    //     if (cookies.chekedFromLoginPage === true && cookieID) { 
-    //       setChecked(true);
-    //       console.log("checked from loginPage", checked);
-    //     }
-    // }, [checked, cookieID, cookies.chekedFromLoginPage]);
+        localStorage.setItem("username", LoginEmail);
+
+        const username = localStorage.getItem("username");
+        if (username) {
+
+          console.log("Данные пользователя найдены:", checked === true, username);
+        } else {
+        console.log("Данные пользователя не найдены");
+        }
+      } else if (cookieValue === false) {
+        localStorage.setItem("username", "");
+      }
+    }, [cookies.chekedFromLoginPage, checked, LoginEmail]);
 
 /*for password input */
 const [LoginPassword, setPassword] = useState("");
@@ -279,7 +268,8 @@ useEffect(() => {
     <span className='login__lineWrapper'>
     <span className="singup__section__body__checkboxWrapper login__wrapper gap">
         <input type="checkbox" 
-        onClick={() => setChecked(!checked)}
+        //onClick={toggleChecked}
+        onChange={toggleChecked}
         id="login_checkbox"
         name="login_checkbox"
         checked={checked}

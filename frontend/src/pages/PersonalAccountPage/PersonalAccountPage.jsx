@@ -127,10 +127,9 @@ export default function PersonalAccountPage() {
     if (userToken !== null) {
       dispatch(setUserToken(null));
     }
-    // dispatch(setCurrentUser(null));
     dispatch(setStatus('idle'));
     dispatch(setAllUserData([]));
-    //доделать для обнуления куки
+    //обнуление куки
     removeCookie2("token");
     removeCookie3("idFromLogin");
     navigate("/login", { replace: true });
