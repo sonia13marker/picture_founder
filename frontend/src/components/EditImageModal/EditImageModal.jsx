@@ -47,22 +47,17 @@ const { showNotify } = useNotification();
     //отправляется соответствующий запрос
     if (imageName || tags2) {
       if (imageName) {
-        console.log('fucj', tags)
         dispatch(changeUserImage({userId: cookieId, imageId: imageId, userToken: cookieToken, imageName: imageName, imageTags: tags}));
       } else if (tags2) {
         dispatch(changeUserImage({userId: cookieId, imageId: imageId, userToken: cookieToken, imageName: name, imageTags: tags2}));
       } else if (imageName && tags2) {
         dispatch(changeUserImage({userId: cookieId, imageId: imageId, userToken: cookieToken, imageName: imageName, imageTags: tags2}));
       }
-      //setActive(!active);
-
+      //появление уведомлений
+     showNotify("Изменения сохранены");
     } else {
       console.log("no changes");
     }
-
-    //появление уведомлений
-     showNotify("Изменения сохранены");
-
   }
 
   //проверка на сохранение значений для кнопки "rightBtnAction"
