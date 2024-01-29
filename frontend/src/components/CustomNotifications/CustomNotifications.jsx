@@ -1,12 +1,13 @@
 import { useSelector } from "react-redux";
 import "./CustomNotifications.scss";
 import { notificationNmae } from "../../store/slices/userSlice";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 
-export default function CustomNotifications() {
+const CustomNotifications = () => {
   const notificationName = useSelector(notificationNmae);
 
-  console.log("notificationName is", notificationName);
+    console.log("notificationName is", notificationName);
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,3 +29,5 @@ export default function CustomNotifications() {
     </>
   );
 }
+
+export default memo(CustomNotifications);
