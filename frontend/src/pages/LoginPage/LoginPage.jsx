@@ -1,5 +1,5 @@
 import './LoginPage.scss';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import OpenEyeIcon from '../../icons/OpenEyeIcon';
 import CloseEyeIcon from '../../icons/CloseEyeIcon';
@@ -57,16 +57,16 @@ export default function LoginPage ({ checkAuth }) {
         if (LoginEmail && LoginPassword && errorMessageEmail === "" && errorMessagePassword === "" && getError === null) {
           dispatch(loginUser({LoginEmail, LoginPassword}));
 
-          console.log("token, id", token, id);
-          if (message === "login success") {
-            goToMainPage();
-          }
+          // console.log("token, id", token, id);
+          // if (message === "login success") {
+          //   goToMainPage();
+          // }
         }
         console.log("DATA FROM LOGIN PAGE:", LoginEmail, LoginPassword)
     }
-const goToMainPage = () => {
+const goToMainPage = useCallback(() => {
   navigate('/');
-}
+}, [navigate]);
 
     /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
@@ -100,17 +100,12 @@ useEffect(() => {
 
 //очистка ошибок и переход на страницу
 useEffect(() => {
-  if (LoginEmail !== nonExistEmail) {
+  if ((LoginEmail && nonExistEmail) && LoginEmail !== nonExistEmail) {
     console.log(LoginEmail, nonExistEmail, LoginEmail !== nonExistEmail)
     setErrorMessageEmail("");
     dispatch(setError(null));
     setNonExistEmail("");
   }
-  // if (id !== null) {
-  //   console.log("fuch", id);
-  //   goToMainPage();
-  // }
-
 }, [LoginEmail, dispatch, nonExistEmail]);
 
 useEffect(() => {
@@ -118,7 +113,7 @@ useEffect(() => {
     goToMainPage();
     dispatch(setMessage(null));
   }
-}, [message])
+}, [message, goToMainPage])
 
 //for checkbox
 const [checked, setChecked] = useState(false);

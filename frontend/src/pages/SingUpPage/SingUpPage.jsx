@@ -1,20 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./SingUpPage.scss";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import OpenEyeIcon from "../../icons/OpenEyeIcon";
 import CloseEyeIcon from "../../icons/CloseEyeIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser, setError, setExistEmail, setMessage } from "../../store/slices/userSlice";
 import Logo from "../../icons/Logo";
 import Loader from "../../components/Loader/Loader";
-import { useCookies } from "react-cookie";
 
 export default function SingUpPage() {
 
 let navigate = useNavigate();
-const nextPage = () => {
+const nextPage = useCallback(() => {
   navigate('/login', {replace: true} );
-}
+}, [navigate])
 
 const currCode = useSelector(state => state.user.currentUser?.data?.message);
 console.log("HAPPY 2", currCode, currCode === "complete user create" );
@@ -101,18 +100,10 @@ const handleSubmit = async () => {
   //и отсутствие ошибок
   if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && SingupEmail && SingupPassword && SingUppasswordVerValue && getError === null) {
     dispatch(createUser({SingupEmail, SingupPassword}));
-
-    // console.log("response", response, response?.arg?.SingupEmail, "lalalla",  response?.arg?.SingupEmail !== existEmail, existEmail);
-
-    // if (response && response?.arg?.SingupEmail !== existEmail) {
-    //   nextPage();
-    // }
   }
 }
 
-
-//проверка на ответ от сервера, если ошибка, то записать ее под инпутом
-useEffect(()=> {
+const checkTheServerAnswer = useCallback(() => {
   if (getError && (getError === 400) && existEmail !== "") {
     console.log("verification for user");
       setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
@@ -123,47 +114,43 @@ useEffect(()=> {
     setErrorMessageEmail("");
     dispatch(setError(null));
     dispatch(setExistEmail(null));
-    // nextPage();
   }
   console.log("getError in useEffect", getError);
   console.log("existEmail in in useEffect", existEmail);
-  
-}, [getError, existEmail, SingupEmail, dispatch]);
+}, [getError, existEmail, SingupEmail, dispatch])
 
-// const [cookies2, ] = useCookies(["token"]);
-// const cookieToken = cookies2.token;
+
+//проверка на ответ от сервера, если ошибка, то записать ее под инпутом
+useEffect(()=> {
+  checkTheServerAnswer();
+}, [checkTheServerAnswer]);
+
+
+//проверка на ответ от сервера, если ошибка, то записать ее под инпутом
+// useEffect(()=> {
+//   if (getError && (getError === 400) && existEmail !== "") {
+//     console.log("verification for user");
+//       setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
+//       console.log("getError in function in red", getError);
+//       console.log("existEmail in  function in red", existEmail);
+//   }; 
+//   if (existEmail && SingupEmail && existEmail !== SingupEmail) {
+//     setErrorMessageEmail("");
+//     dispatch(setError(null));
+//     dispatch(setExistEmail(null));
+//   }
+//   console.log("getError in useEffect", getError);
+//   console.log("existEmail in in useEffect", existEmail);
+  
+// }, [getError, existEmail, SingupEmail, dispatch]);
 
 useEffect(() => {
   if (message === "complete user create") {     
     nextPage();
     dispatch(setMessage(null));
   }
-}, [message])
-//очистка ошибки под инпутом, если он не совпадает с введенным ранее
-// useEffect(() => {
-//   if (existEmail && SingupEmail && existEmail !== SingupEmail) {
-//     setErrorMessageEmail("");
-//     dispatch(setError(null));
-//     dispatch(setExistEmail(null));
-//     //  setYes(true);
-//    }
-//   //  if (cookieToken !== null) {
-//   //       nextPage();
-//   //    }
-// }, [SingupEmail, existEmail, dispatch]);
+}, [message, nextPage])
 
-// useEffect(() => {
-//   if (yes) {
-//     nextPage();
-//   }
-// }, [yes])
-//на этом моменте он успешно регается и надо дальше сделать переход на стр. login
-
-// useEffect(() => {
-//    if (cookieToken !== null && currentStatus === "succeeded") {
-//         nextPage();
-//      }
-// }, [cookieToken, currentStatus])
 // for checkbox
 const [checked, setChecked] = useState(false);
 
@@ -303,7 +290,7 @@ if (currStatus === "loading") {
 
         <span className="singup__section__body__checkboxWrapper">
         <input type="checkbox" 
-        onClick={() => setChecked(!checked)}
+        onChange={() => setChecked(!checked)}
         checked={checked}
         id="singUp_checkbox"
        />
