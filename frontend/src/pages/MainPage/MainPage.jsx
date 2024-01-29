@@ -4,7 +4,7 @@ import EmptyTextComponent from "../../components/EmptyTextComponent/EmptyTextCom
 import ImageCard from "../../components/ImageCard/ImageCard";
 import { useDispatch } from "react-redux";
 import { getImages } from "../../store/slices/userSlice";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useSelector } from 'react-redux';
 import Loader from "../../components/Loader/Loader";
 import { useCookies } from "react-cookie";
@@ -27,21 +27,12 @@ export default function MainPage() {
   const error = useSelector(state => state.user.error);
 
   useMemo(() => {
+    if (imagesStatus === 'idle') {
       console.log("await data", cookieId, cookieToken)
       console.log("use memo");
-    return dispatch(getImages({ userId: cookieId, userToken: cookieToken }));
-  }, [cookieId, cookieToken, dispatch])
-  
-
-  // useEffect(() => {
-  //     if (imagesStatus === 'idle' && (cookieId && cookieToken)) {
-  //       console.log("await data", cookieId, cookieToken)
-  //       const getImagesMemo = useMemo(() => {
-  //         dispatch(getImages({ userId: cookieId, userToken: cookieToken })) 
-  //       }, [])
-     
-  //    }
-  // }, [dispatch, imagesStatus, images, cookieId, cookieToken]);
+      dispatch(getImages({ userId: cookieId, userToken: cookieToken }));
+    }
+  }, [imagesStatus, cookieId, cookieToken, dispatch])
 
   let content;
 
@@ -64,7 +55,6 @@ export default function MainPage() {
   return (
     <section className="wrapper_layout">
     {content}
-      
     </section>
   );
 }

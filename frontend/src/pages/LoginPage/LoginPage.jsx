@@ -14,8 +14,6 @@ export default function LoginPage ({ checkAuth }) {
     const id = useSelector(state => state.user.UserId);
     console.log("ID from login page", id);
 
-    // const currMes = useSelector(state=> state.user.currentUser.message);
-    // console.log("HAPPY", currMes, currMes === "login success");
     const message = useSelector(state => state.user.message);
     console.log("HAPPY", message, message === "login success");
 
@@ -56,11 +54,6 @@ export default function LoginPage ({ checkAuth }) {
         //внутренние проверки на заполнение значений и отсутствие ошибок
         if (LoginEmail && LoginPassword && errorMessageEmail === "" && errorMessagePassword === "" && getError === null) {
           dispatch(loginUser({LoginEmail, LoginPassword}));
-
-          // console.log("token, id", token, id);
-          // if (message === "login success") {
-          //   goToMainPage();
-          // }
         }
         console.log("DATA FROM LOGIN PAGE:", LoginEmail, LoginPassword)
     }
