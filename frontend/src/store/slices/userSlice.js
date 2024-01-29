@@ -98,8 +98,8 @@ export const addUserImage = createAsyncThunk(
         // if (isFavotite === true) {
           // console.log(isFavotite, payload)
           //thunkAPI.dispatch(setStatusMessage('update'));
-          thunkAPI.dispatch(getImages({userId}, {userToken}));
-          thunkAPI.dispatch(addToFavorite(payload));
+           thunkAPI.dispatch(getImages({userId}, {userToken}));
+          //thunkAPI.dispatch(addToFavorite(payload));
         //}
 
         //  if (res.config.data.isFavorite === true) {
@@ -428,7 +428,7 @@ const userSlise = createSlice({
         state.status = 'loading'
       })
       .addCase(changeUserImage.fulfilled, (state, action) => {
-        // state.status = 'succeeded';
+         state.status = 'succeeded';
         //let updImage = action.payload;
         //console.log("IMAGE IN updateImageInfo.fulfilled", updImage);
         // state.images.push({updImage})

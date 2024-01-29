@@ -4,19 +4,13 @@ import EmptyTextComponent from "../../components/EmptyTextComponent/EmptyTextCom
 import ImageCard from "../../components/ImageCard/ImageCard";
 import { useDispatch } from "react-redux";
 import { getImages } from "../../store/slices/userSlice";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from 'react-redux';
 import Loader from "../../components/Loader/Loader";
 import { useCookies } from "react-cookie";
 
 export default function MainPage() {
 
-
-  // const userId = useSelector(state => state.user.UserId);
-  // console.log("ID IN MAIN PAGE", userId);
-
-  // const userToken = useSelector(state => state.user.userToken);
-  // console.log("TOKEN IN MAIN PAGE", userToken); 
   const imagesStatus = useSelector(state => state.user.status);
 
   const [cookies2, ] = useCookies(["token"]);
@@ -26,18 +20,28 @@ export default function MainPage() {
 
   console.log("COOKIES token FROM MAIN PAGE", cookieToken, cookieId)
 
-  const images = useSelector(state => state.user.images);
+   const images = useSelector(state => state.user.images);
 
   const dispatch = useDispatch();
 
   const error = useSelector(state => state.user.error);
 
-  useEffect(() => {
-      if (imagesStatus === 'idle' && (cookieId && cookieToken)) {
-        console.log("await data", cookieId, cookieToken)
-     dispatch(getImages({ userId: cookieId, userToken: cookieToken })) 
-     }
-  }, [dispatch, imagesStatus, images, cookieId, cookieToken]);
+  useMemo(() => {
+      console.log("await data", cookieId, cookieToken)
+      console.log("use memo");
+    return dispatch(getImages({ userId: cookieId, userToken: cookieToken }));
+  }, [cookieId, cookieToken, dispatch])
+  
+
+  // useEffect(() => {
+  //     if (imagesStatus === 'idle' && (cookieId && cookieToken)) {
+  //       console.log("await data", cookieId, cookieToken)
+  //       const getImagesMemo = useMemo(() => {
+  //         dispatch(getImages({ userId: cookieId, userToken: cookieToken })) 
+  //       }, [])
+     
+  //    }
+  // }, [dispatch, imagesStatus, images, cookieId, cookieToken]);
 
   let content;
 

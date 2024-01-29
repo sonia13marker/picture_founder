@@ -1,8 +1,8 @@
 import "./PersonalAccountPage.scss";
 import OpenEyeIcon from "../../icons/OpenEyeIcon";
 import CloseEyeIcon from "../../icons/CloseEyeIcon";
-import { useEffect, useState } from "react";
-import {useNavigate, Link, NavLink} from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { getInfoAboutUser, setAllUserData, setStatus, setUserID, setUserToken, updatePasswordUser } from "../../store/slices/userSlice";
@@ -13,7 +13,6 @@ export default function PersonalAccountPage() {
   const dispatch = useDispatch();
 
   /* get info of current user */
-  //const currentUserEmail = useSelector(state => state.user.userEmal);
   const allUserData = useSelector(state => state.user.allUserData);
   const userEmal = allUserData.UserEmail;
   const imageCounter = allUserData.ImageCount;
@@ -27,11 +26,12 @@ export default function PersonalAccountPage() {
   const cookieToken = cookies2.token;
   const [cookies3, setCookies3, removeCookie3] = useCookies(["idFromLogin"]);
   const cookieId = cookies3.idFromLogin;
-
-  useEffect(() => {
+useMemo(() => {
+  if (allUserData.length === 0) {
     dispatch(getInfoAboutUser({ userId: cookieId, userToken: cookieToken}));
-    
-  }, [dispatch, cookieId, cookieToken])
+    console.log("useMemo in PERSONAL ACC PAGE")
+  }
+}, [cookieId, cookieToken, dispatch])
   
   /*for password inputs */
   const [PerAccPasswordValue, setPasswordValue] = useState("");
