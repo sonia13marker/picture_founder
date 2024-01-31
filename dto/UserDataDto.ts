@@ -6,7 +6,7 @@ export interface successLoginData {
     token?: string
 }
 
-export interface userStatData extends Document{
+export interface userStatData{
     name: String,
     count: Number,
     description?: String
@@ -20,12 +20,9 @@ export interface userImageData {
     imageTags: Array<string>,
     isFavorite: boolean
 }
-export interface userImageDataDB extends Document, userImageData {}
 
-export interface userData extends Document {
+export type userData = {
     userEmail: string,
-    userPassword: string,
-    userImages: Array<userImageData>,
+    userImages: Array<string>,
     userStat: Array<userStatData>
 }
-

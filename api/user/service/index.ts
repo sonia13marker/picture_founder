@@ -1,28 +1,34 @@
 import { Types } from "mongoose";
 import { db_models } from "../../../db";
-import { userData, userImageData } from "../../../dto/userDataDto";
+import { userData, userImageData } from "../../../dto/UserDataDto";
 import { rm } from "fs/promises"
 import { pathResolve } from "../../../dto/PathResolve";
 import * as cry from "crypto";
 import { SameUserPasswordExceptions, UnexceptionUserError } from "../../../exceptions/UserExceptions"
+import { userDataExt } from "../../../db/dto/UserDto";
 
 //простое получение пользователя
-export async function getUserData(userId: string): Promise<userData> {
-    const userData: userData = await db_models.UserModel.findById(userId) as userData
+export async function getUserData(userId: string): Promise<userDataExt> {
+    const userData = await db_models.UserModel.findById(userId)
 
-    return userData
+    return {
+        userId: userData!._id.toString(),
+        userEmail: userData!.userEmail,
+        userImages: userData!.userImages,
+        userStat: userData!.userStat
+    }
 }
 
 //удаление пользователя
 export async function DeleteUser(userId: string): Promise<void> {
     
     const user = await db_models.UserModel.findById(userId);
-    const userImages =  user?.userImages as userImageData[];
+    const userImages =  user?.userImages as unknown as userImageData;
 
     await db_models.UserModel.findByIdAndDelete(user?._id);
-    await db_models.ImageModel.findByIdAndDelete(...userImages);
+    await db_models.ImageModel.findByIdAndDelete(userImages);
 
-    rm(pathResolve.UserSaveDir(userId.toString()), {recursive: true, force: true})
+    rm(pathResolve.UserImageSaveDir(userId.toString()), {recursive: true, force: true})
     .catch( (err) => {
         console.log(err);
         throw new Error(`error on remove forlder to user ${userId}`);
@@ -40,7 +46,7 @@ export async function UpdateUserPassword(userId:string, newUserPassword: string)
     
     const oldPassword = (await db_models.UserModel.findById(userId).exec())?.userPassword;
     const newPassHash = cry.createHash("sha256").update(newUserPassword).digest("hex");
-
+    
     if ( oldPassword === newPassHash ) {
         throw new SameUserPasswordExceptions();
     }

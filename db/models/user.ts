@@ -1,5 +1,6 @@
 import {Model, Schema, model} from "mongoose"
-import { userData, userStatData } from "../../dto/userDataDto";
+import { userData, userStatData } from "../../dto/UserDataDto";
+import { DBUserData } from "../dto/UserDto";
 
 const statScheme = new Schema<userStatData>({
     name: {type: String, require: true},
@@ -8,7 +9,7 @@ const statScheme = new Schema<userStatData>({
 })
 //on future
 
-const UserScheme = new Schema<userData>({
+const UserScheme = new Schema<DBUserData>({
     userEmail: {type: String, require: true},
     userImages: [{type: Schema.ObjectId, ref: "Image"}],
     userPassword: {type: String, require: true},
@@ -16,6 +17,6 @@ const UserScheme = new Schema<userData>({
 }, {timestamps: true});
 
 
-const User: Model<userData> = model("User", UserScheme);
+const User: Model<DBUserData> = model("User", UserScheme);
 const Stat: Model<userStatData> = model("Stat", statScheme);
 export default User

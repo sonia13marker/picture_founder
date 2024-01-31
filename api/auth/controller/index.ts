@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express"
 import { UserScheme } from "../dto/loginDto"
 import { LoginUser, regisUser } from "../service"
 import { AuthCustomError } from "../../../exceptions/AuthExceptions"
-import { successLoginData } from "../../../dto/userDataDto"
+import { successLoginData } from "../../../dto/UserDataDto"
 // import cookieParser from "cookie-parser"
 
 const route = Router()

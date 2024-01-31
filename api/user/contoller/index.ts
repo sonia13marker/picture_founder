@@ -1,4 +1,4 @@
-import { Router, Request, Response, urlencoded } from "express"
+import { Router, Request, Response, urlencoded, NextFunction } from "express"
 // import * as imageRoute from "./image"
 import { DeleteUser, getUserData } from "../service"
 import { Types } from "mongoose"
@@ -6,6 +6,9 @@ import { hasUser } from "../../../middlewar/hasUser"
 import { CustomError } from "../../../exceptions/ExampleError"
 import { UserChPass } from "../dto"
 import { UpdateUserPassword } from "../service"
+import { GetImage, ImagePost, fullImageGet, getImageFile, imageDelete, imageEdit } from "../../image/controller"
+import multer from "multer"
+import { stConf } from "../../../configs/multer"
 
 const route = Router()
 
@@ -81,11 +84,11 @@ route.put("/:id/chPass", hasUser, urlencoded({ extended: false }), async (req: R
 //     console.log(`user ${userId} is get stat`);
 // })
 
-// route.get("/:id/image", hasUser, imageRoute.imageGet)
-// route.post("/:id/image", hasUser, urlencoded({ extended: false }), multer({ storage: stConf, limits: { fieldSize: 1000000000} }).single("image"), imageRoute.imagePost)
-// route.delete("/:id/image/:imgId", hasUser, imageRoute.imageDelete)
-// route.get("/:id/image/:imgId", hasUser, imageRoute.getImageFile)
-// route.get("/:id/image/data/:imgId/", hasUser, imageRoute.fullImageGet)
-// route.put("/:id/image/:imgId", urlencoded({ extended: false }), hasUser, imageRoute.imageEdit)
+route.get("/:id/image", hasUser, GetImage)
+route.post("/:id/image", hasUser, urlencoded({ extended: false }), multer({ storage: stConf, limits: { fieldSize: 1000000000} }).single("image"), ImagePost)
+route.delete("/:id/image/:imgId", hasUser, imageDelete)
+route.get("/:id/image/:imgId", hasUser, getImageFile)
+route.get("/:id/image/data/:imgId/", hasUser, fullImageGet)
+route.put("/:id/image/:imgId", urlencoded({ extended: false }), hasUser, imageEdit)
 
 export default route

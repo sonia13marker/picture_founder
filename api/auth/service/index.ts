@@ -1,10 +1,11 @@
 import { db_models } from "../../../db";
-import { successLoginData, userData } from "../../../dto/userDataDto";
+import { successLoginData, userData } from "../../../dto/UserDataDto";
 import * as cry from "crypto"
 import { env } from "../../../env";
 import { sign } from "jsonwebtoken"
 import {InvalidUserDataError, UserNotFoundError, UserIsExistError} from "../../../exceptions/AuthExceptions";
 import * as fs from "fs/promises"
+import { userDataDB } from "../../../db/dto/UserDto";
 
 
 
@@ -15,12 +16,12 @@ export async function LoginUser(userEmail: string, userPassword: string): Promis
         throw new UserNotFoundError();
     }
 
-    const userDb: userData | null = await db_models.UserModel.findOne({ userEmail: userEmail });
+    const userDb: userDataDB | null = await db_models.UserModel.findOne({ userEmail: userEmail });
     const passHash = cry.createHash("sha256").update(userPassword).digest("hex");
 
-    // if (passHash !== userDb!.userPassword) {
-    //     throw new INVALID_LOGIN_USER_DATA_ERROR();
-    // }
+    if (passHash !== userDb!.userPassword) {
+        throw new InvalidUserDataError();
+    }
 
     const token = sign({ id: userDb!._id, email: userDb!.userEmail }, env.TOKEN_SECRET, { expiresIn: "1d" });
     return {
