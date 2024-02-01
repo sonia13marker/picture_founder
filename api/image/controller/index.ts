@@ -114,10 +114,10 @@ export async function imageEdit(req: Request, resp: Response) {
     
     ImageEdit(valData, imageId)
     .then(() => {
-        resp.json({code: 204, message: "image data updated"});
+        resp.json({code: 204, message: "image data updated"}).status(204);
     })
     .catch( (err: CustomError) => {
-        resp.json({code: err.statusCode, message: err.message, detail: err.detail});
+        resp.json({code: err.statusCode, message: err.message, detail: err.detail}).status(err.statusCode);
     })
 }
 

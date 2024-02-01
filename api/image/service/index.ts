@@ -40,7 +40,8 @@ export async function GetUserImages(userId: string, isFavorite: boolean = false,
     }
 
     if (isFavorite){
-        return userData.userImages.filter((val: ImageData)=>val.isFavorite).userImages
+
+        return userData.userImages.filter((val: ImageData)=>val.isFavorite)
     }
     return userData.userImages.length > 0 ? userData.userImages : []
 }
@@ -118,10 +119,15 @@ export async function FullImageGet(userId: string, imageId: string): Promise<Ima
 export async function ImageEdit(updateData: any | ImageData, imageId: string) {
 
     const updatedData: any = Object.keys(updateData).filter(el => updateData).reduce((s, a) => ({ ...s, [a]: updateData[a], }), {});
+
+    console.log(updatedData);
+    // if ( !Object.keys(updateData).length === 0){
+    //     throw new CustomError("NOTHING_TO_UPDATE", 102, "nothing update. skip", 204)
+    // }
+
     if ( !updatedData.imageTags ){
         delete updatedData.imageTags
     }
-    console.log(updatedData);
 
     await db_models.ImageModel.findByIdAndUpdate(imageId, {
         $set: updatedData
