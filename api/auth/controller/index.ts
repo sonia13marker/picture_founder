@@ -25,7 +25,8 @@ route.post("/login", /*cookieParser(),*/ async (req: Request, resp: Response): P
 
   LoginUser(userData.userEmail, userData.userPassword)
   .then( (val: successLoginData) => {
-    resp.json(val).status(200);
+    resp.json({data: val, message: "login success"}).status(200);
+    console.log(`user ${userData.userEmail} is login`)
   })
   .catch( ( err: AuthCustomError ) => {
       resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
