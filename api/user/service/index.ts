@@ -6,6 +6,7 @@ import { pathResolve } from "../../../dto/PathResolve";
 import * as cry from "crypto";
 import { SameUserPasswordExceptions, UnexceptionUserError } from "../../../exceptions/UserExceptions"
 import { userDataExt } from "../../../db/dto/UserDto";
+import { CustomError } from "../../../exceptions/ExampleError";
 
 //простое получение пользователя
 export async function getUserData(userId: string): Promise<userDataExt> {
@@ -44,10 +45,15 @@ export async function DeleteUser(userId: string): Promise<void> {
 //смена праоля пользователя
 export async function UpdateUserPassword(userId:string, newUserPassword: string): Promise<void> {
     
-    const oldPassword = (await db_models.UserModel.findById(userId).exec())?.userPassword;
+    const userDb = await db_models.UserModel.findById(userId);
     const newPassHash = cry.createHash("sha256").update(newUserPassword).digest("hex");
     
-    if ( oldPassword === newPassHash ) {
+    if ( userDb?.userPassword === newPassHash ) {
         throw new SameUserPasswordExceptions();
     }
+
+    userDb?.updateOne({$set: { userPassword: newPassHash}}).exec()
+    .catch( (err: CustomError) => {
+        throw new Error(err.message)
+    })
 }

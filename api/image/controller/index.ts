@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { ImageScheme, ImageSchemeEdit, imagesGetScheme } from "../dto/DataValidateDto";
-import { AddImage, FullImageGet, GetImageFile, GetUserImages, ImageEdit, RemoveImage } from "../service";
+import { AddImage, FullImageGet, GetImageFile, GetUserImages, ImageEdit, RemoveImage, SearchQueryImage } from "../service";
 import { CustomError } from "../../../exceptions/ExampleError";
 import { UserGetImageData } from "../dto/UserDto";
 
@@ -16,7 +16,7 @@ export async function GetImage(req: Request, resp: Response) {
     }
     console.log(needData.value);
     
-    GetUserImages(userId, needData.value.isFavorite || false, needData.value.offset, needData.value.filters)
+    GetUserImages(userId, needData.value.isFavorite || false, needData.value.offset, needData.value.filter)
     .then( ( result: UserGetImageData) => {
         resp.json(result)
     })
@@ -132,5 +132,28 @@ export async function getImageFile(req: Request, resp: Response) {
         resp.json({code: err.statusCode, message: err.message, detail: err.detail});
     })
 
+}
+
+export async function SearchQuery(req: Request, resp: Response) {
+
+    const userId = req.params.id
+    const searchString = <string>req.query.searchQuery
+
+    if ( !userId) {
+        resp.json({code: 404, message: " user not found", detail: ""})
+    }
+    if( !searchString){
+        resp.end()
+    }
+
+    console.log(searchString);
+    
+    SearchQueryImage(userId, searchString)
+    .then( ( data) => {
+        resp.json({code: 200, data: data})
+    })
+    .catch( ( err: CustomError) =>{
+        resp.json({code: err.statusCode, message: err.message + "kijughik", detail: err.detail});
+    })
 }
 

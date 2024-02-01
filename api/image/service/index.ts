@@ -1,5 +1,5 @@
 import { db_models } from "../../../db"
-import { filter } from "../dto/FilterImageDto";
+import { filterEnum } from "../dto/FilterImageDto";
 import * as cry from "crypto"
 import { ImageData, ImageDataDB, ImageDataFile, ImageDataUpdate, ImageTags } from "../../../dto/ImageDataDto";
 import { pathResolve } from "../../../dto/PathResolve"
@@ -9,12 +9,12 @@ import { CustomError } from "../../../exceptions/ExampleError";
 import { UserGetImageData } from "../dto/UserDto";
 
 
-export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, filters: filter = 1): Promise<UserGetImageData> {
+export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, filter: filterEnum ): Promise<UserGetImageData> {
 
 
     //пока по умолчанию сортировка будет по возрастанию
     //позже будет 2 метода для просто получения и для получения с фильтром
-
+    
     const userData = await db_models.UserModel
         .findById(userId)
         .populate({
@@ -23,8 +23,8 @@ export async function GetUserImages(userId: string, isFavorite: boolean = false,
                 skip: offset,
                 limit: 20,
                 sort: {
-                    createdAt: filters
-                }
+                    createdAt: filterEnum[filter],
+                },
             },
             // match: {
             //     isFavorite: isFavorite 
@@ -150,7 +150,19 @@ export async function GetImageFile(imageId: string): Promise<string> {
         })
 
     console.log(`[LOG] send image for user ${imageDB?.ownerId}`);
-    console.log(`get image[file] ${imageDB?.imageOrgName}`)
+    console.log(`get image[file] ${imageDB?.imageOrgName}`);
     return toSendImage
 
+}
+
+
+export async function SearchQueryImage(userId: string, stringQuery: string): Promise<ImageData[]> {
+    const userImages = await db_models.ImageModel.find({ownerId: userId})
+    .catch( (err: CustomError) =>{
+        throw new Error(err.message)
+    })
+
+    return userImages.filter( img => {
+        return  img.imageName.includes(stringQuery) || img.imageTags.find( tag => tag.includes(stringQuery))
+    }) 
 }

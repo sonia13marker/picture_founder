@@ -6,7 +6,7 @@ import { hasUser } from "../../../middlewar/hasUser"
 import { CustomError } from "../../../exceptions/ExampleError"
 import { UserChPass } from "../dto"
 import { UpdateUserPassword } from "../service"
-import { GetImage, ImagePost, fullImageGet, getImageFile, imageDelete, imageEdit } from "../../image/controller"
+import { GetImage, ImagePost, SearchQuery, fullImageGet, getImageFile, imageDelete, imageEdit } from "../../image/controller"
 import multer from "multer"
 import { stConf } from "../../../configs/multer"
 
@@ -86,6 +86,7 @@ route.put("/:id/chPass", hasUser, urlencoded({ extended: false }), async (req: R
 
 route.get("/:id/image", hasUser, GetImage)
 route.post("/:id/image", hasUser, urlencoded({ extended: false }), multer({ storage: stConf, limits: { fieldSize: 1000000000} }).single("image"), ImagePost)
+route.get("/:id/image/search", hasUser, SearchQuery)
 route.delete("/:id/image/:imgId", hasUser, imageDelete)
 route.get("/:id/image/:imgId", hasUser, getImageFile)
 route.get("/:id/image/data/:imgId/", hasUser, fullImageGet)

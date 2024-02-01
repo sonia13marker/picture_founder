@@ -1,10 +1,10 @@
 import Joi from "joi"
-import { filter } from "./FilterImageDto"
+import { filterEnum } from "./FilterImageDto"
 import { ImageData, ImageDataUpdate } from "../../../dto/ImageDataDto"
 
 
 export const imagesGetScheme = Joi.object({
-    filter: Joi.string().valid(...Object.values(filter)).default("NONE"),
+    filter: Joi.string().valid(...Object.values(filterEnum)).default("NONE"),
     offset: Joi.number().default(0),
     isFavorite: Joi.boolean().default(null)
 })
