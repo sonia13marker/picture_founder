@@ -14,7 +14,6 @@ export async function GetUserImages(userId: string, isFavorite: boolean = false,
 
     //пока по умолчанию сортировка будет по возрастанию
     //позже будет 2 метода для просто получения и для получения с фильтром
-    
     const userData = await db_models.UserModel
         .findById(userId)
         .populate({
