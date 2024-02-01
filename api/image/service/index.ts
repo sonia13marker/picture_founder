@@ -117,7 +117,10 @@ export async function FullImageGet(userId: string, imageId: string): Promise<Ima
 
 export async function ImageEdit(updateData: any | ImageData, imageId: string) {
 
-    const updatedData = Object.keys(updateData).filter(el => updateData).reduce((s, a) => ({ ...s, [a]: updateData[a], }), {});
+    const updatedData: any = Object.keys(updateData).filter(el => updateData).reduce((s, a) => ({ ...s, [a]: updateData[a], }), {});
+    if ( !updatedData.imageTags ){
+        delete updatedData.imageTags
+    }
     console.log(updatedData);
 
     await db_models.ImageModel.findByIdAndUpdate(imageId, {
