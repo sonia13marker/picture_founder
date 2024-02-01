@@ -84,7 +84,7 @@ route.put("/:id/chPass", hasUser, urlencoded({ extended: false }), async (req: R
 //     console.log(`user ${userId} is get stat`);
 // })
 
-route.get("/:id/image", hasUser, GetImage)
+// route.get("/:id/image", hasUser, GetImage)
 route.post("/:id/image", hasUser, urlencoded({ extended: false }), multer({ storage: stConf, limits: { fieldSize: 1000000000} }).single("image"), ImagePost)
 route.get("/:id/image/search", hasUser, SearchQuery)
 route.delete("/:id/image/:imgId", hasUser, imageDelete)

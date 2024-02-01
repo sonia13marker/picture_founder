@@ -7,17 +7,57 @@ import * as cry from "crypto";
 import { SameUserPasswordExceptions, UnexceptionUserError } from "../../../exceptions/UserExceptions"
 import { userDataExt } from "../../../db/dto/UserDto";
 import { CustomError } from "../../../exceptions/ExampleError";
+import { UserGetImageData } from "../dto/UserDto";
+import { filterEnum } from "../dto/FilterImageDto";
+import { ImageData } from "../../../dto/ImageDataDto";
 
 //простое получение пользователя
-export async function getUserData(userId: string): Promise<userDataExt> {
-    const userData = await db_models.UserModel.findById(userId)
+// export async function getUserData(userId: string): Promise<userDataExt> {
+//     const userData = await db_models.UserModel.findById(userId)
 
-    return {
-        userId: userData!._id.toString(),
-        userEmail: userData!.userEmail,
-        userImages: userData!.userImages,
-        userStat: userData!.userStat
+//     return {
+//         userId: userData!._id.toString(),
+//         userEmail: userData!.userEmail,
+//         userImages: userData!.userImages,
+//         userStat: userData!.userStat
+//     }
+// }
+
+export async function getUserData(userId: string, isFavorite?: boolean, offset?: number, filter?: filterEnum ): Promise<UserGetImageData> {
+
+
+    //пока по умолчанию сортировка будет по возрастанию
+    //позже будет 2 метода для просто получения и для получения с фильтром
+    const userData = await db_models.UserModel
+        .findById(userId)
+        .populate({
+            path: "userImages",
+            options: {
+                skip: offset || 0,
+                limit: 20,
+                sort: {
+                    createdAt: filterEnum[filter || "NONE"],
+                },
+            },
+            // match: {
+            //     isFavorite: isFavorite 
+            // }
+        })
+        .exec()
+        .catch((err) => {
+            throw new Error("ERR on filter")
+        })
+
+    if (!userData) {
+        throw new Error("not user")
     }
+
+    const userImages = userData.userImages as unknown as ImageData[]
+    if (isFavorite){
+        const filtered  = userImages.filter((val)=>val.isFavorite)
+        return { imageCount: filtered!.length, images: filtered }
+    }
+    return { imageCount: userImages!.length, images: userImages }
 }
 
 //удаление пользователя
