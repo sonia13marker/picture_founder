@@ -1,6 +1,6 @@
 import './LoginPage.scss';
 import { useState, useEffect, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import OpenEyeIcon from '../../icons/OpenEyeIcon';
 import CloseEyeIcon from '../../icons/CloseEyeIcon';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { loginUser, setError, setMessage } from '../../store/slices/userSlice';
 import Logo from '../../icons/Logo';
 import { useCookies } from 'react-cookie';
 
-export default function LoginPage ({ checkAuth }) {
+export default function LoginPage () {
     const navigate = useNavigate();
     const id = useSelector(state => state.user.UserId);
     console.log("ID from login page", id);
@@ -52,10 +52,10 @@ export default function LoginPage ({ checkAuth }) {
         event.preventDefault();
 
         //внутренние проверки на заполнение значений и отсутствие ошибок
-        if (LoginEmail && LoginPassword && errorMessageEmail === "" && errorMessagePassword === "" && getError === null) {
-          dispatch(loginUser({LoginEmail, LoginPassword}));
+        if (userEmail && userPassword && errorMessageEmail === "" && errorMessagePassword === "" && getError === null) {
+          dispatch(loginUser({userEmail, userPassword}));
         }
-        console.log("DATA FROM LOGIN PAGE:", LoginEmail, LoginPassword)
+        console.log("DATA FROM LOGIN PAGE:", userEmail, userPassword)
     }
 const goToMainPage = useCallback(() => {
   navigate('/');
@@ -63,7 +63,7 @@ const goToMainPage = useCallback(() => {
 
     /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
-const [LoginEmail, setLoginEmail] = useState("");
+const [userEmail, setLoginEmail] = useState("");
 const [nonExistEmail, setNonExistEmail] = useState("");
 const handleChangeEmail = (event) => {
   setLoginEmail(event.target.value);
@@ -71,35 +71,35 @@ const handleChangeEmail = (event) => {
 useEffect(() => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  if (LoginEmail.match(emailRegex)) {
+  if (userEmail.match(emailRegex)) {
     setErrorMessageEmail("");
   } else {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     console.log("invalid email");
   };
-}, [LoginEmail]);
+}, [userEmail]);
 
 //проверка на ответ от сервера, если ошибка, то записать ее под инпутом
 //и также запись в новую переменную текущего эмейла
 useEffect(() => {
   if (getError && (getError === 404)) {
     setErrorMessageEmail("Вы еще не зарегистрированы!");
-    setNonExistEmail(LoginEmail);
-    console.log("getError in red", getError, nonExistEmail, LoginEmail);
+    setNonExistEmail(userEmail);
+    console.log("getError in red", getError, nonExistEmail, userEmail);
   } 
   console.log("404 exist email", nonExistEmail);
-  console.log("404 email", LoginEmail)
-}, [getError, LoginEmail, nonExistEmail])
+  console.log("404 email", userEmail)
+}, [getError, userEmail, nonExistEmail])
 
 //очистка ошибок и переход на страницу
 useEffect(() => {
-  if ((LoginEmail && nonExistEmail) && LoginEmail !== nonExistEmail) {
-    console.log(LoginEmail, nonExistEmail, LoginEmail !== nonExistEmail)
+  if ((userEmail && nonExistEmail) && userEmail !== nonExistEmail) {
+    console.log(userEmail, nonExistEmail, userEmail !== nonExistEmail)
     setErrorMessageEmail("");
     dispatch(setError(null));
     setNonExistEmail("");
   }
-}, [LoginEmail, dispatch, nonExistEmail]);
+}, [userEmail, dispatch, nonExistEmail]);
 
 useEffect(() => {
   if (message === "login success") {     
@@ -128,7 +128,7 @@ const [checked, setChecked] = useState(false);
       if (cookieValue !== false) {
         setChecked(true);
 
-        localStorage.setItem("username", LoginEmail);
+        localStorage.setItem("username", userEmail);
 
         const username = localStorage.getItem("username");
         if (username) {
@@ -140,10 +140,10 @@ const [checked, setChecked] = useState(false);
       } else if (cookieValue === false) {
         localStorage.setItem("username", "");
       }
-    }, [cookies.chekedFromLoginPage, checked, LoginEmail]);
+    }, [cookies.chekedFromLoginPage, checked, userEmail]);
 
 /*for password input */
-const [LoginPassword, setPassword] = useState("");
+const [userPassword, setPassword] = useState("");
 const [errorMessagePassword, setErrorMessagePassword] = useState("");
 const handleChangePassword = (event) => {
   setPassword(event.target.value);
@@ -151,17 +151,17 @@ const handleChangePassword = (event) => {
 useEffect(() => {
   //сделать проверку на пароль, чтобы он совпадал с тем, 
   //который был записан при регистрации
-  // if (LoginPassword !== LoginPassword) {
+  // if (userPassword !== userPassword) {
   //   setErrorMessagePassword("Введён неверный пароль!")
   // }
 
   //проверка на наличие пароля
-  if (LoginPassword === "") {
+  if (userPassword === "") {
     setErrorMessagePassword("Пароль не введён!")
   } else {
     setErrorMessagePassword("")
   }
-}, [LoginPassword])
+}, [userPassword])
 const [open, setOpen] = useState(true);
 const [hidden, setHidden] = useState(true);
 const selectIcon = () => {
@@ -209,7 +209,7 @@ useEffect(() => {
           id="login_email"
           name='login_email'
           placeholder="Введите электронную почту"
-          value={LoginEmail}
+          value={userEmail}
           onChange={handleChangeEmail}
         />
       </label>
@@ -231,7 +231,7 @@ useEffect(() => {
           name='login_password'
           onChange={handleChangePassword}
           placeholder="Введите пароль"
-          value={LoginPassword}
+          value={userPassword}
           spellCheck="false"
         />
         {/*пока открыт глаз - пароль не видно */}

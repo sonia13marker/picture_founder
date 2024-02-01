@@ -23,23 +23,23 @@ console.log("HAPPY", message, message === "complete user create" );
 
 /*for email */
 const [errorMessageEmail, setErrorMessageEmail] = useState("");
-const [SingupEmail, setEmail] = useState("");
+const [userEmail, setEmail] = useState("");
 const handleChangeEmail = (event) => {
   setEmail(event.target.value);
 }
 useEffect(() => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  if (SingupEmail.match(emailRegex)) {
+  if (userEmail.match(emailRegex)) {
     setErrorMessageEmail("");
   } else {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     // console.log("invalid email");
   };
-}, [SingupEmail]);
+}, [userEmail]);
 
 /*for first password input */
-const [SingupPassword, setPasswordValue] = useState("");
+const [userPassword, setPasswordValue] = useState("");
 const handleChangePassword = (event) => {
   setPasswordValue(event.target.value);
 }
@@ -62,16 +62,16 @@ const selectIconTwo = () => {
   setIsHidden(!isHidden);
 }
 useEffect(() => {
-  if (SingUppasswordVerValue !== SingupPassword) {
+  if (SingUppasswordVerValue !== userPassword) {
     setErrorVerMessage("Пароли не равны!");
-  } else if (SingUppasswordVerValue === SingupPassword) {
+  } else if (SingUppasswordVerValue === userPassword) {
     setErrorVerMessage("");
     // console.log("success singup");
   };
-  if (SingupPassword.length < 8) {
+  if (userPassword.length < 8) {
     setErrorMessage("Минимальная длиная пароля - 8 символов!");
   } else setErrorMessage("");
-}, [SingupPassword, SingUppasswordVerValue])
+}, [userPassword, SingUppasswordVerValue])
 const [errorMessage, setErrorMessage] = useState("");
 const [errorVerMessage, setErrorVerMessage] = useState("");
 
@@ -98,8 +98,8 @@ const handleSubmit = async () => {
  
   //внутренние проверки на заполнение значений 
   //и отсутствие ошибок
-  if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && SingupEmail && SingupPassword && SingUppasswordVerValue && getError === null) {
-    dispatch(createUser({SingupEmail, SingupPassword}));
+  if (checked === true && errorVerMessage === "" && errorMessage === "" && errorMessageEmail === "" && userEmail && userPassword && SingUppasswordVerValue && getError === null) {
+    dispatch(createUser({userEmail, userPassword}));
   }
 }
 
@@ -110,14 +110,14 @@ const checkTheServerAnswer = useCallback(() => {
       console.log("getError in function in red", getError);
       console.log("existEmail in  function in red", existEmail);
   }; 
-  if (existEmail && SingupEmail && existEmail !== SingupEmail) {
+  if (existEmail && userEmail && existEmail !== userEmail) {
     setErrorMessageEmail("");
     dispatch(setError(null));
     dispatch(setExistEmail(null));
   }
   console.log("getError in useEffect", getError);
   console.log("existEmail in in useEffect", existEmail);
-}, [getError, existEmail, SingupEmail, dispatch])
+}, [getError, existEmail, userEmail, dispatch])
 
 
 //проверка на ответ от сервера, если ошибка, то записать ее под инпутом
@@ -134,7 +134,7 @@ useEffect(()=> {
 //       console.log("getError in function in red", getError);
 //       console.log("existEmail in  function in red", existEmail);
 //   }; 
-//   if (existEmail && SingupEmail && existEmail !== SingupEmail) {
+//   if (existEmail && userEmail && existEmail !== userEmail) {
 //     setErrorMessageEmail("");
 //     dispatch(setError(null));
 //     dispatch(setExistEmail(null));
@@ -142,7 +142,7 @@ useEffect(()=> {
 //   console.log("getError in useEffect", getError);
 //   console.log("existEmail in in useEffect", existEmail);
   
-// }, [getError, existEmail, SingupEmail, dispatch]);
+// }, [getError, existEmail, userEmail, dispatch]);
 
 useEffect(() => {
   if (message === "complete user create") {     
@@ -208,7 +208,7 @@ if (currStatus === "loading") {
           id="singUp_email"
           name="singUp_email"
           placeholder="Введите эл. почту"
-          value={SingupEmail}
+          value={userEmail}
           onChange={handleChangeEmail}
           required
         />
@@ -231,7 +231,7 @@ if (currStatus === "loading") {
           name="singUp_password"
           onChange={handleChangePassword}
           placeholder="Введите пароль"
-          value={SingupPassword}
+          value={userPassword}
           required
           spellCheck="false"
         />

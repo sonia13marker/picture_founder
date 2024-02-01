@@ -2,23 +2,19 @@ import "./ImageCard.scss";
 import { useEffect, useState } from "react";
 import ActionCircle from "../ActionCircle/ActionCircle";
 import {useDispatch, useSelector} from "react-redux";
-import {addToFavorite, changeUserImage, getImages, toggleFavorite2, toggleFavorites} from "../../store/slices/userSlice";
+import { changeUserImage } from "../../store/slices/userSlice";
 import FavorFillIcon from "../../icons/FavorFillIcon";
 import FavorOutlineIcon from "../../icons/FavorOutlineIcon";
 import { PATH_TO_SERVER_GETimg } from "../../data/constants";
-import fav__fill from '../../images/favfill.svg';
-import fav__out from '../../images/favoutline.svg';
 // import { addImageToFavorite } from "../../store/slices/userSlice";
 
 export default function ImageCard({ imageId, imageName, imageTags, image, 
-  userId, userToken, isFavotite
+  userId, userToken, isFavorite
 }) {
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
- //console.log("tags from new add??", imageTags);
-  let newTagList = imageTags
-    // .split(",")
-    .map((tag) => {
+  let newTagList = imageTags || imageTags 
+    ?.map((tag) => {
       tag = tag.trim();
       tag = "#" + tag;
       tag = tag.replaceAll(" ", "_");
@@ -35,22 +31,14 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
     setIsHover(false);
   };
 
-   const itemData = { userId, imageId, userToken, imageName, imageTags, image };
+  const itemData = { userId, imageId, userToken, imageName, imageTags, image };
   const dispatch = useDispatch();
-  // const favorite = useSelector((state) => state.user.favorite);
 
-  // const inFavorite = favorite.some((item) => item.id === idImage);
-
-  // const addToFavorite = () => {
-  //   dispatch(toggleFavorites({...itemData}));
-  // }
-
-      /* add to favorite */
+      /* добавить в избранное */
       const handleToggleFavorite = (itemData) => {
-        // dispatch(toggleFavorite2(itemData));
-        dispatch(changeUserImage({ ...itemData, isFavotite: false }));
-         dispatch(getImages({ id: userId, token: userToken }));
+        dispatch(changeUserImage({ ...itemData, isFavorite: !isFavorite }));
       };
+      console.log("IS FAV IN CARD", isFavorite);
   return (
     <span
       className="layout__card__wrapper"
@@ -69,8 +57,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
           onClick={() => handleToggleFavorite(itemData)} 
           className="layout__card__titleWrap__icon">
             {
-              isFavotite ? <FavorFillIcon /> : <FavorOutlineIcon />
-              //isFavotite ? <img src={fav__fill} alt="" /> : <img src={fav__out} alt="" />
+              isFavorite ? <FavorFillIcon /> : <FavorOutlineIcon />
             }
           </span>
         </span>
@@ -81,6 +68,5 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
           </p>
       </div>
     </span>
-    // <></>
   );
 }

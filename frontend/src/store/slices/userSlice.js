@@ -7,15 +7,31 @@ import { PATH_TO_SERVER } from "../../data/constants";
 export const getImages = createAsyncThunk(
     "user/getImages",
     async (payload, thunkAPI) => {
+      let res;
       try {
-        const { userId, userToken } = payload; 
-        console.log('payload from main page', payload);
-        const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image`, {
+        const { userId, userToken, isFavorite } = payload; 
+        //отправка запроса на получение избранных
+        if (isFavorite) {
+          console.log('payload from main page', payload);
+         res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?isFavorite=${isFavorite}`, {
           headers: {
             Authorization: 'Bearer ' + userToken,
-          }  });
-        console.log("GET DATA", res.data.images);
-        return res.data.images;
+          } });
+        console.log("GET DATA favorite", res.data);
+
+        thunkAPI.dispatch(addToFavoriteArray(res.data))
+        } else 
+        //отправка простого запроса на получение всех картинок
+        {
+          console.log('payload from main page', payload);
+         res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image`, {
+          headers: {
+            Authorization: 'Bearer ' + userToken,
+          } });
+        console.log("GET DATA", res.data);
+        }
+        
+        return res.data;
       } catch (error) {
         console.error(error);
       }
@@ -81,30 +97,42 @@ export const addUserImage = createAsyncThunk(
 
       try {
 //change  userId to id, userToken to token
-        const { userId, imageId, userToken, imageName, imageTags, image, isFavotite} = payload;
+        const { userId, imageId, userToken, imageName, imageTags, image, isFavorite} = payload;
         console.log("change img", payload);
+        let res;
 
         // let imageTags = tags2.split(",");
-         console.log("imageTags", imageTags)
+         console.log("imageTags", imageTags, imageTags[0] === null)
+          if (imageTags[0] === null) {
+            console.log("HELLO", imageName, imageTags, isFavorite);
+            res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, isFavorite: isFavorite}, {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+                'Content-Type': 'application/json'
+              }
+            }
+            );
+          } else {
         
-        const res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: imageTags, isFavorite: isFavotite}, {
+        res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: imageTags, isFavorite: isFavorite}, {
           headers: {
             Authorization: 'Bearer ' + userToken,
             'Content-Type': 'application/json'
           }
         }
         );
+      }
 
         // if (isFavotite === true) {
           // console.log(isFavotite, payload)
           //thunkAPI.dispatch(setStatusMessage('update'));
            thunkAPI.dispatch(getImages({userId}, {userToken}));
-          //thunkAPI.dispatch(addToFavorite(payload));
+          //thunkAPI.dispatch(addToFavoriteArray(payload));
         //}
 
         //  if (res.config.data.isFavorite === true) {
         //   console.log(res.config.data.isFavorite, payload)
-        //   thunkAPI.dispatch(addToFavorite(payload));
+        //   thunkAPI.dispatch(addToFavoriteArray(payload));
         // }
       
       console.log("changed data about image", res);
@@ -153,12 +181,12 @@ export const loginUser = createAsyncThunk(
     try {
       const res = await axios.post(`${PATH_TO_SERVER}/auth/login`, payload);
       /* получаю токен юзера и сохраняю его глобально */
-      const userToken = res.data.token;
+      const userToken = res.data.data.token;
       console.log("userToken IN USERSLICE", userToken);
       thunkAPI.dispatch(setUserToken(userToken));
 
       /* получаю ID юзера и сохраняю его глобально */
-      const userIdLogin = res.data.userId;
+      const userIdLogin = res.data.data.userId;
       console.log("userIdLogin IN USERSLICE", userIdLogin);
       thunkAPI.dispatch(setUserID(userIdLogin));
 
@@ -246,47 +274,10 @@ const userSlise = createSlice({
         existEmail: ""
     },
     reducers: {
-        // toggleFavorites: (state, action) => {
-        //     const item = action.payload;
-        //     console.log(item)
-        //     const index = state.favorite.findIndex((favoriteItem) => favoriteItem.id === item.idImage);
-        //     if (index === -1) {
-        //       state.favorite.push(item);
-        //     } else {
-        //       state.favorite.splice(index, 1);
-        //     }
-        //   },
-          addToFavorite: (state, action) => {
+          addToFavoriteArray: (state, action) => {
             console.log("aaaaaaaaaaaaaa", action.payload);
-//const existImageIndex = state?.favorite?.find(item => `${item.imageId}` === action.payload.imageId);
-//const existImageIndex = state.user?.favorite?.includes(action.payload.imageId);
-//console.log( existImageIndex, action.payload.imageId);
-            // if (existImageIndex) {
-            //   alert("no");
-            // } else {
-            //   const imageData = { ...action.payload };
-            //   console.log("imageData", imageData)
-            //   state.favorite.push(imageData);
-            // }
-            
-  //           const fav = imageData.isFavotite;
-  //           console.log("fav", fav)
-  //             const imageId = imageData.imageId;
-  //           console.log("imageId", imageId)
-  //           let isImageInFavorite = false;
-
-  // for (const item of state.user?.favorite || []) {
-  //   if (item.imageId === imageId) {
-  //     isImageInFavorite = true;
-  //     break;
-  //   }
-  // }
-            
+            state.favorite = action.payload;
           },
-          // addAllImages: (state, action) => {
-          //   console.log(action.payload);
-          //   state.user.images = action.payload;
-          // },
           addImageToPage: (state, action) => {
             //state.images = action.payload;
             //state.images.push(action.payload);
@@ -350,7 +341,7 @@ const userSlise = createSlice({
             state.status = action.payload;
           },
           setMessage: (state, action) => {
-            console.log("message in state");
+            console.log("message in state", action.payload);
             state.message = action.payload;
           },
           setExistEmail: (state, action) => {
@@ -454,6 +445,6 @@ export const selectUserID = (state) => state.user.userID;
 export const notificationNmae = (state) => state.user.notificationName;
 
 
-export const { setStatusMessage, addAllImages, toggleFavorites, toggleFavorite2, addToFavorite, addImageToPage, deleteImagefromPage, updateImageInfo, createUserAction, setUserID, setError, setUserToken, setUserEmail, setAllUserData, showNotification, setStatus, setMessage, setExistEmail } = userSlise.actions;
+export const { addToFavoriteArray, addImageToPage, deleteImagefromPage, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail } = userSlise.actions;
 
 export default userSlise.reducer;

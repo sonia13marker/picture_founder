@@ -12,6 +12,8 @@ import { useCookies } from "react-cookie";
 export default function MainPage() {
 
   const imagesStatus = useSelector(state => state.user.status);
+  const error = useSelector(state => state.user.error);
+  const images = useSelector(state => state.user.images);
 
   const [cookies2, ] = useCookies(["token"]);
   const cookieToken = cookies2.token;
@@ -20,11 +22,7 @@ export default function MainPage() {
 
   console.log("COOKIES token FROM MAIN PAGE", cookieToken, cookieId)
 
-   const images = useSelector(state => state.user.images);
-
   const dispatch = useDispatch();
-
-  const error = useSelector(state => state.user.error);
 
   useMemo(() => {
     if (imagesStatus === 'idle') {
@@ -41,7 +39,7 @@ export default function MainPage() {
   } else if (imagesStatus === 'succeeded') {
    
     content = (images && images?.length !== 0) ? images.map(
-      (image) =>  <ImageCard key={image._id} imageName={image.imageName} imageTags={image.imageTags} image={image.imageHash} imageId={image._id} userId={cookieId} userToken={cookieToken} isFavotite={image.isFavotite}/>
+      (image) =>  <ImageCard key={image._id} imageName={image.imageName} imageTags={image.imageTags} image={image.imageHash} imageId={image._id} userId={cookieId} userToken={cookieToken} isFavorite={image.isFavorite}/>
     ) : <EmptyTextComponent
     image={empty_icon}
     text="Тут ещё нет картинок. Пора бы их добавить"

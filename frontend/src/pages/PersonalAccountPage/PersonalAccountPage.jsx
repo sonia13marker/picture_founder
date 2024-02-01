@@ -14,9 +14,9 @@ export default function PersonalAccountPage() {
 
   /* get info of current user */
   const allUserData = useSelector(state => state.user.allUserData);
-  const userEmal = allUserData.UserEmail;
-  const imageCounter = allUserData.ImageCount;
-  //const tagsCounter = allUserData.TagCount;
+  const userEmal = allUserData.userEmail;
+  const imageCounter = allUserData.imageCount;
+  const tagsCounter = allUserData.tagsCount;
   console.log("allUserData", allUserData);
 
   const userId = useSelector(state => state.user.UserId);
@@ -174,8 +174,7 @@ useMemo(() => {
             <h4 className="account__wrapper__leftSide__text">
               Общее количество тегов:{" "}
               <span className="fontWeight">
-                0
-                {/* {tagsCounter ? tagsCounter : 0} */}
+                {tagsCounter ? tagsCounter : 0}
               </span>
             </h4>
           </section>
