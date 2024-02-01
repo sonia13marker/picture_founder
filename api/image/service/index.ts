@@ -7,14 +7,15 @@ import { join } from "path";
 import { copyFile, rename, rm } from "fs/promises"
 import { CustomError } from "../../../exceptions/ExampleError";
 import { UserGetImageData } from "../dto/UserDto";
+import { DBUserData } from "../../../db/dto/UserDto";
 
 
-export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, filter: filterEnum ): Promise<UserGetImageData> {
+export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, filter: filterEnum ): Promise<ImageData[]> {
 
 
     //пока по умолчанию сортировка будет по возрастанию
     //позже будет 2 метода для просто получения и для получения с фильтром
-    const userData = await db_models.UserModel
+    const userData: any = await db_models.UserModel
         .findById(userId)
         .populate({
             path: "userImages",
@@ -38,12 +39,10 @@ export async function GetUserImages(userId: string, isFavorite: boolean = false,
         throw new Error("not user")
     }
 
-    const userImages = userData.userImages as unknown as ImageData[]
     if (isFavorite){
-        const filtered  = userImages.filter((val)=>val.isFavorite)
-        return { imageCount: filtered!.length, images: filtered }
+        return userData.userImages.filter((val: ImageData)=>val.isFavorite).userImages
     }
-    return { imageCount: userImages!.length, images: userImages }
+    return userData.userImages.lenght > 0 ? userData.userImages : []
 }
 
 //добавление изображения
@@ -57,7 +56,7 @@ export async function AddImage(userId: string, image: ImageDataFile, imageData: 
     console.log(`${hashImage?._id} || ${hashedFile}`);
 
     if (hashImage) {
-        throw new Error("error | image found")//оштбка при существующем изображении
+        throw new Error("image is exist")//оштбка при существующем изображении
     }
 
     //добавляю в базу данных новое изображение

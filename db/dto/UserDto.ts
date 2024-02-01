@@ -8,7 +8,8 @@ export interface DBUserData extends userData{
 export interface userDataExt  {
     userId: string,
     userEmail: string,
-    userImages: Array<string>,
+    imageCount: number,
+    tagsCount: number,
     userStat: Array<userStatData>
 }
 

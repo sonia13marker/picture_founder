@@ -3,6 +3,7 @@ import { ImageScheme, ImageSchemeEdit, imagesGetScheme } from "../dto/DataValida
 import { AddImage, FullImageGet, GetImageFile, GetUserImages, ImageEdit, RemoveImage, SearchQueryImage } from "../service";
 import { CustomError } from "../../../exceptions/ExampleError";
 import { UserGetImageData } from "../dto/UserDto";
+import { ImageData } from "../../../dto/ImageDataDto";
 
 
 export async function GetImage(req: Request, resp: Response) {
@@ -11,13 +12,13 @@ export async function GetImage(req: Request, resp: Response) {
     const userId = req.params.id
 
     if (needData.error) {
-        resp.json({ message: "invalid data" })
+        resp.json({code: 404, message: "invalid data", detail: "" })
         return
     }
     console.log(needData.value);
     
     GetUserImages(userId, needData.value.isFavorite || false, needData.value.offset, needData.value.filter)
-    .then( ( result: UserGetImageData) => {
+    .then( ( result: ImageData[]) => {
         resp.json(result)
     })
     .catch( (err: CustomError) => {
