@@ -42,7 +42,7 @@ export async function GetUserImages(userId: string, isFavorite: boolean = false,
     if (isFavorite){
         return userData.userImages.filter((val: ImageData)=>val.isFavorite).userImages
     }
-    return userData.userImages.lenght > 0 ? userData.userImages : []
+    return userData.userImages.length > 0 ? userData.userImages : []
 }
 
 //добавление изображения
