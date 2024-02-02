@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { ImageScheme, ImageSchemeEdit, imagesGetScheme } from "../dto/DataValidateDto";
 import { AddImage, FullImageGet, GetImageFile, GetUserImages, ImageEdit, RemoveImage, SearchQueryImage } from "../service";
 import { CustomError } from "../../../exceptions/ExampleError";
+import { UserErrorType } from "../../../exceptions/UserExceptions";
 import { UserGetImageData } from "../dto/UserDto";
 import { ImageData } from "../../../dto/ImageDataDto";
 
@@ -22,7 +23,7 @@ export async function GetImage(req: Request, resp: Response) {
         resp.json(result)
     })
     .catch( (err: CustomError) => {
-        resp.json(err)
+        resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
     })
 }
 
@@ -37,16 +38,22 @@ export async function ImagePost(req: Request, resp: Response) {
     // проверяю есть ли ошибки при валидации данных
     if (reqData.error) {
         console.error(`[ERROR] error on upload new image \n ${reqData.error}`);
-        resp.status(400);
-        resp.json({ message: `[ERROR] error on upload new image \n ${reqData.error}` })
+
+        resp.json({
+            code: UserErrorType.VALIDATE_ERROR, 
+            message: `[ERROR] error on upload new image \n ${reqData.error}`, 
+            detail: ""}).status(400)
         return
     }
 
     //проверяю есть ли изображение
     if (!imageData) {
         console.error(`[ERROR] error on upload is empty | userid ${userId}`);
-        resp.status(400);
-        resp.json({ message: `[ERROR] error on upload is empty | userid ${userId}` })
+     
+        resp.json({
+            code: UserErrorType.VALIDATE_ERROR, 
+            message: `[ERROR] error on upload is empty | userid ${userId}`, 
+            detail: ""}).status(400)
         return
     }
 
@@ -59,7 +66,7 @@ export async function ImagePost(req: Request, resp: Response) {
     resp.json({result})
    })
    .catch( (err: CustomError) =>{
-    resp.json(err.message)
+    resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
     console.log("err on add");
     
    })
@@ -105,7 +112,10 @@ export async function imageEdit(req: Request, resp: Response) {
     }
 
     if ( err ){
-        resp.json({code: 404, message: err.message, detail: ""})
+        resp.json({
+            code: UserErrorType.VALIDATE_ERROR, 
+            message: err.message, 
+            detail: ""}).status(404)
         return
     }
     const valData = Object.assign(data)
@@ -130,7 +140,7 @@ export async function getImageFile(req: Request, resp: Response) {
         resp.sendFile(val)
     })
     .catch( ( err: CustomError) => {
-        resp.json({code: err.statusCode, message: err.message, detail: err.detail});
+        resp.json({code: err.statusCode, message: err.message, detail: err.detail}).status(err.statusCode);
     })
 
 }
@@ -141,10 +151,16 @@ export async function SearchQuery(req: Request, resp: Response) {
     const searchString = <string>req.query.searchQuery
 
     if ( !userId) {
-        resp.json({code: 404, message: " user not found", detail: ""})
+        resp.json({
+            code: UserErrorType.USER_NOT_FOUND, 
+            message: `empty user string`, 
+            detail: ""}).status(400)
     }
     if( !searchString){
-        resp.end()
+        resp.json({
+            code: UserErrorType.VALIDATE_ERROR, 
+            message: `empty query string`, 
+            detail: ""}).status(400)
     }
 
     console.log(searchString);
@@ -154,7 +170,7 @@ export async function SearchQuery(req: Request, resp: Response) {
         resp.json({code: 200, data: data})
     })
     .catch( ( err: CustomError) =>{
-        resp.json({code: err.statusCode, message: err.message + "kijughik", detail: err.detail});
+        resp.json({code: err.statusCode, message: err.message, detail: err.detail}).status(err.statusCode);
     })
 }
 

@@ -25,7 +25,7 @@ route.get("/:id", hasUser, async (req: Request, resp: Response): Promise<void> =
             console.log(`get user ${data}`);
         })
         .catch( (err: CustomError  ) => {
-            resp.json({code: err.code, message: err.message, detail: err.detail})
+            resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
         })
 })
 
@@ -40,7 +40,7 @@ route.delete("/:id", hasUser, async (req: Request, resp: Response): Promise<void
             resp.json({ code: 204, message: "user deleted", detail: "" })
         })
         .catch ( (err: CustomError ) => {
-            resp.json({code: err.statusCode, message: err.message, detail: err.detail})
+            resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
         })
 })
 
@@ -64,7 +64,7 @@ route.put("/:id/chPass", hasUser, urlencoded({ extended: false }), async (req: R
         console.log(`user password ${userId} is update`);
     })
     .catch( (err: CustomError ) =>{
-        resp.json({code: err.statusCode || 500, message: err.message, detail: err.detail})
+        resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
         console.error(`[ERR] error on chage password fo user ${userId}/ err code ${err.code}`);
         
     })

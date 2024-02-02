@@ -4,12 +4,10 @@ import { userData, userImageData } from "../../../dto/UserDataDto";
 import { rm } from "fs/promises"
 import { pathResolve } from "../../../dto/PathResolve";
 import * as cry from "crypto";
-import { SameUserPasswordExceptions, UnexceptionUserError } from "../../../exceptions/UserExceptions"
+import { SameUserPasswordExceptions, UnexceptionUserError, UpdateDataError, UserErrorType } from "../../../exceptions/UserExceptions"
 import { userDataExt } from "../../../db/dto/UserDto";
 import { CustomError } from "../../../exceptions/ExampleError";
-import { UserGetImageData } from "../dto/UserDto";
-import { filterEnum } from "../dto/FilterImageDto";
-import { ImageData } from "../../../dto/ImageDataDto";
+import { FileNotFoundException } from "../../../exceptions/ServerExceptions";
 
 //простое получение пользователя
 export async function getUserData(userId: string): Promise<userDataExt> {
@@ -34,9 +32,9 @@ export async function DeleteUser(userId: string): Promise<void> {
     await db_models.ImageModel.findByIdAndDelete(userImages);
 
     rm(pathResolve.UserImageSaveDir(userId.toString()), {recursive: true, force: true})
-    .catch( (err) => {
+    .catch( (err: Error) => {
         console.log(err);
-        throw new Error(`error on remove forlder to user ${userId}`);
+        throw new FileNotFoundException(`error on remove forlder to user ${userId}`, );
     })
 
 }
@@ -58,6 +56,6 @@ export async function UpdateUserPassword(userId:string, newUserPassword: string)
 
     userDb?.updateOne({$set: { userPassword: newPassHash}}).exec()
     .catch( (err: CustomError) => {
-        throw new Error(err.message)
+        throw new UpdateDataError(err.message)
     })
 }

@@ -6,16 +6,16 @@ import { pathResolve } from "../../../dto/PathResolve"
 import { join } from "path";
 import { copyFile, rename, rm } from "fs/promises"
 import { CustomError } from "../../../exceptions/ExampleError";
-import { UserGetImageData } from "../dto/UserDto";
-import { DBUserData } from "../../../db/dto/UserDto";
+import { NoUserDataError, UserImageExistError  } from "../../../exceptions/ImageExceptions";
+import { DataBaseError, ImageError } from "../../../exceptions/ServerExceptions";
+import { NotFoundAnyDataInUser } from "../../../exceptions/UserExceptions";
 
-
-export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, filter: filterEnum ): Promise<ImageData[]> {
+export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, filter: filterEnum ): Promise<ImageData[] | []> {
 
 
     //пока по умолчанию сортировка будет по возрастанию
     //позже будет 2 метода для просто получения и для получения с фильтром
-    const userData: any = await db_models.UserModel
+    const userData:  any = await db_models.UserModel
         .findById(userId)
         .populate({
             path: "userImages",
@@ -31,12 +31,12 @@ export async function GetUserImages(userId: string, isFavorite: boolean = false,
             // }
         })
         .exec()
-        .catch((err) => {
+        .catch((err: CustomError) => {
             throw new Error("ERR on filter")
         })
 
     if (!userData) {
-        throw new Error("not user")
+        throw new NoUserDataError()
     }
 
     if (isFavorite){
@@ -57,7 +57,7 @@ export async function AddImage(userId: string, image: ImageDataFile, imageData: 
     console.log(`${hashImage?._id} || ${hashedFile}`);
 
     if (hashImage) {
-        throw new Error("image is exist")//оштбка при существующем изображении
+        throw new UserImageExistError()//оштбка при существующем изображении
     }
 
     //добавляю в базу данных новое изображение
@@ -82,7 +82,7 @@ export async function AddImage(userId: string, image: ImageDataFile, imageData: 
     //переношу изображение из временного хранилише в пользовательское
     rename(join(pathResolve.UserImageUploadDir(), String(image.originalname)), join(pathResolve.UserImageSaveDir(userId), hashedFile))
         .catch((err: CustomError) => {
-            throw new Error("error on rename")
+            throw new ImageError("error on rename")
         })
 
     return createdImage
@@ -101,7 +101,7 @@ export async function RemoveImage(imageId: string, userId: string): Promise<void
     await db_models.UserModel.updateOne({ _id: userId }, { $pull: { userImages: imageId } });
     rm(join(pathResolve.UserImageSaveDir(userId), String(findImage!.imageHash)))
         .catch((err: CustomError) => {
-            throw new Error(err.message);
+            throw new ImageError(err.message);
         })
 }
 
@@ -109,7 +109,7 @@ export async function FullImageGet(userId: string, imageId: string): Promise<Ima
 
     const imageData: ImageData[] = await db_models.ImageModel.find({ _id: imageId, ownerId: userId })
         .catch((err: CustomError) => {
-            throw new Error(err.message);
+            throw new NoUserDataError(err.message);
         })
 
     console.log(`get full image data. image ${imageData[0]?.imageOrgName}`);
@@ -141,19 +141,19 @@ export async function GetImageFile(imageId: string): Promise<string> {
 
 
     const imageDB = await db_models.ImageModel.findById(imageId)
-        .catch(err => {
-            throw new Error("DB error");
+        .catch((err: Error) => {
+            throw new DataBaseError(err.message);
         });
    
     if ( !imageDB ){
-        throw new Error("file not exist");
+        throw new NoUserDataError("file not exist");
     }
     
     const toSendImage = join(pathResolve.UserImageUploadDir(), String(imageDB?.imageOrgName))
     const fromSendImage = join(pathResolve.UserImageSaveDir(String(imageDB?.ownerId)), String(imageDB?.imageHash))
     copyFile(fromSendImage, toSendImage)
         .catch((err: CustomError) => {
-            throw new Error(err.message)            
+            throw new ImageError(err.message)            
         })
 
     console.log(`[LOG] send image for user ${imageDB?.ownerId}`);
@@ -166,7 +166,7 @@ export async function GetImageFile(imageId: string): Promise<string> {
 export async function SearchQueryImage(userId: string, stringQuery: string): Promise<ImageData[]> {
     const userImages = await db_models.ImageModel.find({ownerId: userId})
     .catch( (err: CustomError) =>{
-        throw new Error(err.message)
+        throw new NotFoundAnyDataInUser(err.message)
     })
 
     return userImages.filter( img => {

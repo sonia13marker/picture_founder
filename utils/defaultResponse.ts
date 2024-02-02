@@ -1,6 +1,6 @@
 import { DefaultResponse } from "../dto/responseDto";
 
 
-// export function DefaultResponse (code: number, message?: string, detail?: string): DefaultResponse{
-
-// }
+export function DefaultErrorResponse (code: number, message: string, detail: string): DefaultResponse{
+    return {code, message, detail}
+}
