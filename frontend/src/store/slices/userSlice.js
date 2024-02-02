@@ -9,27 +9,13 @@ export const getImages = createAsyncThunk(
     async (payload, thunkAPI) => {
       let res;
       try {
-        const { userId, userToken, isFavorite } = payload; 
-        //отправка запроса на получение избранных
-        if (isFavorite) {
-          console.log('payload from main page', payload);
-         res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?isFavorite=${isFavorite}`, {
-          headers: {
-            Authorization: 'Bearer ' + userToken,
-          } });
-        console.log("GET DATA favorite", res.data);
-
-        thunkAPI.dispatch(addToFavoriteArray(res.data))
-        } else 
-        //отправка простого запроса на получение всех картинок
-        {
+        const { userId, userToken } = payload; 
           console.log('payload from main page', payload);
          res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image`, {
           headers: {
             Authorization: 'Bearer ' + userToken,
           } });
         console.log("GET DATA", res.data);
-        }
         
         return res.data;
       } catch (error) {
@@ -37,6 +23,24 @@ export const getImages = createAsyncThunk(
       }
     }
   );
+export const getFavoriteImages = createAsyncThunk(
+  "user/getFavoriteImages",
+    async (payload, thunkAPI) => {
+      try {
+        const { userId, userToken, isFavorite } = payload; 
+        console.log('payload from change page', payload);
+        const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?isFavorite=${isFavorite}`, {
+          headers: {
+            Authorization: 'Bearer ' + userToken,
+          } });
+        console.log("GET DATA favorite", res.data);
+        return res.data;
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+)
     /* добавление картинки */
 export const addUserImage = createAsyncThunk(
   "user/addImage",
@@ -96,16 +100,14 @@ export const addUserImage = createAsyncThunk(
     async (payload, thunkAPI) => {
 
       try {
-//change  userId to id, userToken to token
-        const { userId, imageId, userToken, imageName, imageTags, image, isFavorite} = payload;
+        const {  userId, userToken, imageId, imageName, imageTags, isFavor} = payload;
+        const isFavorite = true;
         console.log("change img", payload);
         let res;
-
-        // let imageTags = tags2.split(",");
          console.log("imageTags", imageTags, imageTags[0] === null)
+         console.log("HELLO", imageName, imageTags, isFavor, userId, userToken);
           if (imageTags[0] === null) {
-            console.log("HELLO", imageName, imageTags, isFavorite);
-            res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, isFavorite: isFavorite}, {
+            res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, isFavorite: isFavor}, {
               headers: {
                 Authorization: 'Bearer ' + userToken,
                 'Content-Type': 'application/json'
@@ -114,7 +116,7 @@ export const addUserImage = createAsyncThunk(
             );
           } else {
         
-        res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: imageTags, isFavorite: isFavorite}, {
+        res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: imageTags, isFavorite: isFavor}, {
           headers: {
             Authorization: 'Bearer ' + userToken,
             'Content-Type': 'application/json'
@@ -123,27 +125,13 @@ export const addUserImage = createAsyncThunk(
         );
       }
 
-        // if (isFavotite === true) {
-          // console.log(isFavotite, payload)
-          //thunkAPI.dispatch(setStatusMessage('update'));
            thunkAPI.dispatch(getImages({userId}, {userToken}));
-          //thunkAPI.dispatch(addToFavoriteArray(payload));
-        //}
-
-        //  if (res.config.data.isFavorite === true) {
-        //   console.log(res.config.data.isFavorite, payload)
-        //   thunkAPI.dispatch(addToFavoriteArray(payload));
-        // }
-      
+           thunkAPI.dispatch(getFavoriteImages({userId, userToken, isFavorite}));
       console.log("changed data about image", res);
-      // const succeededCode = res.status;
-      // thunkAPI.dispatch(setErrorRegis(succeededCode));
       return res;
     } catch (err) {
       console.error(err);
       const serializedError = err.toJSON();
-      // const error = err.response.status;
-      // thunkAPI.dispatch(setErrorRegis(error));
       return thunkAPI.rejectWithValue(serializedError);
   } 
   }
@@ -275,9 +263,12 @@ const userSlise = createSlice({
     },
     reducers: {
           addToFavoriteArray: (state, action) => {
-            console.log("aaaaaaaaaaaaaa", action.payload);
-            state.favorite = action.payload;
+            const images = action.payload;
+            state.favorite = images.filter(image => image.isFavorite === true)
           },
+          // addToImageArray: (state, action) => {
+          //   state.images = action.payload;
+          // },
           addImageToPage: (state, action) => {
             //state.images = action.payload;
             //state.images.push(action.payload);
@@ -360,7 +351,7 @@ const userSlise = createSlice({
           }
     },
     extraReducers: (builder) => {
-      //получение изображений - getImages
+//получение изображений - getImages
       builder 
       .addCase(getImages.pending, (state, action) => {
         state.status = 'loading'
@@ -373,7 +364,20 @@ const userSlise = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       });
-      //регистрация - createUser
+//получение избранных - getFavoriteImages
+      builder 
+      .addCase(getFavoriteImages.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(getFavoriteImages.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.favorite = action.payload; 
+      })
+      .addCase(getFavoriteImages.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      });
+//регистрация - createUser
        builder
        .addCase(createUser.pending, (state, action) => {
         state.status = 'loading'
@@ -385,7 +389,7 @@ const userSlise = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       });
-      //вход в акк - loginUser
+//вход в акк - loginUser
       //не ставить статусы и забыть про loginUser.pending, я это не поставила, потому что оно
       //мешает загрузке картинок на главной после входа
         builder
@@ -445,6 +449,6 @@ export const selectUserID = (state) => state.user.userID;
 export const notificationNmae = (state) => state.user.notificationName;
 
 
-export const { addToFavoriteArray, addImageToPage, deleteImagefromPage, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail } = userSlise.actions;
+export const { addToFavoriteArray, addToImageArray, addImageToPage, deleteImagefromPage, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail } = userSlise.actions;
 
 export default userSlise.reducer;

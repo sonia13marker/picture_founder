@@ -3,8 +3,8 @@ import '../MainPage/MainPage.scss';
 import empty from '../../images/empty_favorite.svg';
 import ImageCard from '../../components/ImageCard/ImageCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { getImages } from '../../store/slices/userSlice';
+import { useEffect, useMemo, useState } from 'react';
+import { getFavoriteImages } from '../../store/slices/userSlice';
 import { useCookies } from 'react-cookie';
 import Loader from '../../components/Loader/Loader';
 
@@ -25,18 +25,20 @@ export default function FavoritePage () {
 
   const isFavorite = true;
 
-  //получение избранных - запрос
-  useEffect(() => {
-    dispatch(getImages({ userId: cookieId, userToken: cookieToken, isFavorite: isFavorite}));
-  }, [cookieId, cookieToken, dispatch, isFavorite])
+  useMemo(() => {
+    dispatch(getFavoriteImages({ userId: cookieId, userToken: cookieToken, isFavorite: isFavorite}));
+  },[cookieId, cookieToken, isFavorite, dispatch])
 
   let content; 
 
   if (imagesStatus === 'loading') {
     content = <Loader />
-  } else if (imagesStatus === 'succeeded') {
-    content = (favoriteImages && favoriteImages.length !== 0) ? favoriteImages.map((item) => (
-      <ImageCard key={item.imageId} {...item} />
+  } else 
+  if (imagesStatus === 'succeeded') {
+    content = (favoriteImages && favoriteImages.length !== 0) ? favoriteImages.map((image) => (
+       <ImageCard key={image._id} userId={cookieId} userToken={cookieToken} imageId={image._id}
+       imageName={image.imageName} imageTags={image.imageTags} image={image.imageHash} isFavorite={image.isFavorite}
+       />
     )) : <EmptyTextComponent
     image={empty}
     text="Тут ещё нет картинок. Пора бы их добавить"

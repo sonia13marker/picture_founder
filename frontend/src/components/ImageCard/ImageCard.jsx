@@ -6,6 +6,7 @@ import { changeUserImage } from "../../store/slices/userSlice";
 import FavorFillIcon from "../../icons/FavorFillIcon";
 import FavorOutlineIcon from "../../icons/FavorOutlineIcon";
 import { PATH_TO_SERVER_GETimg } from "../../data/constants";
+import { useCookies } from "react-cookie";
 // import { addImageToFavorite } from "../../store/slices/userSlice";
 
 export default function ImageCard({ imageId, imageName, imageTags, image, 
@@ -13,14 +14,17 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
 }) {
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
-  let newTagList = imageTags || imageTags 
+  let newTagList;
+  if (imageTags[0] !== null) {
+    newTagList = imageTags 
     ?.map((tag) => {
-      tag = tag.trim();
+      tag = tag.split(" ").filter(Boolean).join(" ");
       tag = "#" + tag;
       tag = tag.replaceAll(" ", "_");
       tag = tag + " ";
       return tag;
     })
+  }
   /*для проверки наведения на карточку */
   const [isHover, setIsHover] = useState(false);
 
@@ -31,14 +35,14 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
     setIsHover(false);
   };
 
-  const itemData = { userId, imageId, userToken, imageName, imageTags, image };
+  const itemData = { userId, userToken, imageId, imageName, imageTags, image };
   const dispatch = useDispatch();
 
       /* добавить в избранное */
       const handleToggleFavorite = (itemData) => {
-        dispatch(changeUserImage({ ...itemData, isFavorite: !isFavorite }));
+        dispatch(changeUserImage({ ...itemData, isFavor: !isFavorite }));
       };
-      console.log("IS FAV IN CARD", isFavorite);
+      console.log("itemData", itemData);
   return (
     <span
       className="layout__card__wrapper"

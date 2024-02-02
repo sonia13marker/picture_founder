@@ -1,7 +1,7 @@
 import './EditImageModal.scss';
 import { useState, useRef } from 'react';
 import ConfirmModalComponent from '../ConfirmModalComponent/ConfirmModalComponent';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { changeUserImage } from '../../store/slices/userSlice';
 import { PATH_TO_SERVER_GETimg } from '../../data/constants';
 import CustomNotifications from '../CustomNotifications/CustomNotifications';
@@ -13,8 +13,6 @@ export default function EditImageModal ({active, setActive, id, name, tags, imag
   const [confirmModalActive, setConfirmModalActive] = useState(false);
 
   const dispatch = useDispatch();
-  const userId = useSelector(state => state.user.UserId);
-  const userToken = useSelector(state => state.user.userToken);
 
   const [cookies2, ] = useCookies(["token"]);
   const cookieToken = cookies2.token;
@@ -79,7 +77,6 @@ const { showNotify } = useNotification();
   /* for cancel btn */
   const cancelBtnClick = () => {
     //при отмене изменений отправляем запрос на изменние с тегами, которые были до этого
-    //setImageTags(tags);
     dispatch(changeUserImage({userId: cookieId, imageId: imageId, userToken: cookieToken, imageName: name, imageTags: tags}));
     setActive(!active);
     setConfirmModalActive(!confirmModalActive);
@@ -143,7 +140,6 @@ const { showNotify } = useNotification();
               <span className="modal__content__body__infoBlock__wrapper autoBtn">
                 <button
                   className="modal__content__body__infoBlock__wrapper__outlineBtn"
-                  // onClick={cancelBtnClick}
                   onClick={showConfirmModal}
                 >
                   Отмена

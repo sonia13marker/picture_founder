@@ -22,14 +22,12 @@ function App() {
 //проблема в том, что если юзер удален но находился на сайте,
 //куки остаются на месте. надо добавить, чтобы при логине ошибка добвялалась в стейт 
 //и тут происходила проверка не только на куки, но и на ошибку
-  const error = useSelector(state => state.user.error);
-  console.log(error);
+  const userId = useSelector(state => state.user.UserId);
+  console.log(userId);
   
-  const message = useSelector(state => state.user.message);
-  console.log(message);
+  const userToken = useSelector(state => state.user.userToken);
+  console.log(userToken);
 
-  const status = useSelector(state => state.user.status);
-  console.log(status);
   const [cookies, setCookie] = useCookies(["token"]);
   const [cookies3, setCookie3] = useCookies(["idFromLogin"]);
   const cookieId = cookies3.idFromLogin;
@@ -40,6 +38,7 @@ function App() {
 
   function PrivateOutlet() {
     return (cookieToken !== null) && cookieId ? <Layout><Outlet /></Layout> : <Navigate to="/login" />;
+    //return (cookieToken !== null) && cookieId && userId && userToken ? <Layout><Outlet /></Layout> : <Navigate to="/login" />;
   }
 
   return (
