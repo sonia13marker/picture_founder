@@ -42,7 +42,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       const handleToggleFavorite = (itemData) => {
         dispatch(changeUserImage({ ...itemData, isFavor: !isFavorite }));
       };
-      console.log("itemData", itemData);
+      //console.log("itemData", itemData);
   return (
     <span
       className="layout__card__wrapper"

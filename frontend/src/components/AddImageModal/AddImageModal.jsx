@@ -1,9 +1,9 @@
 import "./AddImageModal.scss";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserImage } from '../../store/slices/userSlice';
+import { addUserImage, setError } from '../../store/slices/userSlice';
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 import CustomNotifications from "../CustomNotifications/CustomNotifications";
 import { useNotification } from "../../hooks/useNotification";
@@ -59,9 +59,9 @@ export default function AddImageModal({ active, setActive }) {
 
   /* для отправки картинки на сервер */
   const dispatch = useDispatch();
-  const id = useSelector(state => state.user.UserId);
-  const userToken = useSelector(state => state.user.userToken);
   const loadingStatus = useSelector(state => state.user.status);
+  const getError = useSelector(state => state.user.error);
+  console.log("getError", getError)
 
   //проверка наличия имени
   useEffect(() => {
@@ -117,9 +117,15 @@ export default function AddImageModal({ active, setActive }) {
       showNotify("Изображение добавлено", 6);
     }
 
-    
   };
 
+  useEffect(() => {
+    if (getError === 402) {
+      showNotify("Эта картинка уже была добавлена", 6);
+      dispatch(setError(null));
+    }
+  }, [getError, loadingStatus, showNotify])
+ 
   const checkTheFileFunc = () => {
     if (file || imageName || tagsImage.current.value) {
       setConfirmModalActive(!confirmModalActive)

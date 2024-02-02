@@ -72,6 +72,11 @@ export const addUserImage = createAsyncThunk(
 
       } catch (err) {
         console.error(err);
+        //отлавливание ошибки про добавление дубликата картинки
+        const error = err.response.data.code;
+        console.log(error); 
+        thunkAPI.dispatch(setError(error));
+        return err;
       }
   }
 )
