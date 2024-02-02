@@ -52,8 +52,8 @@ route.post("/regis", async (req: Request, resp: Response): Promise<void> => {
   }
 
   regisUser(userData!.userEmail, userData!.userPassword)
-    .then(() => {
-      resp.json({ code: 204, message: "complete user create" })
+    .then(( email ) => {
+      resp.json({ code: 204, message: "complete user create", data: email })
     })
     .catch((err: AuthCustomError) => {
       MyError(`error on registered user:\n${err}`);

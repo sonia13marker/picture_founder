@@ -3,10 +3,10 @@ import { CustomError } from "./ExampleError";
 
 
 export enum AuthErrorType {
-    NOT_IMPLEMENT_ERROR = 100,
-    USER_NOT_FOUND,
-    USER_IS_EXIST,
-    USER_DATA_INVALID
+    NOT_IMPLEMENT_ERROR = 100, //оштбка по умолчанию
+    USER_NOT_FOUND, // пользователь не найден
+    USER_IS_EXIST, // пользователь уже существует
+    USER_DATA_INVALID // неверные данные пользователя(пароль)
 }
 
 export class AuthCustomError extends CustomError {

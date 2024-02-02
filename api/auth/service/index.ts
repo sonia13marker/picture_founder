@@ -33,7 +33,10 @@ export async function LoginUser(userEmail: string, userPassword: string): Promis
     };
 }
 
-export async function regisUser(userEmail: string, userPassword: string) {
+type successRegis = {
+    userEmail: string
+}
+export async function regisUser(userEmail: string, userPassword: string): Promise<successRegis> {
     const hasUser = await db_models.UserModel.exists({ userEmail: userEmail })
     const tmpFiles = "uploads";
 
@@ -48,5 +51,5 @@ export async function regisUser(userEmail: string, userPassword: string) {
     await fs.mkdir(`${tmpFiles}/save/${dbUser._id}`, { recursive: true })
 
     MyLogService(`create new user ${dbUser.userEmail}`);
-    return
+    return {userEmail: dbUser.userEmail}
 }
