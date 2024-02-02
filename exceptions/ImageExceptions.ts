@@ -1,3 +1,4 @@
+import { MyError } from "../utils/CustomLog";
 import { CustomError } from "./ExampleError";
 
 
@@ -15,6 +16,7 @@ export class NoUserDataError extends CustomError {
             "user data is empty",
             404
         )
+        MyError("user data is empty")
     }
 }
 
@@ -26,5 +28,6 @@ export class UserImageExistError extends CustomError {
             "image in user data is exist",
             409
         )
+        MyError("image in user data is exist")
     }
 }

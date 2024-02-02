@@ -6,6 +6,7 @@ import { sign } from "jsonwebtoken"
 import {InvalidUserDataError, UserNotFoundError, UserIsExistError} from "../../../exceptions/AuthExceptions";
 import * as fs from "fs/promises"
 import { userDataDB } from "../../../db/dto/UserDto";
+import { MyLogService } from "../../../utils/CustomLog";
 
 
 
@@ -24,6 +25,7 @@ export async function LoginUser(userEmail: string, userPassword: string): Promis
     }
 
     const token = sign({ id: userDb!._id, email: userDb!.userEmail }, env.TOKEN_SECRET, { expiresIn: "1d" });
+    MyLogService("user login")
     return {
         userId: userDb!._id,
         userEmail: <string>userDb!.userEmail,
@@ -45,6 +47,6 @@ export async function regisUser(userEmail: string, userPassword: string) {
     let dbUser = await db_models.UserModel.create({ userEmail, userPassword })
     await fs.mkdir(`${tmpFiles}/save/${dbUser._id}`, { recursive: true })
 
-    console.log(`create new user ${dbUser.userEmail}`);
+    MyLogService(`create new user ${dbUser.userEmail}`);
     return
 }

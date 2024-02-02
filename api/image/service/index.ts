@@ -9,6 +9,7 @@ import { CustomError } from "../../../exceptions/ExampleError";
 import { NoUserDataError, UserImageExistError  } from "../../../exceptions/ImageExceptions";
 import { DataBaseError, ImageError } from "../../../exceptions/ServerExceptions";
 import { NotFoundAnyDataInUser } from "../../../exceptions/UserExceptions";
+import { MyLogService } from "../../../utils/CustomLog";
 
 export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, filter: filterEnum ): Promise<ImageData[] | []> {
 
@@ -39,6 +40,7 @@ export async function GetUserImages(userId: string, isFavorite: boolean = false,
         throw new NoUserDataError()
     }
 
+    MyLogService(`user ${userId} get image data`)
     if (isFavorite){
 
         return userData.userImages.filter((val: ImageData)=>val.isFavorite)
@@ -54,14 +56,14 @@ export async function AddImage(userId: string, image: ImageDataFile, imageData: 
 
     //проверяю, есть ли такое изображение у пользователя
     const hashImage = await db_models.ImageModel.exists({ ownerId: userId, imageHash: hashedFile })
-    console.log(`${hashImage?._id} || ${hashedFile}`);
+    MyLogService(`${hashImage?._id} || ${hashedFile}`);
 
     if (hashImage) {
         throw new UserImageExistError()//оштбка при существующем изображении
     }
 
     //добавляю в базу данных новое изображение
-    console.log("add new image data");
+    MyLogService("add new image data");
     const createdImage = await db_models.ImageModel.create({
         imageOrgName: image.originalname,
         imageName: imageData.imageName,
@@ -72,8 +74,8 @@ export async function AddImage(userId: string, image: ImageDataFile, imageData: 
     })
 
     //обновляю пользовательские данные
-    console.log("update user data");
-    console.log(createdImage._id);
+    MyLogService("update user data");
+    MyLogService(createdImage._id);
 
     await db_models.UserModel.updateOne({ _id: userId }, { $push: { userImages: createdImage._id } })
 
@@ -92,7 +94,7 @@ export async function RemoveImage(imageId: string, userId: string): Promise<void
 
     const findImage = await db_models.ImageModel.findById({ _id: imageId, ownerId: userId })
 
-    console.log(JSON.stringify(findImage));
+    MyLogService(JSON.stringify(findImage));
     if (!findImage) {
         throw new Error("image not found");
     }
@@ -112,7 +114,7 @@ export async function FullImageGet(userId: string, imageId: string): Promise<Ima
             throw new NoUserDataError(err.message);
         })
 
-    console.log(`get full image data. image ${imageData[0]?.imageOrgName}`);
+    MyLogService(`get full image data. image ${imageData[0]?.imageOrgName}`);
     return imageData[0];
 }
 
@@ -120,7 +122,7 @@ export async function ImageEdit(updateData: any | ImageData, imageId: string) {
 
     const updatedData: any = Object.keys(updateData).filter(el => updateData).reduce((s, a) => ({ ...s, [a]: updateData[a], }), {});
 
-    console.log(updatedData);
+    MyLogService(updatedData);
     // if ( !Object.keys(updateData).length === 0){
     //     throw new CustomError("NOTHING_TO_UPDATE", 102, "nothing update. skip", 204)
     // }
@@ -132,7 +134,7 @@ export async function ImageEdit(updateData: any | ImageData, imageId: string) {
     await db_models.ImageModel.findByIdAndUpdate(imageId, {
         $set: updatedData
     })
-    console.log(`edit image ${imageId} with name `)
+    MyLogService(`edit image ${imageId} with name `)
     return updatedData
 }
 
@@ -156,8 +158,8 @@ export async function GetImageFile(imageId: string): Promise<string> {
             throw new ImageError(err.message)            
         })
 
-    console.log(`[LOG] send image for user ${imageDB?.ownerId}`);
-    console.log(`get image[file] ${imageDB?.imageOrgName}`);
+    MyLogService(`[LOG] send image for user ${imageDB?.ownerId}`);
+    MyLogService(`get image[file] ${imageDB?.imageOrgName}`);
     return toSendImage
 
 }

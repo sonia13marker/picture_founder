@@ -1,3 +1,4 @@
+import { MyError } from "../utils/CustomLog";
 import { CustomError } from "./ExampleError";
 
 export enum FileSystemErrorTypes {
@@ -19,6 +20,7 @@ export class FileNotFoundException extends CustomError{
             404
         );
         this.name = "USER_NOT_FOUND "
+        MyError("not found required file")
     }
 }
 
@@ -27,10 +29,11 @@ export class ImageError extends CustomError{
         super(
             "UNEXCEPTED_SAVE_IMAGE_ERROR",
             FileSystemErrorTypes.UNEXCEPTED_SAVE_IMAGE_ERROR,
-            detailInfo || "not found required file",
+            detailInfo || "not found required image",
             500
         );
         this.name = "UNEXCEPTED_SAVE_IMAGE_ERROR "
+        MyError("not found required image")
     }
 }
 
@@ -43,5 +46,6 @@ export class DataBaseError extends CustomError{
             500
         );
         this.name = "DATABASE_ERROR "
+        MyError("error when send request to data base")
     }
 }

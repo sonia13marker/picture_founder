@@ -1,3 +1,4 @@
+import { MyError } from "../utils/CustomLog";
 import { CustomError } from "./ExampleError";
 
 
@@ -19,6 +20,8 @@ export class SameUserPasswordExceptions extends CustomError{
             "error on try user set same password",
             409
         )
+
+        MyError("error on try user set same password")
     }
 }
 
@@ -30,6 +33,7 @@ export class UnexceptionUserError extends CustomError {
             "undefind error on precces request",
             500
         )
+        MyError("undefind error on precces request")
     }
 }
 
@@ -41,6 +45,7 @@ export class UpdateDataError extends CustomError {
             "error while update user data",
             500
         )
+        MyError("error while update user data")
     }
 }
 
@@ -52,5 +57,6 @@ export class NotFoundAnyDataInUser extends CustomError{
             "not found user data what requested",
             404
         )
+        MyError("not found user data what requested")
     }
 }

@@ -3,20 +3,20 @@ import { ImageScheme, ImageSchemeEdit, imagesGetScheme } from "../dto/DataValida
 import { AddImage, FullImageGet, GetImageFile, GetUserImages, ImageEdit, RemoveImage, SearchQueryImage } from "../service";
 import { CustomError } from "../../../exceptions/ExampleError";
 import { UserErrorType } from "../../../exceptions/UserExceptions";
-import { UserGetImageData } from "../dto/UserDto";
 import { ImageData } from "../../../dto/ImageDataDto";
+import { MyError, MyLogController } from "../../../utils/CustomLog";
 
 
 export async function GetImage(req: Request, resp: Response) {
 
     const needData = imagesGetScheme.validate(req.query);
     const userId = req.params.id
-
+MyLogController
     if (needData.error) {
         resp.json({code: 404, message: "invalid data", detail: "" })
         return
     }
-    console.log(needData.value);
+    MyLogController(needData.value);
     
     GetUserImages(userId, needData.value.isFavorite || false, needData.value.offset, needData.value.filter)
     .then( ( result: ImageData[]) => {
@@ -37,7 +37,7 @@ export async function ImagePost(req: Request, resp: Response) {
 
     // проверяю есть ли ошибки при валидации данных
     if (reqData.error) {
-        console.error(`[ERROR] error on upload new image \n ${reqData.error}`);
+        MyError(`[ERROR] error on upload new image \n ${reqData.error}`);
 
         resp.json({
             code: UserErrorType.VALIDATE_ERROR, 
@@ -48,7 +48,7 @@ export async function ImagePost(req: Request, resp: Response) {
 
     //проверяю есть ли изображение
     if (!imageData) {
-        console.error(`[ERROR] error on upload is empty | userid ${userId}`);
+        MyError(`[ERROR] error on upload is empty | userid ${userId}`);
      
         resp.json({
             code: UserErrorType.VALIDATE_ERROR, 
@@ -67,7 +67,7 @@ export async function ImagePost(req: Request, resp: Response) {
    })
    .catch( (err: CustomError) =>{
     resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
-    console.log("err on add");
+    MyLogController("err on add");
     
    })
 }
@@ -120,7 +120,7 @@ export async function imageEdit(req: Request, resp: Response) {
     }
     const valData = Object.assign(data)
 
-    console.log("val DATA: " + JSON.stringify(valData));
+    MyLogController("val DATA: " + JSON.stringify(valData));
     
     ImageEdit(valData, imageId)
     .then(() => {
@@ -163,7 +163,7 @@ export async function SearchQuery(req: Request, resp: Response) {
             detail: ""}).status(400)
     }
 
-    console.log(searchString);
+    MyLogController(searchString);
     
     SearchQueryImage(userId, searchString)
     .then( ( data) => {

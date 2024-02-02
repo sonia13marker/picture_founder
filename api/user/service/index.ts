@@ -8,11 +8,13 @@ import { SameUserPasswordExceptions, UnexceptionUserError, UpdateDataError, User
 import { userDataExt } from "../../../db/dto/UserDto";
 import { CustomError } from "../../../exceptions/ExampleError";
 import { FileNotFoundException } from "../../../exceptions/ServerExceptions";
+import { MyError, MyLogController, MyLogService } from "../../../utils/CustomLog";
 
 //простое получение пользователя
 export async function getUserData(userId: string): Promise<userDataExt> {
     const userData = await db_models.UserModel.findById(userId)
 
+    MyLogController(`get data for user ${userData?.userEmail}`)
     return {
         userId: userData!._id.toString(),
         userEmail: userData!.userEmail,
@@ -31,9 +33,10 @@ export async function DeleteUser(userId: string): Promise<void> {
     await db_models.UserModel.findByIdAndDelete(user?._id);
     await db_models.ImageModel.findByIdAndDelete(userImages);
 
+    MyLogController(`delete user ${user?.userEmail}`)
     rm(pathResolve.UserImageSaveDir(userId.toString()), {recursive: true, force: true})
     .catch( (err: Error) => {
-        console.log(err);
+        MyError(err.message);
         throw new FileNotFoundException(`error on remove forlder to user ${userId}`, );
     })
 
@@ -54,6 +57,7 @@ export async function UpdateUserPassword(userId:string, newUserPassword: string)
         throw new SameUserPasswordExceptions();
     }
 
+    MyLogService(`user ${userDb?.userEmail} update password`)
     userDb?.updateOne({$set: { userPassword: newPassHash}}).exec()
     .catch( (err: CustomError) => {
         throw new UpdateDataError(err.message)

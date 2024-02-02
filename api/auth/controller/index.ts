@@ -3,6 +3,7 @@ import { UserScheme } from "../dto/loginDto"
 import { LoginUser, regisUser } from "../service"
 import { AuthCustomError } from "../../../exceptions/AuthExceptions"
 import { successLoginData } from "../../../dto/UserDataDto"
+import { MyError, MyLogController } from "../../../utils/CustomLog"
 // import cookieParser from "cookie-parser"
 
 const route = Router()
@@ -18,7 +19,7 @@ route.post("/login", /*cookieParser(),*/ async (req: Request, resp: Response): P
 
     resp.status(400);
     resp.json({ message: "non valide data", detail: userReq.error.message });
-    console.log("[ERR] error on login. Invalide data: \n", userReq.error.message);
+    MyError(`error on login. Invalide data: \n${userReq.error.message}`);
     return
 
   }
@@ -26,7 +27,7 @@ route.post("/login", /*cookieParser(),*/ async (req: Request, resp: Response): P
   LoginUser(userData.userEmail, userData.userPassword)
   .then( (val: successLoginData) => {
     resp.json({data: val, message: "login success"}).status(200);
-    console.log(`user ${userData.userEmail} is login`)
+    MyLogController(`user ${userData.userEmail} is login`)
   })
   .catch( ( err: AuthCustomError ) => {
       resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
@@ -37,7 +38,7 @@ route.post("/login", /*cookieParser(),*/ async (req: Request, resp: Response): P
 
 //регистрация
 route.post("/regis", async (req: Request, resp: Response): Promise<void> => {
-  console.log("Try create user");
+  MyLogController("Try create user");
 
   let ValidateData = UserScheme.validate(req.body)
   const userData = ValidateData.value
@@ -45,7 +46,7 @@ route.post("/regis", async (req: Request, resp: Response): Promise<void> => {
   if (ValidateData.error) {
     resp.status(400);
     resp.json({ code: 400, message: "non valide data", detail: ValidateData.error.message });
-    console.log("[ERR] error on login. Invalide data: \n", ValidateData.error.message);
+    MyError(`error on login. Invalide data: \n${ValidateData.error.message}`);
     return
   }
 
@@ -54,7 +55,7 @@ route.post("/regis", async (req: Request, resp: Response): Promise<void> => {
       resp.json({ code: 204, message: "complete user create" })
     })
     .catch((err: AuthCustomError) => {
-      console.log("[ERR] error on registered user:\n", err);
+      MyError(`error on registered user:\n${err}`);
       resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode);
 
     })

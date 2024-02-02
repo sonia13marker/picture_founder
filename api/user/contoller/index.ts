@@ -9,6 +9,7 @@ import { UpdateUserPassword } from "../service"
 import { GetImage, ImagePost, SearchQuery, fullImageGet, getImageFile, imageDelete, imageEdit } from "../../image/controller"
 import multer from "multer"
 import { stConf } from "../../../configs/multer"
+import { MyError, MyLogController } from "../../../utils/CustomLog"
 
 const route = Router()
 
@@ -22,7 +23,7 @@ route.get("/:id", hasUser, async (req: Request, resp: Response): Promise<void> =
         .then((data) => {
             resp.json(data).status(200);
 
-            console.log(`get user ${data}`);
+            MyLogController(`get user ${data}`);
         })
         .catch( (err: CustomError  ) => {
             resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
@@ -36,7 +37,7 @@ route.delete("/:id", hasUser, async (req: Request, resp: Response): Promise<void
 
     DeleteUser(userId)
         .then((res) => {
-            console.log(`user ${userId} is deleted`);
+            MyLogController(`user ${userId} is deleted`);
             resp.json({ code: 204, message: "user deleted", detail: "" })
         })
         .catch ( (err: CustomError ) => {
@@ -54,18 +55,18 @@ route.put("/:id/chPass", hasUser, urlencoded({ extended: false }), async (req: R
     if (ValidateData.error) {
         resp.status(400)
         resp.json({ message: "wrong pasword" })
-        console.log(ValidateData.error.message);
+        MyLogController(ValidateData.error.message);
         return
     }
-    console.log(typeof ValidateData.value.UserPassword)
+    MyLogController(typeof ValidateData.value.UserPassword)
     UpdateUserPassword(userId, ValidateData.value.UserPassword)
     .then( ( res ) => {
         resp.json({ code: 204, message: "user password updated", detail: "" })
-        console.log(`user password ${userId} is update`);
+        MyLogController(`user password ${userId} is update`);
     })
     .catch( (err: CustomError ) =>{
         resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
-        console.error(`[ERR] error on chage password fo user ${userId}/ err code ${err.code}`);
+        MyError(`[ERR] error on chage password fo user ${userId}/ err code ${err.code}`);
         
     })
 })
@@ -81,7 +82,7 @@ route.put("/:id/chPass", hasUser, urlencoded({ extended: false }), async (req: R
 //         }
 //     })
 
-//     console.log(`user ${userId} is get stat`);
+//     MyLogController(`user ${userId} is get stat`);
 // })
 
 route.get("/:id/image", hasUser, GetImage)
