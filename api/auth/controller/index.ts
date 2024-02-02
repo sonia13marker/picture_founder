@@ -52,13 +52,13 @@ route.post("/regis", async (req: Request, resp: Response): Promise<void> => {
   }
 
   regisUser(userData!.userEmail, userData!.userPassword)
-    .then(( email ) => {
-      resp.json({ code: 204, message: "complete user create", data: email })
+    .then(( ) => {
+      resp.json({ code: 204, message: "complete user create" })
     })
     .catch((err: AuthCustomError) => {
       MyError(`error on registered user:\n${err}`);
       resp.statusCode = err.statusCode;
-      resp.json({code: err.code, message: err.message, detail: err.detail});
+      resp.json({code: err.code, message: err.message, detail: err.detail, userEmail: userData!.userEmail});
     })
 
 })
