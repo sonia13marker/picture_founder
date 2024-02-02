@@ -82,7 +82,7 @@ useEffect(() => {
 //проверка на ответ от сервера, если ошибка, то записать ее под инпутом
 //и также запись в новую переменную текущего эмейла
 useEffect(() => {
-  if (getError && (getError === 404)) {
+  if (getError && (getError === 101)) {
     setErrorMessageEmail("Вы еще не зарегистрированы!");
     setNonExistEmail(userEmail);
     console.log("getError in red", getError, nonExistEmail, userEmail);
@@ -148,20 +148,38 @@ const [errorMessagePassword, setErrorMessagePassword] = useState("");
 const handleChangePassword = (event) => {
   setPassword(event.target.value);
 }
-useEffect(() => {
-  //сделать проверку на пароль, чтобы он совпадал с тем, 
-  //который был записан при регистрации
-  // if (userPassword !== userPassword) {
-  //   setErrorMessagePassword("Введён неверный пароль!")
-  // }
 
-  //проверка на наличие пароля
-  if (userPassword === "") {
-    setErrorMessagePassword("Пароль не введён!")
-  } else {
-    setErrorMessagePassword("")
-  }
+//проверка на минимальную длину пароля
+useEffect(() => {
+  if (userPassword.length < 8) {
+    setErrorMessagePassword("Минимальная длиная пароля - 8 символов!");
+  } else setErrorMessagePassword("");
 }, [userPassword])
+
+const [errorPass, setErrorPass] = useState("");
+
+//проверка на правильно введенный пароль
+useEffect(() => {
+  if (getError && (getError === 103)) {
+    setErrorMessagePassword("Введён неверный пароль!");
+    setErrorPass(userPassword);
+    console.log("checkThePassword", errorPass, "error", getError, userPassword)
+  }
+}, [errorPass, getError, userPassword])
+console.log("after checkThePassword errorPass", errorPass)
+
+const checkThePassword = useCallback(() => {
+  if (errorPass && errorPass !== userPassword) {
+    setErrorMessagePassword("");
+    dispatch(setError(null));
+    setErrorPass(null);
+  }
+}, [errorPass, userPassword, dispatch]);
+
+useEffect(() => {
+  checkThePassword();
+}, [checkThePassword])
+
 const [open, setOpen] = useState(true);
 const [hidden, setHidden] = useState(true);
 const selectIcon = () => {

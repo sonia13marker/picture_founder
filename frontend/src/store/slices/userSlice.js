@@ -162,9 +162,9 @@ export const createUser = createAsyncThunk(
             console.log(res);
             return res; 
         } catch (err) {
-            const errCode = err.response.status;
-            const existEmail = err.response.data.detail.ExistEmail;
-            console.log("EXIST EMAIL ERROR", existEmail);
+            const errCode = err.response.data.code;
+            const existEmail = err.response.data.userEmail;            ;
+            console.log("EXIST EMAIL ERROR", existEmail, errCode);
             thunkAPI.dispatch(setExistEmail(existEmail));
             thunkAPI.dispatch(setError(errCode));
             thunkAPI.dispatch(setStatus("failed"));
@@ -198,9 +198,9 @@ export const loginUser = createAsyncThunk(
       return res.data;
       
     } catch (error) {
-      const errCode = error.response.status;
+      const errCode = error.response.data.code;
       thunkAPI.dispatch(setError(errCode));
-      console.error(error)
+      console.error(error, errCode)
       return error;
     }
   }

@@ -104,7 +104,7 @@ const handleSubmit = async () => {
 }
 
 const checkTheServerAnswer = useCallback(() => {
-  if (getError && (getError === 400) && existEmail !== "") {
+  if (getError && (getError === 102) && existEmail !== "") {
     console.log("verification for user");
       setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
       console.log("getError in function in red", getError);

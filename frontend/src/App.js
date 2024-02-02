@@ -19,7 +19,17 @@ import { useEffect } from "react";
 function App() {
   // const id = useSelector((state) => state.user.UserId);
   // console.log("APP USER ID", id);
+//проблема в том, что если юзер удален но находился на сайте,
+//куки остаются на месте. надо добавить, чтобы при логине ошибка добвялалась в стейт 
+//и тут происходила проверка не только на куки, но и на ошибку
+  const error = useSelector(state => state.user.error);
+  console.log(error);
+  
+  const message = useSelector(state => state.user.message);
+  console.log(message);
 
+  const status = useSelector(state => state.user.status);
+  console.log(status);
   const [cookies, setCookie] = useCookies(["token"]);
   const [cookies3, setCookie3] = useCookies(["idFromLogin"]);
   const cookieId = cookies3.idFromLogin;
