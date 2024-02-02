@@ -18,7 +18,7 @@ export async function GetImage(req: Request, resp: Response) {
         MyError(`inavalide date when get image`);
         return
     }
-    MyLogController(needData.value);
+    MyLogController(JSON.stringify(needData.value));
 
     GetUserImages(userId, needData.value.isFavorite || false, needData.value.offset, needData.value.filter)
         .then((result: ImageData[]) => {
@@ -148,12 +148,12 @@ export async function getImageFile(req: Request, resp: Response) {
 
 
     const imageId = req.params.imgId;
-    GetImageFile(imageId)
-        .then((val) => {
-            resp.sendFile(val)
-        })
+    GetImageFile(imageId, resp)
+        // .then(() => {
+        //     resp.sendFile(val)
+        // })
         .catch((err: CustomError) => {
-            resp.statusCode = err.statusCode
+            resp.statusCode = err.statusCode || 500
             resp.json({code: err.code, message: err.message, detail: err.detail})
         })
 
@@ -181,7 +181,7 @@ export async function SearchQuery(req: Request, resp: Response) {
         })
     }
 
-    MyLogController(searchString);
+    MyLogController(JSON.stringify(searchString));
 
     SearchQueryImage(userId, searchString)
         .then((data) => {

@@ -6,7 +6,8 @@ export enum ImageErrorCode {
     NOT_FOUND_USER = 400,
     EMPTY_USER_DATA,
     IMAGE_IS_EXIST,
-    UPDATE_ERROR
+    UPDATE_ERROR,
+    IMAGE_SEND_ERROR
 }
 
 export class NoUserDataError extends CustomError {
@@ -41,6 +42,30 @@ export class UserUpdateError extends CustomError {
             "error when update image data",
             400
         )
-        MyError("image in user data is exist")
+        MyError("error when update image data")
+    }
+}
+
+export class ImageSendError extends CustomError {
+    constructor(detail?: string) {
+        super(
+            "IMAGE_SEND_ERROR",
+            ImageErrorCode.IMAGE_SEND_ERROR,
+            "error when send image",
+            500
+        )
+        MyError("error when send image")
+    }
+}
+
+export class ImageNotFoundError extends CustomError {
+    constructor(detail?: string) {
+        super(
+            "IMAGE_SEND_ERROR",
+            ImageErrorCode.IMAGE_SEND_ERROR,
+            "error not found image",
+            500
+        )
+        MyError("error not found image")
     }
 }
