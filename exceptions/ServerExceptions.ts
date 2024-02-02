@@ -14,7 +14,7 @@ export enum ServerErrorTypes{
 export class FileNotFoundException extends CustomError{
     constructor(detailInfo?: string){
         super(
-            "USER_NOT_FOUND",
+            "FILE_NOT_FOUND_IN_FS",
             FileSystemErrorTypes.FILE_NOT_FOUND_IN_FS,
             detailInfo || "not found required file",
             404

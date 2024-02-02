@@ -7,7 +7,7 @@ import { join } from "path";
 import { copyFile, rename, rm } from "fs/promises"
 import { CustomError } from "../../../exceptions/ExampleError";
 import { NoUserDataError, UserImageExistError  } from "../../../exceptions/ImageExceptions";
-import { DataBaseError, ImageError } from "../../../exceptions/ServerExceptions";
+import { DataBaseError, FileNotFoundException, ImageError } from "../../../exceptions/ServerExceptions";
 import { NotFoundAnyDataInUser } from "../../../exceptions/UserExceptions";
 import { MyLogService } from "../../../utils/CustomLog";
 
@@ -96,7 +96,7 @@ export async function RemoveImage(imageId: string, userId: string): Promise<void
 
     MyLogService(JSON.stringify(findImage));
     if (!findImage) {
-        throw new Error("image not found");
+        throw new FileNotFoundException("image not found");
     }
 
     await db_models.ImageModel.deleteOne({ _id: imageId, ownerId: userId })

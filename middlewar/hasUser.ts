@@ -7,7 +7,7 @@ export async function hasUser ( req: Request, resp: Response, next: NextFunction
         const hasUser = await db_models.UserModel.exists({_id: userId})
     
         if ( !hasUser ){
-            resp.status(400);
+            resp.status(401);
             resp.json({message: "user not found"});
             return
         }

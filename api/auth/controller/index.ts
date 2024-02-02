@@ -30,7 +30,8 @@ route.post("/login", /*cookieParser(),*/ async (req: Request, resp: Response): P
     MyLogController(`user ${userData.userEmail} is login`)
   })
   .catch( ( err: AuthCustomError ) => {
-      resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
+    resp.statusCode = err.statusCode;
+    resp.json({code: err.code, message: err.message, detail: err.detail});
   })
 
 })
@@ -56,8 +57,8 @@ route.post("/regis", async (req: Request, resp: Response): Promise<void> => {
     })
     .catch((err: AuthCustomError) => {
       MyError(`error on registered user:\n${err}`);
-      resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode);
-
+      resp.statusCode = err.statusCode;
+      resp.json({code: err.code, message: err.message, detail: err.detail});
     })
 
 })

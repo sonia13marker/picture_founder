@@ -26,7 +26,8 @@ route.get("/:id", hasUser, async (req: Request, resp: Response): Promise<void> =
             MyLogController(`get user ${data}`);
         })
         .catch( (err: CustomError  ) => {
-            resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
+            resp.statusCode = err.statusCode
+            resp.json({code: err.code, message: err.message, detail: err.detail})
         })
 })
 
@@ -41,7 +42,8 @@ route.delete("/:id", hasUser, async (req: Request, resp: Response): Promise<void
             resp.json({ code: 204, message: "user deleted", detail: "" })
         })
         .catch ( (err: CustomError ) => {
-            resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
+            resp.statusCode = err.statusCode
+            resp.json({code: err.code, message: err.message, detail: err.detail})
         })
 })
 
@@ -65,7 +67,8 @@ route.put("/:id/chPass", hasUser, urlencoded({ extended: false }), async (req: R
         MyLogController(`user password ${userId} is update`);
     })
     .catch( (err: CustomError ) =>{
-        resp.json({code: err.code, message: err.message, detail: err.detail}).status(err.statusCode)
+        resp.statusCode = err.statusCode;
+        resp.json({code: err.code, message: err.message, detail: err.detail})
         MyError(`[ERR] error on chage password fo user ${userId}/ err code ${err.code}`);
         
     })
