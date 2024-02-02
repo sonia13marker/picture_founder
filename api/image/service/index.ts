@@ -4,9 +4,11 @@ import * as cry from "crypto"
 import { ImageData, ImageDataDB, ImageDataFile, ImageDataUpdate, ImageTags } from "../../../dto/ImageDataDto";
 import { pathResolve } from "../../../dto/PathResolve"
 import { join } from "path";
-import { copyFile, rename, rm } from "fs/promises"
+import { copyFile, rename, rm  } from "fs/promises"
+import {} from "node:fs"
+import { pipeline } from "stream/promises"
 import { CustomError } from "../../../exceptions/ExampleError";
-import { NoUserDataError, UserImageExistError  } from "../../../exceptions/ImageExceptions";
+import { NoUserDataError, UserImageExistError, UserUpdateError  } from "../../../exceptions/ImageExceptions";
 import { DataBaseError, FileNotFoundException, ImageError } from "../../../exceptions/ServerExceptions";
 import { NotFoundAnyDataInUser } from "../../../exceptions/UserExceptions";
 import { MyLogService } from "../../../utils/CustomLog";
@@ -134,6 +136,9 @@ export async function ImageEdit(updateData: any | ImageData, imageId: string) {
     await db_models.ImageModel.findByIdAndUpdate(imageId, {
         $set: updatedData
     })
+    .catch( (err: CustomError) =>{
+        throw new UserUpdateError()
+    })
     MyLogService(`edit image ${imageId} with name `)
     return updatedData
 }
@@ -153,10 +158,7 @@ export async function GetImageFile(imageId: string): Promise<string> {
     
     const toSendImage = join(pathResolve.UserImageUploadDir(), String(imageDB?.imageOrgName))
     const fromSendImage = join(pathResolve.UserImageSaveDir(String(imageDB?.ownerId)), String(imageDB?.imageHash))
-    copyFile(fromSendImage, toSendImage)
-        .catch((err: CustomError) => {
-            throw new ImageError(err.message)            
-        })
+    
 
     MyLogService(`[LOG] send image for user ${imageDB?.ownerId}`);
     MyLogService(`get image[file] ${imageDB?.imageOrgName}`);

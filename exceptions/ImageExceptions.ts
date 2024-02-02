@@ -5,7 +5,8 @@ import { CustomError } from "./ExampleError";
 export enum ImageErrorCode {
     NOT_FOUND_USER = 400,
     EMPTY_USER_DATA,
-    IMAGE_IS_EXIST
+    IMAGE_IS_EXIST,
+    UPDATE_ERROR
 }
 
 export class NoUserDataError extends CustomError {
@@ -27,6 +28,18 @@ export class UserImageExistError extends CustomError {
             ImageErrorCode.IMAGE_IS_EXIST,
             "image in user data is exist",
             409
+        )
+        MyError("image in user data is exist")
+    }
+}
+
+export class UserUpdateError extends CustomError {
+    constructor(detail?: string) {
+        super(
+            "UPDATE_ERROR",
+            ImageErrorCode.UPDATE_ERROR,
+            "error when update image data",
+            400
         )
         MyError("image in user data is exist")
     }

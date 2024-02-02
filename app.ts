@@ -13,5 +13,6 @@ app.use("/api", api)
 
 app.listen( env.PORT, env.HOST_IP, async ()=>{
     await ConnectDB(env.DB_IP);
+    
     console.log("server start");
 })
