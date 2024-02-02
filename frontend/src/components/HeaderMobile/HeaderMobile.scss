@@ -22,6 +22,27 @@
             &__li {
                 list-style-type: none;
 
+                &__link {
+                    @include flexRow;
+                    justify-content: center;
+                    text-decoration: none;
+                    width: 25px;
+                    height: 24px;
+                    display: block;
+                    background: url('../../images/home_outline.svg') center center no-repeat;
+                    -webkit-tap-highlight-color: transparent;
+
+                    &.iconHomeActive {
+                        background: url('../../images/home_fill.svg') center center no-repeat;
+                    }
+                    &.iconStar {
+                        background: url('../../images/star_outline.svg') center center no-repeat;
+                    }
+                    &.iconStarActive {
+                        background: url('../../images/star_fill.svg') center center no-repeat;
+                    }
+            }
+
                 &__btn {
                     display: block;
                     width: 42px;
@@ -50,7 +71,6 @@
         text-align: center;
     }
     .headerMobile__wrapper__ul__li__link {
-        display: block;
         width: 100%;
     }
     

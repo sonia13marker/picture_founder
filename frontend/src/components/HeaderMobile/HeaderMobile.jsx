@@ -1,7 +1,5 @@
 import { NavLink } from "react-router-dom";
 import "./HeaderMobile.scss";
-import HomeIcon from "../../icons/HomeIcon";
-import FavoriteIcon from "../../icons/FavoriteIcon";
 import AddIcon from "../../icons/AddIcon";
 import { useState } from "react";
 import AddImageModal from "../AddImageModal/AddImageModal";
@@ -16,9 +14,9 @@ export default function HeaderMobile() {
           <li className="headerMobile__wrapper__ul__li">
             <NavLink
               to="/"
-              className="headerMobile__wrapper__ul__li__link"
+              className={({ isActive }) =>
+              isActive ? 'headerMobile__wrapper__ul__li__link iconHomeActive' : 'headerMobile__wrapper__ul__li__link'}
             >
-              <HomeIcon />
             </NavLink>
           </li>
           <li className="headerMobile__wrapper__ul__li">
@@ -31,9 +29,9 @@ export default function HeaderMobile() {
           <li className="headerMobile__wrapper__ul__li">
             <NavLink
               to="/favorite"
-              className="headerMobile__wrapper__ul__li__link"
+              className={({ isActive }) =>
+              isActive ? 'headerMobile__wrapper__ul__li__link iconStarActive' : 'headerMobile__wrapper__ul__li__link iconStar'}
             >
-              <FavoriteIcon />
             </NavLink>
           </li>
 
