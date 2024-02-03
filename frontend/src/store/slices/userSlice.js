@@ -111,6 +111,7 @@ export const addUserImage = createAsyncThunk(
         let res;
          console.log("imageTags", imageTags, imageTags[0] === null)
          console.log("HELLO", imageName, imageTags, isFavor, userId, userToken);
+         //если массив тегов пустой, то не отправлять их
           if (imageTags[0] === null) {
             res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, isFavorite: isFavor}, {
               headers: {
@@ -119,8 +120,9 @@ export const addUserImage = createAsyncThunk(
               }
             }
             );
-          } else {
-        
+          } else 
+          //иначе отправлять вместе с тегами
+          {
         res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: imageTags, isFavorite: isFavor}, {
           headers: {
             Authorization: 'Bearer ' + userToken,
@@ -227,27 +229,23 @@ export const getInfoAboutUser = createAsyncThunk(
 )
 
 /* обновление пароля */
-// export const updatePasswordUser = createAsyncThunk(
-//     "user/updatePasswordUser",
-//     async (payload, thunkAPI) => {
-//         try {
-//             const res = await axios.put(`http://95.31.50.131/api/user/${payload.id}`, payload);
-//             return res.data;
-//         } catch (error) {
-//             console.log(error);
-//             return thunkAPI.rejectWithValue(error);
-//         }
-//     }
-// );
 export const updatePasswordUser = createAsyncThunk(
   "user/updatePasswordUser",
   async (payload, thunkAPI) => {
       try {
-          const res = await axios.put(`${PATH_TO_SERVER}/user/${payload.id}`);
+        const {userId, userToken, UserPassword} = payload;
+          const res = await axios.put(`${PATH_TO_SERVER}/user/${userId}`, {UserPassword: UserPassword}, {
+            headers: {
+              Authorization: 'Bearer ' + userToken,
+              'Content-Type': 'application/json'
+            }
+          });
           return res.data;
       } catch (error) {
+          const errCode = error.response.data.code;
+          thunkAPI.dispatch(setError(errCode));
           console.log(error);
-          return thunkAPI.rejectWithValue(error);
+          return error;
       }
   }
 );
@@ -299,21 +297,6 @@ const userSlise = createSlice({
               state.images.splice(image.id);
             }
           },
-            // setCurrentUser: (state, action) => {
-            //     //const UserEmail = action.payload;
-            //     const userData = action.payload;
-            //     console.log("USER DATA IN ACTION", userData);
-            //     console.log("NOW CURRENT USER EMPTY", userData === null)
-            //     //console.log("current user email", UserEmail);
-                
-
-            //     if (userData === null) {
-                 
-            //       state.currentUser = [];
-            //     } else {
-            //       state.currentUser.push(userData);
-            //     }
-            // },
             setAllUserData: (state, action) => {
               state.allUserData = action.payload;
             },
@@ -405,9 +388,6 @@ const userSlise = createSlice({
         state.status = 'failed'
         state.error = action.error.message
 });
-//обновление пароля - updatePasswordUser
-        // builder
-        // .addCase(updatePasswordUser.fulfilled, addCurrentUser);
 //добавление картинки - addUserImage
       builder
       .addCase(addUserImage.pending, (state, action) => {
@@ -447,12 +427,21 @@ const userSlise = createSlice({
       .addCase(deleteUserImage.rejected, (state, action) => {
         state.status = 'failed'
       })
+//сменa пароля юзера - updatePasswordUser
+      builder
+      .addCase(updatePasswordUser.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(updatePasswordUser.fulfilled, (state, action) => {
+       state.status = 'succeeded'
+      })
+      .addCase(updatePasswordUser.rejected, (state, action) => {
+        state.status = 'failed'
+      })
 
 }})
 
-export const selectUserID = (state) => state.user.userID;
-export const notificationNmae = (state) => state.user.notificationName;
-
+export const notifName = (state) => state.user.notificationName;
 
 export const { addToFavoriteArray, addToImageArray, addImageToPage, deleteImagefromPage, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail } = userSlise.actions;
 

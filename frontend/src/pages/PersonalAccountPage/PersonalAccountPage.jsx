@@ -1,12 +1,13 @@
 import "./PersonalAccountPage.scss";
 import OpenEyeIcon from "../../icons/OpenEyeIcon";
 import CloseEyeIcon from "../../icons/CloseEyeIcon";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { getInfoAboutUser, setAllUserData, setStatus, setUserID, setUserToken, updatePasswordUser } from "../../store/slices/userSlice";
 import { useCookies } from "react-cookie";
+import { useCheckThePassword } from "../../hooks/useChechThePassword";
 
 export default function PersonalAccountPage() {
 
@@ -34,7 +35,7 @@ useMemo(() => {
 }, [cookieId, cookieToken, dispatch])
   
   /*for password inputs */
-  const [PerAccPasswordValue, setPasswordValue] = useState("");
+  const [passwordAccValue, setPasswordValue] = useState("");
   const handleChangePassword = (event) => {
     setPasswordValue(event.target.value);
   };
@@ -45,7 +46,7 @@ useMemo(() => {
     setHidden(!hidden);
   };
   /*88888888888888888888888*/
-  const [PerAccPasswordVerValue, setPasswordVerValue] = useState("");
+  const [passwordVerValue, setPasswordVerValue] = useState("");
   const handleChangeVerPassword = (event) => {
     setPasswordVerValue(event.target.value);
   };
@@ -55,52 +56,47 @@ useMemo(() => {
     setIsClose(!isClose);
     setIsHidden(!isHidden);
   };
+  //проверки паролей
+  const { errorMessage, errorVerMessage } = useCheckThePassword({pass: passwordAccValue, passVerify: passwordVerValue});
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errorVerMessage, setErrorVerMessage] = useState("");
-
-  /* исправить на новые значения когда пойму, 
-  что делать с хэшированным паролем 
-  useEffect(() => {
-    if (passwordValue === values.UserPassword) {
-      setErrorMessage("Новый пароль не может совпадать со старым!");
-    }
-    if (passwordValue === values.UserPassword && passwordVerValue === passwordValue) {
-      setErrorMessage("Новый пароль не может совпадать со старым!");
-      setErrorVerMessage("");
-    }
-    if (passwordVerValue !== passwordValue) {
-      setErrorVerMessage("Пароли не равны!");
-    }
-    if (passwordValue === values.UserPassword && passwordVerValue === passwordValue) {
-      setErrorMessage("Новый пароль не может совпадать со старым!");
-    }
-    if (passwordValue !== values.UserPassword && passwordVerValue === passwordValue) {
-      setErrorMessage("");
-      setErrorVerMessage("");
-    }
-  }, [passwordValue, passwordVerValue, values.UserPassword]);
-*/
+  //проверка на совпадение паролей
+  // useEffect(() => {
+    // if (passwordValue === values.UserPassword) {
+    //   setErrorMessage("Новый пароль не может совпадать со старым!");
+    // }
+    // if (passwordValue === values.UserPassword && passwordVerValue === passwordValue) {
+    //   setErrorMessage("Новый пароль не может совпадать со старым!");
+    //   setErrorVerMessage("");
+    // }
+    //
+    // if (passwordValue === values.UserPassword && passwordVerValue === passwordValue) {
+    //   setErrorMessage("Новый пароль не может совпадать со старым!");
+    // }
+    // if (passwordValue !== values.UserPassword && passwordVerValue === passwordValue) {
+    //   setErrorMessage("");
+    //   setErrorVerMessage("");
+    // }
+  // }, [passwordValue, passwordVerValue]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
       errorMessage === "" &&
       errorVerMessage === "" &&
-      PerAccPasswordValue &&
-      PerAccPasswordVerValue
+      passwordAccValue &&
+      passwordVerValue
     ) {
-      console.log("success NEW password ", PerAccPasswordValue);
-      console.log("success NEW verify password ", PerAccPasswordVerValue);
+      console.log("success NEW password ", passwordAccValue);
+      console.log("success NEW verify password ", passwordVerValue);
       console.log("success change password");
-      dispatch(updatePasswordUser(PerAccPasswordValue));
+      dispatch(updatePasswordUser({userId: cookieId, userToken: cookieToken, UserPassword: passwordAccValue}));
     }
   };
 
   const checkTheChangePassword =
     errorMessage !== "" ||
     errorVerMessage !== "" ||
-    (PerAccPasswordValue === "" && PerAccPasswordVerValue === "");
+    (passwordAccValue === "" && passwordVerValue === "");
 
   /* for confirm modals */
   const [changePassModalActive, setChangePassModalActive] = useState(false);
@@ -182,9 +178,9 @@ useMemo(() => {
           <section className="account__wrapper__rightSide">
             <h3 className="account__wrapper__leftSide__title">Смена пароля</h3>
 
-            <form
+            <div
               className="account__wrapper__rightSide__form"
-              onSubmit={handleSubmit}
+              // onSubmit={handleSubmit}
             >
               {/* password input */}
               <span className="input__wrapper2">
@@ -199,9 +195,10 @@ useMemo(() => {
                     type={hidden ? "password" : "text"}
                     id="personalAcc_password"
                     name="personalAcc_password"
+                    autoComplete="new-password"
                     onChange={handleChangePassword}
                     placeholder="Введите новый пароль"
-                    value={PerAccPasswordValue}
+                    value={passwordAccValue}
                   />
                   {/*пока открыт глаз - пароль не видно */}
                   {open ? (
@@ -232,7 +229,7 @@ useMemo(() => {
                     name="personalAcc_passwordVerify"
                     onChange={handleChangeVerPassword}
                     placeholder="Введите новый пароль ещё раз"
-                    value={PerAccPasswordVerValue}
+                    value={passwordVerValue}
                   />
                   {/*пока открыт глаз - пароль не видно */}
                   {isClose ? (
@@ -263,7 +260,7 @@ useMemo(() => {
               >
                 Сохранить изменения
               </button>
-            </form>
+            </div>
           </section>
         </div>
         <button

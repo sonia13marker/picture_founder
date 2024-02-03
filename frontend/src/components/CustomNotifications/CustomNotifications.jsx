@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import "./CustomNotifications.scss";
-import { notificationNmae } from "../../store/slices/userSlice";
+import { notifName } from "../../store/slices/userSlice";
 import { memo, useEffect } from "react";
 
 const CustomNotifications = () => {
-  const notificationName = useSelector(notificationNmae);
+  const notificationName = useSelector(notifName);
 
     console.log("notificationName is", notificationName);
 
