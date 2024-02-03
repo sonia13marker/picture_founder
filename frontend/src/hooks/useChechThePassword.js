@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 
-
 export const useCheckThePassword = ({pass, passVerify}) => {
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -17,8 +16,7 @@ export const useCheckThePassword = ({pass, passVerify}) => {
         if (pass.length < 8) {
             setErrorMessage("Минимальная длиная пароля - 8 символов!");
           } else setErrorMessage("");
-    }, [pass.length, pass, passVerify])
+    }, [pass.length, pass, passVerify]);
 
     return { errorMessage, setErrorMessage, errorVerMessage, setErrorVerMessage };
-
 }

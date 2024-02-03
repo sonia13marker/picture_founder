@@ -56,7 +56,7 @@ useMemo(() => {
     setIsClose(!isClose);
     setIsHidden(!isHidden);
   };
-  //проверки паролей
+  //проверки паролей на 8 символов и соответствие между собой
   const { errorMessage, errorVerMessage } = useCheckThePassword({pass: passwordAccValue, passVerify: passwordVerValue});
 
   //проверка на совпадение паролей

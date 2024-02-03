@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, setError, setMessage } from '../../store/slices/userSlice';
 import Logo from '../../icons/Logo';
 import { useCookies } from 'react-cookie';
+import { useCheckThePassword } from '../../hooks/useChechThePassword';
 
 export default function LoginPage () {
     const navigate = useNavigate();
@@ -144,17 +145,13 @@ const [checked, setChecked] = useState(false);
 
 /*for password input */
 const [userPassword, setPassword] = useState("");
-const [errorMessagePassword, setErrorMessagePassword] = useState("");
+ const [errorMessagePassword, setErrorMessagePassword] = useState("");
 const handleChangePassword = (event) => {
   setPassword(event.target.value);
 }
 
-//проверка на минимальную длину пароля
-useEffect(() => {
-  if (userPassword.length < 8) {
-    setErrorMessagePassword("Минимальная длиная пароля - 8 символов!");
-  } else setErrorMessagePassword("");
-}, [userPassword])
+  //проверка пароля на 8 символов
+  const { errorMessage } = useCheckThePassword({pass: userPassword});
 
 const [errorPass, setErrorPass] = useState("");
 
@@ -267,7 +264,7 @@ useEffect(() => {
        }
         </span>
         <p className='input__error'>
-                {errorMessagePassword}
+                {errorMessage || errorMessagePassword}
             </p>
     </span>
 

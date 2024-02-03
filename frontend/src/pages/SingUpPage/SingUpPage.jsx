@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createUser, setError, setExistEmail, setMessage } from "../../store/slices/userSlice";
 import Logo from "../../icons/Logo";
 import Loader from "../../components/Loader/Loader";
+import { useCheckThePassword } from "../../hooks/useChechThePassword";
 
 export default function SingUpPage() {
 
@@ -61,20 +62,8 @@ const selectIconTwo = () => {
   setIsClose(!isClose);
   setIsHidden(!isHidden);
 }
-useEffect(() => {
-  if (SingUppasswordVerValue !== userPassword) {
-    setErrorVerMessage("Пароли не равны!");
-  } else if (SingUppasswordVerValue === userPassword) {
-    setErrorVerMessage("");
-    // console.log("success singup");
-  };
-  if (userPassword.length < 8) {
-    setErrorMessage("Минимальная длиная пароля - 8 символов!");
-  } else setErrorMessage("");
-}, [userPassword, SingUppasswordVerValue])
-const [errorMessage, setErrorMessage] = useState("");
-const [errorVerMessage, setErrorVerMessage] = useState("");
-
+  //проверки паролей на 8 символов и соответствие между собой
+  const { errorMessage, errorVerMessage } = useCheckThePassword({pass: userPassword, passVerify: SingUppasswordVerValue});
 
 /* for submit button */
 const dispatch = useDispatch();
