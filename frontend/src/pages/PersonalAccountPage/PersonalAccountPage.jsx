@@ -5,9 +5,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmModalComponent from "../../components/ConfirmModalComponent/ConfirmModalComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { getInfoAboutUser, setAllUserData, setStatus, setUserID, setUserToken, updatePasswordUser } from "../../store/slices/userSlice";
+import { getInfoAboutUser, setAllUserData, setError, setStatus, setUserID, setUserToken, updatePasswordUser } from "../../store/slices/userSlice";
 import { useCookies } from "react-cookie";
 import { useCheckThePassword } from "../../hooks/useChechThePassword";
+import { useNotification } from "../../hooks/useNotification";
+import CustomNotifications from "../../components/CustomNotifications/CustomNotifications";
 
 export default function PersonalAccountPage() {
 
@@ -22,6 +24,11 @@ export default function PersonalAccountPage() {
 
   const userId = useSelector(state => state.user.UserId);
   const userToken = useSelector(state => state.user.userToken);
+  const getError = useSelector(state => state.user.error);
+  const message = useSelector(state => state.user.message);
+
+  //вызов для использования кастомного хука
+  const { showNotify } = useNotification();
 
   const [cookies2, setCookies2, removeCookie2] = useCookies(["token"]);
   const cookieToken = cookies2.token;
@@ -57,26 +64,24 @@ useMemo(() => {
     setIsHidden(!isHidden);
   };
   //проверки паролей на 8 символов и соответствие между собой
-  const { errorMessage, errorVerMessage } = useCheckThePassword({pass: passwordAccValue, passVerify: passwordVerValue});
+  const { errorMessage, errorVerMessage, setErrorMessage } = useCheckThePassword({pass: passwordAccValue, passVerify: passwordVerValue});
 
+  const [errPass, setErrPass] = useState("");
   //проверка на совпадение паролей
-  // useEffect(() => {
-    // if (passwordValue === values.UserPassword) {
-    //   setErrorMessage("Новый пароль не может совпадать со старым!");
-    // }
-    // if (passwordValue === values.UserPassword && passwordVerValue === passwordValue) {
-    //   setErrorMessage("Новый пароль не может совпадать со старым!");
-    //   setErrorVerMessage("");
-    // }
-    //
-    // if (passwordValue === values.UserPassword && passwordVerValue === passwordValue) {
-    //   setErrorMessage("Новый пароль не может совпадать со старым!");
-    // }
-    // if (passwordValue !== values.UserPassword && passwordVerValue === passwordValue) {
-    //   setErrorMessage("");
-    //   setErrorVerMessage("");
-    // }
-  // }, [passwordValue, passwordVerValue]);
+  useEffect(() => {
+    if (getError && (getError === 200)) {
+      setErrPass(passwordAccValue);
+      setErrorMessage("Новый пароль не может совпадать со старым!");
+    } 
+  }, [getError, dispatch, setErrorMessage, passwordAccValue]);
+
+  useEffect(() => {
+    if (errPass && errPass !== passwordAccValue) {
+      setErrorMessage("");
+      dispatch(setError(null));
+      setErrPass(null);
+    }
+  }, [dispatch, errPass, passwordAccValue, setErrorMessage])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -91,7 +96,19 @@ useMemo(() => {
       console.log("success change password");
       dispatch(updatePasswordUser({userId: cookieId, userToken: cookieToken, UserPassword: passwordAccValue}));
     }
+
+    setChangePassModalActive(!changePassModalActive);
   };
+  
+//показ уведомления об успехе
+  useEffect(() => {
+    if (message === 'user password updated' && passwordAccValue !== errPass) {
+      console.log("message", message)
+      console.log("IM GAY2", errPass, "passwordAccValue", passwordAccValue);
+      setErrPass(passwordAccValue);
+      showNotify("Пароль успешно сменен");
+    }
+  }, [message, showNotify, errPass, passwordAccValue])
 
   const checkTheChangePassword =
     errorMessage !== "" ||
@@ -294,6 +311,8 @@ useMemo(() => {
         leftBtnAction={canselLogoutModal}
         rightBtnAction={goToLogin}
       />
+
+      <CustomNotifications />
     </>
   );
 }

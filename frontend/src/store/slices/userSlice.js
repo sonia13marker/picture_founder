@@ -234,16 +234,21 @@ export const updatePasswordUser = createAsyncThunk(
   async (payload, thunkAPI) => {
       try {
         const {userId, userToken, UserPassword} = payload;
-          const res = await axios.put(`${PATH_TO_SERVER}/user/${userId}`, {UserPassword: UserPassword}, {
+          const res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/chPass`, {UserPassword: UserPassword}, {
             headers: {
               Authorization: 'Bearer ' + userToken,
               'Content-Type': 'application/json'
             }
           });
+          console.log("CHANGE PASS DATA", res.data);
+          const sucMessage = res.data.message;
+          thunkAPI.dispatch(setMessage(sucMessage));
           return res.data;
       } catch (error) {
           const errCode = error.response.data.code;
+          const errMessage = error.response.data.detail;
           thunkAPI.dispatch(setError(errCode));
+          thunkAPI.dispatch(setMessage(errMessage));
           console.log(error);
           return error;
       }
