@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { PATH_TO_SERVER } from "../../data/constants";
 
-
 /* получение картинок */
 export const getImages = createAsyncThunk(
     "user/getImages",
@@ -267,7 +266,7 @@ const userSlise = createSlice({
         userToken: null,
         allUserData: [],
         notificationName: "", 
-        existEmail: ""
+        existEmail: "",
     },
     reducers: {
           addToFavoriteArray: (state, action) => {
