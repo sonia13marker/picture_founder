@@ -4,7 +4,7 @@ import { AddImage, FullImageGet, GetImageFile, GetUserImages, ImageDownload, Ima
 import { CustomError } from "../../../exceptions/ExampleError";
 import { UserErrorType } from "../../../exceptions/UserExceptions";
 import { ImageData } from "../../../dto/ImageDataDto";
-import { MyError, MyLogController } from "../../../utils/CustomLog";
+import { MyError, MyLogController, MyLogService } from "../../../utils/CustomLog";
 
 
 export async function GetImage(req: Request, resp: Response) {
@@ -70,7 +70,8 @@ export async function ImagePost(req: Request, resp: Response) {
 
     AddImage(userId, imageData, reqData.value)
         .then((result) => {
-            resp.json({code: 200,  data: result, message: `image ${result.imageName} added` })
+            MyLogService(`add new image ${result.imageName} with owner: ${result.ownerId}`)
+            resp.json({code: 200,  data: result, message: `image added` })
         })
         .catch((err: CustomError) => {
             resp.statusCode = err.statusCode
