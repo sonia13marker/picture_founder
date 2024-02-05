@@ -214,7 +214,7 @@ export async function ImageDownload(imageId: string): Promise<string> {
     const toSendImage = join(pathResolve.UserImageUploadDir(), String(image?.imageOrgName))
 
     await copyFile( fromSendImage, toSendImage)
-    await rm(toSendImage)
+    // await rm(toSendImage)
 
     return toSendImage
 }

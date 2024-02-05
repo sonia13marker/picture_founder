@@ -70,7 +70,7 @@ export async function ImagePost(req: Request, resp: Response) {
 
     AddImage(userId, imageData, reqData.value)
         .then((result) => {
-            resp.json({ result })
+            resp.json({code: 200,  data: result, message: `image ${result.imageName} added` })
         })
         .catch((err: CustomError) => {
             resp.statusCode = err.statusCode
