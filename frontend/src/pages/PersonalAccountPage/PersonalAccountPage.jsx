@@ -96,7 +96,7 @@ useMemo(() => {
       console.log("success change password");
       dispatch(updatePasswordUser({userId: cookieId, userToken: cookieToken, UserPassword: passwordAccValue}));
     }
-
+    
     setChangePassModalActive(!changePassModalActive);
   };
   

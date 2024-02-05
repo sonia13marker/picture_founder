@@ -5,19 +5,25 @@ import { memo, useEffect } from "react";
 
 const CustomNotifications = () => {
   const notificationName = useSelector(notifName);
+   const status = useSelector(state => state.user.status);
 
-    console.log("notificationName is", notificationName);
+  
+
+    console.log("notificationName is", notificationName, status);
 
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-    }, 4000);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //     if (status === "succeeded") {
+  //   const timer = setTimeout(() => {
+  //   }, 4000);
+  //   return () => clearTimeout(timer);
+  //  }
+  // }, [status]);
 
   return (
     <>
       {
+        // status === "succeeded"  &&
         notificationName !== "" ? (
           <span className="notif__wrapper">
             <p className="notif__wrapper__title">{notificationName}</p>
@@ -25,7 +31,7 @@ const CustomNotifications = () => {
         ) : (
           <></>
         )
-      }
+        }
     </>
   );
 }

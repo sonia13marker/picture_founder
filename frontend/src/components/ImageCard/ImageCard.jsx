@@ -10,7 +10,7 @@ import { useCookies } from "react-cookie";
 // import { addImageToFavorite } from "../../store/slices/userSlice";
 
 export default function ImageCard({ imageId, imageName, imageTags, image, 
-  userId, userToken, isFavorite
+  userId, userToken, isFavorite, imageExt
 }) {
   /*функция для преобразования тегов 
   .trim() для удаления пробелов до и после слова*/
@@ -42,7 +42,8 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       const handleToggleFavorite = (itemData) => {
         dispatch(changeUserImage({ ...itemData, isFavor: !isFavorite }));
       };
-      //console.log("itemData", itemData);
+      let src = `${PATH_TO_SERVER_GETimg}/${userId}/image/${imageId}`;
+      console.log("image", image, src, imageExt);
   return (
     <span
       className="layout__card__wrapper"
@@ -52,7 +53,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       <div className="layout__card__wrapper__actions">
         <ActionCircle 
         id={imageId} name={imageName} tags={imageTags} image={image}
-        isHover={isHover} userToken={userToken}/>
+        isHover={isHover} userToken={userToken} imageExt={imageExt} imageSrc={src}/>
       </div>
       <div className="layout__card">
         <span className="layout__card__titleWrap">

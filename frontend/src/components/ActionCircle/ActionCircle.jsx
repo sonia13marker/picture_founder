@@ -12,8 +12,9 @@ import { PATH_TO_SERVER_GETimg, PATH_TO_SERVER_getImg } from "../../data/constan
 import { deleteUserImage } from "../../store/slices/userSlice";
 import { useNotification } from "../../hooks/useNotification";
 import { useCookies } from "react-cookie";
+import { Link } from "react-router-dom";
 
-export default function ActionCircle({ isHover, id, name, tags, image, userToken }) {
+export default function ActionCircle({ isHover, id, name, tags, image, userToken, imageExt, imageSrc }) {
   // console.log(dataOfImage);
   const [activeEditModal, setActiveEditModal] = useState(false);
   const [activeShareModal, setActiveShareModal] = useState(false);
@@ -43,7 +44,9 @@ export default function ActionCircle({ isHover, id, name, tags, image, userToken
     showNotify("Успешно удалено");
   }
 
-  
+  const imageFile = `${imageSrc}`;
+  const imageFile2 = `${image}.${imageExt}`;
+  console.log("imageFile", imageFile, image, imageFile2);
 
   return (
     <>
@@ -63,9 +66,15 @@ export default function ActionCircle({ isHover, id, name, tags, image, userToken
           <ShareIcon />
         </span>
 
-        <span className="wrapper__circle" title="Скачать">
+<Link to={imageFile2}
+download={name}
+target="_blank"
+rel="noreferrer" >
+<span className="wrapper__circle" title="Скачать">
           <DownloadIcon />
         </span>
+</Link>
+        
 
         <span className="wrapper__circle" title="Удалить"
         onClick={() => setActiveDelModal(!activeDelModal)}>

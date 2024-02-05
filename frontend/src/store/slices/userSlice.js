@@ -314,8 +314,6 @@ const userSlise = createSlice({
             if (currError !== 200 || currError !== null) {
               state.error = currError;
             }
-            //state.error = action.payload;
-            //setStatus("failed");
             console.log("err in state", currError);
           },
           setUserToken: (state, action) => {
@@ -427,7 +425,7 @@ const userSlise = createSlice({
         state.status = 'loading'
       })
       .addCase(deleteUserImage.fulfilled, (state, action) => {
-       // state.status = 'succeeded'
+        state.status = 'succeeded'
       })
       .addCase(deleteUserImage.rejected, (state, action) => {
         state.status = 'failed'
