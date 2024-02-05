@@ -196,6 +196,7 @@ export async function SearchQuery(req: Request, resp: Response) {
 export async function DownloadImage(req: Request, resp: Response){
     const imageId = req.params.imgId
 
+    MyLogController("get image file")
     ImageDownload(imageId)
     .then( data => {
         resp.download(`${data.path}`)

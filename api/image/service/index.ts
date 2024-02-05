@@ -211,6 +211,7 @@ export async function ImageDownload(imageId: string): Promise<sendImage> {
         throw new ImageNotFoundError();
     })
 
+    MyLogService("send image file")
     return {
         ext: image!.ext || "jpeg",
         path: join(pathResolve.UserImageSaveDir(String(image?.ownerId)), String(image?.imageHash))
