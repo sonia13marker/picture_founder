@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { changeUserImage } from '../../store/slices/userSlice';
 import { PATH_TO_SERVER_GETimg } from '../../data/constants';
 import CustomNotifications from '../CustomNotifications/CustomNotifications';
-import { useNotification } from '../../hooks/useNotification';
 import { useCookies } from 'react-cookie';
 
 export default function EditImageModal ({active, setActive, id, name, tags, image}) {
@@ -36,7 +35,7 @@ const handleChangeTags = (e) => {
 
 
 const imageId = id;
-const { showNotify } = useNotification();
+// const { showNotify } = useNotification();
 
   /*for submit */
   const saveTheDataImage = async (e) => {
@@ -51,8 +50,6 @@ const { showNotify } = useNotification();
       } else if (imageName && tags2) {
         dispatch(changeUserImage({userId: cookieId, imageId: imageId, userToken: cookieToken, imageName: imageName, imageTags: tags2}));
       }
-      //появление уведомлений
-     showNotify("Изменения сохранены");
     } else {
       console.log("no changes");
     }

@@ -10,7 +10,7 @@
     background-color: $black-for-bg;
     @include flexColumn;
     z-index: 80;
-	transition: all 2s ease-in-out;
+	animation:  loader-appear 0.5s forwards;
 }
 
 .pl1 {
@@ -35,6 +35,22 @@
 }
 
 /* Animations */
+@keyframes loader-appear {
+	0% {
+	  opacity: 0;
+	}
+	100% {
+	  opacity: 1;
+	}
+  }
+  @keyframes loader-disappear {
+	0% {
+	  opacity: 1;
+	}
+	100% {
+	  opacity: 0;
+	}
+  }
 @keyframes pl1-a {
 	from {
 		transform: rotate(0);

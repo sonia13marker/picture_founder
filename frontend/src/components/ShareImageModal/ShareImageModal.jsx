@@ -19,7 +19,6 @@ import {
 import Clipboard from "clipboard";
 import { useDispatch } from "react-redux";
 import { showNotification } from "../../store/slices/userSlice";
-import { useNotification } from "../../hooks/useNotification";
 
 export default function ShareImageModal({ active, setActive, imageLink }) {
   /* сменить на приходящий уровень для каждой картинки */
@@ -37,8 +36,6 @@ export default function ShareImageModal({ active, setActive, imageLink }) {
   const [showNotif, setShowNotif] = useState(false);
   const linkRef = useRef();
   const clipboard = useRef(null);
-
-  const { showNotify } = useNotification();
 
   useEffect(() => {
     if (clipboard.current) {
@@ -61,10 +58,10 @@ export default function ShareImageModal({ active, setActive, imageLink }) {
     console.log("showNotif", showNotif)
     if (showNotif === true) {
     //появление уведомлений
-    showNotify("Ссылка скопирована");
+    dispatch(showNotification("Ссылка скопирована"));
     setShowNotif(false);
     }
-  }, [showNotif, showNotify])
+  }, [showNotif, dispatch])
 
 
   // const getCopyLink = (imageLink) => {

@@ -10,7 +10,6 @@ import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponen
 import { useDispatch, useSelector } from "react-redux";
 import { PATH_TO_SERVER, PATH_TO_SERVER_GETimg, PATH_TO_SERVER_getImg } from "../../data/constants";
 import { deleteUserImage } from "../../store/slices/userSlice";
-import { useNotification } from "../../hooks/useNotification";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 
@@ -24,8 +23,6 @@ export default function ActionCircle({ isHover, id, name, tags, image, imageExt 
   }
   const dispatch = useDispatch();
 
-  const { showNotify } = useNotification();
-
   const [cookies2, ] = useCookies(["token"]);
   const cookieToken = cookies2.token;
   const [cookies3, ] = useCookies(["idFromLogin"]);
@@ -36,9 +33,6 @@ export default function ActionCircle({ isHover, id, name, tags, image, imageExt 
     console.log("userId:", cookieId, "imageId:", id, "userToken:", cookieToken)
     dispatch(deleteUserImage({userId: cookieId, imageId: id, userToken: cookieToken}));
     setActiveDelModal(!activeDelModal);
-
-    //появление уведомлений
-    showNotify("Успешно удалено");
   }
 
   return (
@@ -59,7 +53,7 @@ export default function ActionCircle({ isHover, id, name, tags, image, imageExt 
           <ShareIcon />
         </span>
            
-      <Link to={`${PATH_TO_SERVER}/user/${cookieId}/image/download/${id}`} download={`${name}.${imageExt}`} target="_blank"
+      <Link to={id ? `${PATH_TO_SERVER}/user/${cookieId}/image/download/${id}` : null} download={`${name}.${imageExt}`} target="_blank"
   rel="nofollow noreferrer" className="wrapper__circle" title="Скачать" 
   > 
           <DownloadIcon />

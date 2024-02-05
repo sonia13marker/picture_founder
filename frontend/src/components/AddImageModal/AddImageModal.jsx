@@ -3,10 +3,9 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import UploadImageComponent from "../UploadImageComponent/UploadImageComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserImage, setError } from '../../store/slices/userSlice';
+import { addUserImage, setError, showNotification } from '../../store/slices/userSlice';
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 import CustomNotifications from "../CustomNotifications/CustomNotifications";
-import { useNotification } from "../../hooks/useNotification";
 import { useCookies } from "react-cookie";
 
 
@@ -59,7 +58,6 @@ export default function AddImageModal({ active, setActive }) {
 
   /* для отправки картинки на сервер */
   const dispatch = useDispatch();
-  const loadingStatus = useSelector(state => state.user.status);
   const getError = useSelector(state => state.user.error);
   console.log("getError", getError)
 
@@ -81,8 +79,6 @@ export default function AddImageModal({ active, setActive }) {
     };
   },[file]);
 
-  //вызов для использования кастомного хука
-  const { showNotify } = useNotification();
 
 // функция добавления на страницу
   const submitInfoImage = (e) => {
@@ -110,21 +106,14 @@ export default function AddImageModal({ active, setActive }) {
     }
     setActive(!active); 
 
-    //добавление уведомления 
-    //добавление статуса, чтобы уведомления добавлялись после загрузки страницы, 
-    //а не во время
-    if (loadingStatus === "succeeded") {
-      showNotify("Изображение добавлено", 6);
-    }
-
   };
 
   useEffect(() => {
     if (getError === 402) {
-      showNotify("Эта картинка уже была добавлена", 6);
+      dispatch(showNotification("Эта картинка уже была добавлена"))
       dispatch(setError(null));
     }
-  }, [getError, loadingStatus, showNotify])
+  }, [getError, dispatch])
  
   const checkTheFileFunc = () => {
     if (file || imageName || tagsImage.current.value) {

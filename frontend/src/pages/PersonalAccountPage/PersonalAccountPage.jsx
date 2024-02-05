@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getInfoAboutUser, setAllUserData, setError, setStatus, setUserID, setUserToken, updatePasswordUser } from "../../store/slices/userSlice";
 import { useCookies } from "react-cookie";
 import { useCheckThePassword } from "../../hooks/useChechThePassword";
-import { useNotification } from "../../hooks/useNotification";
 import CustomNotifications from "../../components/CustomNotifications/CustomNotifications";
 
 export default function PersonalAccountPage() {
@@ -26,9 +25,6 @@ export default function PersonalAccountPage() {
   const userToken = useSelector(state => state.user.userToken);
   const getError = useSelector(state => state.user.error);
   const message = useSelector(state => state.user.message);
-
-  //вызов для использования кастомного хука
-  const { showNotify } = useNotification();
 
   const [cookies2, setCookies2, removeCookie2] = useCookies(["token"]);
   const cookieToken = cookies2.token;
@@ -106,9 +102,8 @@ useMemo(() => {
       console.log("message", message)
       console.log("IM GAY2", errPass, "passwordAccValue", passwordAccValue);
       setErrPass(passwordAccValue);
-      showNotify("Пароль успешно сменен");
     }
-  }, [message, showNotify, errPass, passwordAccValue])
+  }, [message,  errPass, passwordAccValue])
 
   const checkTheChangePassword =
     errorMessage !== "" ||

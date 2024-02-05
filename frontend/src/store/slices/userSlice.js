@@ -22,6 +22,7 @@ export const getImages = createAsyncThunk(
       }
     }
   );
+  /* получение избранных картинок */
 export const getFavoriteImages = createAsyncThunk(
   "user/getFavoriteImages",
     async (payload, thunkAPI) => {
@@ -67,7 +68,10 @@ export const addUserImage = createAsyncThunk(
       console.log("data about image", res);
       //обновление страницы сразу после добавления
       thunkAPI.dispatch(getImages({userId}, {userToken}));
-      return res;
+      if (res.data.message === "image added") {
+        thunkAPI.dispatch(showNotification("Изображение добавлено"));
+      }
+      return res.data;
 
       } catch (err) {
         console.error(err);
@@ -89,6 +93,9 @@ export const addUserImage = createAsyncThunk(
         const res = await axios.delete(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`);
          console.log("SUCCESS deleted image", res);
         thunkAPI.dispatch(getImages({userId}, {userToken}));
+          if (res.data.message === "image delete") {
+            thunkAPI.dispatch(showNotification("Успешно удалено"));
+          }
         return res;
       } catch (err) {
           console.log(err);
@@ -133,12 +140,13 @@ export const addUserImage = createAsyncThunk(
 
            thunkAPI.dispatch(getImages({userId}, {userToken}));
            thunkAPI.dispatch(getFavoriteImages({userId, userToken, isFavorite}));
+           if (res.data.message === "image data updated") {
+            thunkAPI.dispatch(showNotification("Изменения сохранены"));
+           }
       console.log("changed data about image", res);
       return res;
     } catch (err) {
       console.error(err);
-      const serializedError = err.toJSON();
-      return thunkAPI.rejectWithValue(serializedError);
   } 
   }
   )
@@ -242,6 +250,10 @@ export const updatePasswordUser = createAsyncThunk(
           console.log("CHANGE PASS DATA", res.data);
           const sucMessage = res.data.message;
           thunkAPI.dispatch(setMessage(sucMessage));
+
+          if (res.data.message === "user password updated") {
+            thunkAPI.dispatch(showNotification("Пароль успешно сменен"));
+          }
           return res.data;
       } catch (error) {
           const errCode = error.response.data.code;
@@ -272,34 +284,6 @@ const userSlise = createSlice({
           addToFavoriteArray: (state, action) => {
             const images = action.payload;
             state.favorite = images.filter(image => image.isFavorite === true)
-          },
-          // addToImageArray: (state, action) => {
-          //   state.images = action.payload;
-          // },
-          addImageToPage: (state, action) => {
-            //state.images = action.payload;
-            //state.images.push(action.payload);
-            
-            // const addImage = action.payload;
-            // state.images = {
-            //   ...state,
-            //   addImage
-            // }
-            //const imageState = state.images;
-            //state.images = Object.values(img);
-            // state.images([img]);
-            console.log("IMAGE IN ADDIMAGETOPAGE FUNC",  state.images
-            //'STATE ', imageState
-            );
-            
-            // state.images.push({img});
-          },
-          deleteImagefromPage: (state, action) => {
-            const image = action.payload;
-            const deleteImage = state.images.findIndex((delImage) => delImage === image.id);
-            if (deleteImage !== -1) {
-              state.images.splice(image.id);
-            }
           },
             setAllUserData: (state, action) => {
               state.allUserData = action.payload;
@@ -397,8 +381,6 @@ const userSlise = createSlice({
       })
       .addCase(addUserImage.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        let image = action.payload;
-        console.log("IMAGE IN addUserImage.fulfilled",image)
       })
       .addCase(addUserImage.rejected, (state, action) => {
         state.status = 'failed'
@@ -445,6 +427,6 @@ const userSlise = createSlice({
 
 export const notifName = (state) => state.user.notificationName;
 
-export const { addToFavoriteArray, addToImageArray, addImageToPage, deleteImagefromPage, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail } = userSlise.actions;
+export const { addToFavoriteArray, addToImageArray, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail } = userSlise.actions;
 
 export default userSlise.reducer;
