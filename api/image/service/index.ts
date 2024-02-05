@@ -7,14 +7,12 @@ import { join } from "path";
 import { copyFile, rename, rm } from "fs/promises"
 import { existsSync } from "fs";
 import { createReadStream } from "node:fs"
-import { pipeline } from "stream/promises"
 import { CustomError } from "../../../exceptions/ExampleError";
 import { ImageNotFoundError, ImageSendError, NoUserDataError, UserImageExistError, UserUpdateError } from "../../../exceptions/ImageExceptions";
 import { DataBaseError, FileNotFoundException, ImageError } from "../../../exceptions/ServerExceptions";
 import { NotFoundAnyDataInUser } from "../../../exceptions/UserExceptions";
 import { MyError, MyLogService } from "../../../utils/CustomLog";
 import { Response } from "express"
-import { throws } from "assert";
 
 export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, filter: filterEnum): Promise<ImageData[] | []> {
 
@@ -75,7 +73,8 @@ export async function AddImage(userId: string, image: ImageDataFile, imageData: 
         imageHash: hashedFile,
         imageTags: imageData.imageTags,
         ownerId: userId,
-        isFavorite: imageData.isFavorite
+        isFavorite: imageData.isFavorite,
+        ext: image.mimetype.split("/")[1]
     })
 
     //обновляю пользовательские данные

@@ -10,7 +10,8 @@ const ImageSchema = new Schema<ImageDataDB>({
     imageHash: String,
     ownerId: {type: Schema.ObjectId, ref: "User"},
     imageTags: [String],
-    isFavorite: Boolean
+    isFavorite: Boolean,
+    ext: String
 }, {timestamps: true})
 
 const Image = model("Image", ImageSchema)

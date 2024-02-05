@@ -21,7 +21,8 @@ export interface ImageData {
     imageHash: String,
     ownerId: Types.ObjectId,
     imageTags: [String],
-    isFavorite: Boolean
+    isFavorite: Boolean,
+    ext: string
 }
 
 export interface ImageDataDB extends ImageData, Document {
