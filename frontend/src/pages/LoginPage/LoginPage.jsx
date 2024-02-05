@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, setError, setMessage } from '../../store/slices/userSlice';
 import Logo from '../../icons/Logo';
 import { useCookies } from 'react-cookie';
-import { useCheckThePassword } from '../../hooks/useChechThePassword';
+import { useCheckThePassword } from '../../hooks/useCheckThePassword';
 
 export default function LoginPage () {
     const navigate = useNavigate();

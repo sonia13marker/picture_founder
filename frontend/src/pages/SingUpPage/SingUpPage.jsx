@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createUser, setError, setExistEmail, setMessage } from "../../store/slices/userSlice";
 import Logo from "../../icons/Logo";
 import Loader from "../../components/Loader/Loader";
-import { useCheckThePassword } from "../../hooks/useChechThePassword";
+import { useCheckThePassword } from "../../hooks/useCheckThePassword";
 
 export default function SingUpPage() {
 
@@ -114,24 +114,6 @@ useEffect(()=> {
   checkTheServerAnswer();
 }, [checkTheServerAnswer]);
 
-
-//проверка на ответ от сервера, если ошибка, то записать ее под инпутом
-// useEffect(()=> {
-//   if (getError && (getError === 400) && existEmail !== "") {
-//     console.log("verification for user");
-//       setErrorMessageEmail("Пользователь с этой почтой уже зарегистрирован!");
-//       console.log("getError in function in red", getError);
-//       console.log("existEmail in  function in red", existEmail);
-//   }; 
-//   if (existEmail && userEmail && existEmail !== userEmail) {
-//     setErrorMessageEmail("");
-//     dispatch(setError(null));
-//     dispatch(setExistEmail(null));
-//   }
-//   console.log("getError in useEffect", getError);
-//   console.log("existEmail in in useEffect", existEmail);
-  
-// }, [getError, existEmail, userEmail, dispatch]);
 
 useEffect(() => {
   if (message === "complete user create") {     

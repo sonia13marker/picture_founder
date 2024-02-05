@@ -7,7 +7,7 @@ import ConfirmModalComponent from "../../components/ConfirmModalComponent/Confir
 import { useDispatch, useSelector } from "react-redux";
 import { getInfoAboutUser, setAllUserData, setError, setStatus, setUserID, setUserToken, updatePasswordUser } from "../../store/slices/userSlice";
 import { useCookies } from "react-cookie";
-import { useCheckThePassword } from "../../hooks/useChechThePassword";
+import { useCheckThePassword } from "../../hooks/useCheckThePassword";
 import CustomNotifications from "../../components/CustomNotifications/CustomNotifications";
 
 export default function PersonalAccountPage() {

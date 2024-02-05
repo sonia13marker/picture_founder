@@ -1,0 +1,128 @@
+@import '../../style.scss';
+
+.message__body {
+    @include flexColumn;
+    max-width: 800px;
+    width: 90vw;
+    height: 80vh;
+    padding: 40px;
+    background-color: $black-for-windows;
+    border-radius: 20px;
+
+    &__head {
+        width: 100%;
+        @include flexRow;
+        margin-bottom: 40px;
+
+        &__h3 {
+            @include h3BoldStyle;
+            color: $light-gray-text;
+        }
+
+        &__img {
+            @include closeBtnIcon;
+
+            &:hover {
+                @include hoverCloseBtnIcon;
+            }
+            &:active {
+                @include activeCloseBtnIcon;
+            }
+        }
+    }
+
+    &__content {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        padding-right: 12px;
+
+        &__single {
+            color: $light-gray-text;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 145%;
+            text-indent: 30px;
+
+            &:nth-of-type(2) {
+                text-indent: 0;
+                padding: 10px 20px;
+                border-radius: 15px;
+                border: 1.5px solid $main-purple;
+            }
+        }
+        &__pair {
+            @include flexColumn;
+            align-items: flex-start;
+            margin: 30px 0;
+    
+            &__heading {
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 145%;
+                color: $main-purple;
+                margin-bottom: 10px;
+            }
+    
+            &__text {
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 145%;
+                color: $light-gray-text;
+                text-indent: 30px;
+            }
+    
+        }
+    }
+
+}
+
+.bold {
+    font-weight: 600;
+    color: $light-gray-text;
+}
+.italic {
+    font-style: italic;
+    color: $light-gray-text;
+}
+.underline {
+    text-decoration: underline;
+    color: $light-gray-text;
+}
+
+@media screen and (max-width: 1000px) {
+    .message__body__head__h3, .message__body__content__single,  
+    .message__body__content__pair__heading, .message__body__content__pair__text
+    {
+        font-size: 16px;
+    }
+    .message__body__content__pair {
+        margin: 25px 0;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .message__body__head__h3, .message__body__content__single,  
+    .message__body__content__pair__heading, .message__body__content__pair__text {
+        font-size: 14px;
+    }
+    .message__body__content__pair {
+        margin: 15px 0;
+    }
+    .message__body__content__pair__heading {
+        margin-bottom: 5px;
+    }
+    .message__body__head {
+        margin-bottom: 25px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .message__body {
+        padding: 25px;
+    }
+    .modal.activeModal {
+        justify-content: center;
+    }
+    
+}

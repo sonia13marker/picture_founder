@@ -46,45 +46,6 @@ function App() {
       <BrowserRouter>
         {/* ссылки на страницы */}
         <Routes>
-          {/* {id ? (
-            <Route element={<Layout />}>
-              <Route path="/main" element={<Navigate to="/" replace />} />
-              <Route path="/" index element={<MainPage />} />
-              <Route path="/" element={<Outlet />}>
-                {!id ? (
-                  <Route path="/" element={<LoginPage />} />
-                ) : (
-                  <>
-                    <Route path="/" element={<Navigate to="/" replace />} />
-                  </>
-                )}
-              </Route>
-              <Route path="/favorite" element={<FavoritePage />} />
-              <Route
-                path="/developers"
-                element={<DevelopersPage numberVersion={data.version} />}
-              />
-              <Route path="/account" element={<PersonalAccountPage />} />
-            </Route>
-          ) : (
-            <Route path="/" element={<Navigate to="/login" />} />
-          )}
-          <Route path="/singup" element={<SingUpPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/forgot_password" element={<ForgotPasswordPage />} />
-          <Route
-            path="/forgot_password-success"
-            element={<ForgotPasswordSuccessPage />}
-          />
-          <Route path="/*" element={<NotFoundPage />} />
-        </Routes> */}
-            
-              {/* {
-                cookieId !== null || id ? <Route element={<Layout />}> <Route path="/" index element={<MainPage />} /> </Route> : 
-                <Route path="/login" element={<LoginPage />} />
-              } */}
-
-              {/* <Route element={<Layout />}> */}
               <Route path="/" element={<PrivateOutlet />}>
                 <Route index element={<MainPage />} />
                 <Route path="favorite" element={<FavoritePage />} />
@@ -92,7 +53,6 @@ function App() {
                 <Route path="account" element={<PersonalAccountPage />} />
               </Route>
               
-             {/* </Route> */}
              <Route path="/login-auth" element={<Navigate to="/login" replace />} />
              <Route path="/login" element={<LoginPage />} />
           <Route path="/singup" element={<SingUpPage />} />
