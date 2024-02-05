@@ -70,7 +70,7 @@ export async function ImagePost(req: Request, resp: Response) {
 
     AddImage(userId, imageData, reqData.value)
         .then((result) => {
-            MyLogService(`add new image ${result.imageName} with owner: ${result.ownerId}`)
+            MyLogController(`add new image ${result.imageName} with owner: ${result.ownerId}`)
             resp.json({code: 200,  data: result, message: `image added` })
         })
         .catch((err: CustomError) => {
