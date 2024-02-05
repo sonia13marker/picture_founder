@@ -202,18 +202,18 @@ export async function SearchQueryImage(userId: string, stringQuery: string): Pro
     })
 }
 
-type sendImage = {
-    ext: string,
-    path: string
-}
-export async function ImageDownload(imageId: string): Promise<sendImage> {
+
+export async function ImageDownload(imageId: string): Promise<string> {
     const image = await db_models.ImageModel.findById(imageId).catch((err: CustomError) => {
         throw new ImageNotFoundError();
     })
 
     MyLogService("send image file")
-    return {
-        ext: image!.ext || "jpeg",
-        path: join(pathResolve.UserImageSaveDir(String(image?.ownerId)), String(image?.imageHash))
-    }
+
+    const fromSendImage = join(pathResolve.UserImageSaveDir(String(image?.ownerId)), String(image?.imageHash))
+    const toSendImage = join(pathResolve.UserImageUploadDir(), String(image?.imageOrgName))
+
+    await copyFile( fromSendImage, toSendImage)
+
+    return toSendImage
 }

@@ -199,10 +199,10 @@ export async function DownloadImage(req: Request, resp: Response){
     MyLogController("get image file")
     ImageDownload(imageId)
     .then( data => {
-        resp.download(`${data.path}`)
+        resp.download(data)
     })
     .catch( (err: CustomError)=>{
-        resp.statusCode = err.statusCode
+        resp.statusCode = err.statusCode || 500
         resp.json({code: err.code, message: err.message, detail: err.detail})
     })
 }
