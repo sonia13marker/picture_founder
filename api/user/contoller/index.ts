@@ -6,7 +6,7 @@ import { hasUser } from "../../../middlewar/hasUser"
 import { CustomError } from "../../../exceptions/ExampleError"
 import { UserChPass } from "../dto"
 import { UpdateUserPassword } from "../service"
-import { GetImage, ImagePost, SearchQuery, fullImageGet, getImageFile, imageDelete, imageEdit } from "../../image/controller"
+import { DownloadImage, GetImage, ImagePost, SearchQuery, fullImageGet, getImageFile, imageDelete, imageEdit } from "../../image/controller"
 import multer from "multer"
 import { stConf } from "../../../configs/multer"
 import { MyError, MyLogController } from "../../../utils/CustomLog"
@@ -95,5 +95,6 @@ route.delete("/:id/image/:imgId", hasUser, imageDelete)
 route.get("/:id/image/:imgId", hasUser, getImageFile)
 route.get("/:id/image/data/:imgId/", hasUser, fullImageGet)
 route.put("/:id/image/:imgId", urlencoded({ extended: false }), hasUser, imageEdit)
+route.get("/:id/image/download/:imgId/", hasUser, DownloadImage)
 
 export default route

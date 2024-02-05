@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { ImageScheme, ImageSchemeEdit, imagesGetScheme } from "../dto/DataValidateDto";
-import { AddImage, FullImageGet, GetImageFile, GetUserImages, ImageEdit, RemoveImage, SearchQueryImage } from "../service";
+import { AddImage, FullImageGet, GetImageFile, GetUserImages, ImageDownload, ImageEdit, RemoveImage, SearchQueryImage } from "../service";
 import { CustomError } from "../../../exceptions/ExampleError";
 import { UserErrorType } from "../../../exceptions/UserExceptions";
 import { ImageData } from "../../../dto/ImageDataDto";
@@ -193,3 +193,15 @@ export async function SearchQuery(req: Request, resp: Response) {
         })
 }
 
+export async function DownloadImage(req: Request, resp: Response){
+    const imageId = req.params.imgId
+
+    ImageDownload(imageId)
+    .then( data => {
+        resp.download(`${data.path}`)
+    })
+    .catch( (err: CustomError)=>{
+        resp.statusCode = err.statusCode
+        resp.json({code: err.code, message: err.message, detail: err.detail})
+    })
+}

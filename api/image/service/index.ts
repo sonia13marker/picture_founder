@@ -166,20 +166,23 @@ export async function GetImageFile(imageId: string, resp: Response): Promise<voi
         throw new ImageNotFoundError()
     }
 
-    copyFile(fromSendImage, toSendImage)
-        .then(() => {
-            resp.contentType(`image/${ext}`)
-            createReadStream(toSendImage).pipe(resp)
-        })
-        .then(() => {
-            rm(toSendImage)
-                .catch(err => {
-                    MyError("rm image " + err.message)
-                })
-        })
-        .catch((err: CustomError) => {
-            throw new ImageSendError(err.message)
-        })
+    resp.contentType(`image/${imageDB.ext || ext}`)
+    createReadStream(fromSendImage).pipe(resp)
+
+    // copyFile(fromSendImage, toSendImage)
+    //     .then(() => {
+    //         resp.contentType(`image/${imageDB.ext || ext}`)
+    //         createReadStream(toSendImage).pipe(resp)
+    //     })
+    //     .then(() => {
+    //         rm(toSendImage)
+    //             .catch(err => {
+    //                 MyError("rm image " + err.message)
+    //             })
+    //     })
+    //     .catch((err: CustomError) => {
+    //         throw new ImageSendError(err.message)
+    //     })
 
     MyLogService(`[LOG] send image for user ${imageDB?.ownerId}`);
     MyLogService(`get image[file] ${imageDB?.imageOrgName}`);
@@ -197,4 +200,19 @@ export async function SearchQueryImage(userId: string, stringQuery: string): Pro
     return userImages.filter(img => {
         return img.imageName.includes(stringQuery) || img.imageTags.find(tag => tag.includes(stringQuery))
     })
+}
+
+type sendImage = {
+    ext: string,
+    path: string
+}
+export async function ImageDownload(imageId: string): Promise<sendImage> {
+    const image = await db_models.ImageModel.findById(imageId).catch((err: CustomError) => {
+        throw new ImageNotFoundError();
+    })
+
+    return {
+        ext: image!.ext || "jpeg",
+        path: join(pathResolve.UserImageSaveDir(String(image?.ownerId)), String(image?.imageHash))
+    }
 }
