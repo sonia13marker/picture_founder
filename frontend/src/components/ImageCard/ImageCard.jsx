@@ -42,8 +42,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       const handleToggleFavorite = (itemData) => {
         dispatch(changeUserImage({ ...itemData, isFavor: !isFavorite }));
       };
-      let src = `${PATH_TO_SERVER_GETimg}/${userId}/image/${imageId}`;
-      console.log("image", image, src, imageExt);
+
   return (
     <span
       className="layout__card__wrapper"
@@ -53,8 +52,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       <div className="layout__card__wrapper__actions">
         <ActionCircle 
         id={imageId} name={imageName} tags={imageTags} image={image}
-        isHover={isHover} userToken={userToken} imageExt={imageExt} imageSrc={src}
-        userId={userId}/>
+        isHover={isHover} imageExt={imageExt} userId={userId}/>
       </div>
       <div className="layout__card">
         <span className="layout__card__titleWrap">

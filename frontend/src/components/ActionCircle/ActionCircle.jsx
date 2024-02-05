@@ -14,7 +14,7 @@ import { useNotification } from "../../hooks/useNotification";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 
-export default function ActionCircle({ isHover, id, name, tags, image, userToken, imageExt, imageSrc }) {
+export default function ActionCircle({ isHover, id, name, tags, image, imageExt }) {
   const [activeEditModal, setActiveEditModal] = useState(false);
   const [activeShareModal, setActiveShareModal] = useState(false);
   const [activeDelModal, setActiveDelModal] = useState(false);
@@ -60,7 +60,7 @@ export default function ActionCircle({ isHover, id, name, tags, image, userToken
         </span>
            
       <Link to={`${PATH_TO_SERVER}/user/${cookieId}/image/download/${id}`} download={`${name}.${imageExt}`} target="_blank"
-  rel="noreferrer" className="wrapper__circle" title="Скачать" 
+  rel="nofollow noreferrer" className="wrapper__circle" title="Скачать" 
   > 
           <DownloadIcon />
           </Link>
