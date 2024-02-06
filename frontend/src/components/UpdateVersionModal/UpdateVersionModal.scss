@@ -1,0 +1,42 @@
+@import '../../style.scss';
+
+.versionModal {
+    max-width: 60vw;
+
+    &__content {
+        @include flexColumn;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 20px;
+
+        & > p {
+            color: $dark-gray-text;
+            @include h4Style;
+            line-height: 145%;
+        }
+    }
+}
+
+.newHead {
+    margin-bottom: 30px !important;
+}
+
+.newHeading {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.message__body__head__h5 {
+    @include h4BoldStyle;
+    width: auto;
+    color: $light-gray-text;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+hr {
+    width: 100%;
+    border: 1px solid $light-gray-text;
+    margin-bottom: 30px;
+}

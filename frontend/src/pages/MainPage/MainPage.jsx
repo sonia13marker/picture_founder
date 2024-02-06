@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import Loader from "../../components/Loader/Loader";
 import { useCookies } from "react-cookie";
 import HelloMessage from "../../components/HelloMessage/HelloMessage";
+import UpdateVersionModal from "../../components/UpdateVersionModal/UpdateVersionModal";
 
 export default function MainPage() {
 
@@ -55,6 +56,7 @@ export default function MainPage() {
     <section className="wrapper_layout">
     {content}
     <HelloMessage />
+    <UpdateVersionModal />
     </section>
   );
 }

@@ -16,7 +16,7 @@ body {
   overflow-y: hidden;
 }
 
-html {
+* {
   scrollbar-color: #765bab #141414;
   scrollbar-width: thin;
 }
@@ -60,7 +60,7 @@ body {
   overflow-y: hidden;
 }
 
-html {
+* {
   scrollbar-color: #765bab #141414;
   scrollbar-width: thin;
 }
@@ -104,7 +104,7 @@ body {
   overflow-y: hidden;
 }
 
-html {
+* {
   scrollbar-color: #765bab #141414;
   scrollbar-width: thin;
 }
@@ -555,7 +555,7 @@ body {
   overflow-y: hidden;
 }
 
-html {
+* {
   scrollbar-color: #765bab #141414;
   scrollbar-width: thin;
 }

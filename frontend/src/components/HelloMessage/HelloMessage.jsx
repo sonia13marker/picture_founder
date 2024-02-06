@@ -3,7 +3,11 @@ import './HelloMessage.scss';
 
 
 export default function HelloMessage() {
-  const [active, setActive] = useState(true);
+  
+  //по умолчанию - true
+  const [active, setActive] = useState(false);
+
+  //показывать только если нет недавней даты захода и active === true
 
   return (
     <>
@@ -13,7 +17,7 @@ export default function HelloMessage() {
           <h3 className="message__body__head__h3">Онбординг Pic2re</h3>
           <span
             className="message__body__head__img"
-            onClick={() => setActive(!active)}
+            onClick={() => setActive(false)}
           ></span>
         </span> 
 

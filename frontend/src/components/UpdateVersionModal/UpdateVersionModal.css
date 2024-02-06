@@ -42,29 +42,48 @@ body {
   scrollbar-gutter: auto;
 }
 
-.add_btn {
+.versionModal {
+  max-width: 60vw;
+}
+.versionModal__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 20px;
+}
+.versionModal__content > p {
+  color: #B0AFAF;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 145%;
+}
+
+.newHead {
+  margin-bottom: 30px !important;
+}
+
+.newHeading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.message__body__head__h5 {
   font-family: "Ubuntu", sans-serif;
   font-size: 15px;
   font-weight: 500;
-  background-color: #9E76E9;
-  color: #1D1D1D;
-  padding: 12px 20px;
-  border-radius: 30px;
-  border: none;
-}
-.add_btn:hover {
-  background-color: #765bab;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.add_btn:active {
-  outline: 2px solid #765bab;
-  background-color: #9E76E9;
-  cursor: pointer;
+  width: auto;
+  color: #C5C5C5;
+  font-weight: 800;
+  font-size: 14px;
 }
 
-@media screen and (max-width: 880px) {
-  .add_btn {
-    padding: 10px 20px;
-  }
-}/*# sourceMappingURL=AddImgBtn.css.map */
+hr {
+  width: 100%;
+  border: 1px solid #C5C5C5;
+  margin-bottom: 30px;
+}/*# sourceMappingURL=UpdateVersionModal.css.map */

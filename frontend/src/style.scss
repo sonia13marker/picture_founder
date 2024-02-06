@@ -165,7 +165,7 @@ body {
 //------------scrollbar--------
 
 //---for firefox
-html {
+* {
     scrollbar-color: $hover-purple $black-for-windows;
     scrollbar-width: thin;
 }

@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import MainPage from "./pages/MainPage/MainPage";
 import FavoritePage from "./pages/FavoritePage/FavoritePage";
 import DevelopersPage from "./pages/DevelopersPage/DevelopersPage";
-import data from "../package.json";
+// import data from "../package.json";
 import { Navigate } from "react-router-dom";
 import SingUpPage from "./pages/SingUpPage/SingUpPage";
 import Layout from "./components/Layout/Layout";
@@ -49,7 +49,7 @@ function App() {
               <Route path="/" element={<PrivateOutlet />}>
                 <Route index element={<MainPage />} />
                 <Route path="favorite" element={<FavoritePage />} />
-                <Route path="developers" element={<DevelopersPage numberVersion={data.version} />} />
+                <Route path="developers" element={<DevelopersPage />} />
                 <Route path="account" element={<PersonalAccountPage />} />
               </Route>
               
