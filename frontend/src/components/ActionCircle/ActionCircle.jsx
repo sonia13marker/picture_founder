@@ -7,8 +7,8 @@ import "./ActionCircle.scss";
 import EditImageModal from "../EditImageModal/EditImageModal";
 import ShareImageModal from "../ShareImageModal/ShareImageModal";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
-import { useDispatch, useSelector } from "react-redux";
-import { PATH_TO_SERVER, PATH_TO_SERVER_GETimg, PATH_TO_SERVER_getImg } from "../../data/constants";
+import { useDispatch } from "react-redux";
+import { PATH_TO_SERVER, PATH_TO_SERVER_GETimg } from "../../data/constants";
 import { deleteUserImage } from "../../store/slices/userSlice";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
@@ -53,7 +53,7 @@ export default function ActionCircle({ isHover, id, name, tags, image, imageExt 
           <ShareIcon />
         </span>
            
-      <Link to={id ? `${PATH_TO_SERVER}/user/${cookieId}/image/download/${id}` : null} download={`${name}.${imageExt}`} target="_blank"
+      <Link to={id ? `${PATH_TO_SERVER}/user/${cookieId}/image/download/${id}` : null} download={name} target="_blank"
   rel="nofollow noreferrer" className="wrapper__circle" title="Скачать" 
   > 
           <DownloadIcon />
