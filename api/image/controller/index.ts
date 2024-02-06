@@ -129,7 +129,7 @@ export async function imageEdit(req: Request, resp: Response) {
             message: err.message,
             detail: ""
         })
-        MyError("err on update image/ Image data is invalid")
+        MyError("err on update image/ Image data is invalid\n"+err.message)
         return
     }
     const valData = Object.assign(data)
