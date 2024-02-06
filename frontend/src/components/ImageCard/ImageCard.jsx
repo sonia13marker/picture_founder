@@ -38,9 +38,27 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
   const itemData = { userId, userToken, imageId, imageName, imageTags, image };
   const dispatch = useDispatch();
 
+  const [fav, setFav] = useState(false);
+
+  useEffect(() => {
+    if (isFavorite === true) {
+      setFav(false)
+    }  else if (isFavorite === false) {
+      setFav(true)
+    }
+  }, [isFavorite])
+
       /* добавить в избранное */
       const handleToggleFavorite = (itemData) => {
-        dispatch(changeUserImage({ ...itemData, isFavor: !isFavorite }));
+        
+
+        if (fav !== isFavorite) {
+          console.log("ЗНАЧЕНИЕ СМЕНИЛОСЬ", fav, isFavorite);
+          dispatch(changeUserImage({ ...itemData, isFavor: !isFavorite, favor: "yes" }));
+        } else {
+          console.log("bad", fav, isFavorite)
+        }
+        
       };
 
   return (

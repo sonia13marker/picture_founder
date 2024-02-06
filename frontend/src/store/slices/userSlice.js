@@ -111,12 +111,24 @@ export const addUserImage = createAsyncThunk(
     async (payload, thunkAPI) => {
 
       try {
-        const {  userId, userToken, imageId, imageName, imageTags, isFavor} = payload;
+        const {  userId, userToken, imageId, imageName, imageTags, isFavor, favor} = payload;
         const isFavorite = true;
         console.log("change img", payload);
         let res;
          console.log("imageTags", imageTags, imageTags[0] === null)
          console.log("HELLO", imageName, imageTags, isFavor, userId, userToken);
+         //если только сохранение в избранное, то проверяем на наличие переменной,
+         //которую передаем только при добавлении в избранное
+         if (favor === "yes") {
+          res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {isFavorite: isFavor}, {
+            headers: {
+              Authorization: 'Bearer ' + userToken,
+              'Content-Type': 'application/json'
+            }
+          }
+          );
+          console.log("ONE")
+         } else
          //если массив тегов пустой, то не отправлять их
           if (imageTags[0] === null) {
             res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, isFavorite: isFavor}, {
@@ -126,6 +138,8 @@ export const addUserImage = createAsyncThunk(
               }
             }
             );
+            console.log("TWO")
+            thunkAPI.dispatch(showNotification("Изменения сохранены"));
           } else 
           //иначе отправлять вместе с тегами
           {
@@ -136,13 +150,13 @@ export const addUserImage = createAsyncThunk(
           }
         }
         );
+        console.log("THREE")
+        thunkAPI.dispatch(showNotification("Изменения сохранены"));
       }
-
+      const message = res.data.message;
            thunkAPI.dispatch(getImages({userId}, {userToken}));
            thunkAPI.dispatch(getFavoriteImages({userId, userToken, isFavorite}));
-           if (res.data.message === "image data updated") {
-            thunkAPI.dispatch(showNotification("Изменения сохранены"));
-           }
+          // thunkAPI.dispatch(setMessage(message));
       console.log("changed data about image", res);
       return res;
     } catch (err) {

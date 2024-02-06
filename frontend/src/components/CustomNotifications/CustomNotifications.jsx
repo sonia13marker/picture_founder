@@ -5,7 +5,7 @@ import { memo, useEffect } from "react";
 
 const CustomNotifications = () => {
   const notificationName = useSelector(notifName);
-   const status = useSelector(state => state.user.status);
+  const status = useSelector(state => state.user.status);
   const dispatch = useDispatch();
   
 
@@ -24,8 +24,9 @@ const CustomNotifications = () => {
   return (
     <>
       {
-         status === "succeeded"  &&
-        notificationName !== "" ? (
+         (status !== "loading" &&
+        notificationName !== "") 
+        ? (
           <span className={"notif__wrapper"}>
             <p className="notif__wrapper__title">{notificationName}</p>
           </span>
@@ -37,4 +38,4 @@ const CustomNotifications = () => {
   );
 }
 
-export default CustomNotifications;
+export default memo(CustomNotifications);
