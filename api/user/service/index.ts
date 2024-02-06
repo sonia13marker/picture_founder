@@ -28,7 +28,7 @@ export async function getUserData(userId: string): Promise<userDataExt> {
         imageCount: userData!.userImages.length,
         tagsCount: userTagsCount,
         userStat: userData!.userStat,
-        lastLogin: userData!.lastLogin
+        checkUpdate: userData!.checkUpdate
     }
 }
 

@@ -14,7 +14,7 @@ const UserScheme = new Schema<DBUserData>({
     userImages: [{type: Schema.ObjectId, ref: "Image"}],
     userPassword: {type: String, require: true},
     userStat: [{type: Schema.ObjectId, ref: "Stat"}],
-    lastLogin: { type : Date, default: Date.now }
+    checkUpdate: {type: Boolean, default: false}
 }, {timestamps: true});
 
 

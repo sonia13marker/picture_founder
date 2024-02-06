@@ -4,7 +4,7 @@ export interface successLoginData {
     userId: Types.ObjectId,
     userEmail: string,
     token?: string,
-    lastLogin: Date
+    checkUpdate: boolean
 }
 
 export interface userStatData{
@@ -25,6 +25,5 @@ export interface userImageData {
 export type userData = {
     userEmail: string,
     userImages: Array<string>,
-    userStat: Array<userStatData>,
-    lastLogin: Date
+    userStat: Array<userStatData>
 }

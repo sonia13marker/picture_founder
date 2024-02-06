@@ -122,9 +122,9 @@ export async function imageEdit(req: Request, resp: Response) {
     if (!Array.isArray(data.imageTags) && (typeof  data.imageTags === "string")) {
         data.imageTags = [data.imageTags]
         console.log("convert to arrray " + data.imageTags);
-        
     }
-    if (err) {        resp.statusCode = 400
+    if (err) {        
+        resp.statusCode = 400
         resp.json({
             code: UserErrorType.VALIDATE_ERROR,
             message: err.message,
@@ -192,7 +192,7 @@ export async function SearchQuery(req: Request, resp: Response) {
             resp.json({ code: 200, data: data })
         })
         .catch((err: CustomError) => {
-            resp.statusCode = err.statusCode || 500
+            resp.statusCode = err.statusCode || 400
             resp.json({code: err.code, message: err.message, detail: err.detail})
         })
 }

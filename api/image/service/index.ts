@@ -136,7 +136,8 @@ export async function ImageEdit(updateData: any | ImageData, imageId: string) {
         
         delete updatedData.imageTags
     }
-    if (updatedData.imageTags[0] === ""){
+    
+    if (updatedData.imageTags.length === 1 && updatedData.imageTags[0].trim() === "''"){
         console.log("zero tags array");
         
         updatedData.imageTags = []

@@ -18,7 +18,6 @@ export async function LoginUser(userEmail: string, userPassword: string): Promis
     }
 
     const userDb: userDataDB | null = await db_models.UserModel.findOne({ userEmail: userEmail });
-    const lastLogin = userDb!.lastLogin
     const passHash = cry.createHash("sha256").update(userPassword).digest("hex");
 
     if (passHash !== userDb!.userPassword) {
@@ -33,7 +32,7 @@ export async function LoginUser(userEmail: string, userPassword: string): Promis
         userId: userDb!._id,
         userEmail: <string>userDb!.userEmail,
         token: token,
-        lastLogin: lastLogin
+        checkUpdate: userDb!.checkUpdate
     };
 }
 
