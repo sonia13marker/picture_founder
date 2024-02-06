@@ -14,12 +14,19 @@ import { MyError, MyLogController, MyLogService } from "../../../utils/CustomLog
 export async function getUserData(userId: string): Promise<userDataExt> {
     const userData = await db_models.UserModel.findById(userId)
 
+    let userTagsCount = (await db_models.ImageModel.find({ ownerId: userId })).map(( img)=>{
+
+        return img.imageTags
+
+    }).flat().length
+    
+
     MyLogController(`get data for user ${userData?.userEmail}`)
     return {
         userId: userData!._id.toString(),
         userEmail: userData!.userEmail,
         imageCount: userData!.userImages.length,
-        tagsCount: 0, //пока так 
+        tagsCount: userTagsCount,
         userStat: userData!.userStat,
         lastLogin: userData!.lastLogin
     }
