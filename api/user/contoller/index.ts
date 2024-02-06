@@ -23,7 +23,7 @@ route.get("/:id", hasUser, async (req: Request, resp: Response): Promise<void> =
         .then((data) => {
             resp.json(data).status(200);
 
-            MyLogController(`get user ${data}`);
+            MyLogController(`get user ${JSON.stringify(data)}`);
         })
         .catch( (err: CustomError  ) => {
             resp.statusCode = err.statusCode
