@@ -115,7 +115,7 @@ export const addUserImage = createAsyncThunk(
         const isFavorite = true;
         console.log("change img", payload);
         let res;
-         console.log("imageTags", imageTags, imageTags[0] === null)
+         console.log("imageTags", imageTags, imageTags[0] === null,  imageTags[0] === "" )
          console.log("HELLO", imageName, imageTags, isFavor, userId, userToken);
          //если только сохранение в избранное, то проверяем на наличие переменной,
          //которую передаем только при добавлении в избранное
@@ -140,7 +140,17 @@ export const addUserImage = createAsyncThunk(
             );
             console.log("TWO")
             thunkAPI.dispatch(showNotification("Изменения сохранены"));
-          } else 
+          } else if (imageTags[0] === "") {
+            res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, isFavorite: isFavor, imageTags: null}, {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+                'Content-Type': 'application/json'
+              }
+            }
+            );
+            console.log("THREE")
+            thunkAPI.dispatch(showNotification("Изменения сохранены"));
+          } else
           //иначе отправлять вместе с тегами
           {
         res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: imageTags, isFavorite: isFavor}, {
@@ -150,7 +160,7 @@ export const addUserImage = createAsyncThunk(
           }
         }
         );
-        console.log("THREE")
+        console.log("FOUR")
         thunkAPI.dispatch(showNotification("Изменения сохранены"));
       }
       const message = res.data.message;
@@ -210,7 +220,10 @@ export const loginUser = createAsyncThunk(
       const loginMessage = res.data.message;
       console.log("loginMessage", loginMessage)
       thunkAPI.dispatch(setMessage(loginMessage));
-      console.log("res data from login userslice", res.data)
+      console.log("res data from login userslice", res.data);
+      //добавление даты последнего входа
+      const lastLogin = res.data.lastLogin;
+      thunkAPI.dispatch(setLastLogin(lastLogin));
       return res.data;
       
     } catch (error) {
@@ -293,6 +306,7 @@ const userSlise = createSlice({
         allUserData: [],
         notificationName: "", 
         existEmail: "",
+        lastLogin: null
     },
     reducers: {
           addToFavoriteArray: (state, action) => {
@@ -335,7 +349,9 @@ const userSlise = createSlice({
             } else {
               state.notificationName = ""
             };
-           
+          },
+          setLastLogin: (state, action) => {
+            state.lastLogin = action.payload;
           }
     },
     extraReducers: (builder) => {
@@ -441,6 +457,6 @@ const userSlise = createSlice({
 
 export const notifName = (state) => state.user.notificationName;
 
-export const { addToFavoriteArray, addToImageArray, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail } = userSlise.actions;
+export const { addToFavoriteArray, addToImageArray, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail, setLastLogin } = userSlise.actions;
 
 export default userSlise.reducer;

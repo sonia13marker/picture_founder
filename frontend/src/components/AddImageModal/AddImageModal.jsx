@@ -29,21 +29,17 @@ export default function AddImageModal({ active, setActive }) {
     setImageName(he.escape(e.target.value));
   }
   //отслеживание ошибок, связанных с изображениями
-  useEffect(() => {
-    if (size > MAX_SIZE_OF_FILE) {
-      setFileError("Размер файла превышает 20МБ!")
-    } else {
-      setFileError("");
-    }
-  }, [size])
-
-  useEffect(() => {
-    if (!ACCEPT_FILE_TYPE.includes(fileType)) {
-      setFileError("Неверный тип файла!");
-    } else {
-      setFileError("");
-    }
-  }, [fileType]);
+    useEffect(() => {
+      if (!file){
+        setFileError("Изображение является обязательным!");
+      } else  if (!ACCEPT_FILE_TYPE.includes(fileType)) {
+        setFileError("Неверный тип файла!");
+      } else if (size > MAX_SIZE_OF_FILE) {
+        setFileError("Размер файла превышает 20МБ!");
+      } else {
+        setFileError("");
+      }
+    },[file, fileType, size]);
 
     /* для тегов */
     let tagsImage = useRef();
@@ -70,15 +66,6 @@ export default function AddImageModal({ active, setActive }) {
       setNameError("");
     };
   }, [imageName]);
-
-  //проверка наличия изображения
-  useEffect(() => {
-    if (!file){
-      setFileError("Изображение является обязательным!");
-    } else {
-      setFileError("");
-    };
-  },[file]);
 
 
 // функция добавления на страницу
