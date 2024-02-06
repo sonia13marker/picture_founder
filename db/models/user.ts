@@ -13,10 +13,11 @@ const UserScheme = new Schema<DBUserData>({
     userEmail: {type: String, require: true},
     userImages: [{type: Schema.ObjectId, ref: "Image"}],
     userPassword: {type: String, require: true},
-    userStat: [{type: Schema.ObjectId, ref: "Stat"}]
+    userStat: [{type: Schema.ObjectId, ref: "Stat"}],
+    lastLogin: { type : Date, default: Date.now }
 }, {timestamps: true});
 
 
 const User: Model<DBUserData> = model("User", UserScheme);
-const Stat: Model<userStatData> = model("Stat", statScheme);
+// const Stat: Model<userStatData> = model("Stat", statScheme);
 export default User

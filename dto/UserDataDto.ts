@@ -3,7 +3,8 @@ import { Types, Document } from "mongoose";
 export interface successLoginData {
     userId: Types.ObjectId,
     userEmail: string,
-    token?: string
+    token?: string,
+    lastLogin: Date
 }
 
 export interface userStatData{
@@ -24,5 +25,6 @@ export interface userImageData {
 export type userData = {
     userEmail: string,
     userImages: Array<string>,
-    userStat: Array<userStatData>
+    userStat: Array<userStatData>,
+    lastLogin: Date
 }

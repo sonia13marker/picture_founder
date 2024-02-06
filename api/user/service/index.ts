@@ -20,7 +20,8 @@ export async function getUserData(userId: string): Promise<userDataExt> {
         userEmail: userData!.userEmail,
         imageCount: userData!.userImages.length,
         tagsCount: 0, //пока так 
-        userStat: userData!.userStat
+        userStat: userData!.userStat,
+        lastLogin: userData!.lastLogin
     }
 }
 

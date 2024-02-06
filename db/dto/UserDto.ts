@@ -2,7 +2,7 @@ import { userData, userStatData } from "../../dto/UserDataDto";
 
 
 export interface DBUserData extends userData{
-    userPassword: string
+    userPassword: string,
 }
 
 export interface userDataExt  {
@@ -10,7 +10,8 @@ export interface userDataExt  {
     userEmail: string,
     imageCount: number,
     tagsCount: number,
-    userStat: Array<userStatData>
+    userStat: Array<userStatData>,
+    lastLogin: Date
 }
 
 export interface userDataDB extends userData, Document {
