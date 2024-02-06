@@ -1,7 +1,7 @@
 @import '../../style.scss';
 
 .notif__wrapper {
-    animation: notifanimation 0.3s ease-in-out;
+   // animation: notifanimation 0.3s ease-in-out;
     width: auto;
     height: auto;
     padding: 22px 25px;
@@ -25,16 +25,16 @@
 }
 
 
-@keyframes notifanimation {
-   0% {
-        bottom: 0;
-        opacity: 0;
-    }
-    100% {
-        bottom: 20px;
-        opacity: 1;
-    }
-}
+// @keyframes notifanimation {
+//    0% {
+//         bottom: 0;
+//         opacity: 0;
+//     }
+//     100% {
+//         bottom: 20px;
+//         opacity: 1;
+//     }
+// }
 
 @media screen and (max-width: 880px) {
     .notif__wrapper__title {

@@ -6,6 +6,7 @@ import { changeUserImage } from '../../store/slices/userSlice';
 import { PATH_TO_SERVER_GETimg } from '../../data/constants';
 import CustomNotifications from '../CustomNotifications/CustomNotifications';
 import { useCookies } from 'react-cookie';
+import he from "he";
 
 export default function EditImageModal ({active, setActive, id, name, tags, image}) {
       /* для модальных окон-подтверждений */
@@ -25,11 +26,11 @@ export default function EditImageModal ({active, setActive, id, name, tags, imag
    const [tags2, setImageTags] = useState("");
 
 const handleChangeName = (event) => {
-  setImageName(event.target.value);
+  setImageName(he.escape(event.target.value));
 }
 
 const handleChangeTags = (e) => {
-  const data = e.target.value;
+  const data = he.escape(e.target.value);
   setImageTags(data.split(",").map( tg => tg.trim()));
 }
 

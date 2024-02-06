@@ -7,6 +7,7 @@ import FavorFillIcon from "../../icons/FavorFillIcon";
 import FavorOutlineIcon from "../../icons/FavorOutlineIcon";
 import { PATH_TO_SERVER_GETimg } from "../../data/constants";
 import { useCookies } from "react-cookie";
+import he from "he";
 // import { addImageToFavorite } from "../../store/slices/userSlice";
 
 export default function ImageCard({ imageId, imageName, imageTags, image, 
@@ -22,9 +23,10 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       tag = "#" + tag;
       tag = tag.replaceAll(" ", "_");
       tag = tag + " ";
-      return tag;
+      return he.unescape(tag);
     })
   }
+  const newName = he.unescape(imageName);
   /*для проверки наведения на карточку */
   const [isHover, setIsHover] = useState(false);
 
@@ -74,7 +76,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       </div>
       <div className="layout__card">
         <span className="layout__card__titleWrap">
-          <h3 className="layout__card__titleWrap__title">{imageName}</h3>
+          <h3 className="layout__card__titleWrap__title">{newName}</h3>
           <span 
           onClick={() => handleToggleFavorite(itemData)} 
           className="layout__card__titleWrap__icon">

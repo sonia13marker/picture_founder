@@ -7,6 +7,7 @@ import { addUserImage, setError, showNotification } from '../../store/slices/use
 import { ACCEPT_FILE_TYPE, MAX_SIZE_OF_FILE } from "../../data/constants";
 import CustomNotifications from "../CustomNotifications/CustomNotifications";
 import { useCookies } from "react-cookie";
+import he from "he";
 
 
 export default function AddImageModal({ active, setActive }) {
@@ -25,7 +26,7 @@ export default function AddImageModal({ active, setActive }) {
   const cookieId = cookies3.idFromLogin;
 
   const handleChangeNameImage = (e) => {
-    setImageName(e.target.value);
+    setImageName(he.escape(e.target.value));
   }
   //отслеживание ошибок, связанных с изображениями
   useEffect(() => {
@@ -86,7 +87,7 @@ export default function AddImageModal({ active, setActive }) {
     const tags = tagsImage.current.value;
     const image = {file};
 
-     let imageTags = tags.split(",").map((tg) => tg.trim());
+     let imageTags = he.escape(tags).split(",").map((tg) => tg.trim());
 
      
 
