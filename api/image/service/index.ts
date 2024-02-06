@@ -126,13 +126,20 @@ export async function ImageEdit(updateData: any | ImageData, imageId: string) {
 
     const updatedData: any = Object.keys(updateData).filter(el => updateData).reduce((s, a) => ({ ...s, [a]: updateData[a], }), {});
 
-    MyLogService(updatedData);
+    MyLogService(JSON.stringify(updatedData));
     // if ( !Object.keys(updateData).length === 0){
     //     throw new CustomError("NOTHING_TO_UPDATE", 102, "nothing update. skip", 204)
     // }
 
     if (!updatedData.imageTags) {
+        console.log("delete TAG");
+        
         delete updatedData.imageTags
+    }
+    if (updatedData.imageTags[0] === ""){
+        console.log("zero tags array");
+        
+        updatedData.imageTags = []
     }
 
     await db_models.ImageModel.findByIdAndUpdate(imageId, {
@@ -191,8 +198,8 @@ export async function GetImageFile(imageId: string, resp: Response): Promise<voi
 }
 
 
-export async function SearchQueryImage(userId: string, stringQuery: string): Promise<ImageData[]> {
-    const userImages = await db_models.ImageModel.find({ ownerId: userId })
+export async function SearchQueryImage(userId: string, stringQuery: string, filter: filterEnum | unknown): Promise<ImageData[]> {
+    const userImages = await db_models.ImageModel.find({ ownerId: userId }).sort({createdAt: filterEnum[filter as keyof typeof filterEnum]})
         .catch((err: CustomError) => {
             throw new NotFoundAnyDataInUser(err.message)
         })

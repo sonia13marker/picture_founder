@@ -5,6 +5,7 @@ import { CustomError } from "../../../exceptions/ExampleError";
 import { UserErrorType } from "../../../exceptions/UserExceptions";
 import { ImageData } from "../../../dto/ImageDataDto";
 import { MyError, MyLogController, MyLogService } from "../../../utils/CustomLog";
+import { filterEnum } from "../dto/FilterImageDto";
 
 
 export async function GetImage(req: Request, resp: Response) {
@@ -118,12 +119,12 @@ export async function imageEdit(req: Request, resp: Response) {
     const data = ImageSchemeEdit.validate(req.body).value
     const err = ImageSchemeEdit.validate(req.body).error
 
-    if (!Array.isArray(data.imageTags) && data.imageTags) {
+    if (!Array.isArray(data.imageTags) && (typeof  data.imageTags === "string")) {
         data.imageTags = [data.imageTags]
+        console.log("convert to arrray " + data.imageTags);
+        
     }
-
-    if (err) {
-        resp.statusCode = 400
+    if (err) {        resp.statusCode = 400
         resp.json({
             code: UserErrorType.VALIDATE_ERROR,
             message: err.message,
@@ -141,7 +142,7 @@ export async function imageEdit(req: Request, resp: Response) {
             resp.json({ code: 204, message: "image data updated" }).status(204);
         })
         .catch((err: CustomError) => {
-            resp.statusCode = err.statusCode
+            resp.statusCode = err.statusCode || 500
             resp.json({code: err.code, message: err.message, detail: err.detail})
         })
 }
@@ -165,6 +166,7 @@ export async function SearchQuery(req: Request, resp: Response) {
 
     const userId = req.params.id
     const searchString = <string>req.query.searchQuery
+    const filers = <string | filterEnum>req.query.filter || "NONE"
 
     if (!userId) {
         resp.statusCode = 400
@@ -185,12 +187,12 @@ export async function SearchQuery(req: Request, resp: Response) {
 
     MyLogController(JSON.stringify(searchString));
 
-    SearchQueryImage(userId, searchString)
+    SearchQueryImage(userId, searchString, <filterEnum>filers)
         .then((data) => {
             resp.json({ code: 200, data: data })
         })
         .catch((err: CustomError) => {
-            resp.statusCode = err.statusCode
+            resp.statusCode = err.statusCode || 500
             resp.json({code: err.code, message: err.message, detail: err.detail})
         })
 }
