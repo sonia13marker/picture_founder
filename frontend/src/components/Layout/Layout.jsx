@@ -8,6 +8,7 @@ import HeaderMobile from '../HeaderMobile/HeaderMobile';
 import Logo from '../../icons/Logo.jsx';
 import BackToTopBtn from '../BackToTopBtn/BackToTopBtn.jsx';
 import MessageOfCookie from '../MessageOfCookie/MessageOfCookie.jsx';
+import SearchInput from '../SearchInput/SearchInput.jsx';
 
 export default function Layout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -43,16 +44,7 @@ export default function Layout() {
       который имеет отступы 55рх вместе с содержимым */}
       <div className="main__section">
         <div className="main__section__wrapper">
-          <label htmlFor="searchInput" className="main__section__label">
-            <input
-              type="search"
-              name="searchInput"
-              id="searchInput"
-              className="main__section__input"
-              placeholder="Поиск"
-            />
-            <span className="main__section__label__img"></span>
-          </label>
+          <SearchInput />
           <SortDropdown />
         </div>
         {/* вот тут находится все содержимое роутов,

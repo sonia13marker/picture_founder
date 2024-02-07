@@ -36,6 +36,7 @@ export default function MainPage() {
 
   let content;
 
+  console.log("images", images)
   if (imagesStatus === 'loading') {
     content = <Loader />
   } else if (imagesStatus === 'succeeded') {

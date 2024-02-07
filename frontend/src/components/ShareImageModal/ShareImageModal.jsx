@@ -20,14 +20,15 @@ import Clipboard from "clipboard";
 import { useDispatch } from "react-redux";
 import { showNotification } from "../../store/slices/userSlice";
 
-export default function ShareImageModal({ active, setActive, imageLink }) {
+
+export default function ShareImageModal({ active, setActive, imageLink, image, copyImage, imageExt, name }) {
   /* сменить на приходящий уровень для каждой картинки */
   // let shareUrl = "https://memozg.ru/img/posts/298_62d5a8b22c104.jpg";
+ // console.log(image, "copy image", copyImage);
 
   /* constants for values to icons */
   const defaultSize = 45;
   const defaultBR = 20;
-  // console.log(imageLink);
 
   const dispatch = useDispatch();
 
@@ -63,11 +64,6 @@ export default function ShareImageModal({ active, setActive, imageLink }) {
     }
   }, [showNotif, dispatch])
 
-
-  // const getCopyLink = (imageLink) => {
-  //   // console.log(linkRef.current);
-  //   clipboard.current.onClick(imageLink);
-  // };
   return (
     <div className={active ? "shareModal activeModal" : "shareModal"}>
       <div className="shareModal__content">
@@ -109,27 +105,35 @@ export default function ShareImageModal({ active, setActive, imageLink }) {
           </span>
 
           <span className="shareModal__content__body__iconWrapper">
+{/* отправляется отображение без ссылки, шикарно */}
             <VKShareButton 
-            //url={shareUrl}
+            url={imageLink}
+            image={image}
             >
               <VKIcon size={defaultSize} borderRadius={defaultBR} />
             </VKShareButton>
-
+{/* отправляется имя и ссылка, подсвечивается */}
             <TelegramShareButton 
-            //url={imageLink}
+            title={name}
+            // image={image}
+            url={imageLink}
             >
               <TelegramIcon size={defaultSize} borderRadius={defaultBR} />
             </TelegramShareButton>
 
+{/* отправляется только ссылка, и даже не подсвечивается */}
             <WhatsappShareButton 
-            //url={shareUrl}
+            url={imageLink}
+            title={name}
             >
               <WhatsappIcon size={defaultSize} borderRadius={defaultBR} />
             </WhatsappShareButton>
-
+{/* отправляется только ссылка, подсвечивается, но картинка не отображается */}
             <EmailShareButton 
-            //url={shareUrl}
-             title="Почта">
+            url={imageLink}
+             subject="Делюсь с тобой картинкой из Pic2re!"
+             body={name}
+             >
               <EmailIcon size={defaultSize} borderRadius={defaultBR} />
             </EmailShareButton>
           </span>

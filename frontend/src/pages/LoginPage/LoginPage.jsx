@@ -186,7 +186,7 @@ const selectIcon = () => {
 
 /*go to singup page */
 const goToSingupPage = () => {
-  navigate('/singup');
+  navigate('/singup', { replace: true, state: 'from login' });
 }
 
 /* for small width to logo */

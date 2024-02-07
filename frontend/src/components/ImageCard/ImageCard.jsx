@@ -1,14 +1,12 @@
 import "./ImageCard.scss";
 import { useEffect, useState } from "react";
 import ActionCircle from "../ActionCircle/ActionCircle";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeUserImage } from "../../store/slices/userSlice";
 import FavorFillIcon from "../../icons/FavorFillIcon";
 import FavorOutlineIcon from "../../icons/FavorOutlineIcon";
 import { PATH_TO_SERVER_GETimg } from "../../data/constants";
-import { useCookies } from "react-cookie";
 import he from "he";
-// import { addImageToFavorite } from "../../store/slices/userSlice";
 
 export default function ImageCard({ imageId, imageName, imageTags, image, 
   userId, userToken, isFavorite, imageExt
@@ -63,6 +61,8 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
         
       };
 
+      const copyImage = `${PATH_TO_SERVER_GETimg}/${userId}/image/${imageId}`;
+
   return (
     <span
       className="layout__card__wrapper"
@@ -72,7 +72,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       <div className="layout__card__wrapper__actions">
         <ActionCircle 
         id={imageId} name={imageName} tags={imageTags} image={image}
-        isHover={isHover} imageExt={imageExt} userId={userId}/>
+        isHover={isHover} imageExt={imageExt} userId={userId} copyImage={copyImage}/>
       </div>
       <div className="layout__card">
         <span className="layout__card__titleWrap">

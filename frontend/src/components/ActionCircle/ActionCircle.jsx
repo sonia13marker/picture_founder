@@ -13,7 +13,7 @@ import { deleteUserImage } from "../../store/slices/userSlice";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 
-export default function ActionCircle({ isHover, id, name, tags, image, imageExt }) {
+export default function ActionCircle({ isHover, id, name, tags, image, imageExt, copyImage }) {
   const [activeEditModal, setActiveEditModal] = useState(false);
   const [activeShareModal, setActiveShareModal] = useState(false);
   const [activeDelModal, setActiveDelModal] = useState(false);
@@ -75,8 +75,13 @@ export default function ActionCircle({ isHover, id, name, tags, image, imageExt 
       />
       <ShareImageModal 
       imageLink={`${PATH_TO_SERVER_GETimg}/${cookieId}/image/${id}`}
+      image={image}
+      copyImage={copyImage}
       active={activeShareModal}
-      setActive={setActiveShareModal}/>
+      setActive={setActiveShareModal}
+      imageExt={imageExt}
+      name={name}
+      />
 
       {/* for delete icon */}
       <ConfirmModalComponent

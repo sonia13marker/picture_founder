@@ -2,15 +2,36 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { PATH_TO_SERVER } from "../../data/constants";
 
+/*поиск картинок */
+export const searchImages = createAsyncThunk(
+  "user/searchImages",
+  async (payload, thunkAPI) => {
+    try {
+      const { userId, userToken, searchQuery } = payload;
+      console.log("search payload ", userId, userToken, searchQuery )
+      const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&filter=NONE`, {
+        headers: {
+          Authorization: 'Bearer ' + userToken,
+        }
+      });
+      console.log("search data", res.data.data);
+
+      return res;
+    } catch (err) {
+      console.error(err);
+    }
+
+  }
+)
+
 /* получение картинок */
 export const getImages = createAsyncThunk(
     "user/getImages",
     async (payload, thunkAPI) => {
-      let res;
       try {
         const { userId, userToken } = payload; 
           console.log('payload from main page', payload);
-         res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image`, {
+         const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image`, {
           headers: {
             Authorization: 'Bearer ' + userToken,
           } });
@@ -308,7 +329,8 @@ const userSlise = createSlice({
         allUserData: [],
         notificationName: "", 
         existEmail: "",
-        lastLogin: null
+        lastLogin: null,
+        searchedImages: []
     },
     reducers: {
           addToFavoriteArray: (state, action) => {
@@ -357,6 +379,21 @@ const userSlise = createSlice({
           }
     },
     extraReducers: (builder) => {
+//поиск картинок - searchImages
+      builder 
+      .addCase(searchImages.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(searchImages.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        //state.searchedImages = action.payload; 
+        const img = action.payload.data.data;
+        state.images = img; 
+      })
+      .addCase(searchImages.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      });
 //получение изображений - getImages
       builder 
       .addCase(getImages.pending, (state, action) => {
@@ -425,9 +462,6 @@ const userSlise = createSlice({
       })
       .addCase(changeUserImage.fulfilled, (state, action) => {
          state.status = 'succeeded';
-        //let updImage = action.payload;
-        //console.log("IMAGE IN updateImageInfo.fulfilled", updImage);
-        // state.images.push({updImage})
       } )
       .addCase(changeUserImage.rejected, (state, action) => {
         state.status = 'failed'

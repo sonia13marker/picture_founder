@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./SingUpPage.scss";
 import { useCallback, useEffect, useState } from "react";
 import OpenEyeIcon from "../../icons/OpenEyeIcon";
@@ -77,6 +77,15 @@ console.log("status in singup", currentStatus);
 
 console.log("getError", getError);
 
+const location = useLocation();
+console.log("location", location)
+
+useEffect(() => {
+  if (location.state !== "" && getError) {
+    console.log("location.state", location.state, getError)
+    dispatch(setError(null));
+  }
+}, [getError, location.state, dispatch])
 
 //отправка запроса на сервер
 const handleSubmit = async () => {
