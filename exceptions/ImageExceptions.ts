@@ -7,7 +7,8 @@ export enum ImageErrorCode {
     EMPTY_USER_DATA,
     IMAGE_IS_EXIST,
     UPDATE_ERROR,
-    IMAGE_SEND_ERROR
+    IMAGE_SEND_ERROR,
+    INVALIDE_DATA
 }
 
 export class NoUserDataError extends CustomError {
@@ -67,5 +68,17 @@ export class ImageNotFoundError extends CustomError {
             500
         )
         MyError("error not found image")
+    }
+}
+
+export class InvalideFiltersError extends CustomError {
+    constructor(detail?: string) {
+        super(
+            "INVALIDE_DATA",
+            ImageErrorCode.INVALIDE_DATA,
+            "Invalide Filters Error",
+            500
+        )
+        MyError("Invalide Filters Error")
     }
 }

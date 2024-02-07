@@ -8,7 +8,7 @@ import { copyFile, rename, rm } from "fs/promises"
 import { existsSync } from "fs";
 import { createReadStream } from "node:fs"
 import { CustomError } from "../../../exceptions/ExampleError";
-import { ImageNotFoundError, ImageSendError, NoUserDataError, UserImageExistError, UserUpdateError } from "../../../exceptions/ImageExceptions";
+import { ImageNotFoundError, ImageSendError, InvalideFiltersError, NoUserDataError, UserImageExistError, UserUpdateError } from "../../../exceptions/ImageExceptions";
 import { DataBaseError, FileNotFoundException, ImageError } from "../../../exceptions/ServerExceptions";
 import { NotFoundAnyDataInUser } from "../../../exceptions/UserExceptions";
 import { MyError, MyLogService } from "../../../utils/CustomLog";
@@ -131,13 +131,13 @@ export async function ImageEdit(updateData: any | ImageData, imageId: string) {
     //     throw new CustomError("NOTHING_TO_UPDATE", 102, "nothing update. skip", 204)
     // }
 
-    if (!updatedData.imageTags) {
-        console.log("delete TAG");
+    // if (!updatedData.imageTags) {
+    //     console.log("delete TAG");
         
-        delete updatedData.imageTags
-    }
+    //     delete updatedData.imageTags
+    // }
     
-    if (updatedData.imageTags.length === 1 && updatedData.imageTags[0].trim() === "''"){
+    if (updatedData.imageTags === null){
         console.log("zero tags array");
         
         updatedData.imageTags = []
@@ -199,7 +199,10 @@ export async function GetImageFile(imageId: string, resp: Response): Promise<voi
 }
 
 
-export async function SearchQueryImage(userId: string, stringQuery: string, filter: filterEnum | unknown): Promise<ImageData[]> {
+export async function SearchQueryImage(userId: string, stringQuery: string, filter: filterEnum | unknown = "NONE"): Promise<ImageData[]> {
+    if ( filter === undefined){
+        throw new InvalideFiltersError()
+    }
     const userImages = await db_models.ImageModel.find({ ownerId: userId }).sort({createdAt: filterEnum[filter as keyof typeof filterEnum]})
         .catch((err: CustomError) => {
             throw new NotFoundAnyDataInUser(err.message)

@@ -6,6 +6,7 @@ import { UserErrorType } from "../../../exceptions/UserExceptions";
 import { ImageData } from "../../../dto/ImageDataDto";
 import { MyError, MyLogController, MyLogService } from "../../../utils/CustomLog";
 import { filterEnum } from "../dto/FilterImageDto";
+import { ImageErrorCode } from "../../../exceptions/ImageExceptions";
 
 
 export async function GetImage(req: Request, resp: Response) {
@@ -119,9 +120,17 @@ export async function imageEdit(req: Request, resp: Response) {
     const data = ImageSchemeEdit.validate(req.body).value
     const err = ImageSchemeEdit.validate(req.body).error
 
-    if (!Array.isArray(data.imageTags) && (typeof  data.imageTags === "string")) {
-        data.imageTags = [data.imageTags]
-        console.log("convert to arrray " + data.imageTags);
+    if (!Array.isArray(data.imageTags)) {
+        
+        if ( data.imageTags === "" || data.imageTags === ''){
+            data.imageTags = null
+            console.log("zero image Tags");
+            
+        }
+        else{
+            data.imageTags = [data.imageTags]
+            console.log("convert to arrray " + data.imageTags);
+        }
     }
     if (err) {        
         resp.statusCode = 400
@@ -133,8 +142,9 @@ export async function imageEdit(req: Request, resp: Response) {
         MyError("err on update image/ Image data is invalid\n"+err.message)
         return
     }
+    console.log(req.body);
     const valData = Object.assign(data)
-
+    
     MyLogController("val DATA: " + JSON.stringify(valData));
 
     ImageEdit(valData, imageId)
@@ -166,7 +176,7 @@ export async function SearchQuery(req: Request, resp: Response) {
 
     const userId = req.params.id
     const searchString = <string>req.query.searchQuery
-    const filers = <string | filterEnum>req.query.filter || "NONE"
+    const filers = <string | filterEnum>req.query.filter
 
     if (!userId) {
         resp.statusCode = 400
@@ -183,6 +193,12 @@ export async function SearchQuery(req: Request, resp: Response) {
             message: `empty query string`,
             detail: ""
         })
+    }
+
+    if ( !(filers in filterEnum)){
+        resp.statusCode = 400
+        resp.json({code: ImageErrorCode.INVALIDE_DATA, message: "wrong filter", detail: "use wrong filter for this query"})
+        return
     }
 
     MyLogController(JSON.stringify(searchString));
