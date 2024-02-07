@@ -140,7 +140,8 @@ export const addUserImage = createAsyncThunk(
             );
             console.log("TWO")
             thunkAPI.dispatch(showNotification("Изменения сохранены"));
-          } else if (imageTags[0] === "") {
+          } else 
+          if (imageTags[0] === "") {
             res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, isFavorite: isFavor, imageTags: null}, {
               headers: {
                 Authorization: 'Bearer ' + userToken,
@@ -150,7 +151,8 @@ export const addUserImage = createAsyncThunk(
             );
             console.log("THREE")
             thunkAPI.dispatch(showNotification("Изменения сохранены"));
-          } else
+          } 
+          else
           //иначе отправлять вместе с тегами
           {
         res = await axios.put(`${PATH_TO_SERVER}/user/${userId}/image/${imageId}`, {imageName: imageName, imageTags: imageTags, isFavorite: isFavor}, {
