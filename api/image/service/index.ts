@@ -137,11 +137,11 @@ export async function ImageEdit(updateData: any | ImageData, imageId: string) {
     //     delete updatedData.imageTags
     // }
     
-    if (updatedData.imageTags === null){
-        console.log("zero tags array");
+    // if (updatedData.imageTags === null){
+    //     console.log("zero tags array");
         
-        updatedData.imageTags = []
-    }
+    //     updatedData.imageTags = []
+    // }
 
     await db_models.ImageModel.findByIdAndUpdate(imageId, {
         $set: updatedData

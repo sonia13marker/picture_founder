@@ -11,12 +11,12 @@ export const imagesGetScheme = Joi.object({
 
 export const ImageScheme = Joi.object({
     imageName: Joi.string().min(2),
-    imageTags: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
+    imageTags: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string(), Joi.allow(null)),
     isFavorite: Joi.boolean().default(false)
 })
 
 export const ImageSchemeEdit = Joi.object({
     imageName: Joi.string().allow("", null),
-    imageTags: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()).allow("", null),
+    imageTags: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
     isFavorite: Joi.boolean().allow("", null)
 })
