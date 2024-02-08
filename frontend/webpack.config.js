@@ -14,16 +14,16 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[contenthash].css',
-      chunkFilename: 'css/[name].[contenthash].css'
+      filename: '[name].[contenthash].css',
+      chunkFilename: '[name].[contenthash].css'
     }),
     new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'public', 'index.html')}),
   ],
   devServer: {
-    publicPath: '/build/', 
+    publicPath: '/', 
     contentBase: path.join(__dirname, 'src'),
     watchFiles: path.join(__dirname, 'src'),
-    port: 9000,
+    port: 3000,
   },
   module: {
     rules: [
