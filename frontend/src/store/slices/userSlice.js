@@ -124,13 +124,40 @@ export const getFavoriteImages = createAsyncThunk(
   "user/getFavoriteImages",
     async (payload, thunkAPI) => {
       try {
-        const { userId, userToken, isFavorite } = payload; 
+        const { userId, userToken, isFavorite, filter, sort } = payload; 
         console.log('payload from change page', payload);
-        //присылать только один выбранный, а второй не отсылать вообще, но всегда отсылать isFavorite
-        const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=NONE&alphFilter=NONE&isFavorite=${isFavorite}`, {
-          headers: {
-            Authorization: 'Bearer ' + userToken,
-          } });
+        let res;
+        if (sort === "date" && filter === "NONE") {
+          res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=NONE&isFavorite=${isFavorite}`, {
+            headers: {
+              Authorization: 'Bearer ' + userToken,
+            } });
+            console.log("sort date none");
+          } else if (sort === "date" && filter === "DOWN") {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=DOWN&isFavorite=${isFavorite}`, {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+              } });
+              console.log("sort date down");
+          } else if (sort === "alph" && filter === "NONE") {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?alphFilter=NONE&isFavorite=${isFavorite}`, {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+              } });
+              console.log("sort alphabet none");
+          } else if (sort === "alph" && filter === "DOWN") {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?alphFilter=DOWN&isFavorite=${isFavorite}`, {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+              } });
+              console.log("sort alphabet down");
+          } else {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?isFavorite=${isFavorite}`, {
+                headers: {
+                  Authorization: 'Bearer ' + userToken,
+                } });
+                console.log("no sorted");
+          }
         console.log("GET DATA favorite", res.data);
         return res.data;
       } catch (error) {

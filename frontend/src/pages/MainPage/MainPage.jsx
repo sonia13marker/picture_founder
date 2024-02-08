@@ -4,7 +4,7 @@ import EmptyTextComponent from "../../components/EmptyTextComponent/EmptyTextCom
 import ImageCard from "../../components/ImageCard/ImageCard";
 import { useDispatch } from "react-redux";
 import { getImages } from "../../store/slices/userSlice";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from 'react-redux';
 import Loader from "../../components/Loader/Loader";
 import { useCookies } from "react-cookie";
@@ -26,7 +26,7 @@ export default function MainPage() {
 
   const dispatch = useDispatch();
 
-  useMemo(() => {
+  useEffect(() => {
     if (imagesStatus === 'idle') {
       console.log("await data", cookieId, cookieToken)
       console.log("use memo");

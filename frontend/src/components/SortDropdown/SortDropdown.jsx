@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import './SortDropdown.scss';
 import { useState, useRef, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
-import { getImages } from '../../store/slices/userSlice';
+import { getFavoriteImages, getImages } from '../../store/slices/userSlice';
 import { useLocation } from 'react-router-dom';
 
 export default function SortDropdown () {
@@ -10,17 +10,13 @@ export default function SortDropdown () {
     const [selectedSort, setSelectedSort] = useState(-1);
 
     const sorts = [
-        {
-            name: "Сначала новые",
+        { name: "Сначала новые",
         },
-        {
-            name: "Сначала старые",
+        { name: "Сначала старые",
         },
-        {
-            name: "По названию А-Я",
+        { name: "По названию А-Я",
         },
-        {
-            name: "По названию Я-А",
+        { name: "По названию Я-А",
         }
     ]
 
@@ -38,22 +34,38 @@ export default function SortDropdown () {
     const handleOnClick = (indexSort) => {
         setSelectedSort(indexSort);
         console.log("selectedSort.name", sorts[indexSort].name)
+
         if (sorts[indexSort].name === "Сначала новые") {
             //сортировка по дате (сначала новые)
             filter = 'NONE';
-            dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "date"}));
+            if (location.pathname === '/favorite') {
+                dispatch(getFavoriteImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "date", isFavorite: true}));
+            } 
+            else dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "date"}));
+
         } else if (sorts[indexSort].name === "Сначала старые") {
              //сортировка по дате (сначала старые)
             filter = 'DOWN';
-            dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "date"}));
+            if (location.pathname === '/favorite') {
+                dispatch(getFavoriteImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "date", isFavorite: true}));
+            } 
+            else dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "date"}));
+
         } else if (sorts[indexSort].name === "По названию А-Я") {
             //сортировка по имени А-Я
             filter = 'NONE';
-            dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "alph"}));
+            if (location.pathname === '/favorite') {
+                dispatch(getFavoriteImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "alph", isFavorite: true}));
+            } else dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "alph"}));
+
         } else if (sorts[indexSort].name === "По названию Я-А") {
             //сортировка по имени Я-A
             filter = 'DOWN';
-            dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "alph"}));
+            if (location.pathname === '/favorite') {
+                console.log("AAAAAAAAAAA");
+                dispatch(getFavoriteImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "alph", isFavorite: true}));
+            } else dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "alph"}));
+
         }
     }
 
