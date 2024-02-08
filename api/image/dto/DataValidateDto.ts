@@ -17,6 +17,6 @@ export const ImageScheme = Joi.object({
 
 export const ImageSchemeEdit = Joi.object({
     imageName: Joi.string().allow("", null),
-    imageTags: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
+    imageTags: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string(), Joi.allow(null)),
     isFavorite: Joi.boolean().allow("", null)
 })

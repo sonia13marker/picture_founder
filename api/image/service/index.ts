@@ -137,11 +137,11 @@ export async function ImageEdit(updateData: any | ImageData, imageId: string) {
     //     delete updatedData.imageTags
     // }
     
-    // if (updatedData.imageTags === null){
-    //     console.log("zero tags array");
+    if (updatedData.imageTags === null){
+        console.log("zero tags array");
         
-    //     updatedData.imageTags = []
-    // }
+        updatedData.imageTags = []
+    }
 
     await db_models.ImageModel.findByIdAndUpdate(imageId, {
         $set: updatedData
@@ -222,7 +222,7 @@ export async function ImageDownload(imageId: string): Promise<string> {
     MyLogService("send image file")
 
     const fromSendImage = join(pathResolve.UserImageSaveDir(String(image?.ownerId)), String(image?.imageHash))
-    const toSendImage = join(pathResolve.UserImageUploadDir(), `${String(image?.imageName)}.${image?.ext}`)
+    const toSendImage = join(pathResolve.UserImageUploadDir(), String(image?.imageOrgName))
 
     await copyFile( fromSendImage, toSendImage)
     // await rm(toSendImage)
