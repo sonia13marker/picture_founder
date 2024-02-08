@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { PATH_TO_SERVER } from "../../data/constants";
 
-/*поиск картинок и сортировка*/
+/*поиск картинок*/
 export const searchImages = createAsyncThunk(
   "user/searchImages",
   async (payload, thunkAPI) => {
@@ -48,24 +48,6 @@ export const searchImages = createAsyncThunk(
 
   }
 )
-//сортировка картинок
-export const sortImages = createAsyncThunk(
-  "user/sortImages",
-  async (payload, thunkAPI) => {
-    try {
-      const { userId, userToken, searchQuery, filter } = payload;
-      const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&filter=${filter}`, {
-        headers: {
-          Authorization: 'Bearer ' + userToken,
-        }
-      });
-      console.log("SORT")
-      return res.data;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-  )
 
 //ссылка на изображение 
 export const getLink = createAsyncThunk(
@@ -96,16 +78,42 @@ export const getImages = createAsyncThunk(
     "user/getImages",
     async (payload, thunkAPI) => {
       try {
-        const { userId, userToken } = payload; 
+        const { userId, userToken, filter, sort } = payload; 
           console.log('payload from main page', payload);
-          //присылать только один выбранный, а второй не отсылать вообще
-         const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=NONE&alphFilter=DOWN`, {
-          headers: {
-            Authorization: 'Bearer ' + userToken,
-          } });
-        console.log("GET DATA", res.data);
-        
-        return res.data;
+          let res;
+          if (sort === "date" && filter === "NONE") {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=NONE`, {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+              } });
+              console.log("sort date none");
+          } else if (sort === "date" && filter === "DOWN") {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=DOWN`, {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+              } });
+              console.log("sort date down");
+          } else if (sort === "alph" && filter === "NONE") {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?alphFilter=NONE`, {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+              } });
+              console.log("sort alphabet none");
+          } else if (sort === "alph" && filter === "DOWN") {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?alphFilter=DOWN`, {
+              headers: {
+                Authorization: 'Bearer ' + userToken,
+              } });
+              console.log("sort alphabet down");
+          } else {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image`, {
+                headers: {
+                  Authorization: 'Bearer ' + userToken,
+                } });
+                console.log("no sorted");
+          }
+        console.log("GET DATA", res);
+        return res;
       } catch (error) {
         console.error(error);
       }
@@ -125,7 +133,6 @@ export const getFavoriteImages = createAsyncThunk(
           } });
         console.log("GET DATA favorite", res.data);
         return res.data;
-
       } catch (error) {
         console.error(error);
       }
@@ -458,20 +465,6 @@ const userSlise = createSlice({
           }
     },
     extraReducers: (builder) => {
-//сортировка картинок - sortImages
-      builder 
-      .addCase(sortImages.pending, (state, action) => {
-        state.status = 'loading'
-      })
-      .addCase(sortImages.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        const sortedImg = action.payload.data; 
-        state.images = sortedImg; 
-      })
-      .addCase(sortImages.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message
-      });
 //поиск картинок - searchImages
       builder 
       .addCase(searchImages.pending, (state, action) => {
@@ -494,7 +487,8 @@ const userSlise = createSlice({
       })
       .addCase(getImages.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.images = action.payload; 
+        console.log("action.payload.data", action.payload.data, action.payload)
+        state.images = action.payload.data; 
       })
       .addCase(getImages.rejected, (state, action) => {
         state.status = 'failed'

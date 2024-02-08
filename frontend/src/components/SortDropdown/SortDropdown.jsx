@@ -2,7 +2,8 @@ import { useDispatch } from 'react-redux';
 import './SortDropdown.scss';
 import { useState, useRef, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
-import { searchImages, sortImages } from '../../store/slices/userSlice';
+import { getImages } from '../../store/slices/userSlice';
+import { useLocation } from 'react-router-dom';
 
 export default function SortDropdown () {
     /*for list of sort items*/
@@ -22,7 +23,9 @@ export default function SortDropdown () {
             name: "По названию Я-А",
         }
     ]
-    // const setSortStyle = (indexSort) => setSelectedSort(indexSort);
+
+    const location = useLocation();
+    console.log("LOC sort", location, location.pathname === '/favorite', location.pathname === '/');
     const dispatch = useDispatch();
 
     const [cookies2, ] = useCookies(["token"]);
@@ -34,13 +37,23 @@ export default function SortDropdown () {
 
     const handleOnClick = (indexSort) => {
         setSelectedSort(indexSort);
-        console.log("selectedSort.name", selectedSort)
-        if (selectedSort === -1) {
+        console.log("selectedSort.name", sorts[indexSort].name)
+        if (sorts[indexSort].name === "Сначала новые") {
+            //сортировка по дате (сначала новые)
             filter = 'NONE';
-            dispatch(sortImages({userId: cookieId, userToken: cookieToken, filter: filter}));
-        } else if (selectedSort === 0) {
+            dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "date"}));
+        } else if (sorts[indexSort].name === "Сначала старые") {
+             //сортировка по дате (сначала старые)
             filter = 'DOWN';
-            dispatch(sortImages({userId: cookieId, userToken: cookieToken, filter: filter}));
+            dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "date"}));
+        } else if (sorts[indexSort].name === "По названию А-Я") {
+            //сортировка по имени А-Я
+            filter = 'NONE';
+            dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "alph"}));
+        } else if (sorts[indexSort].name === "По названию Я-А") {
+            //сортировка по имени Я-A
+            filter = 'DOWN';
+            dispatch(getImages({userId: cookieId, userToken: cookieToken, filter: filter, sort: "alph"}));
         }
     }
 
