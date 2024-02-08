@@ -1,5 +1,5 @@
 import { db_models } from "../../../db"
-import { filterEnum } from "../dto/FilterImageDto";
+import { DateFilterEnum, AlphabetFilterEnum, } from "../dto/FilterImageDto";
 import * as cry from "crypto"
 import { ImageData, ImageDataDB, ImageDataFile, ImageDataUpdate, ImageTags } from "../../../dto/ImageDataDto";
 import { pathResolve } from "../../../dto/PathResolve"
@@ -14,7 +14,7 @@ import { NotFoundAnyDataInUser } from "../../../exceptions/UserExceptions";
 import { MyError, MyLogService } from "../../../utils/CustomLog";
 import { Response } from "express"
 
-export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, filter: filterEnum): Promise<ImageData[] | []> {
+export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, dateFilter: DateFilterEnum, alphFilter: AlphabetFilterEnum): Promise<ImageData[] | []> {
 
 
     //пока по умолчанию сортировка будет по возрастанию
@@ -27,7 +27,8 @@ export async function GetUserImages(userId: string, isFavorite: boolean = false,
                 skip: offset,
                 limit: 20,
                 sort: {
-                    createdAt: filterEnum[filter],
+                    imageName:  AlphabetFilterEnum[alphFilter],
+                    createdAt: DateFilterEnum[dateFilter]
                 },
             },
             // match: {
@@ -133,13 +134,13 @@ export async function ImageEdit(updateData: any | ImageData, imageId: string) {
 
     // if (!updatedData.imageTags) {
     //     console.log("delete TAG");
-        
+
     //     delete updatedData.imageTags
     // }
-    
-    if (updatedData.imageTags === null){
+
+    if (updatedData.imageTags === null) {
         console.log("zero tags array");
-        
+
         updatedData.imageTags = []
     }
 
@@ -199,16 +200,31 @@ export async function GetImageFile(imageId: string, resp: Response): Promise<voi
 }
 
 
-export async function SearchQueryImage(userId: string, stringQuery: string, filter: filterEnum | unknown = "NONE"): Promise<ImageData[]> {
-    if ( filter === undefined){
+export async function SearchQueryImage(userId: string, stringQuery: string,
+    dateFilter: DateFilterEnum | unknown = "NONE",
+    alphabetFilter: AlphabetFilterEnum | unknown = "NONE",
+    isFavorite: boolean = false
+): Promise<ImageData[]> {
+
+    if (dateFilter === undefined || alphabetFilter === undefined) {
         throw new InvalideFiltersError()
     }
-    const userImages = await db_models.ImageModel.find({ ownerId: userId }).sort({createdAt: filterEnum[filter as keyof typeof filterEnum]})
+
+
+    console.log(dateFilter, alphabetFilter);
+    
+    const userImages = await db_models.ImageModel.find({ ownerId: userId }).sort({
+        imageName: AlphabetFilterEnum[alphabetFilter as keyof typeof AlphabetFilterEnum],
+        createdAt: DateFilterEnum[dateFilter as keyof typeof DateFilterEnum]
+    })
         .catch((err: CustomError) => {
             throw new NotFoundAnyDataInUser(err.message)
         })
 
     return userImages.filter(img => {
+        // if ( isFavorite){
+        //     return (img.imageName.includes(stringQuery) || img.imageTags.find(tag => tag.includes(stringQuery))) && img.isFavorite === true
+        // }
         return img.imageName.includes(stringQuery) || img.imageTags.find(tag => tag.includes(stringQuery))
     })
 }
@@ -224,7 +240,7 @@ export async function ImageDownload(imageId: string): Promise<string> {
     const fromSendImage = join(pathResolve.UserImageSaveDir(String(image?.ownerId)), String(image?.imageHash))
     const toSendImage = join(pathResolve.UserImageUploadDir(), String(image?.imageOrgName))
 
-    await copyFile( fromSendImage, toSendImage)
+    await copyFile(fromSendImage, toSendImage)
     // await rm(toSendImage)
 
     return toSendImage

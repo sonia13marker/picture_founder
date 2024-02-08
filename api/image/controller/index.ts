@@ -5,7 +5,7 @@ import { CustomError } from "../../../exceptions/ExampleError";
 import { UserErrorType } from "../../../exceptions/UserExceptions";
 import { ImageData } from "../../../dto/ImageDataDto";
 import { MyError, MyLogController, MyLogService } from "../../../utils/CustomLog";
-import { filterEnum } from "../dto/FilterImageDto";
+import { AlphabetFilterEnum, DateFilterEnum } from "../dto/FilterImageDto";
 import { ImageErrorCode } from "../../../exceptions/ImageExceptions";
 
 
@@ -22,12 +22,12 @@ export async function GetImage(req: Request, resp: Response) {
     }
     MyLogController(JSON.stringify(needData.value));
 
-    GetUserImages(userId, needData.value.isFavorite || false, needData.value.offset, needData.value.filter)
+    GetUserImages(userId, needData.value.isFavorite || false, needData.value.offset, needData.value.dateFilter, needData.value.alphFilter)
         .then((result: ImageData[]) => {
             resp.json(result)
         })
         .catch((err: CustomError) => {
-            resp.statusCode = err.statusCode;
+            resp.statusCode = err.statusCode || 500;
             resp.json({ code: err.code, message: err.message, detail: err.detail });
         })
 }
@@ -186,7 +186,9 @@ export async function SearchQuery(req: Request, resp: Response) {
 
     const userId = req.params.id
     const searchString = <string>req.query.searchQuery
-    const filers = <string | filterEnum>req.query.filter
+    const dateFiler = <string | DateFilterEnum>req.query.dateFiler || "NONE"
+    const alphabetFilter = <string | AlphabetFilterEnum>req.query.alphFilter || "NONE"
+    const isFavorite = <boolean><unknown>req.query.isFavorite || false
 
     if (!userId) {
         resp.statusCode = 400
@@ -207,16 +209,10 @@ export async function SearchQuery(req: Request, resp: Response) {
         return
     }
 
-    if (filers) {
-        if (!(filers in filterEnum)) {
-            resp.statusCode = 400
-            resp.json({ code: ImageErrorCode.INVALIDE_DATA, message: "wrong filter", detail: "use wrong filter for this query" })
-            return
-        }
-    }
+    MyLogController(`${dateFiler} ${alphabetFilter}`)
     MyLogController(JSON.stringify(searchString));
 
-    SearchQueryImage(userId, searchString, <filterEnum>filers)
+    SearchQueryImage(userId, searchString, dateFiler, alphabetFilter, isFavorite)
         .then((data) => {
             resp.json({ code: 200, data: data })
         })
