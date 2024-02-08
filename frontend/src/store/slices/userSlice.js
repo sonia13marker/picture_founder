@@ -2,18 +2,43 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { PATH_TO_SERVER } from "../../data/constants";
 
-/*поиск картинок */
+/*поиск картинок и сортировка*/
 export const searchImages = createAsyncThunk(
   "user/searchImages",
   async (payload, thunkAPI) => {
     try {
-      const { userId, userToken, searchQuery } = payload;
-      console.log("search payload ", userId, userToken, searchQuery )
-      const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&filter=NONE`, {
-        headers: {
-          Authorization: 'Bearer ' + userToken,
-        }
-      });
+      const { userId, userToken, searchQuery, isFavorite, filter } = payload;
+      //filter - NONE, DOWN;
+      console.log("search payload ", userId, userToken, filter, searchQuery, isFavorite )
+      let res;
+      //для сортировки
+      if (searchQuery === undefined) {
+        // res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&filter=${filter}`, {
+        //   headers: {
+        //     Authorization: 'Bearer ' + userToken,
+        //   }
+        // });
+        // console.log("SORT")
+      } else if (searchQuery !== "" && isFavorite === false) {
+        //для поиска на главной
+        res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&filter=NONE`, {
+          headers: {
+            Authorization: 'Bearer ' + userToken,
+          }
+        });
+        console.log("SEARCH IN MAIN", isFavorite, res.data.data);
+        thunkAPI.dispatch(addToImageArray(res.data.data));
+      } else if (searchQuery !== "" && isFavorite === true) {
+        //для поиска на избранном
+        res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&filter=NONE&isFavorite=${isFavorite}`, {
+          headers: {
+            Authorization: 'Bearer ' + userToken,
+          }
+        });
+        console.log("SEARCH IN FAVORITE");
+
+      }
+
       console.log("search data", res.data.data);
 
       return res;
@@ -23,6 +48,48 @@ export const searchImages = createAsyncThunk(
 
   }
 )
+//сортировка картинок
+export const sortImages = createAsyncThunk(
+  "user/sortImages",
+  async (payload, thunkAPI) => {
+    try {
+      const { userId, userToken, searchQuery, filter } = payload;
+      const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&filter=${filter}`, {
+        headers: {
+          Authorization: 'Bearer ' + userToken,
+        }
+      });
+      console.log("SORT")
+      return res.data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  )
+
+//ссылка на изображение 
+export const getLink = createAsyncThunk(
+  "user/getLink",
+  async (payload, thunkAPI) => {
+    try {
+      const { userId, userToken, imageId } = payload;
+      const res = await axios.get(`${PATH_TO_SERVER}/share/${userId}/getLink/${imageId}`, {
+        headers: {
+          Authorization: 'Bearer ' + userToken,
+        }
+      });
+      console.log("get link payload", userId, userToken, imageId)
+      const link = res.data.data.link;
+      thunkAPI.dispatch(addLinkData(link))
+      console.log("getLink data", link)
+      return res;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  )
+
+
 
 /* получение картинок */
 export const getImages = createAsyncThunk(
@@ -31,7 +98,8 @@ export const getImages = createAsyncThunk(
       try {
         const { userId, userToken } = payload; 
           console.log('payload from main page', payload);
-         const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image`, {
+          //присылать только один выбранный, а второй не отсылать вообще
+         const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=NONE&alphFilter=DOWN`, {
           headers: {
             Authorization: 'Bearer ' + userToken,
           } });
@@ -50,7 +118,8 @@ export const getFavoriteImages = createAsyncThunk(
       try {
         const { userId, userToken, isFavorite } = payload; 
         console.log('payload from change page', payload);
-        const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?isFavorite=${isFavorite}`, {
+        //присылать только один выбранный, а второй не отсылать вообще, но всегда отсылать isFavorite
+        const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=NONE&alphFilter=NONE&isFavorite=${isFavorite}`, {
           headers: {
             Authorization: 'Bearer ' + userToken,
           } });
@@ -331,9 +400,18 @@ const userSlise = createSlice({
         notificationName: "", 
         existEmail: "",
         checkUpdate: null,
-        searchedImages: []
+        searchedImages: [],
+        linkData: ""
     },
     reducers: {
+          addLinkData: (state, action) => {
+            state.linkData = action.payload;
+          },
+          addToImageArray: (state, action) => {
+            console.log(action.payload);
+            // const img = action.payload.data.data;
+            state.images = action.payload;
+          },
           addToFavoriteArray: (state, action) => {
             const images = action.payload;
             state.favorite = images.filter(image => image.isFavorite === true)
@@ -380,6 +458,20 @@ const userSlise = createSlice({
           }
     },
     extraReducers: (builder) => {
+//сортировка картинок - sortImages
+      builder 
+      .addCase(sortImages.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(sortImages.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        const sortedImg = action.payload.data; 
+        state.images = sortedImg; 
+      })
+      .addCase(sortImages.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      });
 //поиск картинок - searchImages
       builder 
       .addCase(searchImages.pending, (state, action) => {
@@ -387,9 +479,9 @@ const userSlise = createSlice({
       })
       .addCase(searchImages.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        //state.searchedImages = action.payload; 
-        const img = action.payload.data.data;
-        state.images = img; 
+        // const img = action.payload.data.data;
+        // state.searchedImages = img; 
+        // state.images = img; 
       })
       .addCase(searchImages.rejected, (state, action) => {
         state.status = 'failed'
@@ -494,6 +586,6 @@ const userSlise = createSlice({
 
 export const notifName = (state) => state.user.notificationName;
 
-export const { addToFavoriteArray, addToImageArray, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail, setCheckUpdate } = userSlise.actions;
+export const { addLinkData, addToFavoriteArray, addToImageArray, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail, setCheckUpdate } = userSlise.actions;
 
 export default userSlise.reducer;

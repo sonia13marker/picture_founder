@@ -1,5 +1,8 @@
+import { useDispatch } from 'react-redux';
 import './SortDropdown.scss';
 import { useState, useRef, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+import { searchImages, sortImages } from '../../store/slices/userSlice';
 
 export default function SortDropdown () {
     /*for list of sort items*/
@@ -19,7 +22,27 @@ export default function SortDropdown () {
             name: "По названию Я-А",
         }
     ]
-    const setSortStyle = (indexSort) => setSelectedSort(indexSort);
+    // const setSortStyle = (indexSort) => setSelectedSort(indexSort);
+    const dispatch = useDispatch();
+
+    const [cookies2, ] = useCookies(["token"]);
+    const cookieToken = cookies2.token;
+    const [cookies3, ] = useCookies(["idFromLogin"]);
+    const cookieId = cookies3.idFromLogin;
+
+    let filter;
+
+    const handleOnClick = (indexSort) => {
+        setSelectedSort(indexSort);
+        console.log("selectedSort.name", selectedSort)
+        if (selectedSort === -1) {
+            filter = 'NONE';
+            dispatch(sortImages({userId: cookieId, userToken: cookieToken, filter: filter}));
+        } else if (selectedSort === 0) {
+            filter = 'DOWN';
+            dispatch(sortImages({userId: cookieId, userToken: cookieToken, filter: filter}));
+        }
+    }
 
     /* for sort btn */
     const [dropdownState, setDropdownState] = useState({ open: false });
@@ -50,7 +73,7 @@ export default function SortDropdown () {
         <div className="dropdown">
         <ul className='dropdown__ul'>
            {sorts.map((item,i) => (
-               <li className={selectedSort === i ? "dropdown__ul__li_active" : "dropdown__ul__li" } key={i} onClick={() => setSortStyle(i)}>
+               <li className={selectedSort === i ? "dropdown__ul__li_active" : "dropdown__ul__li" } key={i} onClick={() => handleOnClick(i)}>
                    {item.name}
                </li>
            ))

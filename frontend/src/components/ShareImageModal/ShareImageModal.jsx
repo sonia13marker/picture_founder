@@ -17,20 +17,35 @@ import {
   WhatsappIcon,
 } from "react-share";
 import Clipboard from "clipboard";
-import { useDispatch } from "react-redux";
-import { showNotification } from "../../store/slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getLink, showNotification } from "../../store/slices/userSlice";
+import { useCookies } from "react-cookie";
+import { PATH_SERVER } from "../../data/constants";
 
 
-export default function ShareImageModal({ active, setActive, imageLink, image, copyImage, imageExt, name }) {
-  /* сменить на приходящий уровень для каждой картинки */
-  // let shareUrl = "https://memozg.ru/img/posts/298_62d5a8b22c104.jpg";
- // console.log(image, "copy image", copyImage);
+export default function ShareImageModal({ active, setActive, image, name, imageId }) {
 
   /* constants for values to icons */
   const defaultSize = 45;
   const defaultBR = 20;
 
   const dispatch = useDispatch();
+
+  const linkData = useSelector(state => state.user.linkData);
+  console.log("linkData", linkData)
+
+  const [cookies2, ] = useCookies(["token"]);
+  const cookieToken = cookies2.token;
+  const [cookies3, ] = useCookies(["idFromLogin"]);
+  const cookieId = cookies3.idFromLogin;
+
+  useEffect(() => {
+    if (active) {
+      dispatch(getLink({userId: cookieId, userToken: cookieToken, imageId: imageId}));
+    }
+  },[cookieId, cookieToken, dispatch, imageId, active]);
+
+  const newImageLink = `${PATH_SERVER}/share/${linkData}`;
 
   /* for copy icon */
   const [copied, setCopied] = useState(false);
@@ -84,7 +99,8 @@ export default function ShareImageModal({ active, setActive, imageLink, image, c
                 className="input__auth password shareModal__content__body__input"
                 type="text"
                 id="urlInput"
-                value={imageLink}
+                value={newImageLink}
+                //onChange={change}
                 readOnly
               />
               {copied ? (
@@ -95,8 +111,8 @@ export default function ShareImageModal({ active, setActive, imageLink, image, c
                 <span
                   className="iconOpen"
                   ref={linkRef}
-                  onClick={() => clipboard.current.onClick(imageLink)}
-                  data-clipboard-text={imageLink}
+                  onClick={() => clipboard.current.onClick(newImageLink)}
+                  data-clipboard-text={newImageLink}
                 >
                   <CopyIcon />
                 </span>
@@ -107,7 +123,7 @@ export default function ShareImageModal({ active, setActive, imageLink, image, c
           <span className="shareModal__content__body__iconWrapper">
 {/* отправляется отображение без ссылки, шикарно */}
             <VKShareButton 
-            url={imageLink}
+            url={newImageLink}
             image={image}
             >
               <VKIcon size={defaultSize} borderRadius={defaultBR} />
@@ -116,21 +132,21 @@ export default function ShareImageModal({ active, setActive, imageLink, image, c
             <TelegramShareButton 
             title={name}
             // image={image}
-            url={imageLink}
+            url={newImageLink}
             >
               <TelegramIcon size={defaultSize} borderRadius={defaultBR} />
             </TelegramShareButton>
 
 {/* отправляется только ссылка, и даже не подсвечивается */}
             <WhatsappShareButton 
-            url={imageLink}
+            url={newImageLink}
             title={name}
             >
               <WhatsappIcon size={defaultSize} borderRadius={defaultBR} />
             </WhatsappShareButton>
 {/* отправляется только ссылка, подсвечивается, но картинка не отображается */}
             <EmailShareButton 
-            url={imageLink}
+            url={newImageLink}
              subject="Делюсь с тобой картинкой из Pic2re!"
              body={name}
              >

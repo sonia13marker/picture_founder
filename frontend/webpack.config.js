@@ -8,18 +8,19 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: path.join(__dirname, 'src', 'index.js'),
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'build'),
     filename: 'index.[contenthash].js',
     assetModuleFilename: path.join('images', '[name].[contenthash][ext]'),
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
+      filename: 'css/[name].[contenthash].css',
+      chunkFilename: 'css/[name].[contenthash].css'
     }),
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'public', 'index.html')}),
   ],
   devServer: {
-    publicPath: '/dist/', 
+    publicPath: '/build/', 
     contentBase: path.join(__dirname, 'src'),
     watchFiles: path.join(__dirname, 'src'),
     port: 9000,

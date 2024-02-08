@@ -61,8 +61,6 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
         
       };
 
-      const copyImage = `${PATH_TO_SERVER_GETimg}/${userId}/image/${imageId}`;
-
   return (
     <span
       className="layout__card__wrapper"
@@ -72,7 +70,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
       <div className="layout__card__wrapper__actions">
         <ActionCircle 
         id={imageId} name={imageName} tags={imageTags} image={image}
-        isHover={isHover} imageExt={imageExt} userId={userId} copyImage={copyImage}/>
+        isHover={isHover} imageExt={imageExt} userId={userId} />
       </div>
       <div className="layout__card">
         <span className="layout__card__titleWrap">

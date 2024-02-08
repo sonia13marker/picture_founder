@@ -8,7 +8,7 @@ import EditImageModal from "../EditImageModal/EditImageModal";
 import ShareImageModal from "../ShareImageModal/ShareImageModal";
 import ConfirmModalComponent from "../ConfirmModalComponent/ConfirmModalComponent";
 import { useDispatch } from "react-redux";
-import { PATH_TO_SERVER, PATH_TO_SERVER_GETimg } from "../../data/constants";
+import { PATH_TO_SERVER } from "../../data/constants";
 import { deleteUserImage } from "../../store/slices/userSlice";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
@@ -74,13 +74,11 @@ export default function ActionCircle({ isHover, id, name, tags, image, imageExt,
         setActive={setActiveEditModal}
       />
       <ShareImageModal 
-      imageLink={`${PATH_TO_SERVER_GETimg}/${cookieId}/image/${id}`}
       image={image}
-      copyImage={copyImage}
       active={activeShareModal}
       setActive={setActiveShareModal}
-      imageExt={imageExt}
       name={name}
+      imageId={id}
       />
 
       {/* for delete icon */}

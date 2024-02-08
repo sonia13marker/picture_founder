@@ -44,6 +44,18 @@ export default function Layout() {
       который имеет отступы 55рх вместе с содержимым */}
       <div className="main__section">
         <div className="main__section__wrapper">
+        {/* <label htmlFor="searchInput" className="main__section__label">
+            <input
+              type="search"
+              name="searchInput"
+              id="searchInput"
+              className="main__section__input"
+              placeholder="Поиск"
+              //value={UnQuery}
+              //onChange={handleChangeSearch}
+            />
+            <span className="main__section__label__img"></span>
+          </label> */}
           <SearchInput />
           <SortDropdown />
         </div>

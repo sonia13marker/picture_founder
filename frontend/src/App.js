@@ -53,7 +53,6 @@ function App() {
                 <Route path="account" element={<PersonalAccountPage />} />
               </Route>
               
-             <Route path="/login-auth" element={<Navigate to="/login" replace />} />
              <Route path="/login" element={<LoginPage />} />
           <Route path="/singup" element={<SingUpPage />} />
           <Route path="/forgot_password" element={<ForgotPasswordPage />} />
