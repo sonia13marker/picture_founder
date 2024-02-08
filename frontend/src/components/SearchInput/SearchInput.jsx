@@ -3,14 +3,12 @@ import '../Layout/Layout.scss';
 import he from "he";
 import { useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
-import { searchImages } from '../../store/slices/userSlice';
+import { getFavoriteImages, getImages, searchFavoriteImages, searchImages } from '../../store/slices/userSlice';
 import { useLocation } from 'react-router-dom';
 
 export default function SearchInput () {
     //если символы начинают вводиться, то отправляется запрос на поиск
     //как только инпут поиска очищается - запрос перестает идти и возвращается главная страница
-    //запрос по главной - это когда есть только query, filter=NONE, isFavorite=false;
-    //запрос по избранному - это когда query, filter=NONE, isFavorite=true
     const dispatch = useDispatch();
     const location = useLocation();
     console.log("LOC", location, location.pathname === '/favorite', location.pathname === '/');
@@ -21,25 +19,37 @@ export default function SearchInput () {
     const cookieId = cookies3.idFromLogin;
 
     const [quer, setQuery] = useState("");
+    const [hasQuery, setHasQuery] = useState(false);
+    const [searching, setSearching] = useState(false);
 
     const handleChangeSearch = (e) => {
         const escapeQuery = he.escape(e.target.value);
         setQuery(escapeQuery);
         console.log("query", escapeQuery);
     }
-     const filter = 'NONE';
+
     useEffect(() => {
-        console.log("query", quer)
         if (quer !== "" && location.pathname === '/') {
-            dispatch(searchImages({userId: cookieId, userToken: cookieToken, searchQuery: quer, filter: filter, isFavorite: false}));
+            setSearching(true);
+            setHasQuery(true);
+            dispatch(searchImages({userId: cookieId, userToken: cookieToken, searchQuery: quer}))
         } else if (quer !== "" && location.pathname === '/favorite') {
-            dispatch(searchImages({userId: cookieId, userToken: cookieToken, searchQuery: quer, filter: filter, isFavorite: true}));
-        } else {
-            // if (quer === "") {
-                setQuery("");
-            // }
+            setSearching(true);
+            setHasQuery(true);
+            dispatch(searchFavoriteImages({userId: cookieId, userToken: cookieToken, searchQuery: quer}))
         }
-    }, [cookieId, cookieToken, dispatch, quer, location.pathname]);
+        else {
+            setSearching(false);
+        }
+    }, [quer, cookieId, cookieToken, dispatch, location.pathname]);
+
+    useEffect(() => {
+        if (hasQuery && !searching && location.pathname === '/') {
+          dispatch(getImages({userId: cookieId, userToken: cookieToken}));
+        } else if (hasQuery && !searching && location.pathname === '/favorite') {
+          dispatch(getFavoriteImages({userId: cookieId, userToken: cookieToken, isFavorite: true}));
+        }
+      }, [searching, location.pathname, cookieId, cookieToken, dispatch, hasQuery]);
 
     const UnQuery = he.unescape(quer);
 

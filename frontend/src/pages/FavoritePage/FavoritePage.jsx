@@ -1,9 +1,10 @@
 import EmptyTextComponent from '../../components/EmptyTextComponent/EmptyTextComponent';
 import '../MainPage/MainPage.scss';
 import empty from '../../images/empty_favorite.svg';
+import empty_search from '../../images/empty_search.svg';
 import ImageCard from '../../components/ImageCard/ImageCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { getFavoriteImages } from '../../store/slices/userSlice';
 import { useCookies } from 'react-cookie';
 import Loader from '../../components/Loader/Loader';
@@ -15,6 +16,7 @@ export default function FavoritePage () {
 
   const imagesStatus = useSelector(state => state.user.status);
   const error = useSelector(state => state.user.error);
+  const isSearching = useSelector(state => state.user.isSearching);
 
   const dispatch = useDispatch();
   //куки
@@ -47,7 +49,13 @@ export default function FavoritePage () {
       <br />
       {error}</p>
   }
-
+  //если поиск ничего не нашел
+  if (isSearching && favoriteImages?.length === 0) {
+    content = <EmptyTextComponent
+    image={empty_search}
+    text="По Вашему запросу ничего не найдено"
+  />
+  }
     return ( 
     <section className="wrapper_layout">
     {content}

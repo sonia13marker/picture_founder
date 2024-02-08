@@ -1,10 +1,11 @@
 import "./MainPage.scss";
 import empty_icon from "../../images/empty_main.svg";
+import empty_search from '../../images/empty_search.svg';
 import EmptyTextComponent from "../../components/EmptyTextComponent/EmptyTextComponent";
 import ImageCard from "../../components/ImageCard/ImageCard";
 import { useDispatch } from "react-redux";
 import { getImages } from "../../store/slices/userSlice";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useSelector } from 'react-redux';
 import Loader from "../../components/Loader/Loader";
 import { useCookies } from "react-cookie";
@@ -16,6 +17,7 @@ export default function MainPage() {
   const imagesStatus = useSelector(state => state.user.status);
   const error = useSelector(state => state.user.error);
   const images = useSelector(state => state.user.images);
+  const isSearching = useSelector(state => state.user.isSearching);
 
   const [cookies2, ] = useCookies(["token"]);
   const cookieToken = cookies2.token;
@@ -53,6 +55,12 @@ export default function MainPage() {
       {error}</p>
   }
  
+  if (isSearching && images?.length === 0) {
+    content = <EmptyTextComponent
+    image={empty_search}
+    text="По Вашему запросу ничего не найдено"
+  />
+  }
   return (
     <section className="wrapper_layout">
     {content}

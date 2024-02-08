@@ -2,76 +2,51 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { PATH_TO_SERVER } from "../../data/constants";
 
-/*поиск картинок*/
+/*поиск всех картинок*/
 export const searchImages = createAsyncThunk(
   "user/searchImages",
   async (payload, thunkAPI) => {
+     /* полный запрос с фильтрами: 
+    http://localhost:4500/api/user/65c51ff5b44f6ee2d13ead3d/image/search?searchQuery=k&dateFilter=DOWN&isFavorite=false */
     try {
-      const { userId, userToken, searchQuery, isFavorite, filter } = payload;
-      //filter - NONE, DOWN;
-      console.log("search payload ", userId, userToken, filter, searchQuery, isFavorite )
+      const { userId, userToken, searchQuery } = payload;
+      console.log("search payload ", userId, userToken, searchQuery )
       let res;
-      //для сортировки
-      if (searchQuery === undefined) {
-        // res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&filter=${filter}`, {
-        //   headers: {
-        //     Authorization: 'Bearer ' + userToken,
-        //   }
-        // });
-        // console.log("SORT")
-      } else if (searchQuery !== "" && isFavorite === false) {
-        //для поиска на главной
-        res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&filter=NONE`, {
+      if (searchQuery !== "") {
+        res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}`, {
           headers: {
             Authorization: 'Bearer ' + userToken,
           }
         });
-        console.log("SEARCH IN MAIN", isFavorite, res.data.data);
-        thunkAPI.dispatch(addToImageArray(res.data.data));
-      } else if (searchQuery !== "" && isFavorite === true) {
-        //для поиска на избранном
-        res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&filter=NONE&isFavorite=${isFavorite}`, {
-          headers: {
-            Authorization: 'Bearer ' + userToken,
-          }
-        });
-        console.log("SEARCH IN FAVORITE");
-
+        console.log("SEARCH IN MAIN", res.data.data);
+        thunkAPI.dispatch(setIsSearching());
       }
-
       console.log("search data", res.data.data);
-
       return res;
     } catch (err) {
       console.error(err);
-    }
+    }})
 
-  }
-)
-
-//ссылка на изображение 
-export const getLink = createAsyncThunk(
-  "user/getLink",
+/*поиск избранных картинок */
+export const searchFavoriteImages = createAsyncThunk(
+  "user/searchImages/favorite",
   async (payload, thunkAPI) => {
+    /* полный запрос с фильтрами: 
+    http://localhost:4500/api/user/65c51ff5b44f6ee2d13ead3d/image/search?searchQuery=k&dateFilter=DOWN&isFavorite=false */
     try {
-      const { userId, userToken, imageId } = payload;
-      const res = await axios.get(`${PATH_TO_SERVER}/share/${userId}/getLink/${imageId}`, {
+      const { userId, userToken, searchQuery } = payload;
+      console.log("search fav payload", payload);
+      const res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image/search?searchQuery=${searchQuery}&isFavorite=true`, {
         headers: {
           Authorization: 'Bearer ' + userToken,
         }
       });
-      console.log("get link payload", userId, userToken, imageId)
-      const link = res.data.data.link;
-      thunkAPI.dispatch(addLinkData(link))
-      console.log("getLink data", link)
-      return res;
+      console.log("SEARCH IN FAVORITE", res);
+      thunkAPI.dispatch(setIsSearching());
+      return res.data;
     } catch (err) {
       console.error(err);
-    }
-  }
-  )
-
-
+    }})
 
 /* получение картинок */
 export const getImages = createAsyncThunk(
@@ -301,6 +276,28 @@ export const addUserImage = createAsyncThunk(
   }
   )
 
+  //ссылка на изображение 
+export const getLink = createAsyncThunk(
+  "user/getLink",
+  async (payload, thunkAPI) => {
+    try {
+      const { userId, userToken, imageId } = payload;
+      const res = await axios.get(`${PATH_TO_SERVER}/share/${userId}/getLink/${imageId}`, {
+        headers: {
+          Authorization: 'Bearer ' + userToken,
+        }
+      });
+      console.log("get link payload", userId, userToken, imageId)
+      const link = res.data.data.link;
+      thunkAPI.dispatch(addLinkData(link))
+      console.log("getLink data", link)
+      return res;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  )
+
   /* создание (регистрация) */
 export const createUser = createAsyncThunk(
     "user/createUser",
@@ -434,26 +431,20 @@ const userSlise = createSlice({
         notificationName: "", 
         existEmail: "",
         checkUpdate: null,
-        searchedImages: [],
+        isSearching: false,
         linkData: ""
     },
     reducers: {
+          setIsSearching: (state, action) => {
+            state.isSearching = true;
+          },
           addLinkData: (state, action) => {
             state.linkData = action.payload;
           },
-          addToImageArray: (state, action) => {
-            console.log(action.payload);
-            // const img = action.payload.data.data;
-            state.images = action.payload;
-          },
-          addToFavoriteArray: (state, action) => {
-            const images = action.payload;
-            state.favorite = images.filter(image => image.isFavorite === true)
-          },
-            setAllUserData: (state, action) => {
+          setAllUserData: (state, action) => {
               state.allUserData = action.payload;
-            },
-            setUserID: (state, action) => {
+          },
+          setUserID: (state, action) => {
             state.UserId = action.payload;
           },
           setError: (state, action) => {
@@ -492,18 +483,36 @@ const userSlise = createSlice({
           }
     },
     extraReducers: (builder) => {
-//поиск картинок - searchImages
+//поиск всех картинок - searchImages
       builder 
       .addCase(searchImages.pending, (state, action) => {
         state.status = 'loading'
       })
       .addCase(searchImages.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        // const img = action.payload.data.data;
-        // state.searchedImages = img; 
-        // state.images = img; 
+        state.status = 'succeeded';
+        const img = action.payload?.data?.data;
+        if (img !== undefined) {
+          console.log("action.payload from search", action.payload?.data?.data)
+          state.images = img; 
+        }
+        console.log("action.payload from search", action.payload?.data?.data)
       })
       .addCase(searchImages.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      });
+//поиск избранных картинок - searchFavoriteImages
+      builder 
+      .addCase(searchFavoriteImages.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(searchFavoriteImages.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+         const img = action.payload.data;
+        console.log("action.payload from search 2", action.payload.data)
+        state.favorite = img; 
+      })
+      .addCase(searchFavoriteImages.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       });
@@ -514,8 +523,8 @@ const userSlise = createSlice({
       })
       .addCase(getImages.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        console.log("action.payload.data", action.payload.data, action.payload)
-        state.images = action.payload.data; 
+        console.log("action.payload.data", action.payload?.data, action.payload)
+        state.images = action.payload?.data; 
       })
       .addCase(getImages.rejected, (state, action) => {
         state.status = 'failed'
@@ -607,6 +616,6 @@ const userSlise = createSlice({
 
 export const notifName = (state) => state.user.notificationName;
 
-export const { addLinkData, addToFavoriteArray, addToImageArray, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail, setCheckUpdate } = userSlise.actions;
+export const { setIsSearching, addLinkData, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail, setCheckUpdate } = userSlise.actions;
 
 export default userSlise.reducer;
