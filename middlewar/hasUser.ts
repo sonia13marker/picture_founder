@@ -2,10 +2,10 @@ import { NextFunction, Response, Request } from "express";
 import { db_models } from "../db";
 
 export async function hasUser ( req: Request, resp: Response, next: NextFunction): Promise<void>{
-    const userId = req.params.id    
+    const userId = req.params.id  ||    req.params.userId
     try{
         const hasUser = await db_models.UserModel.exists({_id: userId})
-    
+        
         if ( !hasUser ){
             resp.status(401);
             resp.json({message: "user not found"});
