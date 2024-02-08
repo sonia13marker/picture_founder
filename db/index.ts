@@ -2,6 +2,7 @@ import goose from "mongoose"
 import user from "./models/user"
 import image from "./models/image"
 import { exit } from "process";
+import Share from "./models/ShareLinks";
 
 async function ConnectDB(db_ip: String): Promise<void> {
     try{
@@ -21,7 +22,8 @@ async function ConnectDB(db_ip: String): Promise<void> {
 
 const db_models = {
     UserModel: user,
-    ImageModel: image
+    ImageModel: image,
+    LinkModel: Share
 }
 
 export {ConnectDB, db_models}
