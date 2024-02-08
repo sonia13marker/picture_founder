@@ -40,6 +40,8 @@ export async function ImagePost(req: Request, resp: Response) {
     const reqData = ImageScheme.validate(req.body)
     const imageData = <Express.Multer.File>req.file;
 
+    console.log(reqData.value);
+
     // проверяю есть ли ошибки при валидации данных
     if (reqData.error) {
         resp.statusCode = 400
@@ -56,7 +58,7 @@ export async function ImagePost(req: Request, resp: Response) {
     //проверяю есть ли изображение
     if (!imageData) {
         MyError(`[ERROR] error on upload is empty | userid ${userId}`);
-        
+
         resp.statusCode = 400
         resp.json({
             code: UserErrorType.VALIDATE_ERROR,
@@ -66,14 +68,18 @@ export async function ImagePost(req: Request, resp: Response) {
         return
     }
 
-    if (!Array.isArray(reqData.value.imageTags)) {
-        reqData.value.imageTags = [reqData.value.imageTags]
+
+    if (reqData.value.imageTags === "" || reqData.value.imageTags === '') {
+        reqData.value.imageTags = []
+        console.log("zero image Tags");
     }
+
+    console.log(reqData.value);
 
     AddImage(userId, imageData, reqData.value)
         .then((result) => {
-            MyLogController(`add new image ${result.imageName} with owner: ${result.ownerId}`)
-            resp.json({code: 200,  data: result, message: `image added` })
+            // MyLogController(`add new image ${result.imageName} with owner: ${result.ownerId}`)
+            resp.json({ code: 200, data: result, message: `image added` })
         })
         .catch((err: CustomError) => {
             resp.statusCode = err.statusCode
@@ -94,7 +100,7 @@ export async function imageDelete(req: Request, resp: Response) {
         })
         .catch((err: CustomError) => {
             resp.statusCode = err.statusCode
-            resp.json({code: err.code, message: err.message, detail: err.detail})
+            resp.json({ code: err.code, message: err.message, detail: err.detail })
         })
 }
 
@@ -109,7 +115,7 @@ export async function fullImageGet(req: Request, resp: Response) {
         })
         .catch((err: CustomError) => {
             resp.statusCode = err.statusCode
-            resp.json({code: err.code, message: err.message, detail: err.detail})
+            resp.json({ code: err.code, message: err.message, detail: err.detail })
         })
 
 }
@@ -120,31 +126,35 @@ export async function imageEdit(req: Request, resp: Response) {
     const data = ImageSchemeEdit.validate(req.body).value
     const err = ImageSchemeEdit.validate(req.body).error
 
-    if (!Array.isArray(data.imageTags)) {
-        
-        if ( data.imageTags === "" || data.imageTags === ''){
-            data.imageTags = null
-            console.log("zero image Tags");
-            
-        }
-        else{
-            data.imageTags = [data.imageTags]
-            console.log("convert to arrray " + data.imageTags);
-        }
+    // if (!Array.isArray(data.imageTags)) {
+
+    //     if (data.imageTags === "" || data.imageTags === '') {
+    //         data.imageTags = []
+    //         console.log("zero image Tags");
+
+    //     }
+    //     else {
+    //         data.imageTags = [data.imageTags]
+    //         console.log("convert to arrray " + data.imageTags);
+    //     }
+    if (data.imageTags === "" || data.imageTags === '') {
+        data.imageTags = []
+        console.log("zero image Tags");
     }
-    if (err) {        
+    
+    if (err) {
         resp.statusCode = 400
         resp.json({
             code: UserErrorType.VALIDATE_ERROR,
             message: err.message,
             detail: ""
         })
-        MyError("err on update image/ Image data is invalid\n"+err.message)
+        MyError("err on update image/ Image data is invalid\n" + err.message)
         return
     }
     console.log(req.body);
     const valData = Object.assign(data)
-    
+
     MyLogController("val DATA: " + JSON.stringify(valData));
 
     ImageEdit(valData, imageId)
@@ -153,7 +163,7 @@ export async function imageEdit(req: Request, resp: Response) {
         })
         .catch((err: CustomError) => {
             resp.statusCode = err.statusCode || 500
-            resp.json({code: err.code, message: err.message, detail: err.detail})
+            resp.json({ code: err.code, message: err.message, detail: err.detail })
         })
 }
 
@@ -167,7 +177,7 @@ export async function getImageFile(req: Request, resp: Response) {
         // })
         .catch((err: CustomError) => {
             resp.statusCode = err.statusCode || 500
-            resp.json({code: err.code, message: err.message, detail: err.detail})
+            resp.json({ code: err.code, message: err.message, detail: err.detail })
         })
 
 }
@@ -185,6 +195,7 @@ export async function SearchQuery(req: Request, resp: Response) {
             message: `empty user string`,
             detail: ""
         })
+        return
     }
     if (!searchString) {
         resp.statusCode = 400
@@ -193,14 +204,16 @@ export async function SearchQuery(req: Request, resp: Response) {
             message: `empty query string`,
             detail: ""
         })
-    }
-
-    if ( !(filers in filterEnum)){
-        resp.statusCode = 400
-        resp.json({code: ImageErrorCode.INVALIDE_DATA, message: "wrong filter", detail: "use wrong filter for this query"})
         return
     }
 
+    if (filers) {
+        if (!(filers in filterEnum)) {
+            resp.statusCode = 400
+            resp.json({ code: ImageErrorCode.INVALIDE_DATA, message: "wrong filter", detail: "use wrong filter for this query" })
+            return
+        }
+    }
     MyLogController(JSON.stringify(searchString));
 
     SearchQueryImage(userId, searchString, <filterEnum>filers)
@@ -209,20 +222,20 @@ export async function SearchQuery(req: Request, resp: Response) {
         })
         .catch((err: CustomError) => {
             resp.statusCode = err.statusCode || 400
-            resp.json({code: err.code, message: err.message, detail: err.detail})
+            resp.json({ code: err.code, message: err.message, detail: err.detail })
         })
 }
 
-export async function DownloadImage(req: Request, resp: Response){
+export async function DownloadImage(req: Request, resp: Response) {
     const imageId = req.params.imgId
 
     MyLogController("get image file")
     ImageDownload(imageId)
-    .then( data => {
-        resp.download(data)
-    })
-    .catch( (err: CustomError)=>{
-        resp.statusCode = err.statusCode || 500
-        resp.json({code: err.code, message: err.message, detail: err.detail})
-    })
+        .then(data => {
+            resp.download(data)
+        })
+        .catch((err: CustomError) => {
+            resp.statusCode = err.statusCode || 500
+            resp.json({ code: err.code, message: err.message, detail: err.detail })
+        })
 }
