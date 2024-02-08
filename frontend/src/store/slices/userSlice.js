@@ -245,8 +245,9 @@ export const loginUser = createAsyncThunk(
       thunkAPI.dispatch(setMessage(loginMessage));
       console.log("res data from login userslice", res.data);
       //добавление даты последнего входа
-      const lastLogin = res.data.lastLogin;
-      thunkAPI.dispatch(setLastLogin(lastLogin));
+      const upd = res.data.data.checkUpdate;
+      console.log("upd", upd);
+      thunkAPI.dispatch(setCheckUpdate(upd));
       return res.data;
       
     } catch (error) {
@@ -329,7 +330,7 @@ const userSlise = createSlice({
         allUserData: [],
         notificationName: "", 
         existEmail: "",
-        lastLogin: null,
+        checkUpdate: null,
         searchedImages: []
     },
     reducers: {
@@ -374,8 +375,8 @@ const userSlise = createSlice({
               state.notificationName = ""
             };
           },
-          setLastLogin: (state, action) => {
-            state.lastLogin = action.payload;
+          setCheckUpdate: (state, action) => {
+            state.checkUpdate = action.payload;
           }
     },
     extraReducers: (builder) => {
@@ -493,6 +494,6 @@ const userSlise = createSlice({
 
 export const notifName = (state) => state.user.notificationName;
 
-export const { addToFavoriteArray, addToImageArray, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail, setLastLogin } = userSlise.actions;
+export const { addToFavoriteArray, addToImageArray, setUserID, setError, setUserToken, setAllUserData, showNotification, setStatus, setMessage, setExistEmail, setCheckUpdate } = userSlise.actions;
 
 export default userSlise.reducer;

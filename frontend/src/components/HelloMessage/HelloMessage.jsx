@@ -1,23 +1,32 @@
 import { useState } from "react";
 import './HelloMessage.scss';
+import { useCookies } from "react-cookie";
 
 
 export default function HelloMessage() {
-  
+  //при входе значение в куки автоматически в false,
+  //а как только нажимаем на крестик - становится true
+  const [cookies, setCookies] = useCookies(["helloMessage"]);
+  const checkUpdate = cookies.helloMessage;
   //по умолчанию - true
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
 
-  //показывать только если нет недавней даты захода и active === true
+  const handleClose = () => {
+    setActive(false);
+    setCookies("helloMessage", true);
+  }
+  console.log(active, checkUpdate)
+  //показывать только если checkUpdate === false и active === true
 
   return (
     <>
-      <div className={active ? "modal activeModal" : "modal"}>
+      <div className={active && checkUpdate === false ? "modal activeModal" : "modal"}>
         <div className="message__body">
         <span className="message__body__head">
           <h3 className="message__body__head__h3">Онбординг Pic2re</h3>
           <span
             className="message__body__head__img"
-            onClick={() => setActive(false)}
+            onClick={handleClose}
           ></span>
         </span> 
 
@@ -54,7 +63,10 @@ export default function HelloMessage() {
                 Что тут делать?
                 </p>
                 <p className="message__body__content__pair__text">
-                Чтобы закинуть свой пикчер, жмякай на вот эту большую фиолетовую кнопку 'Добавить', загружай изображение и информацию о нем. Изображение и его название (которое ты придумываешь сам) - обязательны! Теги можешь опустить и добавить по мере вдохновения позже. На главной, когда карточка появится, при наведении на нее  (с компьютера, и при нажатии с телефона) можно увидеть действия - редактировать, поделиться, скачать и удалить, а фиолетовая звездочка поможет добавить карточку в избранное. Картинка, передаваемая по ссылке, будет актуальна 7 дней. После ссылку надо будет обновить.
+                Чтобы закинуть изображение, жмякай на вот эту большую фиолетовую кнопку 'Добавить', загружай свою пикчу и информацию о ней. Картинка и имя - обязательны! Теги можешь опустить и добавить по мере вдохновения позже. 
+                </p>
+                <p className="message__body__content__pair__text">На главной странице, когда появится карточка с изображением, наведи на неё курсор мыши (или нажми на неё, если используешь телефон), чтобы увидеть доступные действия: редактировать, поделиться, скачать и удалить, а  также - добавить в избранное. 
+                Если ты захочешь поделиться картинкой через ссылку, она будет актуальна 7 дней. После этого ссылку придется обновить.
                 </p>
             </span>
 

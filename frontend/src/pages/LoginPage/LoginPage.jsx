@@ -114,13 +114,20 @@ const [checked, setChecked] = useState(false);
 
     //запись в куки
     const [cookies, setCookie] = useCookies(["chekedFromLoginPage"]);
+    const [cookies1, setCookies1] = useCookies(["helloMessage"]);
+    // const checkUpdate = cookies1.helloMessage;
+
+    useEffect(() => {
+      if (cookies1.helloMessage !== true) {
+        setCookies1("helloMessage", false);
+      }
+    }, [setCookies1, cookies1.helloMessage])
 
     //проверка на нажатие и запись значения в куки
     const toggleChecked = () => {
       const newValue = !checked;
       setChecked(newValue);
       setCookie("chekedFromLoginPage", newValue);
-
     };
 
     useEffect(() => {
