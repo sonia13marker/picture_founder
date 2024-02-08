@@ -11,6 +11,10 @@ router.get("/:shImgId", async (req: Request, resp: Response): Promise<void> => {
 
     await getShareImage(shareId, resp)
         .catch((err: CustomError) => {
+            if ( err.message.includes("ownerId")){
+                resp.statusCode = 404
+            resp.json({ message: "link is dead. R.I.P" })    
+            }
             resp.statusCode = err.statusCode || 500
             resp.json({ code: err.code, message: err.message, detail: err.detail })
         })
