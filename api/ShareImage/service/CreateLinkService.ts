@@ -14,7 +14,7 @@ export async function createShareLink(imageId: string): Promise<string> {
     const alreadyShared = await db_models.LinkModel.exists({ image: imgId})
     
     if ( alreadyShared ){
-        throw new Error("image alryady shared")
+        return (await db_models.LinkModel.find({ image: imgId}))[0]._id.toString()
     }
 
     const linkId = await db_models.LinkModel.create({
