@@ -8,6 +8,7 @@
     max-width: 80vw;
     width: 100%;
     text-align: justify;
+    margin: 0 auto;
 
     &__h1 {
         @include h1Style;

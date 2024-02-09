@@ -4,7 +4,7 @@ import empty from '../../images/empty_favorite.svg';
 import empty_search from '../../images/empty_search.svg';
 import ImageCard from '../../components/ImageCard/ImageCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 import { getFavoriteImages } from '../../store/slices/userSlice';
 import { useCookies } from 'react-cookie';
 import Loader from '../../components/Loader/Loader';
@@ -27,7 +27,7 @@ export default function FavoritePage () {
 
   const isFavorite = true;
 
-  useMemo(() => {
+  useEffect(() => {
     dispatch(getFavoriteImages({ userId: cookieId, userToken: cookieToken, isFavorite: isFavorite}));
   },[cookieId, cookieToken, isFavorite, dispatch])
 

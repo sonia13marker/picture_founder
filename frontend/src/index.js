@@ -9,7 +9,7 @@ import { CookiesProvider } from 'react-cookie';
 //убирает логи в prod сборке
 if (process.env.NODE_ENV === 'production') {
   console.log = () => {}
-  console.error = () => {}
+  // console.error = () => {}
   console.debug = () => {}
 }
 
