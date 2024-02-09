@@ -53,6 +53,7 @@ body {
   padding: 40px;
   background-color: #141414;
   border-radius: 20px;
+  z-index: 10;
 }
 .message__body__head {
   width: 100%;
@@ -139,6 +140,10 @@ body {
 .underline {
   text-decoration: underline;
   color: #C5C5C5;
+}
+
+.purple {
+  color: #9E76E9;
 }
 
 @media screen and (max-width: 1000px) {

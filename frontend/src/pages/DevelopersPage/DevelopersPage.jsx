@@ -19,13 +19,24 @@ export default function DevelopersPage () {
         </span>
 
         <span className="dev__wrapper__info">
-            <Link to="#" className="dev__wrapper__info__btn">
-            Сообщить об ошибке
-            </Link>
+            <MailTo mailto="mailto:info@pic2re.ru"/>
 
             <p className="dev__wrapper__info__version">
                 {`Версия ${APP_VERSION}`}
             </p>
         </span>
     </div>
+}
+
+const MailTo = ({mailto}) => {
+    return (
+        <Link to="#" className="dev__wrapper__info__btn"
+        onClick={(e) => {
+            window.location.href = mailto;
+            e.preventDefault();
+        }}
+        >
+        Сообщить об ошибке
+        </Link>
+    )
 }

@@ -8,6 +8,7 @@
     padding: 40px;
     background-color: $black-for-windows;
     border-radius: 20px;
+    z-index: 10;
 
     &__head {
         width: 100%;
@@ -88,6 +89,10 @@
 .underline {
     text-decoration: underline;
     color: $light-gray-text;
+}
+
+.purple {
+    color: $main-purple;
 }
 
 @media screen and (max-width: 1000px) {
