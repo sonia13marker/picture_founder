@@ -1,0 +1,38 @@
+@import '../../style.scss';
+
+.privacy__body {
+    @include flexColumn;
+    background-color: $black-for-bg;
+    padding: 60px;
+    line-height: 145%;
+    max-width: 80vw;
+    width: 100%;
+    text-align: justify;
+
+    &__h1 {
+        @include h1Style;
+        font-size: 35px;
+        margin-bottom: 30px;
+        text-align: center;
+        line-height: 125%;
+    }
+
+    &__h2 {
+        @include h2Style;
+        color: $light-gray-text;
+        margin: 20px 0;
+    }
+
+    &__text {
+        @include h4Style;
+        color: $light-gray-text;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    ul > li {
+        color: $light-gray-text;
+        list-style-position: inside;
+        margin-bottom: 5px;
+    }
+}

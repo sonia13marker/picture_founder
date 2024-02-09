@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
+import Privacy from "./components/Privacy/Privacy";
 
 function App() {
   // const id = useSelector((state) => state.user.UserId);
@@ -57,6 +58,7 @@ function App() {
           <Route path="/singup" element={<SingUpPage />} />
           <Route path="/forgot_password" element={<ForgotPasswordPage />} />
           <Route path="/forgot_password-success" element={<ForgotPasswordSuccessPage />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/*" element={<NotFoundPage />} />
           
         </Routes>
