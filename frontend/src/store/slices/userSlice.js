@@ -264,10 +264,8 @@ export const addUserImage = createAsyncThunk(
         console.log("FOUR")
         thunkAPI.dispatch(showNotification("Изменения сохранены"));
       }
-      const message = res.data.message;
            thunkAPI.dispatch(getImages({userId}, {userToken}));
            thunkAPI.dispatch(getFavoriteImages({userId, userToken, isFavorite}));
-          // thunkAPI.dispatch(setMessage(message));
       console.log("changed data about image", res);
       return res;
     } catch (err) {

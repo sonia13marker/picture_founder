@@ -33,7 +33,7 @@ export default function HelloMessage() {
         <span className="message__body__content">
             <span className=''>
             <p className="message__body__content__single">
-            Привет! Это команда разработчиков Pic2re. И сейчас мы тебе расскажем, как правильно пользоваться нашим приложением :)
+            Привет! Это команда разработчиков Pic2re. И сейчас мы тебе расскажем, как правильно пользоваться нашим веб-приложением :)
             </p>
 
             <span className="message__body__content__pair">
