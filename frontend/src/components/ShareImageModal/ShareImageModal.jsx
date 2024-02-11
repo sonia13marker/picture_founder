@@ -20,7 +20,7 @@ import Clipboard from "clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { getLink, showNotification } from "../../store/slices/userSlice";
 import { useCookies } from "react-cookie";
-import { PATH_SERVER } from "../../data/constants";
+import { SHARE_LINK } from "../../data/constants";
 
 
 export default function ShareImageModal({ active, setActive, image, name, imageId }) {
@@ -45,7 +45,7 @@ export default function ShareImageModal({ active, setActive, image, name, imageI
     }
   },[cookieId, cookieToken, dispatch, imageId, active]);
 
-  const newImageLink = `${PATH_SERVER}/share/${linkData}`;
+  const newImageLink = `${SHARE_LINK}/share/${linkData}`;
 
   /* for copy icon */
   const [copied, setCopied] = useState(false);
@@ -121,30 +121,29 @@ export default function ShareImageModal({ active, setActive, image, name, imageI
           </span>
 
           <span className="shareModal__content__body__iconWrapper">
-{/* отправляется отображение без ссылки, шикарно */}
+{/* отправляется отображение с ссылкой */}
             <VKShareButton 
             url={newImageLink}
             image={image}
             >
               <VKIcon size={defaultSize} borderRadius={defaultBR} />
             </VKShareButton>
-{/* отправляется имя и ссылка, подсвечивается */}
+{/* отправляется ссылка (подсвечивается) и картинка */}
             <TelegramShareButton 
             title={name}
-            // image={image}
             url={newImageLink}
             >
               <TelegramIcon size={defaultSize} borderRadius={defaultBR} />
             </TelegramShareButton>
 
-{/* отправляется только ссылка, и даже не подсвечивается */}
+{/* отправляется ссылка и имя, не отображается картинка*/}
             <WhatsappShareButton 
             url={newImageLink}
             title={name}
             >
               <WhatsappIcon size={defaultSize} borderRadius={defaultBR} />
             </WhatsappShareButton>
-{/* отправляется только ссылка, подсвечивается, но картинка не отображается */}
+{/* отправляется имя и ссылка, подсвечивается, но картинка не отображается */}
             <EmailShareButton 
             url={newImageLink}
              subject="Делюсь с тобой картинкой из Pic2re!"

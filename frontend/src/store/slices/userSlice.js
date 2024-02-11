@@ -57,25 +57,25 @@ export const getImages = createAsyncThunk(
           console.log('payload from main page', payload);
           let res;
           if (sort === "date" && filter === "NONE") {
-            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=NONE`, {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?filter=NONE&type=DATE`, {
               headers: {
                 Authorization: 'Bearer ' + userToken,
               } });
               console.log("sort date none");
           } else if (sort === "date" && filter === "DOWN") {
-            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=DOWN`, {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?filter=DOWN&type=DATE`, {
               headers: {
                 Authorization: 'Bearer ' + userToken,
               } });
               console.log("sort date down");
           } else if (sort === "alph" && filter === "NONE") {
-            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?alphFilter=NONE`, {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?filter=NONE&type=ALP`, {
               headers: {
                 Authorization: 'Bearer ' + userToken,
               } });
               console.log("sort alphabet none");
           } else if (sort === "alph" && filter === "DOWN") {
-            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?alphFilter=DOWN`, {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?filter=DOWN&type=ALP`, {
               headers: {
                 Authorization: 'Bearer ' + userToken,
               } });
@@ -103,25 +103,25 @@ export const getFavoriteImages = createAsyncThunk(
         console.log('payload from change page', payload);
         let res;
         if (sort === "date" && filter === "NONE") {
-          res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=NONE&isFavorite=${isFavorite}`, {
+          res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?filter=NONE&type=DATE&isFavorite=${isFavorite}`, {
             headers: {
               Authorization: 'Bearer ' + userToken,
             } });
             console.log("sort date none");
           } else if (sort === "date" && filter === "DOWN") {
-            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?dateFilter=DOWN&isFavorite=${isFavorite}`, {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?filter=DOWN&type=DATE&isFavorite=${isFavorite}`, {
               headers: {
                 Authorization: 'Bearer ' + userToken,
               } });
               console.log("sort date down");
           } else if (sort === "alph" && filter === "NONE") {
-            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?alphFilter=NONE&isFavorite=${isFavorite}`, {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?filter=NONE&type=ALP&isFavorite=${isFavorite}`, {
               headers: {
                 Authorization: 'Bearer ' + userToken,
               } });
               console.log("sort alphabet none");
           } else if (sort === "alph" && filter === "DOWN") {
-            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?alphFilter=DOWN&isFavorite=${isFavorite}`, {
+            res = await axios.get(`${PATH_TO_SERVER}/user/${userId}/image?filter=DOWN&type=ALP&isFavorite=${isFavorite}`, {
               headers: {
                 Authorization: 'Bearer ' + userToken,
               } });
