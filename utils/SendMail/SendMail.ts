@@ -1,6 +1,7 @@
 import { Transporter, createTransport } from "nodemailer"
 import { env } from "../../envEmail";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { MyLogService } from "../CustomLog";
 
 class Mailer {
 
@@ -37,8 +38,7 @@ class Mailer {
             html: content            
         })
         .then(data => {
-            console.log(data);
-            
+           MyLogService(`send mail to ${data.accepted.toString()}`)
         })
         .catch( err => {
             console.log(err);

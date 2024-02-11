@@ -27,23 +27,27 @@ export class TempleParser{
      * parseText
 literal: string, exp: string     */
     public async parseText(literal: string, exp: string): Promise<textData> {
-        const file = await readFile(this.templeFile, {encoding: "utf-8"})
-        const subject = file.toString().split("\n")[0];
+        const file = (await readFile(this.templeFile, {encoding: "utf-8"})).toString().split("\n")
+        const subject = file.shift() as string;
+        let text = file.join("\n")
+        
         return {
             subject: subject,
-            data:  file.toString().replace(`{{${literal}}}`, exp)
+            data:  text.replace(`{{${literal}}}`, exp)
         }
     }
 
     /**
      * parse
      */
-    public async parse() {
-        const file = await readFile(this.templeFile, {encoding: "utf-8"})
-        const subject = file.toString().split("\n")[0];
+    public async parse(): Promise<textData> {
+        const file = (await readFile(this.templeFile, {encoding: "utf-8"})).toString().split("\n")
+        const subject = file.shift() as string;
+        let text = file.join("\n")
+
         return {
             subject: subject,
-            data:  file.toString()
+            data:  text
         }
     }
 }
