@@ -1,11 +1,12 @@
 import Joi from "joi"
-import { AlphabetFilterEnum, DateFilterEnum } from "./FilterImageDto"
+import { MyFilter, FilterType } from "./FilterImageDto"
 import { ImageData, ImageDataUpdate } from "../../../dto/ImageDataDto"
 
 
 export const imagesGetScheme = Joi.object({
-    dateFilter: Joi.string().valid(...Object.values(DateFilterEnum)).default("NONE"),
-    alphFilter: Joi.string().valid(...Object.values(AlphabetFilterEnum)).default("NONE"),
+    searchQuery: Joi.optional(),
+    filter: Joi.string().valid(...Object.values(MyFilter)).default("NONE"),
+    type: Joi.string().valid(...Object.values(FilterType)).default("ALP"),
     offset: Joi.number().default(0),
     isFavorite: Joi.boolean().default(null)
 })

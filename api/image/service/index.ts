@@ -1,5 +1,5 @@
 import { db_models } from "../../../db"
-import { DateFilterEnum, AlphabetFilterEnum, } from "../dto/FilterImageDto";
+import { MyFilter, FilterType, } from "../dto/FilterImageDto";
 import * as cry from "crypto"
 import { ImageData, ImageDataDB, ImageDataFile, ImageDataUpdate, ImageTags } from "../../../dto/ImageDataDto";
 import { pathResolve } from "../../../dto/PathResolve"
@@ -14,31 +14,12 @@ import { NotFoundAnyDataInUser } from "../../../exceptions/UserExceptions";
 import { MyError, MyLogService } from "../../../utils/CustomLog";
 import { Response } from "express"
 
-export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, dateFilter: DateFilterEnum, alphFilter: AlphabetFilterEnum): Promise<ImageData[] | []> {
+export async function GetUserImages(userId: string, isFavorite: boolean = false, offset: number = 20, filter: MyFilter, filterType: FilterType): Promise<ImageData[] | []> {
 
 
     //пока по умолчанию сортировка будет по возрастанию
     //позже будет 2 метода для просто получения и для получения с фильтром
-    const userData: any = await db_models.UserModel
-        .findById(userId)
-        .populate({
-            path: "userImages",
-            options: {
-                skip: offset,
-                limit: 20,
-                sort: {
-                    imageName:  AlphabetFilterEnum[alphFilter],
-                    createdAt: DateFilterEnum[dateFilter]
-                },
-            },
-            // match: {
-            //     isFavorite: isFavorite 
-            // }
-        })
-        .exec()
-        .catch((err: CustomError) => {
-            throw new Error("ERR on filter")
-        })
+    const userData: any = await GetFilteredImage(userId, offset, filter, filterType)
 
     if (!userData) {
         throw new NoUserDataError()
@@ -47,9 +28,9 @@ export async function GetUserImages(userId: string, isFavorite: boolean = false,
     MyLogService(`user ${userId} get image data`)
     if (isFavorite) {
 
-        return userData.userImages.filter((val: ImageData) => val.isFavorite)
+        return userData.filter((val: ImageData) => val.isFavorite)
     }
-    return userData.userImages.length > 0 ? userData.userImages : []
+    return userData.length > 0 ? userData : []
 }
 
 //добавление изображения
@@ -201,32 +182,38 @@ export async function GetImageFile(imageId: string, resp: Response): Promise<voi
 
 
 export async function SearchQueryImage(userId: string, stringQuery: string,
-    dateFilter: DateFilterEnum | unknown = "NONE",
-    alphabetFilter: AlphabetFilterEnum | unknown = "NONE",
+    // offset: number,
+    // filter: MyFilter,
+    // filterType: FilterType,
     isFavorite: boolean = false
 ): Promise<ImageData[]> {
 
-    if (dateFilter === undefined || alphabetFilter === undefined) {
-        throw new InvalideFiltersError()
-    }
-
-
-    console.log(dateFilter, alphabetFilter);
+    //потом сделать с фильтрами
+    // console.log(filter , filterType);
     
-    const userImages = await db_models.ImageModel.find({ ownerId: userId }).sort({
-        imageName: AlphabetFilterEnum[alphabetFilter as keyof typeof AlphabetFilterEnum],
-        createdAt: DateFilterEnum[dateFilter as keyof typeof DateFilterEnum]
-    })
-        .catch((err: CustomError) => {
-            throw new NotFoundAnyDataInUser(err.message)
-        })
 
-    return userImages.filter(img => {
-        // if ( isFavorite){
-        //     return (img.imageName.includes(stringQuery) || img.imageTags.find(tag => tag.includes(stringQuery))) && img.isFavorite === true
-        // }
-        return img.imageName.includes(stringQuery) || img.imageTags.find(tag => tag.includes(stringQuery))
+    // const userImages: any = await GetFilteredImage(userId, offset, filter, filterType)
+    //     .catch((err: CustomError) => {
+    //         throw new NotFoundAnyDataInUser(err.message)
+    //     })
+
+    // const filterObject = Number(FilterType[filterType]) === -1 ?
+    //     { createdAt: MyFilter[filter] } :
+    //     { imageName: MyFilter[filter] }
+    
+
+    const userImages = await db_models.ImageModel.find({ ownerId: userId })
+    .catch((err: CustomError) => {
+        throw new NotFoundAnyDataInUser(err.message)
     })
+
+    const filtered =  userImages.filter(img => {
+        return img.imageName.includes(stringQuery) || img.imageTags.find((tag: any) => tag.includes(stringQuery))
+    })
+    if ( isFavorite){
+        return filtered.filter( image => image.isFavorite === true)
+    }
+    return filtered
 }
 
 
@@ -244,4 +231,37 @@ export async function ImageDownload(imageId: string): Promise<string> {
     // await rm(toSendImage)
 
     return toSendImage
+}
+
+
+async function GetFilteredImage(userId: string, offset: number, filter: MyFilter, filterType: FilterType) {
+
+
+    const filterObject = Number(FilterType[filterType]) === -1 ?
+        { createdAt: MyFilter[filter] } :
+        { imageName: MyFilter[filter] }
+
+
+    const userData: any = await db_models.UserModel
+        .findById(userId)
+        .populate({
+            path: "userImages",
+            options: {
+                skip: offset,
+                limit: 20,
+                sort: filterObject,
+            },
+            // match: {
+            //     isFavorite: isFavorite 
+            // }
+        })
+        .exec()
+        .catch((err: CustomError) => {
+            throw new Error("ERR on filter " + err.message)
+        })
+
+
+        console.log("sdsd ",userData.userImages);
+        
+    return userData.userImages
 }

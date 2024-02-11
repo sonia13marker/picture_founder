@@ -5,7 +5,7 @@ import { CustomError } from "../../../exceptions/ExampleError";
 import { UserErrorType } from "../../../exceptions/UserExceptions";
 import { ImageData } from "../../../dto/ImageDataDto";
 import { MyError, MyLogController, MyLogService } from "../../../utils/CustomLog";
-import { AlphabetFilterEnum, DateFilterEnum } from "../dto/FilterImageDto";
+import { MyFilter, FilterType } from "../dto/FilterImageDto";
 import { ImageErrorCode } from "../../../exceptions/ImageExceptions";
 
 
@@ -22,7 +22,7 @@ export async function GetImage(req: Request, resp: Response) {
     }
     MyLogController(JSON.stringify(needData.value));
 
-    GetUserImages(userId, needData.value.isFavorite || false, needData.value.offset, needData.value.dateFilter, needData.value.alphFilter)
+    GetUserImages(userId, needData.value.isFavorite || false, needData.value.offset, needData.value.filter, needData.value.type)
         .then((result: ImageData[]) => {
             resp.json(result)
         })
@@ -185,10 +185,8 @@ export async function getImageFile(req: Request, resp: Response) {
 export async function SearchQuery(req: Request, resp: Response) {
 
     const userId = req.params.id
-    const searchString = <string>req.query.searchQuery
-    const dateFiler = <string | DateFilterEnum>req.query.dateFiler || "NONE"
-    const alphabetFilter = <string | AlphabetFilterEnum>req.query.alphFilter || "NONE"
-    const isFavorite = <boolean><unknown>req.query.isFavorite || false
+    const data = <string>req.query.searchQuery
+    const isFav = <string>req.query.isFavorite
 
     if (!userId) {
         resp.statusCode = 400
@@ -199,7 +197,7 @@ export async function SearchQuery(req: Request, resp: Response) {
         })
         return
     }
-    if (!searchString) {
+    if (!data) {
         resp.statusCode = 400
         resp.json({
             code: UserErrorType.VALIDATE_ERROR,
@@ -209,10 +207,10 @@ export async function SearchQuery(req: Request, resp: Response) {
         return
     }
 
-    MyLogController(`${dateFiler} ${alphabetFilter}`)
-    MyLogController(JSON.stringify(searchString));
+    // MyLogController(`${data.filter} ${data.type}`)
+    MyLogController(JSON.stringify(data));
 
-    SearchQueryImage(userId, searchString, dateFiler, alphabetFilter, isFavorite)
+    SearchQueryImage(userId, data, <boolean><unknown>isFav)
         .then((data) => {
             resp.json({ code: 200, data: data })
         })
