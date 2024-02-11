@@ -415,6 +415,25 @@ export const updatePasswordUser = createAsyncThunk(
   }
 );
 
+/* забыл пароль - отправка эмейла */
+export const sendForgotEmail = createAsyncThunk(
+  "user/sendForgotEmail",
+  async (payload, thunkAPI) => {
+    try {
+      const {userEmail} = payload;
+      console.log("forgot payload", payload)
+        const res = await axios.get(`${PATH_TO_SERVER}/auth/forgotPass?email=${userEmail}`);
+        console.log("res forgot", res);
+        const succMess = res.data.message;
+        thunkAPI.dispatch(setMessage(succMess));
+        return res
+      } catch (err) {
+        const error = err.response.data.code;
+        thunkAPI.dispatch(setError(error));
+        console.error(err);
+      }
+    })
+
 const userSlise = createSlice({
     name: 'user',
     initialState: {
@@ -607,6 +626,17 @@ const userSlise = createSlice({
        state.status = 'succeeded'
       })
       .addCase(updatePasswordUser.rejected, (state, action) => {
+        state.status = 'failed'
+      })
+//отправка почты если забыл пароль - sendForgotEmail
+      builder
+      .addCase(sendForgotEmail.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(sendForgotEmail.fulfilled, (state, action) => {
+      state.status = 'succeeded'
+      })
+      .addCase(sendForgotEmail.rejected, (state, action) => {
         state.status = 'failed'
       })
 

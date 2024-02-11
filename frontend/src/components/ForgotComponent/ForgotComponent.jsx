@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 import './ForgotComponent.scss';
 import Logo from "../../icons/Logo";
+import { sendForgotEmail, setError, setMessage } from "../../store/slices/userSlice";
 
 export default function ForgotComponent ({isLogo, title, text, input, buttonName}) {
     /*for email */
@@ -18,23 +20,53 @@ useEffect(() => {
   } else {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     console.log("invalid email");
-  };
+  }
+
 }, [email]);
 
 let navigate = useNavigate();
-const nextPage = () => {
+const dispatch = useDispatch();
+const getError = useSelector(state => state.user.error);
+const getMessage = useSelector(state => state.user.message);
+
+const nextPage = useCallback((() => {
   navigate('/forgot_password-success', {replace: true});
-}
+}), [navigate]);
+
 const loginPage = () => {
     navigate('/login', {replace: true});
 }
 
+const [errEmail, setErrEmail] = useState("");
+
+useEffect(() => {
+  if (getError && getError === 101 && email !== "") {
+    setErrorMessageEmail("Такого акканута еще нет!");
+    setErrEmail(email);
+  } 
+}, [getError, dispatch, email, errEmail]);
+useEffect(() => {
+  if (errEmail && errEmail !== email) {
+    console.log('AAAAAAA', errEmail, email, errEmail !== email)
+    setErrorMessageEmail("");
+    dispatch(setError(null));
+  }
+},[ dispatch, email, errEmail])
+console.log("errEmail", errEmail);
+
+useEffect(() => {
+  if (getMessage === "successfull. See email") {
+    nextPage();
+    dispatch(setMessage(null));
+  }
+}, [dispatch, getMessage, nextPage, email]);
+
 /* for submit button */
-const handleSubmit = (event) => {
-    event.preventDefault();
-    if (errorMessageEmail === "") {
-      nextPage();
-    }
+const sendEmail = (email) => {
+  console.log(getError, getMessage, errorMessageEmail, email)
+  if (errorMessageEmail === '' && email) {
+    dispatch(sendForgotEmail({userEmail: email}));
+  }
 }
 
 /* for small width to logo */
@@ -69,8 +101,8 @@ useEffect(() => {
 
       {
         input ? <>
-        <form id="forgotPasswordForm" className="singup__section__body"
-      onSubmit={handleSubmit}
+        <div id="forgotPasswordForm" className="singup__section__body"
+       //onSubmit={sendEmail(email)}
       >
                 {/* email input */}
   <span className="input__wrapper">
@@ -91,10 +123,11 @@ useEffect(() => {
             </p>
     </span>
     <button type="submit" className={"singup__section__body__submitBtn"}
+     onClick={() => sendEmail(email)}
         >
          {buttonName}
        </button>
-      </form> 
+      </div> 
         </> :
         <button className={"singup__section__body__submitBtn"}
         onClick={loginPage}
