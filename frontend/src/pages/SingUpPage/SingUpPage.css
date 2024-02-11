@@ -241,6 +241,7 @@ body {
 @media screen and (max-width: 580px) {
   .input__label, .input__wrapper2 {
     font-size: 14px;
+    width: 100%;
   }
   .input__auth {
     width: 320px;
@@ -407,5 +408,8 @@ body {
   .singup__section__body__checkboxWrapper {
     max-width: 280px;
     gap: 20px;
+  }
+  .singup__section {
+    padding-left: 10px;
   }
 }/*# sourceMappingURL=SingUpPage.css.map */

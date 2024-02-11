@@ -77,18 +77,7 @@ body {
   }
 }
 @media screen and (max-width: 720px) {
-  @keyframes notifanimation-small {
-    0% {
-      bottom: 0;
-      opacity: 0;
-    }
-    100% {
-      bottom: 85px;
-      opacity: 1;
-    }
-  }
   .notif__wrapper {
-    animation: notifanimation-small 0.7s ease-in-out;
     bottom: 85px;
   }
 }
