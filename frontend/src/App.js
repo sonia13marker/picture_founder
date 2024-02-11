@@ -18,8 +18,6 @@ import { useEffect } from "react";
 import Privacy from "./components/Privacy/Privacy";
 
 function App() {
-  // const id = useSelector((state) => state.user.UserId);
-  // console.log("APP USER ID", id);
 //проблема в том, что если юзер удален но находился на сайте,
 //куки остаются на месте. надо добавить, чтобы при логине ошибка добвялалась в стейт 
 //и тут происходила проверка не только на куки, но и на ошибку
@@ -44,7 +42,7 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename="/">
         {/* ссылки на страницы */}
         <Routes>
               <Route path="/" element={<PrivateOutlet />}>
