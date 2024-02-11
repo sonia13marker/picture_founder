@@ -7,7 +7,7 @@
     "doc": "doc"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nodemon test/index.*",
     "start": "",
     "dev": "nodemon app.ts"
   },
@@ -45,6 +45,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.1",
     "multer": "^1.4.5-lts.1",
-    "ts-dotenv": "^0.9.1"
+    "nodemailer": "^6.9.9",
+    "ts-dotenv": "^0.9.1",
+    "@types/nodemailer": "^6.4.14"
   }
 }

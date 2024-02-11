@@ -9,6 +9,8 @@ import { userDataExt } from "../../../db/dto/UserDto";
 import { CustomError } from "../../../exceptions/ExampleError";
 import { FileNotFoundException } from "../../../exceptions/ServerExceptions";
 import { MyError, MyLogController, MyLogService } from "../../../utils/CustomLog";
+import { TempleParser } from "../../../utils/TemplateParser/TemplateParser";
+import mailer from "../../../utils/SendMail/SendMail";
 
 //простое получение пользователя
 export async function getUserData(userId: string): Promise<userDataExt> {
@@ -67,6 +69,12 @@ export async function UpdateUserPassword(userId:string, newUserPassword: string)
 
     MyLogService(`user ${userDb?.userEmail} update password`)
     userDb?.updateOne({$set: { userPassword: newPassHash}}).exec()
+    .then( () => {
+        return new TempleParser("ChangePass.html").parse()
+    })
+    .then( (data) => {
+        mailer.SendEmail(userDb?.userEmail, data.subject, data.data)
+    })
     .catch( (err: CustomError) => {
         throw new UpdateDataError(err.message)
     })

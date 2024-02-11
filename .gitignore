@@ -5,4 +5,5 @@ package-lock.json
 test/
 uploads/
 .env
+.envEmail
 out/

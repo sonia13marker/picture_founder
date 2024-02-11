@@ -7,6 +7,8 @@ import {InvalidUserDataError, UserNotFoundError, UserIsExistError} from "../../.
 import * as fs from "fs/promises"
 import { userDataDB } from "../../../db/dto/UserDto";
 import { MyLogService } from "../../../utils/CustomLog";
+import Mailer from "../../../utils/SendMail/SendMail";
+import { TempleParser } from "../../../utils/TemplateParser/TemplateParser";
 
 
 
@@ -50,6 +52,45 @@ export async function regisUser(userEmail: string, userPassword: string) {
     let dbUser = await db_models.UserModel.create({ userEmail, userPassword })
     await fs.mkdir(`${tmpFiles}/save/${dbUser._id}`, { recursive: true })
 
+    const parse = await new TempleParser("Register.html").parseText("userName", dbUser.userEmail)
+    Mailer.SendEmail(dbUser.userEmail, parse.subject, parse.data)
+
     MyLogService(`create new user ${dbUser.userEmail}`);
     return
+}
+
+export async function ForgotPass(userEmail: string) {
+    
+
+    const user =  (await db_models.UserModel.find({userEmail}))[0]
+
+    if ( !user ){
+        throw new UserNotFoundError()
+    }
+
+    const newPass = makeid(12)
+    user.userPassword = cry.createHash("sha256").update(newPass).digest("hex");
+    user.save()
+    .then( data => {
+        MyLogService("user forgot password | password is updated")
+        return new TempleParser("ForgotPass.html").parseText(`newPass`, newPass)
+    })
+    .then( parse => {
+        Mailer.SendEmail(userEmail, parse.subject, parse.data)
+    })
+    .catch( err => {
+        throw new Error(err.message)
+    })
+}
+
+function makeid(length: number) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_^&*()-%$#@!';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
 }
