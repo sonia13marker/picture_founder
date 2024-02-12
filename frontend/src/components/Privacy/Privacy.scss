@@ -37,3 +37,24 @@
         margin-bottom: 5px;
     }
 }
+
+@media screen and (max-width: 790px) {
+    .privacy__body {
+        padding: 40px 10px;
+    }
+    .privacy__body__h1 {
+        width: auto;
+    }
+}
+@media screen and (max-width: 370px) {
+    .privacy__body__h1, .privacy__body__h2 {
+        width: 100%;
+        word-wrap: break-word;
+    }
+    .privacy__body {
+        padding: 25px 0px;
+    }
+    // .privacy__body__h2 {
+    //     word-wrap: break-word;
+    // }
+}

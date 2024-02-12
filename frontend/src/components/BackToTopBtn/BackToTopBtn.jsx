@@ -23,7 +23,7 @@ export default function BackToTopBtn ({sizeOfBtn}) {
                     setShowButton(false);
                   }
             } else {
-                if (scrollY < 250) {
+                if (scrollY < 450) {
                     setShowButton(true);
                   } else {
                     setShowButton(false);

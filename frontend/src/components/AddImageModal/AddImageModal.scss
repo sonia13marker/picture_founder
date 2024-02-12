@@ -90,19 +90,6 @@
     }
 }
 
-// .modal__outline {
-//     /*рабочее решение в 1 строку для кнопки с надписью "обзор..."*/
-//     color: transparent;
-//     transform: translateX(20%);
-
-//     &::file-selector-button {
-//         @include bodyBtn;
-
-//         &:hover {
-//             @include bodyBtnHover;
-//         }
-// }
-// }
 
 .modal__label {
     @include bodyBtn;
@@ -202,6 +189,7 @@
     }
     .modal__content {
         padding: 35px;
+        max-height: 100lvh;
     }
 }
 
