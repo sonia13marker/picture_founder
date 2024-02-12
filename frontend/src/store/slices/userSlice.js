@@ -7,7 +7,7 @@ export const searchImages = createAsyncThunk(
   "user/searchImages",
   async (payload, thunkAPI) => {
      /* полный запрос с фильтрами: 
-    http://localhost:4500/api/user/65c51ff5b44f6ee2d13ead3d/image/search?searchQuery=k&dateFilter=DOWN&isFavorite=false */
+    https://localhost:4500/api/user/65c51ff5b44f6ee2d13ead3d/image/search?searchQuery=k&dateFilter=DOWN&isFavorite=false */
     try {
       const { userId, userToken, searchQuery } = payload;
       console.log("search payload ", userId, userToken, searchQuery )
@@ -32,7 +32,7 @@ export const searchFavoriteImages = createAsyncThunk(
   "user/searchImages/favorite",
   async (payload, thunkAPI) => {
     /* полный запрос с фильтрами: 
-    http://localhost:4500/api/user/65c51ff5b44f6ee2d13ead3d/image/search?searchQuery=k&dateFilter=DOWN&isFavorite=false */
+    https://localhost:4500/api/user/65c51ff5b44f6ee2d13ead3d/image/search?searchQuery=k&dateFilter=DOWN&isFavorite=false */
     try {
       const { userId, userToken, searchQuery } = payload;
       console.log("search fav payload", payload);

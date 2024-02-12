@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "homepage": "https://pic2re.ru",
   "private": true,
   "dependencies": {
     "@babel/preset-react": "^7.23.3",

@@ -16,6 +16,7 @@ import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import Privacy from "./components/Privacy/Privacy";
+import { HashRouter } from "react-router-dom";
 
 function App() {
 //проблема в том, что если юзер удален но находился на сайте,
@@ -42,7 +43,7 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter basename="/">
+      <HashRouter basename="/">
         {/* ссылки на страницы */}
         <Routes>
               <Route path="/" element={<PrivateOutlet />}>
@@ -60,7 +61,7 @@ function App() {
           <Route path="/*" element={<NotFoundPage />} />
           
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }
