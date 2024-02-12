@@ -74,8 +74,9 @@ export default function AddImageModal({ active, setActive }) {
     const tags = tagsImage.current.value;
     const image = {file};
 
-     let imageTags = he.escape(tags).split(",").map((tg) => tg.trim());
-
+    let imageTags = he.escape(tags).replace(/\n+/g, ',').split(',')
+    .map((tg) => tg.trim());
+console.log(imageTags)
      
 
     //преобразование строки в массив строк  
