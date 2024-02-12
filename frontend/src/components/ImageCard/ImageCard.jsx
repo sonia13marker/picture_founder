@@ -19,7 +19,7 @@ export default function ImageCard({ imageId, imageName, imageTags, image,
     ?.map((tag) => {
       tag = tag.split(" ").filter(Boolean).join(" ");
       tag = "#" + tag;
-      tag = tag.replaceAll(" ", "_");
+      tag = tag.replaceAll(" ", "_").replace(/\n+/g, ' #');
       tag = tag + " ";
       return he.unescape(tag);
     })
