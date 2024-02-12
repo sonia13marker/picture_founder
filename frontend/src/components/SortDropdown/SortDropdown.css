@@ -12,14 +12,13 @@ body {
 }
 
 .forgotPassWrapper {
-  max-height: 100vh;
-  height: 100%;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 * {
   scrollbar-color: #765bab #141414;
   scrollbar-width: thin;
+  scrollbar-gutter: stable;
 }
 
 ::-webkit-scrollbar {

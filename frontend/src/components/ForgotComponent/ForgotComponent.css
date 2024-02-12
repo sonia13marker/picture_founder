@@ -11,14 +11,13 @@ body {
 }
 
 .forgotPassWrapper {
-  max-height: 100vh;
-  height: 100%;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 * {
   scrollbar-color: #765bab #141414;
   scrollbar-width: thin;
+  scrollbar-gutter: stable;
 }
 
 ::-webkit-scrollbar {
@@ -55,14 +54,13 @@ body {
 }
 
 .forgotPassWrapper {
-  max-height: 100vh;
-  height: 100%;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 * {
   scrollbar-color: #765bab #141414;
   scrollbar-width: thin;
+  scrollbar-gutter: stable;
 }
 
 ::-webkit-scrollbar {
@@ -99,14 +97,13 @@ body {
 }
 
 .forgotPassWrapper {
-  max-height: 100vh;
-  height: 100%;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 * {
   scrollbar-color: #765bab #141414;
   scrollbar-width: thin;
+  scrollbar-gutter: stable;
 }
 
 ::-webkit-scrollbar {
@@ -285,6 +282,7 @@ body {
 @media screen and (max-width: 580px) {
   .input__label, .input__wrapper2 {
     font-size: 14px;
+    width: 100%;
   }
   .input__auth {
     width: 320px;
@@ -451,6 +449,9 @@ body {
   .singup__section__body__checkboxWrapper {
     max-width: 280px;
     gap: 20px;
+  }
+  .singup__section {
+    padding-left: 10px;
   }
 }
 .forgorPass {
