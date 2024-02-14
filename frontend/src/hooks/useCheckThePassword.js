@@ -13,7 +13,7 @@ export const useCheckThePassword = ({pass, passVerify}) => {
             setErrorVerMessage("");
           }
 
-        if (pass.length < 8) {
+        if (pass !== "" && pass.length < 8) {
             setErrorMessage("Минимальная длиная пароля - 8 символов!");
           } else setErrorMessage("");
     }, [pass.length, pass, passVerify]);

@@ -33,7 +33,7 @@ useEffect(() => {
 
   if (userEmail.match(emailRegex)) {
     setErrorMessageEmail("");
-  } else {
+  } else if (userEmail !== "") {
     setErrorMessageEmail("Введён неверный адрес эл.почты!");
     // console.log("invalid email");
   };
