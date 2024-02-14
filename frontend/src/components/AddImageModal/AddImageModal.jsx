@@ -56,16 +56,17 @@ export default function AddImageModal({ active, setActive }) {
   /* для отправки картинки на сервер */
   const dispatch = useDispatch();
   const getError = useSelector(state => state.user.error);
-  console.log("getError", getError)
+  console.log("getError", getError);
 
   //проверка наличия имени
   useEffect(() => {
-    if (imageName === "") {
-      setNameError("Имя является обязательным!");
+    if (imageName === "" || imageName.length < 2) {
+      setNameError("Имя обязательно и должно быть больше 2х символов!");
     } else {
       setNameError("");
     };
   }, [imageName]);
+
 
 
 // функция добавления на страницу
@@ -83,9 +84,8 @@ console.log(imageTags)
     if (cookieId && cookieToken && image && imageName && imageTags && !fileError && !nameError) {
            console.log('cookieId: ', cookieId, 'token: ', cookieToken, 'data: ', image, imageName, imageTags);
            dispatch(addUserImage({userId: cookieId, userToken: cookieToken, image: image, imageName:imageName, imageTags: imageTags}));
-         } 
-         
-    //обнуление имеющихся значений
+           setActive(!active); 
+      //обнуление имеющихся значений
     setImageName("");
     tagsImage.current.value = "";
     if (file) {
@@ -93,8 +93,8 @@ console.log(imageTags)
     } else {
       return;
     }
-    setActive(!active); 
-
+} 
+         
   };
 
   useEffect(() => {
