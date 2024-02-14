@@ -62,6 +62,10 @@ const selectIconTwo = () => {
   setIsClose(!isClose);
   setIsHidden(!isHidden);
 }
+
+const handleCopy = (e) => {
+  e.preventDefault();
+}
   //проверки паролей на 8 символов и соответствие между собой
   const { errorMessage, errorVerMessage } = useCheckThePassword({pass: userPassword, passVerify: SingUppasswordVerValue});
 
@@ -214,6 +218,7 @@ if (currStatus === "loading") {
           value={userPassword}
           required
           spellCheck="false"
+          onCopy={handleCopy}
         />
         {/*пока открыт глаз - пароль не видно */}
        {
@@ -248,6 +253,7 @@ if (currStatus === "loading") {
           value={SingUppasswordVerValue}
           required
           spellCheck="false"
+          onCopy={handleCopy}
         />
         {/*пока открыт глаз - пароль не видно */}
        {
