@@ -279,7 +279,7 @@ if (currStatus === "loading") {
             className="singup__section__body__checkboxWrapper__label"
           >
             Я ознакомлен и согласен с условиями обработки моих персональных
-            данных и <Link to="/privacy" className="singup__section__body__checkboxWrapper__label__link">Политикой конфиденциальности</Link>.
+            данных и <Link to="/privacy" target="_blank" className="singup__section__body__checkboxWrapper__label__link">Политикой конфиденциальности</Link>.
             </label>
         </span>
 

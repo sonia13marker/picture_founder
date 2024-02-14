@@ -24,7 +24,7 @@ export default function Footer() {
                 <p className='footer__fg__text'>
                 &copy; Pic2re, {date} г.
                 </p>
-                <Link to="/privacy" className='footer__fg__text__link'>
+                <Link to="/privacy" target="_blank" className='footer__fg__text__link'>
                 Политика конфиденциальности
                 </Link>
                 </span>
