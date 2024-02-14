@@ -1,18 +1,10 @@
-@import '../../style.scss';
+@import '../SingUpPage/SingUpPage.module.scss';
 
-.login {
+// .login {
+//     @include sectionStyles;
+// }
 
-&__wrapper {
-    max-width: 100%;
-    gap: 5px;
-    width: auto;
-
-    &__label {
-        @include h4Style;
-    }
-}
-
-&__lineWrapper {
+.lineWrapper {
     @include flexRow;
     width: 100%;
 
@@ -21,7 +13,6 @@
         color: $light-gray-text;
         text-decoration: none;
         font-size: 16px;
-        // width: auto;
 
         &:hover {
             text-decoration: underline;
@@ -40,14 +31,13 @@
             @include h4BoldStyle;
         }
     }
-
 }
 
-&__button {
+.button {
     margin-top: 2.5vh;
     @include flexColumn;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 
     &__container {
         @include flexRow;
@@ -59,6 +49,14 @@
     }
 }
 
+.login__wrapper {
+    max-width: 100%;
+    gap: 5px;
+    width: auto;
+
+    &__label {
+        @include h4Style;
+    }
 }
 
 #login_checkbox {
@@ -66,32 +64,19 @@
 }
 
 @media screen and (max-width: 1000px) {
-    .login__lineWrapper {
+    .lineWrapper {
         max-width: 400px;
     }
-    
 }
 
 @media screen and (max-width: 580px) {
-    .login__lineWrapper__link, .login__lineWrapper__link.boldLink, .login__button__container {
+    .lineWrapper__link, .lineWrapper__link.boldLink, .button__container, .login__wrapper__label{
         font-size: 14px;
     }
-    .gap {
-        gap:5px !important;
-    }
-    
-    
 }
 
 @media screen and (max-width: 385px) {
-    .login__lineWrapper {
+    .lineWrapper {
         max-width: 280px;
     }
-    .login__lineWrapper__link, .login__lineWrapper__link.boldLink, .login__button__container {
-        font-size: 14px;
-    }
-    .gap {
-        gap:5px !important;
-    }
-    
 }

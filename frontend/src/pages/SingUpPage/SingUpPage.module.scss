@@ -1,0 +1,87 @@
+@import '../../style.scss';
+@import '../../components/CustomInput/CustomInput.scss';
+
+@mixin sectionStyles {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: hidden;
+    @include flexColumn;
+}
+
+.singup {
+    @include sectionStyles;
+}
+
+.header {
+    @include flexColumn;
+    justify-content: center;
+    gap: 1.5vh;
+    margin-bottom: 5vh;
+
+    &__h2 {
+        @include h2Style;
+            font-size: clamp(19px, 2vw, 24px);
+    }
+}
+
+.body {
+    @include flexColumn;
+    gap: 35px;
+
+    &__checkbox {
+        max-width: 400px;
+        width: 100%;
+        width: auto;
+        @include flexRow;
+        gap: 5px;
+
+        &__label {
+            @include h4Style;
+                font-size: 16px;
+                color: $light-gray-text;
+                max-width: -moz-max-content;
+                max-width: max-content;
+                text-align: justify;
+                width: 100%;
+        }
+
+        &__link {
+            color: $main-purple;
+
+            &:hover {
+                color: $hover-purple;
+                cursor: pointer;
+                transition: $transition;
+            }
+            &:active {
+                color: $main-purple;
+            }
+        }
+    }
+
+    &__submitBtn {
+        @include FillBodyBtn;
+
+        &:hover {
+            @include FillBodyBtnHover;
+        }
+
+        &:active {
+            @include FillBodyBtnActive;
+        }
+
+        &.unactive {
+            cursor: not-allowed;
+                color: $light-gray-text;
+                background-color: $dark-gray-text;
+                border: 2px solid $dark-gray-text;
+
+                &:hover {
+                    cursor: not-allowed;
+                    color: $light-gray-text;
+                    background-color: $dark-gray-text;
+                    border: 2px solid $dark-gray-text;
+                }
+        }
+    }
+}

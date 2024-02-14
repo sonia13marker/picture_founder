@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "./SingUpPage.scss";
+// import "./SingUpPage.scss";
+import styles from './SingUpPage.module.scss';
 import { useCallback, useEffect, useState } from "react";
 import OpenEyeIcon from "../../icons/OpenEyeIcon";
 import CloseEyeIcon from "../../icons/CloseEyeIcon";
@@ -169,16 +170,16 @@ if (currStatus === "loading") {
   content = <Loader />
 } else if (currStatus === 'succeeded' || currStatus === 'idle') {
   content = <>
-  <div className="singup__section">
-      <span className="singup__section__header">
+  <div className={styles.singup}>
+      <span className={styles.header}>
       {
             windowWidth <= 768 ? <Logo newWidth="156" newHeight="59"/> :
             <Logo newWidth="220" newHeight="84"/>
           }
-        <h2 className="singup__section__header__text">Регистрация</h2>
+        <h2 className={styles.header__h2}>Регистрация</h2>
       </span>
 
-      <div id="signupForm" className="singup__section__body"
+      <div id="signupForm" className={styles.body}
       // autoComplete="off"
       //onSubmit={handleSubmit}
       >
@@ -274,7 +275,7 @@ if (currStatus === "loading") {
             </p>
     </span>
 
-        <span className="singup__section__body__checkboxWrapper">
+        <span className={styles.body__checkbox}>
         <input type="checkbox" 
         onChange={() => setChecked(!checked)}
         checked={checked}
@@ -282,14 +283,14 @@ if (currStatus === "loading") {
        />
           <label
             htmlFor="singUp_checkbox"
-            className="singup__section__body__checkboxWrapper__label"
+            className={styles.body__checkbox__label}
           >
             Я ознакомлен и согласен с условиями обработки моих персональных
-            данных и <Link to="/privacy" target="_blank" className="singup__section__body__checkboxWrapper__label__link">Политикой конфиденциальности</Link>.
+            данных и <Link to="/privacy" target="_blank" className={styles.body__checkbox__link}>Политикой конфиденциальности</Link>.
             </label>
         </span>
 
-        <button type="submit" className={checked ? "singup__section__body__submitBtn" : "singup__section__body__submitBtn unactive"}
+        <button type="submit" className={checked ? `${styles.body__submitBtn}` : `${styles.body__submitBtn} ${styles.unactive}`}
          onClick={() => handleSubmit()}>
           Зарегистрироваться
         </button>
