@@ -3,24 +3,33 @@
 // import OpenEyeIcon from "../OpenEyeIcon";
 // import "./CustomInput.scss";
 
-// export default function CustomInput({
-//   placeholder, labelName, errorMessage, onClickFunc, inputId, inputType, inputRef, passVal, passwordVerValue,
-//     onChangeFunc
-// }) {
-//   let data = { placeholder, labelName, errorMessage, onClickFunc, inputId, inputRef, passVal, passwordVerValue,
-//     onChangeFunc, inputType
-//   };
+import { useEffect, useRef, useState } from "react";
+import OpenEyeIcon from "../../icons/OpenEyeIcon";
+import CloseEyeIcon from "../../icons/CloseEyeIcon";
 
-//   if (inputType === "password") {
-//     return <InputPassword {...data} />;
-//   } else if (inputType === "verify") {
-//     return <InputPasswordVerify {...data} />
-//   }
+// export default function CustomInput({
+//     labelName, placeholder, inputType, passVal, passwordVerValue, emailVal, onChangeFunc
+// })
+
+export default function CustomInput({
+  placeholder, labelName, errorMessage, onClickFunc, inputId, inputType, inputRef, passVal, passwordVerValue,
+    onChangeFunc, onCopyFunc, setPassVal
+}) {
+  let data = { placeholder, labelName, errorMessage, onClickFunc, inputId, inputRef, passVal, passwordVerValue,
+    onChangeFunc, inputType, onCopyFunc, setPassVal
+  };
+
+  if (inputType === "passwordOne") {
+    return <InputPassword {...data} key={inputId}/>;
+  } else if (inputType === "passwordVerify") {
+    return <InputPasswordVerify {...data} key={inputId}/>
+  }
 //   if (inputType === "text") {
 //     return <InputText {...data} />;
-//   } else if (inputType === "email") {
-//     return <InputEmail {...data} />
-//     }
+//   } 
+  else if (inputType === "email") {
+    return <InputEmail {...data} />
+    }
 //     else {
 //     return <InputTextarea {...data} />;
 //   }
@@ -50,132 +59,147 @@
 //   );
 // }
 
-// function InputEmail({ placeholder, labelName, onClickFunc, errorMessage, inputId, inputRef,
-// }) {
-//   return (
-//     <span className="input__wrapper">
-//       <label className="input__label" htmlFor={inputId}>
-//         {labelName}
+function InputEmail({ placeholder, labelName, onClickFunc, errorMessage, inputId, inputRef,
+}) {
+  return (
+    <span className="input__wrapper">
+      <label className="input__label" htmlFor={inputId}>
+        {labelName}
 
-//         <input
-//           className="input__auth"
-//           type="email"
-//           id={inputId}
-//           ref={inputRef}
-//           placeholder={placeholder}
-//         />
-//       </label>
+        <input
+          className="input__auth"
+          type="email"
+          id={inputId}
+          ref={inputRef}
+          placeholder={placeholder}
+        />
+      </label>
 
-//       {/* <p className='input__error'>
-//                 {errorMessage}!
-//             </p> */}
-//     </span>
-//   );
-// }
+      {/* <p className='input__error'>
+                {errorMessage}!
+            </p> */}
+    </span>
+  );
+}
 
-// function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inputId, inputRef, passVal, passwordVerValue,
-//   onChangeFunc
-// }) {
-//   console.log(inputId);
-//   // console.log("aaa " + passwordValue);
-//   // console.log("hhh " + passwordVerValue);
+function InputPassword({ placeholder, labelName, errorMessage, onClickFunc, inputId,  passVal, passwordVerValue,
+  onChangeFunc, other, onCopyFunc, setPassVal, inputRef
+}) {
+  console.log(inputId);
 
-//     const [open, setOpen] = useState(true);
-//     const [isHidden, setIsHidden] = useState(true);
-    
-//     const selectIcon = () => {
-//         setOpen(!open);
-//         setIsHidden(!isHidden);
+//   const inputRef = useRef(null);
+
+//   useEffect(() => {
+//     if (inputRef.current) {
+//       inputRef.current.focus();
 //     }
+//   }, [passVal]);
 
-//   return (
-//     <span className="input__wrapper2">
-//       <label className="input__label" htmlFor={inputId}></label>
-//        {labelName}
-//        <span className="icon__wrapper">
-//         <input
-//           className="input__auth password"
-//           type={isHidden ? "password" : "text"}
-//           id={inputId}
-//           onChange={onChangeFunc}
-//           placeholder={placeholder}
-//           value={passVal}
-//         />
-//         {/*пока открыт глаз - пароль не видно */}
-//        {
-//         open ?
-//         (
-//         <span className="iconOpen" onClick={selectIcon}>
-//             <OpenEyeIcon />
-//         </span>) :
-//         (
-//             <span className="iconClose" onClick={selectIcon}>
-//                 <CloseEyeIcon />
-//             </span> 
-//         )
-//        }
-
-//         </span>
-      
-      
-//             <p className='input__error'>
-//                 {/* {errorMessage}! */}
-//                {/* { passwordRef !== passworVerifydRef ?
-//     "Пароли не равны!" : ""}  */}
-//             </p>
-//     </span>
-//   );
-// }
-
-// function InputPasswordVerify({ placeholder, labelName, errorMessage, passVal,
-//   onChangeFunc
-// }) {
-//     const [open, setOpen] = useState(true);
-//     const [isHidden, setIsHidden] = useState(true);
+    const [open, setOpen] = useState(true);
+    const [isHidden, setIsHidden] = useState(true);
     
-//     const selectIcon = () => {
-//         setOpen(!open);
-//         setIsHidden(!isHidden);
-//     }
+    const selectIcon = () => {
+        setOpen(!open);
+        setIsHidden(!isHidden);
+    }
 
-//   return (
-//     <span className="input__wrapper2">
-//       <label className="input__label" htmlFor="singUp_passwordVerify"></label>
-//        {labelName}
-//        <span className="icon__wrapper">
-//         <input
-//           className="input__auth password"
-//           type={isHidden ? "password" : "text"}
-//           id="singUp_passwordVerify"
-//           onChange={onChangeFunc}
-//           placeholder={placeholder}
-//           value={passVal}
-//         />
-//         {/*пока открыт глаз - пароль не видно */}
-//        {
-//         open ?
-//         (
-//         <span className="iconOpen" onClick={selectIcon}>
-//             <OpenEyeIcon />
-//         </span>) :
-//         (
-//             <span className="iconClose" onClick={selectIcon}>
-//                 <CloseEyeIcon />
-//             </span> 
-//         )
-//        }
+  return (
+    <span className="input__wrapper2">
+      <label className="input__label" htmlFor={inputId}></label>
+       {labelName}
+       <span className="icon__wrapper">
+        <input
+        ref={inputRef}
+          className="input__auth password"
+          type={isHidden ? "password" : "text"}
+          id={inputId}
+          onChange={onChangeFunc}
+          placeholder={placeholder}
+          value={passVal}
+          onCopy={onCopyFunc}
+        //   {...other}
+        />
+        {/*пока открыт глаз - пароль не видно */}
+       {
+        open ?
+        (
+        <span className="iconOpen" onClick={selectIcon}>
+            <OpenEyeIcon />
+        </span>) :
+        (
+            <span className="iconClose" onClick={selectIcon}>
+                <CloseEyeIcon />
+            </span> 
+        )
+       }
 
-//         </span>
+        </span>
       
       
-//             <p className='input__error'>
-//                 {/* {errorMessage}! */}
-//                {/* { passwordRef !== passworVerifydRef ?
-//     "Пароли не равны!" : ""}  */}
-//             </p>
-//     </span>
-//   );
-// }
+            <p className='input__error'>
+                {errorMessage}
+            </p>
+    </span>
+  );
+}
+
+function InputPasswordVerify({ placeholder, labelName, errorMessage, onClickFunc, inputId, passVal, passwordVerValue,
+    onChangeFunc, inputType, onCopyFunc, inputRef
+}) {
+    // const inputRef2 = useRef(null);
+
+    // useEffect(() => {
+    //   if (inputRef2.current) {
+    //     inputRef2.current.focus();
+    //   }
+    // }, [passwordVerValue]);
+
+    const [open, setOpen] = useState(true);
+    const [isHidden, setIsHidden] = useState(true);
+    
+    const selectIcon = () => {
+        setOpen(!open);
+        setIsHidden(!isHidden);
+    }
+
+  return (
+    <span className="input__wrapper2">
+      <label className="input__label" htmlFor={inputId}></label>
+       {labelName}
+       <span className="icon__wrapper">
+        <input
+        // ref={inputRef}
+          className="input__auth password"
+          type={isHidden ? "password" : "text"}
+          id={inputId}
+          onChange={onChangeFunc}
+          placeholder={placeholder}
+          value={passwordVerValue}
+          onCopy={onCopyFunc}
+        />
+        {/*пока открыт глаз - пароль не видно */}
+       {
+        open ?
+        (
+        <span className="iconOpen" onClick={selectIcon}>
+            <OpenEyeIcon />
+        </span>) :
+        (
+            <span className="iconClose" onClick={selectIcon}>
+                <CloseEyeIcon />
+            </span> 
+        )
+       }
+
+        </span>
+      
+      
+            <p className='input__error'>
+                {errorMessage}
+            </p>
+    </span>
+  );
+}
 
 // function InputTextarea({ placeholder, labelName, inputId, inputRef }) {
 //   return (
@@ -191,4 +215,4 @@
 //     </label>
 //   );
 // }
-// }
+}

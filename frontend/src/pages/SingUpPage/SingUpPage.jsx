@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 // import "./SingUpPage.scss";
 import styles from './SingUpPage.module.scss';
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import OpenEyeIcon from "../../icons/OpenEyeIcon";
 import CloseEyeIcon from "../../icons/CloseEyeIcon";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import { createUser, setError, setExistEmail, setMessage } from "../../store/sli
 import Logo from "../../icons/Logo";
 import Loader from "../../components/Loader/Loader";
 import { useCheckThePassword } from "../../hooks/useCheckThePassword";
+import CustomInput from "../../components/CustomInput/CustomInput";
 
 export default function SingUpPage() {
 
@@ -163,6 +164,15 @@ useEffect(() => {
 //----------------------------
 //для отображения загрузки или контента
 
+const inputRef = useRef(null);
+const inputRef2 = useRef(null);
+
+// useEffect(() => {
+//   if (inputRef.current) {
+//     inputRef.current.focus();
+//   }
+// }, []);
+
 let content;
 const currStatus = useSelector(state => state.user.status);
 
@@ -205,8 +215,25 @@ if (currStatus === "loading") {
     </span>
 
   {/* password input */}
+  <form autoComplete="off">
+
+  
                     <span className="input__wrapper2">
-      <label className="input__label" htmlFor="singUp_password"></label>
+                      <CustomInput inputType="passwordOne"
+                      inputRef={inputRef}
+                      inputId="singUp_password"
+                      labelName="Пароль"
+                      onChangeFunc={handleChangePassword}
+                      placeholder="Введите пароль"
+                      passVal={userPassword}
+                      //setPassVal={setPasswordValue}
+                      // other={
+                        required
+                        spellCheck="false"
+                        onClickFunc={handleCopy}
+                        errorMessage={errorMessage}
+                      />
+      {/* <label className="input__label" htmlFor="singUp_password"></label>
       Пароль
        <span className="icon__wrapper">
         <input
@@ -220,9 +247,9 @@ if (currStatus === "loading") {
           required
           spellCheck="false"
           onCopy={handleCopy}
-        />
+        /> */}
         {/*пока открыт глаз - пароль не видно */}
-       {
+       {/* {
         open ?
         (
         <span className="iconOpen" onClick={selectIcon}>
@@ -237,13 +264,28 @@ if (currStatus === "loading") {
         </span>
         <p className='input__error'>
                 {errorMessage}
-            </p>
+            </p> */}
     </span>
   {/* REPEAT password input */}      
             <span className="input__wrapper2">
-      <label className="input__label" htmlFor="singUp_passwordVerify"></label>
-      Повторите пароль
-       <span className="icon__wrapper">
+      {/* <label className="input__label" htmlFor="singUp_passwordVerify"></label>
+      Повторите пароль */}
+      <CustomInput inputType="passwordVerify"
+      // inputRef={inputRef2}
+                      inputId="singUp_passwordVerify"
+                      labelName="Повторите пароль"
+                      onChangeFunc={handleChangeVerPassword}
+                      placeholder="Введите пароль ещё раз"
+                      passwordVerValue={SingUppasswordVerValue}
+                      //setPassVal={setPasswordValue}
+                      // other={
+                        //required
+                        //spellCheck="false"
+                       // onClickFunc={handleCopy}
+                        errorMessage={errorVerMessage}
+                        onCopyFunc={handleCopy}
+                      />
+       {/* <span className="icon__wrapper">
         <input
           className="input__auth password"
           type={isHidden ? "password" : "text"}
@@ -255,9 +297,9 @@ if (currStatus === "loading") {
           required
           spellCheck="false"
           onCopy={handleCopy}
-        />
+        /> */}
         {/*пока открыт глаз - пароль не видно */}
-       {
+       {/* {
         isClose ?
         (
         <span className="iconOpen" onClick={selectIconTwo}>
@@ -272,9 +314,9 @@ if (currStatus === "loading") {
         </span>
             <p className='input__error'>
                 {errorVerMessage}
-            </p>
+            </p> */}
     </span>
-
+    </form>
         <span className={styles.body__checkbox}>
         <input type="checkbox" 
         onChange={() => setChecked(!checked)}
